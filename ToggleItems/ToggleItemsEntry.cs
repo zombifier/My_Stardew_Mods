@@ -13,10 +13,12 @@ using System.Collections.Generic;
 
 namespace ToggleItems {
   internal sealed class ModEntry : Mod {
-    internal static new IModHelper helper { get; set; }
-    internal static IMonitor monitor { get; set; }
+    internal static new IModHelper helper { get;
+    set;
+  }
+  internal static IMonitor monitor { get; set; }
 
-  private static IDictionary<string, string> qualifiedIdMap = new Dictionary<string, string>();
+  private static IDictionary<string, IList<string>> qualifiedIdMap = new Dictionary<string, IList<string>>();
 
   private ToggleItemsConfig config;
 
@@ -24,13 +26,40 @@ namespace ToggleItems {
     qualifiedIdMap = ToggleItemsContentPackLoader.LoadContentPack(helper, monitor);
   }
 
+  private bool TryGetNextForm(string currentId, IList<string> idList, out string nextId) {
+    nextId = null;
+    int currentIndex = idList.IndexOf(currentId);
+    if (currentIndex < 0) {
+      return false;
+    }
+    int i = currentIndex;
+    do {
+      if (i == idList.Count - 1) {
+        i = 0;
+      } else {
+        i += 1;
+      }
+      if (i == currentIndex) {
+        break;
+      }
+      if (StardewValley.ItemRegistry.Exists(idList[i])) {
+        nextId = idList[i];
+        return true;
+      }
+    } while (i != currentIndex);
+    return false;
+  }
+  
+
   private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e) {
     if (config.switchKey.JustPressed()) {
       StardewValley.Item currentItem = Game1.player.CurrentItem;
       if (currentItem != null &&
-          qualifiedIdMap.TryGetValue(currentItem.QualifiedItemId, out var newQID)) {
-        StardewValley.Item newItem = ItemRegistry.Create(newQID, currentItem.Stack, currentItem.Quality, true);
-       if (newItem != null) {
+          qualifiedIdMap.TryGetValue(currentItem.QualifiedItemId, out var idList) &&
+          TryGetNextForm(currentItem.QualifiedItemId, idList, out var nextId)) {
+        StardewValley.Item newItem =
+            ItemRegistry.Create(nextId, currentItem.Stack, currentItem.Quality, true);
+        if (newItem != null) {
           Game1.player.removeItemFromInventory(currentItem);
           Game1.player.addItemToInventory(newItem, Game1.player.CurrentToolIndex);
           Game1.player.showCarrying();
@@ -41,22 +70,17 @@ namespace ToggleItems {
 
   private void OnGameLaunched(object sender, GameLaunchedEventArgs e) {
     // get Generic Mod Config Menu's API (if it's installed)
-    var configMenu = helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+    var configMenu =
+        helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
     if (configMenu is null)
-        return;
+      return;
 
-    configMenu.Register(
-        mod: this.ModManifest,
-        reset: () => this.config = new ToggleItemsConfig(),
-        save: () => helper.WriteConfig(this.config)
-    );
+    configMenu.Register(mod: this.ModManifest, reset: () => this.config = new ToggleItemsConfig(),
+                        save: () => helper.WriteConfig(this.config));
 
-    configMenu.AddKeybindList(
-        mod: this.ModManifest,
-        name: () => "Toggle Keybind",
-        getValue: () => this.config.switchKey,
-        setValue: value => this.config.switchKey = value
-    );
+    configMenu.AddKeybindList(mod: this.ModManifest, name: () => "Toggle Keybind",
+                              getValue: () => this.config.switchKey,
+                              setValue: value => this.config.switchKey = value);
   }
 
   public override void Entry(IModHelper modHelper) {
