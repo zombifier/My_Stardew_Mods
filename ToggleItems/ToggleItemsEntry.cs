@@ -60,6 +60,15 @@ namespace ToggleItems {
         StardewValley.Item newItem =
             ItemRegistry.Create(nextId, currentItem.Stack, currentItem.Quality, true);
         if (newItem != null) {
+          if (config.priceBalance && currentItem is StardewValley.Object currentObject && newItem is StardewValley.Object newObject) {
+            int priceDifference = newObject.sellToStorePrice() * newObject.Stack - currentObject.sellToStorePrice() * currentObject.Stack;
+            if (priceDifference <= Game1.player._money) {
+              Game1.player._money -= priceDifference;
+            } else {
+              Game1.showRedMessage(helper.Translation.Get("selph.ToggleItems.NotEnoughMoney"));
+              return;
+            }
+          }
           Game1.player.removeItemFromInventory(currentItem);
           Game1.player.addItemToInventory(newItem, Game1.player.CurrentToolIndex);
           Game1.player.showCarrying();
@@ -81,6 +90,11 @@ namespace ToggleItems {
     configMenu.AddKeybindList(mod: this.ModManifest, name: () => "Toggle Keybind",
                               getValue: () => this.config.switchKey,
                               setValue: value => this.config.switchKey = value);
+
+    configMenu.AddBoolOption(mod: this.ModManifest, name: () => "(EXPERIMENTAL) Price balance",
+        tooltip: () => "When toggling shippable items to a cheaper/more expensive version, whether to add/subtract the price difference from the player's balance to keep profit neutral.",
+        getValue: () => this.config.priceBalance,
+        setValue: value => this.config.priceBalance = value);
   }
 
   public override void Entry(IModHelper modHelper) {
