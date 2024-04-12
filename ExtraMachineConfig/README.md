@@ -19,19 +19,9 @@ recipe, or even each output in the case of multiple possible outputs.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `ExtraMachineConfig.RequirementId.1` | The additional fuel that should be
-consumed by this recipe in addition to the ones specified in the machine's
-`AdditionalConsumedItems` field.<br>
-You can specify multiple fuels by adding another field with the same name, but
-with the number at the end incremented (eg.
-`ExtraMachineConfig.RequirementId.2`).<br>
-This ID can either be a qualified ID for a specific item, or a category ID
-for only categories (eg. `-2` will consume any gemstones as fuel).|
-| `ExtraMachineConfig.RequirementCount.1` | The count of the additional fuel
-specified in the field above. Defaults to 1 if not specified. |
-| `ExtraMachineConfig.RequirementInvalidMsg` | The message to show to players
-if all the requirements are not satisfied. Note that if there are multiple output rules
-with this field, only the last one will be shown.|
+| `ExtraMachineConfig.RequirementId.1` | The additional fuel that should be consumed by this recipe in addition to the ones specified in the machine's `AdditionalConsumedItems` field.<br> You can specify multiple fuels by adding another field with the same name, but with the number at the end incremented (eg. `ExtraMachineConfig.RequirementId.2`).<br> This ID can either be a qualified ID for a specific item, or a category ID for only categories (eg. `-2` will consume any gemstones as fuel).|
+| `ExtraMachineConfig.RequirementCount.1` | The count of the additional fuel specified in the field above. Defaults to 1 if not specified. |
+| `ExtraMachineConfig.RequirementInvalidMsg` | The message to show to players if all the requirements are not satisfied. Note that if there are multiple output rules with this field, only the last one will be shown.|
 
 #### Example
 
@@ -120,9 +110,7 @@ normal for copper.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `ExtraMachineConfig.InheritPreserveId` | When set to any value, copies
-the input item's flavor (e.g. the "Blueberry" part of "Blueberry Wine") into
-the output item.|
+| `ExtraMachineConfig.InheritPreserveId` | When set to any value, copies the input item's flavor (e.g. the "Blueberry" part of "Blueberry Wine") into the output item.|
 
 #### Example
 
