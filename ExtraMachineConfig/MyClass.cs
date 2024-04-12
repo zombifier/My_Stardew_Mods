@@ -111,6 +111,7 @@ namespace ExtraMachineConfig {
     List<MachineItemOutput> newOutputs = new List<MachineItemOutput>();
     foreach (MachineItemOutput output in outputs) {
       if (output.CustomData == null) {
+        newOutputs.Add(output);
         continue;
       }
       bool valid = true;
