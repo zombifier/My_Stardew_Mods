@@ -9,8 +9,7 @@ This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
 ## Use
-This mod reads extra data defined the [`CustomData` field in `OutputItem`]
-(https://stardewvalleywiki.com/Modding:Machines#Item_processing_rules), which is
+This mod reads extra data defined the [`CustomData` field in `OutputItem`](https://stardewvalleywiki.com/Modding:Machines#Item_processing_rules), which is
 a map of arbitrary string keys to string values intended for mod use. Since
 `CustomData` is per-output, it's possible to specify different settings for each
 recipe, or even each output in the case of multiple possible outputs.
