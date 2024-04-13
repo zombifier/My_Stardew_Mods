@@ -6,6 +6,7 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.ItemTypeDefinitions;
+using StardewValley.Menus;
 using StardewValley.Inventories;
 using StardewValley.GameData.Machines;
 using StardewValley.GameData.BigCraftables;
@@ -34,6 +35,7 @@ namespace ExtraMachineConfig {
   internal static string RequirementCountKeyPrefix = "ExtraMachineConfig.RequirementCount";
   internal static string RequirementInvalidMsgKey = "ExtraMachineConfig.RequirementInvalidMsg";
   internal static string InheritPreserveIdKey = "ExtraMachineConfig.InheritPreserveId";
+  internal static string CopyColorKey = "ExtraMachineConfig.CopyColor";
 
   public override void Entry(IModHelper helper) {
     Helper = helper;
@@ -139,14 +141,16 @@ namespace ExtraMachineConfig {
   // * Checks for additional fuel requirements specified in the output rule's custom data, and
   // removes them from inventory
   // * Checks if preserve ID is set to inherit the input item's preserve ID, and applies it
+  // * Checks if a colored item should be created and apply the changes
   private static void GetOutputItemPatchPostfix(ref Item __result, StardewValley.Object machine,
                                                 MachineItemOutput outputData, Item inputItem,
                                                 Farmer who, bool probe,
                                                 ref int? overrideMinutesUntilReady) {
-    if (__result == null || probe || outputData == null || inputItem == null) {
+    if (__result == null || outputData == null || inputItem == null) {
       return;
     }
     IInventory inventory = StardewValley.Object.autoLoadFrom ?? who.Items;
+    // Inherit preserve ID
     if ((outputData.PreserveId == "INHERIT" ||
          (outputData.CustomData != null &&
           outputData.CustomData.ContainsKey(InheritPreserveIdKey))) &&
@@ -154,9 +158,35 @@ namespace ExtraMachineConfig {
         __result is StardewValley.Object resultObject) {
       resultObject.preservedParentSheetIndex.Value = inputObject.preservedParentSheetIndex.Value;
     }
+    if (outputData.CustomData == null) {
+      return;
+    }
+    // Remove extra fuel
     var extraRequirements = GetExtraRequirements(outputData);
     foreach (var entry in extraRequirements) {
       RemoveItemFromInventory(inventory, entry.Item1, entry.Item2);
+    }
+    // Color the item
+    if (outputData.CustomData.ContainsKey(CopyColorKey) && __result is StardewValley.Object) {
+      StardewValley.Objects.ColoredObject newColoredObject;
+      if (__result is StardewValley.Objects.ColoredObject coloredObject) {
+        newColoredObject = coloredObject;
+      } else {
+        newColoredObject = new StardewValley.Objects.ColoredObject(
+            __result.QualifiedItemId,
+            __result.Stack,
+            Color.White
+            );
+        Helper.Reflection.GetMethod(newColoredObject, "GetOneCopyFrom").Invoke(__result);
+        newColoredObject.Stack = __result.Stack;
+      }
+      var color = inputItem is StardewValley.Objects.ColoredObject coloredInput ?
+        coloredInput.color.Value :
+        TailoringMenu.GetDyeColor(inputItem);
+      if (color != null) {
+        newColoredObject.color.Value = (Color)color;
+        __result = newColoredObject;
+      }
     }
   }
 }

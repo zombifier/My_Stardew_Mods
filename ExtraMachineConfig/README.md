@@ -110,7 +110,7 @@ normal for copper.
 ```
 </details>
 
-### Allow output to inherit the flavor of input items
+### Output inherit the flavor of input items
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
@@ -163,6 +163,62 @@ honey's flower flavor to the mead, and increment its price accordingly.
 
 </details>
 
+### Output inherit the dye color of input items
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `ExtraMachineConfig.CopyColor` | When set to any value, copies the input item's color into the output item.<br>The difference between this settings and the base game's `CopyColor` is that the latter only supports copying the color of colored items (eg. flowers), while the former will copy the dye color if the input is not a colored object.|
+
+#### Example
+
+The example below adds a new recipe to preserves jar that turns a gemstone into
+5 fairy roses of the gem's color. Without this mod enabled, the roses will all
+be of the base color, even with `CopyColor` set.
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "Changes": [
+    {
+      "LogName": "Add Gemstone To Rose Rule",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)15", "OutputRules"],
+      "Entries": {
+        "RoseMaker": {
+          "Id": "RoseMaker",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredTags": ["category_gem"],
+              "RequiredCount": 1,
+            }
+          ],
+          "OutputItem": [
+            {
+              "CustomData": {
+                "ExtraMachineConfig.CopyColor": "true",
+              },
+              "ItemId": "(O)595",
+              "MinStack": 5,
+              // This does nothing
+              "CopyColor": true,
+            },
+          ],
+          "MinutesUntilReady": 10,
+        },
+      },
+    },
+  ]
+}
+```
+
+</details>
+
 ## Appendix: Comparison vs Producer Framework Mod 
 [Producer Framework Mod](https://www.nexusmods.com/stardewvalley/mods/4970)
 allows defining custom machines and recipes in Stardew Valley, with more
@@ -187,7 +243,8 @@ The main differences:
 * PFM uses its own machine handling code, and is more flexible and extensible
   as a result, while EMC is designed to work around the game's handling and
   data structures as well as keeping things working even when uninstalled, and
-  does not have many features as a result.
+  does not have many features as a result, but is much more compatible with any
+  other mods that also patch game code.
 
 In general, if you want to stick to pure Content Patcher (for compatibility
 with other mods, etc.) for your mod then use this mod; otherwise it's probably
