@@ -14,6 +14,9 @@ a map of arbitrary string keys to string values intended for mod use. Since
 `CustomData` is per-output, it's possible to specify different settings for each
 recipe, or even each output in the case of multiple possible outputs.
 
+NOTE: The below guide applies only to version 1.2.1 (which at this time is in
+testing and an optional download on Nexus).
+
 ### Adding additional fuel for a specific recipe
 
 | Field Name                         | Description              |
@@ -110,6 +113,10 @@ normal for copper.
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
 | `ExtraMachineConfig.InheritPreserveId` | When set to any value, copies the input item's flavor (e.g. the "Blueberry" part of "Blueberry Wine") into the output item.|
+
+NOTE: Version 1.0.0 also supports this functionality via setting the
+`PreserveId` field to `"INHERIT"`. This is not recommended however since
+it would lead to weird results if this mod's not installed.
 
 #### Example
 
