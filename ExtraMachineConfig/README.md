@@ -110,6 +110,8 @@ normal for copper.
 ```
 </details>
 
+----
+
 ### Output inherit the flavor of input items
 
 | Field Name                         | Description              |
@@ -162,6 +164,8 @@ honey's flower flavor to the mead, and increment its price accordingly.
 ```
 
 </details>
+
+----
 
 ### Output inherit the dye color of input items
 
@@ -218,6 +222,8 @@ be of the base color, even with `CopyColor` set.
 ```
 
 </details>
+
+----
 
 ## Appendix: Comparison vs Producer Framework Mod 
 [Producer Framework Mod](https://www.nexusmods.com/stardewvalley/mods/4970)
