@@ -8,14 +8,16 @@ things beyond what's possible in the base game (e.g per-recipe fuel).
 This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
+NOTE: The below guide applies only to version 1.2.1 (which at this time is in
+testing and an optional download on Nexus). Version 1.0.0 is an initial release
+that supports only the 'flavor inherit' feature needed to make flavored meads
+work. 1.2.1 will be moved to main download eventually once testing is finished.
+
 ## Use
 This mod reads extra data defined the [`CustomData` field in `OutputItem`](https://stardewvalleywiki.com/Modding:Machines#Item_processing_rules), which is
 a map of arbitrary string keys to string values intended for mod use. Since
 `CustomData` is per-output, it's possible to specify different settings for each
 recipe, or even each output in the case of multiple possible outputs.
-
-NOTE: The below guide applies only to version 1.2.1 (which at this time is in
-testing and an optional download on Nexus).
 
 ### Adding additional fuel for a specific recipe
 
