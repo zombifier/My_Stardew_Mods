@@ -155,6 +155,7 @@ namespace ExtraMachineConfig {
          (outputData.CustomData != null &&
           outputData.CustomData.ContainsKey(InheritPreserveIdKey))) &&
         inputItem is StardewValley.Object inputObject &&
+        inputObject.preservedParentSheetIndex.Value != "-1" &&
         __result is StardewValley.Object resultObject) {
       resultObject.preservedParentSheetIndex.Value = inputObject.preservedParentSheetIndex.Value;
     }
