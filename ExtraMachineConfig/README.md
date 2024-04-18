@@ -8,11 +8,6 @@ things beyond what's possible in the base game (e.g per-recipe fuel).
 This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
-NOTE: The below guide applies only to version 1.2.1 (which at this time is in
-testing and an optional download on Nexus). Version 1.0.0 is an initial release
-that supports only the 'flavor inherit' feature needed to make flavored meads
-work. 1.2.1 will be moved to main download eventually once testing is finished.
-
 ## Use
 This mod reads extra data defined the [`CustomData` field in `OutputItem`](https://stardewvalleywiki.com/Modding:Machines#Item_processing_rules), which is
 a map of arbitrary string keys to string values intended for mod use. Since
@@ -29,8 +24,9 @@ recipe, or even each output in the case of multiple possible outputs.
 
 #### Example
 
-The example below adds a new recipe to furnaces that accepts 1 diamond, any 5 ores, and any
-milk item and returns 4 iridium-quality diamonds if iridium ore was used, 3
+The example below adds a new recipe to furnaces that accepts 1 diamond, any 5
+ores, and any milk item (in addition to the 1 coal required by the base
+machine) and returns 4 iridium-quality diamonds if iridium ore was used, 3
 gold-quality diamonds if gold ore was used, 2 silver-quality for iron, and 1
 normal for copper.
 
@@ -126,6 +122,7 @@ it would lead to weird results if this mod's not installed.
 
 The example below modifies the base game's honey to mead recipe to also copy the
 honey's flower flavor to the mead, and increment its price accordingly.
+
 <details>
 
 <summary>Content Patcher definition</summary>
