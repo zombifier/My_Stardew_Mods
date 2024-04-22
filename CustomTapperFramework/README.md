@@ -55,7 +55,7 @@ The output item query supports the following macros:
 
 ## Example
 
-See below for an example from the [Additional Tree Equipments](https://google.com)
+See below for an example from the [Additional Tree Equipments](https://www.nexusmods.com/stardewvalley/mods/22991)
 mod, which adds a tree bee house that can be placed on any tree, and
 produces honey every 4 days except in winter:
 
