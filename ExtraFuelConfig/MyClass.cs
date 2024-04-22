@@ -150,8 +150,7 @@ namespace ExtraFuelConfig {
       if (Game1.player.getItemCountInList(inventory, itemId) >= stack) {
         for (int index1 = 0; index1 < inventory.Count; ++index1) {
           if (inventory[index1] != null && inventory[index1] is StardewValley.Object object1 &&
-              (object1.QualifiedItemId == itemId ||
-               (int.TryParse(itemId, out int c) && object1.Category == c))) {
+              (StardewValley.CraftingRecipe.ItemMatchesForCrafting(object1, itemId))) {
             state.itemId ??= inventory[index1].QualifiedItemId;
             state.preservedParentSheetIndex ??=
                 object1.preservedParentSheetIndex.Value;

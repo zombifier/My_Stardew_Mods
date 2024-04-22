@@ -45,14 +45,23 @@ namespace ToggleItems {
           for (int i = 0; i < list.Count; i++) {
             if (result.ContainsKey(list[i])) {
               monitor.Log(
-                  $"{contentPack.Manifest.Name} - duplicate entry for {list[i]} found - there might be conflicting content packs.",
+                  $"{contentPack.Manifest.Name} - duplicate entry for {list[i]} found - appending new entries to existing config.",
                   LogLevel.Warn);
+              appendNonDuplicateItems(result[list[i]], list);
+            } else {
+              result[list[i]] = list;
             }
-            result[list[i]] = list;
           }
         }
       }
       return result;
+    }
+    private static void appendNonDuplicateItems(IList<string> target, IList<string> source) {
+      foreach (string item in source) {
+        if (!target.Contains(item)) {
+          target.Add(item);
+        }
+      }
     }
   }
 }

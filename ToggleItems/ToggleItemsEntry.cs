@@ -69,6 +69,8 @@ namespace ToggleItems {
               return;
             }
           }
+          // Copy modData
+          newItem.modData.CopyFrom(currentItem.modData);
           Game1.player.removeItemFromInventory(currentItem);
           Game1.player.addItemToInventory(newItem, Game1.player.CurrentToolIndex);
           Game1.player.showCarrying();
