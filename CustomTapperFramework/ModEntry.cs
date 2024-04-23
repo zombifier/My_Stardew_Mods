@@ -42,6 +42,10 @@ internal sealed class ModEntry : Mod {
         this.Monitor.Log("This mod patches Automate. If you notice issues with Automate, make sure it happens without this mod before reporting it to the Automate page.", LogLevel.Debug);
         AutomatePatcher.ApplyPatches(harmony);
       }
+      if (Helper.ModRegistry.IsLoaded("NermNermNerm.Junimatic")) {
+        this.Monitor.Log("This mod patches Junimatic. If you notice issues with Junimatic, make sure it happens without this mod before reporting it to the Junimatic page.", LogLevel.Debug);
+        JunimaticPatcher.ApplyPatches(harmony);
+      }
     } catch (Exception e) {
       Monitor.Log("Failed patching Automate. Detail: " + e.Message, LogLevel.Error);
     }
@@ -63,7 +67,7 @@ internal sealed class ModEntry : Mod {
             tapper.heldObject.Value == null) {
           Utils.UpdateTapperProduct(tapper);
         }
-    }
+      }
     }
   }
 
@@ -76,14 +80,14 @@ internal sealed class ModEntry : Mod {
         Utils.GetOutputRules(obj, feature, out bool unused) is var outputRules &&
         outputRules != null) {
         // Place tapper if able
-      SObject @object = (SObject)obj.getOne();
-      @object.heldObject.Value = null;
-      @object.TileLocation = centerPos;
-      Game1.currentLocation.objects.Add(centerPos, @object);
-      Utils.UpdateTapperProduct(@object);
-      Game1.currentLocation.playSound("axe");
-      Game1.player.reduceActiveItemByOne();
-      Utils.Shake(feature, centerPos);
+        SObject @object = (SObject)obj.getOne();
+        @object.heldObject.Value = null;
+        @object.TileLocation = centerPos;
+        Game1.currentLocation.objects.Add(centerPos, @object);
+        Utils.UpdateTapperProduct(@object);
+        Game1.currentLocation.playSound("axe");
+        Game1.player.reduceActiveItemByOne();
+        Utils.Shake(feature, centerPos);
       }
     }
     // When taking a machine output, also shake the fruit tree for fruits
@@ -92,22 +96,6 @@ internal sealed class ModEntry : Mod {
         Game1.currentLocation.terrainFeatures.TryGetValue(e.Cursor.GrabTile, out var feature2) &&
         feature2 is FruitTree fruitTree) {
       fruitTree.shake(e.Cursor.GrabTile, false);
-    }
-  }
-
-  public void OnRendered(object sender, RenderedEventArgs e) {
-    foreach (var pair in Game1.currentLocation.objects.Pairs) {
-      if (pair.Value.IsTapper() &&
-          Utils.GetFeatureAt(pair.Value.Location, pair.Value.TileLocation, out var feature, out var unused)) {
-        float? layer = feature switch {
-          GiantCrop giantCrop => (giantCrop.Tile.Y + (float)giantCrop.GetData().TileSize.Y) * 1f / 10000f + 0.00001f,
-          FruitTree => ((pair.Key.Y) * 1f) / 10000f + 0.00001f,
-          _ => null,
-        };
-        if (layer == null) continue;
-        ModEntry.StaticMonitor.Log("LAYER: " + layer, LogLevel.Info);
-        pair.Value.draw(e.SpriteBatch, (int)pair.Key.X*64, (int)(pair.Key.Y-1)*64, (float)0f, 1f);
-      }
     }
   }
 }
