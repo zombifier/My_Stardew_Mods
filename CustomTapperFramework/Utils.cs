@@ -37,6 +37,9 @@ public static class Utils {
     return null;
   }
 
+  // Get the modded output rules for this tapper.
+  // NOTE: If this function returns null, its consumers should not update the tapper.
+  // If a list, then touch it.
   public static IList<ExtendedTapItemData> GetOutputRules(SObject tapper, TerrainFeature feature, out bool disallowBaseTapperRules, string ruleId = null) {
     disallowBaseTapperRules = false;
     if (ModEntry.assetHandler.data.TryGetValue(tapper.QualifiedItemId, out var data)) {
@@ -72,6 +75,7 @@ public static class Utils {
   }
 
   // Copied from base game's function
+  // Update this tapper with produce from the base game, if any.
   public static void UpdateTapperProduct(SObject tapper) {
     if (tapper == null) {
       return;
@@ -83,6 +87,13 @@ public static class Utils {
       _ => null,
     };
     if (data != null) {
+      // Clear just in case the game added the vanilla produce to the tapper
+      if (feature is Tree) {
+        tapper.heldObject.Value = null;
+        tapper.readyForHarvest.Value = false;
+        tapper.showNextIndex.Value = false;
+        tapper.ResetParentSheetIndex();
+      }
       float timeMultiplier = 1f;
       foreach (string contextTag in tapper.GetContextTags()) {
         if (contextTag.StartsWith("tapper_multiplier_") && float.TryParse(contextTag.Substring("tapper_multiplier_".Length), out var result)) {
