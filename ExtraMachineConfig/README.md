@@ -18,9 +18,9 @@ recipe, or even each output in the case of multiple possible outputs.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `ExtraMachineConfig.RequirementId.1` | The additional fuel that should be consumed by this recipe in addition to the ones specified in the machine's `AdditionalConsumedItems` field.<br> You can specify multiple fuels by adding another field with the same name, but with the number at the end incremented (eg. `ExtraMachineConfig.RequirementId.2`).<br> This ID can either be a qualified ID for a specific item, or a category ID for only categories (eg. `-2` will consume any gemstones as fuel).|
-| `ExtraMachineConfig.RequirementCount.1` | The count of the additional fuel specified in the field above. Defaults to 1 if not specified. |
-| `ExtraMachineConfig.RequirementInvalidMsg` | The message to show to players if all the requirements are not satisfied. Note that if there are multiple output rules with this field, only the last one will be shown.|
+| `selph.ExtraMachineConfig.RequirementId.1` | The additional fuel that should be consumed by this recipe in addition to the ones specified in the machine's `AdditionalConsumedItems` field.<br> You can specify multiple fuels by adding another field with the same name, but with the number at the end incremented (eg. `ExtraMachineConfig.RequirementId.2`).<br> This ID can either be a qualified ID for a specific item, or a category ID for only categories (eg. `-2` will consume any gemstones as fuel).|
+| `selph.ExtraMachineConfig.RequirementCount.1` | The count of the additional fuel specified in the field above. Defaults to 1 if not specified. |
+| `selph.ExtraMachineConfig.RequirementInvalidMsg` | The message to show to players if all the requirements are not satisfied. Note that if there are multiple output rules with this field, only the last one will be shown.|
 
 #### Example
 
@@ -57,10 +57,10 @@ normal for copper.
           "OutputItem": [
             {
               "CustomData": {
-                "ExtraMachineConfig.RequirementId.1": "(O)386",
-                "ExtraMachineConfig.RequirementCount.1": "5",
-                "ExtraMachineConfig.RequirementInvalidMsg": "Need 5 ores and milk",
-                "ExtraMachineConfig.RequirementId.2": "-6",
+                "selph.ExtraMachineConfig.RequirementId.1": "(O)386",
+                "selph.ExtraMachineConfig.RequirementCount.1": "5",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "Need 5 ores and milk",
+                "selph.ExtraMachineConfig.RequirementId.2": "-6",
               },
               "ItemId": "(O)72",
               "MinStack": 4,
@@ -68,9 +68,9 @@ normal for copper.
             },
             {
               "CustomData": {
-                "ExtraMachineConfig.RequirementId.1": "(O)384",
-                "ExtraMachineConfig.RequirementCount.1": "5",
-                "ExtraMachineConfig.RequirementId.2": "-6",
+                "selph.ExtraMachineConfig.RequirementId.1": "(O)384",
+                "selph.ExtraMachineConfig.RequirementCount.1": "5",
+                "selph.ExtraMachineConfig.RequirementId.2": "-6",
               },
               "ItemId": "(O)72",
               "MinStack": 3,
@@ -78,9 +78,9 @@ normal for copper.
             },
             {
               "CustomData": {
-                "ExtraMachineConfig.RequirementId.1": "(O)380",
-                "ExtraMachineConfig.RequirementCount.1": "5",
-                "ExtraMachineConfig.RequirementId.2": "-6",
+                "selph.ExtraMachineConfig.RequirementId.1": "(O)380",
+                "selph.ExtraMachineConfig.RequirementCount.1": "5",
+                "selph.ExtraMachineConfig.RequirementId.2": "-6",
               },
               "ItemId": "(O)72",
               "MinStack": 2,
@@ -88,9 +88,9 @@ normal for copper.
             },
             {
               "CustomData": {
-                "ExtraMachineConfig.RequirementId.1": "(O)378",
-                "ExtraMachineConfig.RequirementCount.1": "5",
-                "ExtraMachineConfig.RequirementId.2": "-6",
+                "selph.ExtraMachineConfig.RequirementId.1": "(O)378",
+                "selph.ExtraMachineConfig.RequirementCount.1": "5",
+                "selph.ExtraMachineConfig.RequirementId.2": "-6",
               },
               "ItemId": "(O)72",
               "MinStack": 1,
@@ -112,7 +112,7 @@ normal for copper.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `ExtraMachineConfig.InheritPreserveId` | When set to any value, copies the input item's flavor (e.g. the "Blueberry" part of "Blueberry Wine") into the output item.|
+| `selph.ExtraMachineConfig.InheritPreserveId` | When set to any value, copies the input item's flavor (e.g. the "Blueberry" part of "Blueberry Wine") into the output item.|
 
 NOTE: Version 1.0.0 also supports this functionality via setting the
 `PreserveId` field to `"INHERIT"`. This is not recommended however since
@@ -137,7 +137,7 @@ honey's flower flavor to the mead, and increment its price accordingly.
       "TargetField": ["(BC)12", "OutputRules", "Default_Honey", "OutputItem", "(O)459"],
       "Entries": {
         "CustomData": {
-          "ExtraMachineConfig.InheritPreserveId": "true",
+          "selph.ExtraMachineConfig.InheritPreserveId": "true",
         },
         "CopyPrice": true,
         "ObjectInternalName": "{0} Mead",
@@ -168,7 +168,7 @@ honey's flower flavor to the mead, and increment its price accordingly.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `ExtraMachineConfig.CopyColor` | When set to any value, copies the input item's color into the output item.<br>The difference between this settings and the base game's `CopyColor` is that the latter only supports copying the color of colored items (eg. flowers), while the former will copy the dye color if the input is not a colored object.|
+| `selph.ExtraMachineConfig.CopyColor` | When set to any value, copies the input item's color into the output item.<br>The difference between this settings and the base game's `CopyColor` is that the latter only supports copying the color of colored items (eg. flowers), while the former will copy the dye color if the input is not a colored object.|
 
 #### Example
 
@@ -202,7 +202,7 @@ be of the base color, even with `CopyColor` set.
           "OutputItem": [
             {
               "CustomData": {
-                "ExtraMachineConfig.CopyColor": "true",
+                "selph.ExtraMachineConfig.CopyColor": "true",
               },
               "ItemId": "(O)595",
               "MinStack": 5,

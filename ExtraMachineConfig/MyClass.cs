@@ -31,11 +31,19 @@ namespace ExtraMachineConfig {
 
   // Keys for the CustomData map
   internal static Regex RequirementIdKeyRegex =
+      new Regex(@"selph.ExtraMachineConfig\.RequirementId\.(\d+)");
+  internal static string RequirementCountKeyPrefix = "selph.ExtraMachineConfig.RequirementCount";
+  internal static string RequirementInvalidMsgKey = "selph.ExtraMachineConfig.RequirementInvalidMsg";
+  internal static string InheritPreserveIdKey = "selph.ExtraMachineConfig.InheritPreserveId";
+  internal static string CopyColorKey = "selph.ExtraMachineConfig.CopyColor";
+
+  // Legacy versions, no mod IDs because I'm stupid
+  internal static Regex RequirementIdKeyRegex_Legacy =
       new Regex(@"ExtraMachineConfig\.RequirementId\.(\d+)");
-  internal static string RequirementCountKeyPrefix = "ExtraMachineConfig.RequirementCount";
-  internal static string RequirementInvalidMsgKey = "ExtraMachineConfig.RequirementInvalidMsg";
-  internal static string InheritPreserveIdKey = "ExtraMachineConfig.InheritPreserveId";
-  internal static string CopyColorKey = "ExtraMachineConfig.CopyColor";
+  internal static string RequirementCountKeyPrefix_Legacy = "ExtraMachineConfig.RequirementCount";
+  internal static string RequirementInvalidMsgKey_Legacy = "ExtraMachineConfig.RequirementInvalidMsg";
+  internal static string InheritPreserveIdKey_Legacy = "ExtraMachineConfig.InheritPreserveId";
+  internal static string CopyColorKey_Legacy = "ExtraMachineConfig.CopyColor";
 
   public override void Entry(IModHelper helper) {
     Helper = helper;
@@ -65,9 +73,15 @@ namespace ExtraMachineConfig {
     }
     foreach (var entry in outputData.CustomData) {
       var match = RequirementIdKeyRegex.Match(entry.Key);
+      if (!match.Success) {
+        match = RequirementIdKeyRegex_Legacy.Match(entry.Key);
+      }
       if (match.Success) {
         string countKey = RequirementCountKeyPrefix + "." + match.Groups[1].Value;
-        if (outputData.CustomData.TryGetValue(countKey, out string countString) &&
+        string countKey_Legacy = RequirementCountKeyPrefix_Legacy + "." + match.Groups[1].Value;
+        string countString;
+        if ((outputData.CustomData.TryGetValue(countKey, out countString) ||
+             outputData.CustomData.TryGetValue(countKey_Legacy, out countString)) &&
             Int32.TryParse(countString, out int count)) {
           extraRequirements.Add((entry.Value, count));
         } else {
@@ -126,7 +140,9 @@ namespace ExtraMachineConfig {
       if (valid) {
         newOutputs.Add(output);
       } else {
-        output.CustomData.TryGetValue(RequirementInvalidMsgKey, out var msg);
+        string msg;
+        output.CustomData.TryGetValue(RequirementInvalidMsgKey, out msg);
+        output.CustomData.TryGetValue(RequirementInvalidMsgKey_Legacy, out msg);
         invalidMessage ??= msg;
       }
     }
@@ -153,7 +169,8 @@ namespace ExtraMachineConfig {
     // Inherit preserve ID
     if ((outputData.PreserveId == "INHERIT" ||
          (outputData.CustomData != null &&
-          outputData.CustomData.ContainsKey(InheritPreserveIdKey))) &&
+          (outputData.CustomData.ContainsKey(InheritPreserveIdKey) ||
+           outputData.CustomData.ContainsKey(InheritPreserveIdKey_Legacy)))) &&
         inputItem is StardewValley.Object inputObject &&
         inputObject.preservedParentSheetIndex.Value != "-1" &&
         __result is StardewValley.Object resultObject) {
@@ -168,7 +185,9 @@ namespace ExtraMachineConfig {
       RemoveItemFromInventory(inventory, entry.Item1, entry.Item2);
     }
     // Color the item
-    if (outputData.CustomData.ContainsKey(CopyColorKey) && __result is StardewValley.Object) {
+    if ((outputData.CustomData.ContainsKey(CopyColorKey) ||
+        outputData.CustomData.ContainsKey(CopyColorKey_Legacy)) &&
+          __result is StardewValley.Object) {
       StardewValley.Objects.ColoredObject newColoredObject;
       if (__result is StardewValley.Objects.ColoredObject coloredObject) {
         newColoredObject = coloredObject;
