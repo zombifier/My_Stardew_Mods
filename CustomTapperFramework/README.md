@@ -102,3 +102,33 @@ produces honey every 4 days except in winter:
 }
 ```
 </details>
+
+If you want to instead add to the base game tapper's outputs, instead do something like below, which makes tapped fruit trees produce sap:
+
+<details>
+
+<summaryContent Patcher Definition</summary>
+```
+{
+  "Changes": [
+    {
+      "LogName": "Modify base heavy tapper rules",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/Data",
+      "TargetField": ["(BC)105", "FruitTreeOutputRules"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraTappers.Sap": {
+          "DaysUntilReady": 1,
+          "Chance": 1.0,
+          "Id": "selph.ExtraTappers.Sap",
+          "ItemId": "(O)92",
+          "MinStack": 3,
+          "MaxStack": 8,
+        },
+      },
+    },
+}
+
+```
+</details>
