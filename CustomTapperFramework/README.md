@@ -107,7 +107,7 @@ If you want to instead add to the base game tapper's outputs, instead do somethi
 
 <details>
 
-<summaryContent Patcher Definition</summary>
+<summary>Content Patcher Definition</summary>
 ```
 {
   "Changes": [
