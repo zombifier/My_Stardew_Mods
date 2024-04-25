@@ -23,7 +23,7 @@ the following fields:
 
 | Field Name | Type | Description |
 | ---------- | ---- | ----------- |
-| `AlsoUseBaseGameRules` | `bool` | Whether this tapper can also be used like the base game tapper (ie. place on a wild tree to get their tap produce). Defaults to false.<br> This will also be true for tapper item that isn't defined in the mod data.<br>Set this or `TreeOutputRules`, not both.|
+| `AlsoUseBaseGameRules` | `bool` | Whether this tapper can also be used like the base game tapper (ie. place on a wild tree to get their tap produce). Defaults to false, except for base game tappers, where this value will always be true.<br> This will also be true for tapper item that isn't defined in the mod data.<br>Set this or `TreeOutputRules`, not both.|
 | `TreeOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a wild tree. If null, will not be placeable on trees (unless `AlsoUseBaseGameRules` is true).<br>Set this or `AlsoUseBaseGameRules`, not both.|
 | `FruitTreeOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a fruit tree. If null, will not be placeable on fruit trees.|
 | `GiantCropOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a giant crop. If null, will not be placeable on giant crops.|
