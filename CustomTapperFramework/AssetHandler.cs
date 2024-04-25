@@ -19,13 +19,22 @@ public class AssetHandler {
 
   public void OnAssetRequested(object sender, AssetRequestedEventArgs e) {
     if (e.NameWithoutLocale.IsEquivalentTo(this.dataPath)) {
-      e.LoadFrom(() => new Dictionary<string, TapperModel>(), AssetLoadPriority.Low);
+      var dict = new Dictionary<string, TapperModel>();
+      // Populate with base game tappers
+      dict["(BC)105"] = new TapperModel();
+      dict["(BC)105"].AlsoUseBaseGameRules = true;
+      dict["(BC)264"] = new TapperModel();
+      dict["(BC)264"].AlsoUseBaseGameRules = true;
+      e.LoadFrom(() => dict, AssetLoadPriority.Low);
     }
   }
 
   public void OnAssetReady(object sender, AssetReadyEventArgs e) {
     if (e.NameWithoutLocale.IsEquivalentTo(this.dataPath)) {
       this.data = Game1.content.Load<Dictionary<string, TapperModel>>(this.dataPath);
+      // Just in case
+      this.data["(BC)105"].AlsoUseBaseGameRules = true;
+      this.data["(BC)264"].AlsoUseBaseGameRules = true;
       ModEntry.StaticMonitor.Log("Loaded custom tapper data with " + data.Count + " entries.", LogLevel.Info);
     }
   }
@@ -43,6 +52,9 @@ public class AssetHandler {
     foreach (var name in e.NamesWithoutLocale) {
       if (name.IsEquivalentTo(this.dataPath)) {
         this.data = Game1.content.Load<Dictionary<string, TapperModel>>(this.dataPath);
+        this.data["(BC)105"].AlsoUseBaseGameRules = true;
+        this.data["(BC)264"].AlsoUseBaseGameRules = true;
+        ModEntry.StaticMonitor.Log("Reloaded custom tapper data with " + data.Count + " entries.", LogLevel.Info);
       }
     }
   }
