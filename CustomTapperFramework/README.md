@@ -15,9 +15,11 @@ First, if you're adding a new tapper big craftable, add it to the game via
 Content Patcher. Make sure to set `"tapper_item"` is set in the custom tags;
 otherwise it will be treated as a regular machine placeable on the ground.
 
-Then, add the mod data to `selph.CustomTapperFramework/Data`. The asset
-takes the form of a map, with the key being the qualified item ID of the tapper
-and the value being a model with the following fields:
+Then, add the mod data to `selph.CustomTapperFramework/Data`, unless you're
+modifying the base game's tapper data, in which case their data is populated and you
+should instead edit/add to them. The asset takes the form of a map, with the
+key being the qualified item ID of the tapper and the value being a model with
+the following fields:
 
 | Field Name | Type | Description |
 | ---------- | ---- | ----------- |
