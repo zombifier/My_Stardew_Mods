@@ -140,10 +140,12 @@ namespace ExtraMachineConfig {
       if (valid) {
         newOutputs.Add(output);
       } else {
-        string msg;
-        output.CustomData.TryGetValue(RequirementInvalidMsgKey, out msg);
-        output.CustomData.TryGetValue(RequirementInvalidMsgKey_Legacy, out msg);
-        invalidMessage ??= msg;
+        if (output.CustomData.TryGetValue(RequirementInvalidMsgKey, out var msg)) {
+          invalidMessage ??= msg;
+        }
+        if (output.CustomData.TryGetValue(RequirementInvalidMsgKey_Legacy, out var msgLegacy)) {
+          invalidMessage ??= msgLegacy;
+        }
       }
     }
     outputs = newOutputs;
