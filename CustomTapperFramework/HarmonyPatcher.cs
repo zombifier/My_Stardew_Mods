@@ -80,7 +80,7 @@ public class HarmonyPatcher {
   // If a tapper is present, only shake and remove the tapper instead of damaging the tree.
   static bool Tree_performToolAction_Prefix(Tree __instance, ref bool __result, Tool t, int explosion, Vector2 tileLocation) {
     if (__instance.Location.objects.TryGetValue(tileLocation, out SObject obj) &&
-        obj.IsTapper()) {
+        obj.IsTapper() && !__instance.tapped.Value) {
       __instance.shake(tileLocation, false);
       return false;
     }
