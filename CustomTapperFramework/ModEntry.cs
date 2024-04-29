@@ -71,7 +71,18 @@ internal sealed class ModEntry : Mod {
     }
   }
 
+  private bool IsNormalGameplay() {
+    return StardewModdingAPI.Context.CanPlayerMove
+      && Game1.player != null
+      && !Game1.player.isRidingHorse()
+      && Game1.currentLocation != null
+      && !Game1.eventUp
+      && !Game1.isFestival()
+      && !Game1.IsFading();
+  }
+
   public void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
+    if (!IsNormalGameplay()) return;
     if ((e.Button.IsUseToolButton() || e.Button.IsActionButton()) &&
         Game1.player.ActiveObject is SObject obj) {
       if (obj.IsTapper() &&
