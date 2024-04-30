@@ -20,7 +20,7 @@ recipe, or even each output in the case of multiple possible outputs.
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.RequirementId.1` | The additional fuel that should be consumed by this recipe in addition to the ones specified in the machine's `AdditionalConsumedItems` field.<br> You can specify multiple fuels by adding another field with the same name, but with the number at the end incremented (eg. `ExtraMachineConfig.RequirementId.2`).<br> This ID can either be a qualified ID for a specific item, or a category ID for only categories (eg. `-2` will consume any gemstones as fuel).|
 | `selph.ExtraMachineConfig.RequirementCount.1` | The count of the additional fuel specified in the field above. Defaults to 1 if not specified. |
-| `selph.ExtraMachineConfig.RequirementInvalidMsg` | The message to show to players if all the requirements are not satisfied. Note that if there are multiple output rules with this field, only the last one will be shown.|
+| `selph.ExtraMachineConfig.RequirementInvalidMsg` | The message to show to players if all the requirements are not satisfied. Note that if there are multiple output rules with this field for the same input item, only the first one will be shown.|
 
 #### Example
 
@@ -115,8 +115,7 @@ normal for copper.
 | `selph.ExtraMachineConfig.InheritPreserveId` | When set to any value, copies the input item's flavor (e.g. the "Blueberry" part of "Blueberry Wine") into the output item.|
 
 NOTE: Version 1.0.0 also supports this functionality via setting the
-`PreserveId` field to `"INHERIT"`. This is not recommended however since
-it would lead to weird results if this mod's not installed.
+`PreserveId` field to `"INHERIT"`. This is deprecated and might no longer work in later versions.
 
 #### Example
 
@@ -168,7 +167,7 @@ honey's flower flavor to the mead, and increment its price accordingly.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `selph.ExtraMachineConfig.CopyColor` | When set to any value, copies the input item's color into the output item.<br>The difference between this settings and the base game's `CopyColor` is that the latter only supports copying the color of colored items (eg. flowers), while the former will copy the dye color if the input is not a colored object.|
+| `selph.ExtraMachineConfig.CopyColor` | When set to any value, copies the input item's color into the output item.<br>The difference between this settings and the base game's `CopyColor` is that the latter only supports copying the color of colored items (eg. flowers), while the former will copy the dye color if the input is not a colored object.<br>Make sure the output item's next sprite is a monochrome color sprite, otherwise the coloring might look weird.|
 
 #### Example
 
