@@ -5,10 +5,18 @@ is a Stardew Valley mod that adds extra functionalities to Content Patcher
 machine recipe definitions, and allows modders to define recipes that can do
 things beyond what's possible in the base game (e.g per-recipe fuel).
 
+As of 1.5.0, this mod also adds some item features separate from machines.
+
 This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
-## Use
+## Item Features
+
+### Draw smoke particles around item
+
+Any item with the context tag `smoked_item` will have smokes drawn around it like smoked fish.
+
+## Machine Features
 This mod reads extra data defined the [`CustomData` field in `OutputItem`](https://stardewvalleywiki.com/Modding:Machines#Item_processing_rules), which is
 a map of arbitrary string keys to string values intended for mod use. Since
 `CustomData` is per-output, it's possible to specify different settings for each
@@ -110,6 +118,8 @@ normal for copper.
 
 ### Output inherit the flavor of input items
 
+**NOTE**: This feature is deprecated in the upcoming Stardew Valley 1.6.9, which supports this feature natively.
+
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.InheritPreserveId` | When set to any value, copies the input item's flavor (e.g. the "Blueberry" part of "Blueberry Wine") into the output item.|
@@ -164,6 +174,8 @@ honey's flower flavor to the mead, and increment its price accordingly.
 ----
 
 ### Output inherit the dye color of input items
+
+**NOTE**: This feature is deprecated in the upcoming Stardew Valley 1.6.9, which supports this feature natively.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
