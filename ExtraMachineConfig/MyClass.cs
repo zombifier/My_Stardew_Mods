@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -55,12 +56,14 @@ internal sealed class ModEntry : Mod {
           nameof(StardewValley.MachineDataUtility.GetOutputData),
           new Type[] { typeof(List<MachineItemOutput>), typeof(bool), typeof(Item),
           typeof(Farmer), typeof(GameLocation) }),
-        prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.GetOutputDataPatchPrefix)));
+        prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.MachineDataUtility_GetOutputData_prefix)));
 
     harmony.Patch(
         original: AccessTools.Method(typeof(StardewValley.MachineDataUtility),
           nameof(StardewValley.MachineDataUtility.GetOutputItem)),
-        postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.GetOutputItemPatchPostfix)));
+        postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.MachineDataUtility_GetOutputItem_postfix)));
+
+    SmokedItemHarmonyPatcher.ApplyPatches(harmony);
   }
 
   public override object GetApi() {
@@ -110,7 +113,7 @@ internal sealed class ModEntry : Mod {
   // This patch:
   // * Checks for additional fuel requirements specified in the output rule's custom data, and
   // removes rules that cannot be satisfied
-  private static void GetOutputDataPatchPrefix(ref List<MachineItemOutput> outputs,
+  private static void MachineDataUtility_GetOutputData_prefix(ref List<MachineItemOutput> outputs,
       bool useFirstValidOutput, Item inputItem, Farmer who,
       GameLocation location) {
     if (outputs == null || outputs.Count < 0) {
@@ -160,7 +163,7 @@ internal sealed class ModEntry : Mod {
   // removes them from inventory
   // * Checks if preserve ID is set to inherit the input item's preserve ID, and applies it
   // * Checks if a colored item should be created and apply the changes
-  private static void GetOutputItemPatchPostfix(ref Item __result, StardewValley.Object machine,
+  private static void MachineDataUtility_GetOutputItem_postfix(ref Item __result, StardewValley.Object machine,
       MachineItemOutput outputData, Item inputItem,
       Farmer who, bool probe,
       ref int? overrideMinutesUntilReady) {
