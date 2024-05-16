@@ -6,6 +6,7 @@ machine recipe definitions, and allows modders to define recipes that can do
 things beyond what's possible in the base game (e.g per-recipe fuel).
 
 As of 1.5.0, this mod also adds some item features separate from machines.
+They're mostly graphical at the moment.
 
 This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
@@ -14,7 +15,20 @@ content packs. For users, install the mod as usual from the link above.
 
 ### Draw smoke particles around item
 
-Any item with the context tag `smoked_item` will have smokes drawn around it like smoked fish.
+Items with the context tag `smoked_item` will have its sprite darkened and
+have smoke particles drawn around it like smoked fish.
+
+### Draw an item's preserve item's sprite instead of its base sprite (in 1.5.1-beta1)
+
+Any item with the context tag `draw_preserve_sprite` will have its sprite be
+the sprite of its `preservedParentSheetIndex` item instead (if set).
+
+With `smoked_item` and `draw_preserve_sprite` combined, you can implement
+custom smoked item similar to smoked fish without having to output a
+`(O)SmokedFish` item, such as a smoked egg item that uses the sprite of the egg
+used to make it albeit dark and smoking.
+
+More item effects aside from smoke might come in the future.
 
 ## Machine Features
 This mod reads extra data defined the [`CustomData` field in `OutputItem`](https://stardewvalleywiki.com/Modding:Machines#Item_processing_rules), which is
