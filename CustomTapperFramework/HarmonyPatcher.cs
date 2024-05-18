@@ -1,6 +1,7 @@
 using System;
 using StardewValley;
 using StardewValley.Internal;
+using StardewValley.Tools;
 using StardewValley.TerrainFeatures;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -93,7 +94,7 @@ public class HarmonyPatcher {
         centerPos.X = (int)centerPos.X + (int)__instance.width.Value / 2;
         centerPos.Y = (int)centerPos.Y + (int)__instance.height.Value - 1;
     if (__instance.Location.objects.TryGetValue(centerPos, out SObject obj) &&
-        obj.IsTapper() && t.isHeavyHitter()) {
+        obj.IsTapper() && t.isHeavyHitter() && !(t is MeleeWeapon)) {
       // Has tapper, try to dislodge it
       // For some reason performToolAction on the object directly doesn't work
       obj.playNearbySoundAll("hammer");
