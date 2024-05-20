@@ -15,4 +15,5 @@ public class TapperModel {
   public List<ExtendedTapItemData> TreeOutputRules { get; set; } = null;
   public List<ExtendedTapItemData> FruitTreeOutputRules { get; set; } = null;
   public List<ExtendedTapItemData> GiantCropOutputRules { get; set; } = null;
+  public List<ExtendedTapItemData> WaterOutputRules { get; set; } = null;
 }

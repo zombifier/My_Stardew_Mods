@@ -1,19 +1,22 @@
-# Custom Tappers Framework
+# Custom Tappers (and Crab Pot) Framework
 
-[Custom Tapper Framework](https://www.nexusmods.com/stardewvalley/mods/22975)
-is a Stardew Valley mod that adds a framework to define custom tappers and
-tapper-like big craftables to the game, and allows them to be placeable on fruit trees
-and giant crops (and potentially other types of terrain features in the
-future).
+[Custom Tapper And Crab Pot Framework](https://www.nexusmods.com/stardewvalley/mods/22975)
+is a Stardew Valley mod that adds a framework to define big craftables and
+machines that can be placed on terrain features (including wild trees, fruit
+trees and giant crops) as well as water.
 
 This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
 ## Use
 
-First, if you're adding a new tapper big craftable, add it to the game via
-Content Patcher. Make sure to set `"tapper_item"` is set in the custom tags;
-otherwise it will be treated as a regular machine placeable on the ground.
+First, if you're adding a new big craftable, add it to the game via
+Content Patcher. Make sure to set the appropriate context tags for your machines:
+
+* If a tapper, add `"tapper_item"` (same as vanilla)
+* If a crab pot, add `"custom_crab_pot_item"`
+
+Otherwise it will be treated as a regular machine placeable on the ground.
 
 Then, add the mod data to `selph.CustomTapperFramework/Data`, unless you're
 modifying the base game's tapper data, in which case their data is populated and you
@@ -24,9 +27,17 @@ the following fields:
 | Field Name | Type | Description |
 | ---------- | ---- | ----------- |
 | `AlsoUseBaseGameRules` | `bool` | Whether this tapper can also be used like the base game tapper (ie. place on a wild tree to get their tap produce). Defaults to false, except for base game tappers, where this value will always be true.<br> This will also be true for tapper item that isn't defined in the mod data.<br>Set this or `TreeOutputRules`, not both.|
-| `TreeOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a wild tree. If null, will not be placeable on trees (unless `AlsoUseBaseGameRules` is true).<br>Set this or `AlsoUseBaseGameRules`, not both.|
+| `TreeOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a wild tree. If null, will not be placeable on trees (unless `AlsoUseBaseGameRules` is true).|
 | `FruitTreeOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a fruit tree. If null, will not be placeable on fruit trees.|
 | `GiantCropOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a giant crop. If null, will not be placeable on giant crops.|
+| `WaterOutputRules` | `List<ExtendedTapItemData>` | If a crab pot, a list of output rules to apply when this crab pot is placed on water.|
+
+`TreeOutputRules`, `FruitTreeOutputRules`, `GiantCropOutputRules` and
+`WaterOutputRules` can be set to empty arrays to make the object placeable on
+the terrain feature in question without automatically producing anything. This
+is useful if you want to define their behavior in `Data/Machines` instead
+(which for example is mandatory if you want a machine that takes input, which
+is only supported by `Data/Machines`, not `ExtendedTapItemData`).
 
 `ExtendedTapItemData` is an item query object that defines the items produced
 by the tree. The type extends from the entries in a [wild tree's `TapItem`
@@ -37,7 +48,7 @@ Additionally, `ExtendedTapItemData` supports the following additional fields:
 
 | Field Name | Type | Description |
 | ---------- | ---- | ----------- |
-| `SourceId` | `string` | If set, only apply this rule if the tapped tree/fruit tree/giant crop is of this ID. |
+| `SourceId` | `string` | For trees/fruit trees/giant crops only: If set, only apply this rule if the tapped tree/fruit tree/giant crop is of this ID. |
 | `RecalculateOnCollect` | `bool` | Whether to recalculate the output upon collection. This is really only useful for flower honey, to readjust the honey flavor. |
 
 `ExtendedTapItemData`'s game state and item queries support supplying the input item aside from the target:
@@ -45,6 +56,7 @@ Additionally, `ExtendedTapItemData` supports the following additional fields:
 * For trees, the input is their seed object
 * For fruit trees, the input is their first defined fruit
 * For giant crop, the input is their first defined drop
+* For water, this is nothing.
 
 This can be used for defining dynamic output e.g. flavored juice, when combined with the macros below.
 
@@ -133,3 +145,7 @@ If you want to instead add to the base game tapper's outputs, instead do somethi
 
 ```
 </details>
+
+## Future features
+
+* Adding a macro that resolves to the ID of the 'input' for machine rules

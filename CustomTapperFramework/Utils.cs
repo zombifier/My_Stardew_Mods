@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using StardewValley;
 using StardewValley.Internal;
+using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Extensions;
 
@@ -11,6 +12,11 @@ using StardewValley.Extensions;
 namespace CustomTapperFramework;
 
 using SObject = StardewValley.Object;
+
+public enum TileFeature {
+  REGULAR,
+  WATER,
+}
 
 public static class Utils {
   public static bool GetFeatureAt(GameLocation location, Vector2 pos, out TerrainFeature feature, out Vector2 centerPos) {
@@ -30,9 +36,14 @@ public static class Utils {
     return false;
   }
 
-  public static IList<ExtendedTapItemData> GetOutputRulesForPlacedTapper(SObject tapper, out TerrainFeature feature, string ruleId = null) {
+  public static IList<ExtendedTapItemData> GetOutputRulesForPlacedTapper(SObject tapper, out TerrainFeature feature, out TileFeature tile, string ruleId = null) {
+    tile = TileFeature.REGULAR;
     if (GetFeatureAt(tapper.Location, tapper.TileLocation, out feature, out var centerPos)) {
-      return GetOutputRules(tapper, feature, out var _unused, ruleId);
+      return GetOutputRules(tapper, feature, tile, out var _unused, ruleId);
+    }
+    if (Utils.IsCrabPot(tapper)) {
+      tile = TileFeature.WATER;
+      return GetOutputRules(tapper, null, tile, out var _unused, ruleId);
     }
     return null;
   }
@@ -40,7 +51,7 @@ public static class Utils {
   // Get the modded output rules for this tapper.
   // NOTE: If this function returns null, its consumers should not update the tapper.
   // If a list, then touch it.
-  public static IList<ExtendedTapItemData> GetOutputRules(SObject tapper, TerrainFeature feature, out bool disallowBaseTapperRules, string ruleId = null) {
+  public static IList<ExtendedTapItemData> GetOutputRules(SObject tapper, TerrainFeature feature, TileFeature tileFeature, out bool disallowBaseTapperRules, string ruleId = null) {
     disallowBaseTapperRules = false;
     if (ModEntry.assetHandler.data.TryGetValue(tapper.QualifiedItemId, out var data)) {
       disallowBaseTapperRules = !data.AlsoUseBaseGameRules;
@@ -52,6 +63,9 @@ public static class Utils {
         GiantCrop giantCrop => data.GiantCropOutputRules,
           _ => null,
       };
+      if (tileFeature == TileFeature.WATER) {
+        outputRules = data.WaterOutputRules;
+      }
       if (outputRules == null) return null;
       string sourceId = feature switch {
         Tree tree => tree.treeType.Value,
@@ -80,20 +94,17 @@ public static class Utils {
     if (tapper == null) {
       return;
     }
-    var data = GetOutputRulesForPlacedTapper(tapper, out var feature);
+    var data = GetOutputRulesForPlacedTapper(tapper, out var feature, out var tileFeature);
     var farmer = feature switch {
       Tree tree => Game1.getFarmer(tree.lastPlayerToHit.Value),
       FruitTree fruitTree => Game1.getFarmer(fruitTree.lastPlayerToHit.Value),
       _ => null,
     };
+    farmer = tileFeature switch {
+      TileFeature.WATER => Game1.getFarmer(tapper.owner.Value),
+      _ => farmer,
+    };
     if (data != null) {
-      // Clear just in case the game added the vanilla produce to the tapper
-      if (feature is Tree) {
-        tapper.heldObject.Value = null;
-        tapper.readyForHarvest.Value = false;
-        tapper.showNextIndex.Value = false;
-        tapper.ResetParentSheetIndex();
-      }
       float timeMultiplier = 1f;
       foreach (string contextTag in tapper.GetContextTags()) {
         if (contextTag.StartsWith("tapper_multiplier_") && float.TryParse(contextTag.Substring("tapper_multiplier_".Length), out var result)) {
@@ -193,5 +204,9 @@ public static class Utils {
     centerPos.X = (int)centerPos.X + (int)resourceClump.width.Value / 2;
     centerPos.Y = (int)centerPos.Y + (int)resourceClump.height.Value - 1;
     return centerPos;
+  }
+
+  public static bool IsCrabPot(Item item) {
+    return item.HasContextTag("custom_crab_pot_item");
   }
 }
