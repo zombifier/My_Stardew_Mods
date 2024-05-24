@@ -85,7 +85,7 @@ The output item query supports the following macros:
 | `DROP_IN_ID` | The qualified item ID of the "input" item as defined above. |
 | `NEARBY_FLOWER_ID` | The qualified item ID of a nearby flower. Only useful for honey rules. |
 
-## Example
+### Example
 
 See below for an example from the [Additional Tree Equipments](https://www.nexusmods.com/stardewvalley/mods/22991)
 mod, which adds a tree bee house that can be placed on any tree, and
