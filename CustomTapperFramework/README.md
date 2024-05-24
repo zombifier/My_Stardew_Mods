@@ -168,10 +168,14 @@ If you want to instead add to the base game tapper's outputs, instead do somethi
 
 This mod adds two new items:
 
-* A water planter, placeable on water tiles to create a planting spot for water crops. Craftable with 20 wood.
-* A water pot, placeable on land to create a planting spot for water crops. Requires a Garden Pot to craft.
+* A Water Planter, placeable on water tiles to create a steady planting spot
+  for water crops. Craftable with 20 wood.
+* A Water Pot, to allow water crops to be plantable on land. Requires a Garden
+  Pot to craft.
 
-By default, these items' crafting recipes are disabled unless aquatic/semiaquatic crops are added by content packs.
+By default, these items' crafting recipes are disabled unless
+aquatic/semiaquatic crops are added by content packs, in which
+case they're automatically enabled (after Garden Pots are available for Water Pots).
 
 To define crops that are plantable on water, add the following new keys to the
 crop definition's `CustomFields` dict (their values can be anything as long as they're set):
