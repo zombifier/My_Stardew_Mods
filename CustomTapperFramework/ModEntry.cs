@@ -3,9 +3,11 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.GameData.Crops;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System;
+using System.Collections.Generic;
 
 using SObject = StardewValley.Object;
 
@@ -39,36 +41,60 @@ internal sealed class ModEntry : Mod {
         this.Monitor.Log("This mod patches Automate. If you notice issues with Automate, make sure it happens without this mod before reporting it to the Automate page.", LogLevel.Debug);
         AutomatePatcher.ApplyPatches(harmony);
       }
+    } catch (Exception e) {
+      Monitor.Log("Failed patching Automate. Detail: " + e.Message, LogLevel.Error);
+    }
+
+    try {
       if (Helper.ModRegistry.IsLoaded("NermNermNerm.Junimatic")) {
         this.Monitor.Log("This mod patches Junimatic. If you notice issues with Junimatic, make sure it happens without this mod before reporting it to the Junimatic page.", LogLevel.Debug);
         JunimaticPatcher.ApplyPatches(harmony);
       }
     } catch (Exception e) {
-      Monitor.Log("Failed patching Automate. Detail: " + e.Message, LogLevel.Error);
+      Monitor.Log("Failed patching Junimatic. Detail: " + e.Message, LogLevel.Error);
+    }
+
+    try {
+      if (Helper.ModRegistry.IsLoaded("furyx639.CustomBush")) {
+        this.Monitor.Log("This mod patches Custom Bush. If you notice issues with Custom Bush, make sure it happens without this mod before reporting it to the Custom Bush page.", LogLevel.Debug);
+        CustomBushPatcher.ApplyPatches(harmony);
+      }
+    } catch (Exception e) {
+      Monitor.Log("Failed patching Custom Bush. Detail: " + e.Message, LogLevel.Error);
     }
   }
 
   public void OnDayStarted(object sender, DayStartedEventArgs e) {
     foreach (var location in Game1.locations) {
-      //foreach (var tile in location.terrainFeatures.Keys) {
-      //  if (location.objects.TryGetValue(tile, out SObject tapper) &&
-      //      tapper.IsTapper() &&
-      //      tapper.heldObject.Value == null) {
-      //    Utils.UpdateTapperProduct(tapper);
-      //  }
-      //}
-      //foreach (var resourceClump in location.resourceClumps) {
-      //  var tile = Utils.GetTapperLocationForClump(resourceClump);
-      //  if (location.objects.TryGetValue(tile, out SObject tapper) &&
-      //      tapper.IsTapper() &&
-      //      tapper.heldObject.Value == null) {
-      //    Utils.UpdateTapperProduct(tapper);
-      //  }
-      //}
       foreach (var obj in location.objects.Values) {
-        if ((obj.IsTapper() || Utils.IsCrabPot(obj)) && obj.heldObject.Value == null) {
+        if (obj.IsTapper() && obj.heldObject.Value == null) {
           Utils.UpdateTapperProduct(obj);
         }
+        // Water the pots automatically since they're, well, water pots.
+        if (obj is IndoorPot pot &&
+            (pot.QualifiedItemId == WaterIndoorPotUtils.WaterPotQualifiedItemId ||
+             pot.QualifiedItemId == WaterIndoorPotUtils.WaterPlanterQualifiedItemId)) {
+          pot.hoeDirt.Value.state.Value = 1;
+        }
+      }
+    }
+
+    // Learn the water crop recipes
+    bool hasAquaticCrops = false;
+		foreach (KeyValuePair<string, CropData> cropData in Game1.cropData) {
+      if ((cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsWaterCustomFieldsKey) ?? false)
+          || (cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsAmphibiousCustomFieldsKey) ?? false)) {
+        hasAquaticCrops = true;
+      }
+      if (hasAquaticCrops) {
+        Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPlanterItemId, 0);
+
+        if (Game1.player.craftingRecipes.ContainsKey("Garden Pot")) {
+          Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPotItemId, 0);
+        }
+      } else {
+        Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPlanterItemId);
+        Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPotItemId);
       }
     }
   }
@@ -89,10 +115,7 @@ internal sealed class ModEntry : Mod {
         Game1.player.ActiveObject is SObject obj) {
       // Place Tapper
       if (obj.IsTapper() &&
-        Utils.GetFeatureAt(Game1.currentLocation, e.Cursor.GrabTile, out var feature, out var centerPos) &&
-        !Game1.currentLocation.objects.ContainsKey(centerPos) &&
-        Utils.GetOutputRules(obj, feature, TileFeature.REGULAR, out bool unused) is var outputRules &&
-        outputRules != null) {
+        Utils.IsModdedTapperPlaceableAt(obj, Game1.currentLocation, e.Cursor.GrabTile, out var unused, out var feature, out var centerPos)) {
         // Place tapper if able
         SObject @object = (SObject)obj.getOne();
         @object.heldObject.Value = null;

@@ -4,6 +4,7 @@ using StardewValley.GameData.WildTrees;
 
 namespace CustomTapperFramework;
 
+// Legacy Tapper API Model object
 public class ExtendedTapItemData : WildTreeTapItemData {
   // If specified, only applies this rule if the tap object is of this ID.
   public string SourceId = null;
@@ -15,5 +16,4 @@ public class TapperModel {
   public List<ExtendedTapItemData> TreeOutputRules { get; set; } = null;
   public List<ExtendedTapItemData> FruitTreeOutputRules { get; set; } = null;
   public List<ExtendedTapItemData> GiantCropOutputRules { get; set; } = null;
-  public List<ExtendedTapItemData> WaterOutputRules { get; set; } = null;
 }

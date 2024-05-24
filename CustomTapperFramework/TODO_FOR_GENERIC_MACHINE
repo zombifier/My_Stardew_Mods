@@ -1,9 +1,0 @@
-* CustomFields: Is modded tapper
-* New macro for "input" item (FEATURE_PRODUCE_ID)
-* Output CustomData:
-** Placement limitation
-*** eliminate rules in getoutput prefix
-*** patch isplaceable prefix
-*** 
-** "Input" limitation
-*** eliminate rules in getoutput prefix

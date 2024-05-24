@@ -21,6 +21,7 @@ class CrabPotData {
   public Vector2 shake = Vector2.Zero;
 }
 
+// Contains common logic for drawing floating water buildings, including water planters.
 public static class CustomCrabPotUtils
 {
   private static readonly Dictionary<string, Dictionary<Vector2, CrabPotData>> crabPotDataMap = [];
@@ -36,7 +37,7 @@ public static class CustomCrabPotUtils
     return locationDataMap[tileLocation];
   }
 
-  private static CrabPotData getCrabPotData(SObject obj) {
+  internal static CrabPotData getCrabPotData(SObject obj) {
     return getCrabPotData(obj.Location, obj.TileLocation);
   }
 
@@ -143,7 +144,6 @@ public static class CustomCrabPotUtils
     CrabPotData crabPotData = getCrabPotData(obj);
     crabPotData.ignoreRemovalTimer = 500;
 
-    Utils.UpdateTapperProduct(obj);
     return true;
   }
 
@@ -275,7 +275,13 @@ public static class CustomCrabPotUtils
   //    this.ignoreRemovalTimer = 750;
   //    return true;
   //  }
-    if ((obj.heldObject.Value == null || !obj.readyForHarvest.Value) && crabPotData.ignoreRemovalTimer <= 0)
+    bool machineNotWorking = (obj is not IndoorPot &&
+        (obj.heldObject.Value == null || !obj.readyForHarvest.Value));
+    bool waterPlanterHasNoCrops = (obj is IndoorPot waterPlanter &&
+           waterPlanter.hoeDirt.Value.crop == null &&
+           waterPlanter.bush.Value == null);
+    if ((machineNotWorking || waterPlanterHasNoCrops) &&
+        crabPotData.ignoreRemovalTimer <= 0)
     {
       if (justCheckingForActivity)
       {
@@ -489,7 +495,6 @@ public static class CustomCrabPotUtils
     spriteBatch.Draw(
         texture2D,
         Game1.GlobalToLocal(Game1.viewport,
-          // subtract 64 from y since
           crabPotData.directionOffset + new Vector2(x * 64, y * 64 + (int)yBob - 64)) + crabPotData.shake,
         SObject.getSourceRectForBigCraftable(texture2D, spriteIndex + offset),
         Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64) + crabPotData.directionOffset.Y + (float)(x % 4)) / 10000f);
@@ -519,5 +524,10 @@ public static class CustomCrabPotUtils
   public static void resetRemovalTimer(SObject obj) {
     CrabPotData crabPotData = getCrabPotData(obj);
     crabPotData.ignoreRemovalTimer = 750;
+  }
+
+  public static float getXOffset(GameLocation location, Vector2 tileLocation) {
+    CrabPotData crabPotData = getCrabPotData(location, tileLocation);
+    return crabPotData.directionOffset.X;
   }
 }

@@ -12,7 +12,7 @@ using SObject = StardewValley.Object;
 
 public class AutomatePatcher {
   public static void ApplyPatches(Harmony harmony) {
-    var dataBasedMachineType = AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.Machines.DataBasedMachine");
+    var dataBasedMachineType = AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.Machines.DataBasedObjectMachine");
     var tapperMachineType = AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.Machines.Objects.TapperMachine");
 
     harmony.Patch(

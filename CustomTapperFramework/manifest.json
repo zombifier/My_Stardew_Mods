@@ -2,7 +2,7 @@
   "Name": "CustomTapperFramework",
   "Author": "selph",
   "Version": "1.5.0",
-  "Description": "Adds a framework for implementing custom tappers and crab pots.",
+  "Description": "Adds a framework for implementing custom tappers, crab pots and water crops.",
   "UniqueID": "selph.CustomTapperFramework",
   "EntryDll": "CustomTapperFramework.dll",
   "MinimumApiVersion": "4.0.7",

@@ -1,28 +1,55 @@
-# Custom Tappers (and Crab Pot) Framework
+# Machine Terrain Expansion Framework (Formerly Custom Tappers Framework)
 
-[Custom Tapper And Crab Pot Framework](https://www.nexusmods.com/stardewvalley/mods/22975)
-is a Stardew Valley mod that adds a framework to define big craftables and
-machines that can be placed on terrain features (including wild trees, fruit
-trees and giant crops) as well as water.
+[Machine Terrain Expansion Framework](https://www.nexusmods.com/stardewvalley/mods/22975)
+is a Stardew Valley mod that adds the following features:
+
+* Define machines that are placeable on terrain features (currently wild trees,
+  fruit trees, giant crops).
+* Define machines that are placeable on water like crab pots.
+* Define aquatic crops that are (only or also) plantable on water, and two new pot-like
+  items to plant them with.
 
 This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
-## Use
+## Terrain-Based Machine Feature
 
-First, if you're adding a new big craftable, add it to the game via
-Content Patcher. Make sure to set the appropriate context tags for your machines:
+There are two APIs available:
 
-* If a tapper, add `"tapper_item"` (same as vanilla)
-* If a crab pot, add `"custom_crab_pot_item"`
+* The Machine API using context tags and machine rules, which is more powerful
+  and supports water placement, but doesn't support some features of the Tapper
+  API (notably, specifying output based on the terrain feature's produce).
+* The Tapper API using a custom asset to define automatic produce overtime.
+  This API doesn't support water-placeable buildings, but is simpler to use and
+  supports defining conditions and outputs based on the terrain feature's
+  produce. If you want to modify the output of the base game Tapper and Heavy
+  Tapper items this API should be used.
 
-Otherwise it will be treated as a regular machine placeable on the ground.
+In the future the Tapper API's "output based on terrain" feature is expected to
+be folded into the Machine API, but both will continue to work into the future.
+For now use only one for your machine, not both.
 
-Then, add the mod data to `selph.CustomTapperFramework/Data`, unless you're
-modifying the base game's tapper data, in which case their data is populated and you
-should instead edit/add to them. The asset takes the form of a map, with the
-key being the qualified item ID of the tapper and the value being a model with
-the following fields:
+### Machine API
+First, set the appropriate context tags for your big craftables:
+
+* If a tapper-like tree/giant crop machine, add `"tapper_item"` (same as vanilla)
+  * If you don't want the vanilla tree tapper output (e.g. Maple Syrup, Oak Resin) to apply, also add `"custom_wild_tree_tapper_item"`
+  * All tappers are placeable on trees by default. To disallow this, add `"disallow_wild_tree_placement"`
+  * To make this building placeable on fruit trees, add `"custom_fruit_tree_tapper_item"`
+  * To make this building placeable on giant crops, add `"custom_giant_crop_tapper_item"`
+* If a crab pot-like water building, add `"custom_crab_pot_item"`
+
+Then define your machine behavior in
+[`Data/Machines`](https://stardewvalleywiki.com/Modding:Machines) as usual.
+
+### Tapper API
+First, add `"tapper_item"` context tag to your big craftables.
+
+Then, write the mod data to the `selph.CustomTapperFramework/Data` asset, unless
+you're modifying the base game tappers' data, in which case their data is
+populated and you should instead edit/add to them. The asset takes the form of
+a map, with the key being the qualified item ID of the tapper and the value
+being a model with the following fields:
 
 | Field Name | Type | Description |
 | ---------- | ---- | ----------- |
@@ -30,14 +57,6 @@ the following fields:
 | `TreeOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a wild tree. If null, will not be placeable on trees (unless `AlsoUseBaseGameRules` is true).|
 | `FruitTreeOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a fruit tree. If null, will not be placeable on fruit trees.|
 | `GiantCropOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a giant crop. If null, will not be placeable on giant crops.|
-| `WaterOutputRules` | `List<ExtendedTapItemData>` | If a crab pot, a list of output rules to apply when this crab pot is placed on water.|
-
-`TreeOutputRules`, `FruitTreeOutputRules`, `GiantCropOutputRules` and
-`WaterOutputRules` can be set to empty arrays to make the object placeable on
-the terrain feature in question without automatically producing anything. This
-is useful if you want to define their behavior in `Data/Machines` instead
-(which for example is mandatory if you want a machine that takes input, which
-is only supported by `Data/Machines`, not `ExtendedTapItemData`).
 
 `ExtendedTapItemData` is an item query object that defines the items produced
 by the tree. The type extends from the entries in a [wild tree's `TapItem`
@@ -48,7 +67,7 @@ Additionally, `ExtendedTapItemData` supports the following additional fields:
 
 | Field Name | Type | Description |
 | ---------- | ---- | ----------- |
-| `SourceId` | `string` | For trees/fruit trees/giant crops only: If set, only apply this rule if the tapped tree/fruit tree/giant crop is of this ID. |
+| `SourceId` | `string` | If set, only apply this rule if the tapped tree/fruit tree/giant crop is of this ID. |
 | `RecalculateOnCollect` | `bool` | Whether to recalculate the output upon collection. This is really only useful for flower honey, to readjust the honey flavor. |
 
 `ExtendedTapItemData`'s game state and item queries support supplying the input item aside from the target:
@@ -56,7 +75,6 @@ Additionally, `ExtendedTapItemData` supports the following additional fields:
 * For trees, the input is their seed object
 * For fruit trees, the input is their first defined fruit
 * For giant crop, the input is their first defined drop
-* For water, this is nothing.
 
 This can be used for defining dynamic output e.g. flavored juice, when combined with the macros below.
 
@@ -146,6 +164,26 @@ If you want to instead add to the base game tapper's outputs, instead do somethi
 ```
 </details>
 
-## Future features
+## Aquatic Crops Feature
 
-* Adding a macro that resolves to the ID of the 'input' for machine rules
+This mod adds two new items:
+
+* A water planter, placeable on water tiles to create a planting spot for water crops. Craftable with 20 wood.
+* A water pot, placeable on land to create a planting spot for water crops. Requires a Garden Pot to craft.
+
+By default, these items' crafting recipes are disabled unless aquatic/semiaquatic crops are added by content packs.
+
+To define crops that are plantable on water, add the following new keys to the
+crop definition's `CustomFields` dict (their values can be anything as long as they're set):
+
+* `selph.CustomTapperFramework.IsAquaticCrop` for crops that are only plantable in the water planter or water pot.
+* `selph.CustomTapperFramework.IsSemiAquaticCrop` for crops that are plantable on both land and water.
+
+Additionally, it's recommended that the crop be set to be paddy crops. Paddy
+crops will get the growth speed bonus when placed inside water planters,
+but *not* water pots. Gotta get that natural water!
+
+Crops in water planters/pots are automatically considered watered every day,
+for obvious reasons.
+
+Bushes (specifically [Custom Bushes](https://www.nexusmods.com/stardewvalley/mods/20619)) currently are not supported.
