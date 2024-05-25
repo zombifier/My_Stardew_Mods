@@ -12,6 +12,13 @@ is a Stardew Valley mod that adds the following features:
 This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
+## Table of Contents
+* [Terrain-Based Machine Feature](#terrain-based-machine-feature)
+    + [Machine API](#machine-api)
+    + [Tapper API](#tapper-api)
+    + [Example](#example)
+* [Aquatic Crops Feature](#aquatic-crops-feature)
+
 ## Terrain-Based Machine Feature
 
 There are two APIs available:

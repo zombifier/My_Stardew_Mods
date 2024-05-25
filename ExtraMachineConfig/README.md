@@ -11,6 +11,16 @@ They're mostly graphical at the moment.
 This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
+## Table of Contents
+* [Item Features](#item-features)
+    + [Draw smoke particles around item](#draw-smoke-particles-around-item)
+    + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
+* [Machine Features](#machine-features)
+    + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
+    + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
+    + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
+* [Appendix: Comparison vs Producer Framework Mod](#appendix-comparison-vs-producer-framework-mod)
+
 ## Item Features
 
 ### Draw smoke particles around item
@@ -18,7 +28,7 @@ content packs. For users, install the mod as usual from the link above.
 Items with the context tag `smoked_item` will have its sprite darkened and
 have smoke particles drawn around it like smoked fish.
 
-### Draw an item's preserve item's sprite instead of its base sprite (in 1.5.1-beta1)
+### Draw an item's preserve item's sprite instead of its base sprite
 
 Any item with the context tag `draw_preserve_sprite` will have its sprite be
 the sprite of its `preservedParentSheetIndex` item instead (if set).
