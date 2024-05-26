@@ -21,7 +21,6 @@ content packs. For users, install the mod as usual from the link above.
     + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
     + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
     + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
-    + [Appendix: Comparison vs Producer Framework Mod](#appendix-comparison-vs-producer-framework-mod)
 * [Animal Features](#animal-features)
     + [Define custom male/female ratio](#define-custom-malefemale-ratio)
 
@@ -300,37 +299,6 @@ be of the base color, even with `CopyColor` set.
 </details>
 
 ----
-
-### Appendix: Comparison vs Producer Framework Mod 
-[Producer Framework Mod](https://www.nexusmods.com/stardewvalley/mods/4970)
-allows defining custom machines and recipes in Stardew Valley, with more
-features and configurations than what's possible in the base game. Several of
-those features are part of this mod's feature set, and as such it's expected
-there will be significant overlap between them.
-
-The main differences:
-
-* PFM was made before the 1.6 overhaul to machine recipes, and is designed to
-  make adding extra machines relatively painlessly and agnostic of game
-  version. EMC was made to take advantage of the new reworked data structures
-  in 1.6.
-
-* PFM uses its own JSON configuration format, while EMC directly reads from
-  the CustomData fields in
-  [Content Patcher-patched machine
-  recipes](https://stardewvalleywiki.com/Modding:Machines). Because of this,
-  CP mods that use EMC will work perfectly fine without it,
-  whereas PFM is a hard dependency for its users.
-
-* PFM uses its own machine handling code, and is more flexible and extensible
-  as a result, while EMC is designed to work around the game's handling and
-  data structures as well as keeping things working even when uninstalled, and
-  does not have many features as a result, but is much more compatible with any
-  other mods that also patch game code.
-
-In general, if you want to stick to pure Content Patcher (for compatibility
-with other mods, etc.) for your mod then use this mod; otherwise it's probably
-a better idea to stick to PFM.
 
 ## Animal Features
 
