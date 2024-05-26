@@ -15,6 +15,7 @@ content packs. For users, install the mod as usual from the link above.
 * [Item Features](#item-features)
     + [Draw smoke particles around item](#draw-smoke-particles-around-item)
     + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
+    + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
     + [Append extra context tags to item queries](#append-extra-context-tags-to-item-queries)
 * [Machine Features](#machine-features)
     + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
@@ -43,7 +44,7 @@ used to make it albeit dark and smoking.
 
 More item effects aside from smoke might come in the future.
 
-### Define extra loved items for Junimo
+### Define extra loved items for Junimos
 
 Items with the context tag `junimo_loved_item` can be fed to junimos to improve
 their harvest rate just like raisins.
