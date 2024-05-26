@@ -16,14 +16,14 @@ content packs. For users, install the mod as usual from the link above.
     + [Draw smoke particles around item](#draw-smoke-particles-around-item)
     + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
     + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
-    + [Append extra context tags to item queries](#append-extra-context-tags-to-item-queries)
+    + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
 * [Machine Features](#machine-features)
     + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
     + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
     + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
     + [Appendix: Comparison vs Producer Framework Mod](#appendix-comparison-vs-producer-framework-mod)
 * [Animal Features](#animal-features)
-    + [Define custom male/female ratio](#define-custom-male-female-ratio)
+    + [Define custom male/female ratio](#define-custom-malefemale-ratio)
 
 ## Item Features
 
@@ -49,7 +49,7 @@ More item effects aside from smoke might come in the future.
 Items with the context tag `junimo_loved_item` can be fed to junimos to improve
 their harvest rate just like raisins.
 
-### Append extra context tags to item queries
+### Append extra context tags to shop and machine item queries
 
 Set the following field in the [item query's `ModData`
 field](https://stardewvalleywiki.com/Modding:Item_queries#Item_spawn_fields).
