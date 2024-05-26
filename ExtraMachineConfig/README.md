@@ -184,8 +184,6 @@ normal for copper.
 
 ----
 
-----
-
 ### Output inherit the flavor of input items
 
 **NOTE**: This feature is deprecated in the upcoming Stardew Valley 1.6.9, which supports this feature natively.
