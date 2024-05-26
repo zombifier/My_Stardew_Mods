@@ -5,8 +5,8 @@ is a Stardew Valley mod that adds extra functionalities to Content Patcher
 machine recipe definitions, and allows modders to define recipes that can do
 things beyond what's possible in the base game (e.g per-recipe fuel).
 
-As of 1.5.0, this mod also adds some item features separate from machines.
-They're mostly graphical at the moment.
+As of 1.5.0, this mod also adds a bunch of miscellaneous features not strictly
+related to machines.
 
 This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
@@ -15,11 +15,14 @@ content packs. For users, install the mod as usual from the link above.
 * [Item Features](#item-features)
     + [Draw smoke particles around item](#draw-smoke-particles-around-item)
     + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
+    + [Append extra context tags to item queries](#append-extra-context-tags-to-item-queries)
 * [Machine Features](#machine-features)
     + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
     + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
     + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
-* [Appendix: Comparison vs Producer Framework Mod](#appendix-comparison-vs-producer-framework-mod)
+    + [Appendix: Comparison vs Producer Framework Mod](#appendix-comparison-vs-producer-framework-mod)
+* [Animal Features](#animal-features)
+    + [Define custom male/female ratio](#define-custom-male-female-ratio)
 
 ## Item Features
 
@@ -30,7 +33,7 @@ have smoke particles drawn around it like smoked fish.
 
 ### Draw an item's preserve item's sprite instead of its base sprite
 
-Any item with the context tag `draw_preserve_sprite` will have its sprite be
+Items with the context tag `draw_preserve_sprite` will have its sprite be
 the sprite of its `preservedParentSheetIndex` item instead (if set).
 
 With `smoked_item` and `draw_preserve_sprite` combined, you can implement
@@ -40,11 +43,39 @@ used to make it albeit dark and smoking.
 
 More item effects aside from smoke might come in the future.
 
+### Define extra loved items for Junimo
+
+Items with the context tag `junimo_loved_item` can be fed to junimos to improve
+their harvest rate just like raisins.
+
+### Append extra context tags to item queries
+
+Set the following field in the [item query's `ModData`
+field](https://stardewvalleywiki.com/Modding:Item_queries#Item_spawn_fields).
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.ExtraContextTags` | A comma-separated list of extra context tags for the item spawned by this item query.|
+
+Important notes:
+
+* This feature can be used anywhere item queries are used, such as machines or shops.
+* If you're using this field, it's highly recommended you also set the
+  `ObjectInternalName` field (and optionaly the display name) so the spawned
+  items do not stack with other items of the same ID that may not have this
+  field, causing the context tags to be lost.
+
+For an example, scroll down to the example for additional fuels for machine recipes.
+
+----
+
 ## Machine Features
-This mod reads extra data defined the [`CustomData` field in `OutputItem`](https://stardewvalleywiki.com/Modding:Machines#Item_processing_rules), which is
-a map of arbitrary string keys to string values intended for mod use. Since
-`CustomData` is per-output, it's possible to specify different settings for each
-recipe, or even each output in the case of multiple possible outputs.
+Unless otherwise specified, this mod reads extra data defined the [`CustomData`
+field in
+`OutputItem`](https://stardewvalleywiki.com/Modding:Machines#Item_processing_rules),
+which is a map of arbitrary string keys to string values intended for mod use.
+Since `CustomData` is per-output, it's possible to specify different settings
+for each recipe, or even each output in the case of multiple possible outputs.
 
 ### Adding additional fuel for a specific recipe
 
@@ -97,6 +128,9 @@ normal for copper.
               "ItemId": "(O)72",
               "MinStack": 4,
               "Quality": 3,
+              "ModData": {
+                "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished,milk_polished_iridium"
+              },
             },
             {
               "CustomData": {
@@ -107,6 +141,9 @@ normal for copper.
               "ItemId": "(O)72",
               "MinStack": 3,
               "Quality": 2,
+              "ModData": {
+                "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished,milk_polished_gold"
+              },
             },
             {
               "CustomData": {
@@ -117,6 +154,9 @@ normal for copper.
               "ItemId": "(O)72",
               "MinStack": 2,
               "Quality": 1,
+              "ModData": {
+                "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished,milk_polished_iron"
+              },
             },
             {
               "CustomData": {
@@ -127,6 +167,9 @@ normal for copper.
               "ItemId": "(O)72",
               "MinStack": 1,
               "Quality": 0,
+              "ModData": {
+                "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished,milk_polished_copper"
+              },
             },
           ],
           "MinutesUntilReady": 10,
@@ -137,6 +180,8 @@ normal for copper.
 }
 ```
 </details>
+
+----
 
 ----
 
@@ -257,7 +302,7 @@ be of the base color, even with `CopyColor` set.
 
 ----
 
-## Appendix: Comparison vs Producer Framework Mod 
+### Appendix: Comparison vs Producer Framework Mod 
 [Producer Framework Mod](https://www.nexusmods.com/stardewvalley/mods/4970)
 allows defining custom machines and recipes in Stardew Valley, with more
 features and configurations than what's possible in the base game. Several of
@@ -287,3 +332,15 @@ The main differences:
 In general, if you want to stick to pure Content Patcher (for compatibility
 with other mods, etc.) for your mod then use this mod; otherwise it's probably
 a better idea to stick to PFM.
+
+## Animal Features
+
+These fields are set in the animal data's `CustomFields` dict. Note that
+`CustomFields` is a dict of string key to string values, so all values must be
+strings (including numbers).
+
+### Define custom male/female ratio
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.MalePercentage` | A number between 0 and 100 specifying the percentage of this species that will be male. For example, set to `"40"` to make 40% of animals male. Overrides the regular animal gender settings.|

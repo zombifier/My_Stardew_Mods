@@ -17,6 +17,8 @@ using System.Collections.Generic;
 
 namespace ExtraMachineConfig; 
 
+using SObject = StardewValley.Object;
+
 internal sealed class ModEntry : Mod {
   internal new static IModHelper Helper { get;
     set;
@@ -34,6 +36,8 @@ internal sealed class ModEntry : Mod {
   internal static string RequirementInvalidMsgKey = "selph.ExtraMachineConfig.RequirementInvalidMsg";
   internal static string InheritPreserveIdKey = "selph.ExtraMachineConfig.InheritPreserveId";
   internal static string CopyColorKey = "selph.ExtraMachineConfig.CopyColor";
+
+  internal static string ExtraContextTagsKey = "selph.ExtraMachineConfig.ExtraContextTags";
 
   // Legacy versions, no mod IDs because I'm stupid
   internal static Regex RequirementIdKeyRegex_Legacy =
@@ -63,51 +67,18 @@ internal sealed class ModEntry : Mod {
           nameof(StardewValley.MachineDataUtility.GetOutputItem)),
         postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.MachineDataUtility_GetOutputItem_postfix)));
 
+    harmony.Patch(
+        original: AccessTools.Method(typeof(Item),
+          nameof(Item.GetContextTags)),
+        postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Item_GetContextTags_postfix)));
+
     SmokedItemHarmonyPatcher.ApplyPatches(harmony);
+    AnimalDataPatcher.ApplyPatches(harmony);
+    Helper.Events.GameLoop.DayStarted += AnimalDataPatcher.OnDayStartedJunimoHut;
   }
 
   public override object GetApi() {
     return ModApi;
-  }
-
-
-  // Removes items with the specified ID from the inventory.
-  // This differs from ReduceId is that itemId can also be category IDs.
-  private static bool RemoveItemFromInventoryById(IInventory inventory, string itemId, int count) {
-    return RemoveItemFromInventory(inventory, item => CraftingRecipe.ItemMatchesForCrafting(item, itemId), count);
-  }
-
-  // Removes items with the specified tags from the inventory.
-  private static bool RemoveItemFromInventoryByTags(IInventory inventory, string itemTags, int count) {
-    return RemoveItemFromInventory(inventory, item => ItemContextTagManager.DoesTagQueryMatch(itemTags, item.GetContextTags()), count);
-  }
-
-  // TODO: Port functionality from ExtraFuelConfig
-  private static bool RemoveItemFromInventory(IInventory inventory, Func<Item, bool> func, int count) {
-    for (int index = 0; index < inventory.Count; ++index) {
-      if (inventory[index] != null && func(inventory[index])) {
-        if (inventory[index].Stack > count) {
-          inventory[index].Stack -= count;
-          return true;
-        }
-        count -= inventory[index].Stack;
-        inventory[index] = (Item)null;
-      }
-      if (count <= 0) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private static int getItemCountInListByTags(IList<Item> list, string itemTags) {
-    int num = 0;
-    for (int i = 0; i < list.Count; i++) {
-      if (list[i] != null && ItemContextTagManager.DoesTagQueryMatch(itemTags, list[i].GetContextTags())) {
-        num += list[i].Stack;
-      }
-    }
-    return num;
   }
 
   // This patch:
@@ -120,7 +91,7 @@ internal sealed class ModEntry : Mod {
       return;
     }
     string invalidMessage = null;
-    IInventory inventory = StardewValley.Object.autoLoadFrom ?? who.Items;
+    IInventory inventory = SObject.autoLoadFrom ?? who.Items;
     List<MachineItemOutput> newOutputs = new List<MachineItemOutput>();
     foreach (MachineItemOutput output in outputs) {
       if (output.CustomData == null) {
@@ -136,7 +107,7 @@ internal sealed class ModEntry : Mod {
       }
       var extraTagsRequirements = ModApi.GetExtraTagsRequirements(output);
       foreach (var entry in extraTagsRequirements) {
-        if (getItemCountInListByTags(inventory, entry.Item1) < entry.Item2) {
+        if (Utils.getItemCountInListByTags(inventory, entry.Item1) < entry.Item2) {
           valid = false;
         }
       }
@@ -153,7 +124,7 @@ internal sealed class ModEntry : Mod {
     }
     outputs = newOutputs;
     if (outputs.Count == 0 && invalidMessage != null && who.IsLocalPlayer &&
-        StardewValley.Object.autoLoadFrom == null) {
+        SObject.autoLoadFrom == null) {
       Game1.showRedMessage(invalidMessage);
     }
   }
@@ -163,22 +134,22 @@ internal sealed class ModEntry : Mod {
   // removes them from inventory
   // * Checks if preserve ID is set to inherit the input item's preserve ID, and applies it
   // * Checks if a colored item should be created and apply the changes
-  private static void MachineDataUtility_GetOutputItem_postfix(ref Item __result, StardewValley.Object machine,
+  private static void MachineDataUtility_GetOutputItem_postfix(ref Item __result, SObject machine,
       MachineItemOutput outputData, Item inputItem,
       Farmer who, bool probe,
       ref int? overrideMinutesUntilReady) {
     if (__result == null || outputData == null || inputItem == null) {
       return;
     }
-    IInventory inventory = StardewValley.Object.autoLoadFrom ?? who.Items;
+    IInventory inventory = SObject.autoLoadFrom ?? who.Items;
     // Inherit preserve ID
     if ((outputData.PreserveId == "INHERIT" ||
           (outputData.CustomData != null &&
            (outputData.CustomData.ContainsKey(InheritPreserveIdKey) ||
             outputData.CustomData.ContainsKey(InheritPreserveIdKey_Legacy)))) &&
-        inputItem is StardewValley.Object inputObject &&
+        inputItem is SObject inputObject &&
         inputObject.preservedParentSheetIndex.Value != "-1" &&
-        __result is StardewValley.Object resultObject) {
+        __result is SObject resultObject) {
       resultObject.preservedParentSheetIndex.Value = inputObject.preservedParentSheetIndex.Value;
     }
     if (outputData.CustomData == null) {
@@ -187,16 +158,16 @@ internal sealed class ModEntry : Mod {
     // Remove extra fuel
     var extraRequirements = ModApi.GetExtraRequirements(outputData);
     foreach (var entry in extraRequirements) {
-      RemoveItemFromInventoryById(inventory, entry.Item1, entry.Item2);
+      Utils.RemoveItemFromInventoryById(inventory, entry.Item1, entry.Item2);
     }
     var extraTagsRequirements = ModApi.GetExtraTagsRequirements(outputData);
     foreach (var entry in extraTagsRequirements) {
-      RemoveItemFromInventoryByTags(inventory, entry.Item1, entry.Item2);
+      Utils.RemoveItemFromInventoryByTags(inventory, entry.Item1, entry.Item2);
     }
     // Color the item
     if ((outputData.CustomData.ContainsKey(CopyColorKey) ||
           outputData.CustomData.ContainsKey(CopyColorKey_Legacy)) &&
-        __result is StardewValley.Object) {
+        __result is SObject) {
       StardewValley.Objects.ColoredObject newColoredObject;
       if (__result is StardewValley.Objects.ColoredObject coloredObject) {
         newColoredObject = coloredObject;
@@ -214,6 +185,12 @@ internal sealed class ModEntry : Mod {
         newColoredObject.color.Value = (Color)color;
         __result = newColoredObject;
       }
+    }
+  }
+
+  private static void Item_GetContextTags_postfix(Item __instance, ref HashSet<string> __result) {
+    if (__instance.modData.TryGetValue(ExtraContextTagsKey, out string contextTags)) {
+      __result.UnionWith(contextTags.Split(","));
     }
   }
 }
