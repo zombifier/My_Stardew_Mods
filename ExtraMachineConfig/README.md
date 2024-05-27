@@ -310,4 +310,4 @@ strings (including numbers).
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `selph.ExtraMachineConfig.MalePercentage` | A number between 0 and 100 specifying the percentage of this species that will be male. For example, set to `"40"` to make 40% of animals male. Overrides the regular animal gender settings.|
+| `selph.ExtraMachineConfig.MalePercentage` | An integer between 0 and 100 specifying the percentage of this species that will be male. For example, set to `"40"` to make 40% of animals male. Overrides the regular animal gender settings.|
