@@ -24,13 +24,13 @@ public class ExtraMachineConfigApi : IExtraMachineConfigApi {
       return extraRequirements;
     }
     foreach (var entry in outputData.CustomData) {
-      var match = ModEntry.RequirementIdKeyRegex.Match(entry.Key);
+      var match = MachineHarmonyPatcher.RequirementIdKeyRegex.Match(entry.Key);
       if (!match.Success) {
-        match = ModEntry.RequirementIdKeyRegex_Legacy.Match(entry.Key);
+        match = MachineHarmonyPatcher.RequirementIdKeyRegex_Legacy.Match(entry.Key);
       }
       if (match.Success) {
-        string countKey = ModEntry.RequirementCountKeyPrefix + "." + match.Groups[1].Value;
-        string countKey_Legacy = ModEntry.RequirementCountKeyPrefix_Legacy + "." + match.Groups[1].Value;
+        string countKey = MachineHarmonyPatcher.RequirementCountKeyPrefix + "." + match.Groups[1].Value;
+        string countKey_Legacy = MachineHarmonyPatcher.RequirementCountKeyPrefix_Legacy + "." + match.Groups[1].Value;
         string countString;
         if ((outputData.CustomData.TryGetValue(countKey, out countString) ||
               outputData.CustomData.TryGetValue(countKey_Legacy, out countString)) &&
@@ -51,10 +51,10 @@ public class ExtraMachineConfigApi : IExtraMachineConfigApi {
       return extraRequirements;
     }
     foreach (var entry in outputData.CustomData) {
-      var match = ModEntry.RequirementTagsKeyRegex.Match(entry.Key);
+      var match = MachineHarmonyPatcher.RequirementTagsKeyRegex.Match(entry.Key);
       if (match.Success) {
-        string countKey = ModEntry.RequirementCountKeyPrefix + "." + match.Groups[1].Value;
-        string countKey_Legacy = ModEntry.RequirementCountKeyPrefix_Legacy + "." + match.Groups[1].Value;
+        string countKey = MachineHarmonyPatcher.RequirementCountKeyPrefix + "." + match.Groups[1].Value;
+        string countKey_Legacy = MachineHarmonyPatcher.RequirementCountKeyPrefix_Legacy + "." + match.Groups[1].Value;
         string countString;
         if ((outputData.CustomData.TryGetValue(countKey, out countString) ||
               outputData.CustomData.TryGetValue(countKey_Legacy, out countString)) &&

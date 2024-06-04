@@ -12,17 +12,20 @@ This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
 ## Table of Contents
+* [Table of Contents](#table-of-contents)
 * [Item Features](#item-features)
-    + [Draw smoke particles around item](#draw-smoke-particles-around-item)
-    + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
-    + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
-    + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
+   + [Draw smoke particles around item](#draw-smoke-particles-around-item)
+   + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
+   + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
+   + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
 * [Machine Features](#machine-features)
-    + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
-    + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
-    + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
+   + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
+   + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
+   + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
+   + [Specify range of input count and scale output count with the input amount consumed](#specify-range-of-input-count-and-scale-output-count-with-the-input-amount-consumed)
+   + [Adding extra byproducts for machine recipes](#adding-extra-byproducts-for-machine-recipes)
 * [Animal Features](#animal-features)
-    + [Define custom male/female ratio](#define-custom-malefemale-ratio)
+   + [Define custom male/female ratio](#define-custom-malefemale-ratio)
 
 ## Item Features
 
@@ -299,6 +302,115 @@ be of the base color, even with `CopyColor` set.
 </details>
 
 ----
+
+### Specify range of input count and scale output count with the input amount consumed
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.RequiredCountMax` | When set to an int (as a string), the primary input item's count can be between the min value of the trigger rule's `RequiredCount`, or the max value as specified by this field.<br>The output item's stack count will be set to equal the amount of input item consumed, and `MinStack` and `MaxStack` will be ignored. To modify or the stack count, use `StackModifiers` and `StackModifiersMode`.<br>The required fuels (either via `AdditionalConsumedItems` or this mod's per-recipe fuels) will remain the same regardless of how many input items are consumed. For the fuel added by this mod, if you want the amount consumed to depend on the amount of input items consumed, make multiple output rules conditioned on the input item's stack size.|
+
+Note that this functionality is completely achievable with vanilla machine
+rules, using `RequiredCount` and output rules condition. This macro simply
+reduces repetition, and is not as customizable as actual machine rules.
+
+#### Example
+
+The example below modifies the vanilla game's wine recipe to be able to process up to 10 fruits at a time, and produce a wine for every fruit used. If less than 10 fruits are used, only that amount of fruit will be processed.
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "Changes": [
+    {
+      "LogName": "Modify Wine Rules",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)12", "OutputRules", "Default_Wine", "OutputItem", "Default"],
+      "Fields": {
+        "CustomData": {
+          "selph.ExtraMachineConfig.RequiredCountMax": "10",
+        },
+      },
+    },
+  ]
+}
+```
+
+</details>
+
+----
+
+### Adding extra byproducts for machine recipes
+
+First, write your extra output item queries to a new asset named
+`selph.ExtraMachineConfig/ExtraOutputs`. This asset is a map of unique IDs to
+item queries similar to the ones used in the recipe's `OutputItem` field. Most
+machine-related features (e.g. `CopyColor`, `CopyQuality`, this mod's
+`CustomData` fields, etc.) will be supported in these item queries.
+
+Then, set this field in the actual machine output's `CustomData` dict as usual:
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.ExtraOutputIds` | A comma-separated list of item query IDs written to the asset above to also spawn with this output item.|
+
+#### Example
+
+This example modifies the vanilla fruit to wine keg recipe to also spawn fruit-flavored jelly and mead alongside the wine item.
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "Changes": [
+    {
+      "LogName": "Add Jelly&Mead Extra Outputs",
+      "Action": "EditData",
+      "Target": "selph.ExtraMachineConfig/ExtraOutputs",
+      "Entries": {
+        "JellyExtra": {
+          "Id": "JellyExtra",
+          "ItemId": "FLAVORED_ITEM Jelly DROP_IN_ID",
+        },
+        "MeadExtra": {
+          "Id": "MeadExtra",
+          "ItemId": "(O)459",
+          "PreserveId": "DROP_IN",
+          "ObjectInternalName": "{0} Mead",
+          "ObjectDisplayName": "%PRESERVED_DISPLAY_NAME Mead",
+          "PriceModifiers": 
+          [
+            {
+              "Modification": "Multiply",
+              "Amount": 2
+            },
+            {
+              "Modification": "Add",
+              "Amount": 100
+            }
+          ],
+        },
+      },
+    },
+    {
+      "LogName": "Add Jelly and Mead to Wine Rule",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)12", "OutputRules", "Default_Wine", "OutputItem", "Default", "CustomData"],
+      "Entries": {
+        "selph.ExtraMachineConfig.ExtraOutputIds": "JellyExtra,MeadExtra",
+      },
+    },
+  ]
+}
+```
+
+</details>
 
 ## Animal Features
 
