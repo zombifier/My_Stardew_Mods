@@ -357,6 +357,8 @@ Then, set this field in the actual machine output's `CustomData` dict as usual:
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.ExtraOutputIds` | A comma-separated list of item query IDs written to the asset above to also spawn with this output item.|
 
+**KNOWN ISSUE**: Currently this feature only works for machine recipes that have an input. This is expected to be fixed in a future update.
+
 #### Example
 
 This example modifies the vanilla fruit to wine keg recipe to also spawn fruit-flavored jelly and mead alongside the wine item.
