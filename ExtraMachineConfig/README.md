@@ -421,7 +421,7 @@ that acts as the generic version of the base game's
 [`FLAVORED_ITEM`](https://stardewvalleywiki.com/Modding:Item_queries#Available_queries),
 but usable for any modded items. The query takes the following arguments:
 
-`selph.ExtraMachineConfig_FLAVORED_ITEM <output item ID> <flavor item ID> [optional price]`
+`selph.ExtraMachineConfig_FLAVORED_ITEM <output item ID> <flavor item ID> [optional override price]`
 
 Replace <output item ID> with your modded artisan item ID, and flavor item ID
 with your desired flavor, including
@@ -439,11 +439,15 @@ The flavored output item spawned by this query will:
   put an empty sprite next to the item's sprite on the sprite sheet.
 * Have its price set to the first matching entry of the below list:
   * The optional third parameter, if specified
-  * The flavor item's price, if available
-  * Zero otherwise.
+  * The flavor item's price, if applicable
+  * The item's base price otherwise. It's recommended that the base price be
+    lower than the potential price of the flavor ingredient item to avoid the
+    unflavored item being more expensive than flavored ones.
   If you want to scale the price further, use the machine rules' `PriceModifiers`.
 
 Everything else (e.g. display name, etc.) will have to be set manually by the rest of the item/machine query.
+
+Note that this item query technically can be used outside of machine rules.
 
 ### Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query
 

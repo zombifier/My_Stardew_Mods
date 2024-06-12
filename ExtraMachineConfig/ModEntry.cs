@@ -91,7 +91,7 @@ internal sealed class ModEntry : Mod {
     ColoredObject outputObj = new ColoredObject(itemId, 1, color);
     outputObj.Name += " " + itemId;
     outputObj.preservedParentSheetIndex.Value = flavorObj?.ItemId;
-    outputObj.Price = ArgUtility.GetInt(array, 2, flavorObj?.Price ?? 0);
+    outputObj.Price = ArgUtility.GetInt(array, 2, flavorObj?.Price ?? outputObj.Price);
 
     return new ItemQueryResult[1]
     {
