@@ -1,21 +1,14 @@
 using System;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Delegates;
-using StardewValley.ItemTypeDefinitions;
 using StardewValley.Internal;
 using StardewValley.Menus;
-using StardewValley.Mods;
 using StardewValley.Objects;
 using StardewValley.Inventories;
 using StardewValley.GameData.Machines;
-using StardewValley.GameData.BigCraftables;
-using StardewValley.TokenizableStrings;
 using HarmonyLib;
 using System.Collections.Generic;
 
@@ -23,7 +16,7 @@ namespace ExtraMachineConfig;
 
 using SObject = StardewValley.Object;
 
-class MachineHarmonyPatcher {
+sealed class MachineHarmonyPatcher {
 
   // Keys for the CustomData map
   internal static Regex RequirementIdKeyRegex =
@@ -36,11 +29,10 @@ class MachineHarmonyPatcher {
   internal static string CopyColorKey = $"{ModEntry.UniqueId}.CopyColor";
   internal static string RequiredCountMaxKey = $"{ModEntry.UniqueId}.RequiredCountMax";
   internal static string ExtraOutputIdsKey = $"{ModEntry.UniqueId}.ExtraOutputIds";
+  internal static string OverrideInputItemIdKey = $"{ModEntry.UniqueId}.OverrideInputItemId";
 
   // ModData keys
   internal static string ExtraContextTagsKey = $"{ModEntry.UniqueId}.ExtraContextTags";
-  // for Automate only
-  internal static string HasExtraItemsKey = $"{ModEntry.UniqueId}.HasExtraItems";
 
   // Legacy versions, no mod IDs because I'm stupid
   internal static Regex RequirementIdKeyRegex_Legacy =
@@ -49,6 +41,8 @@ class MachineHarmonyPatcher {
   internal static string RequirementInvalidMsgKey_Legacy = "ExtraMachineConfig.RequirementInvalidMsg";
   internal static string InheritPreserveIdKey_Legacy = "ExtraMachineConfig.InheritPreserveId";
   internal static string CopyColorKey_Legacy = "ExtraMachineConfig.CopyColor";
+
+  internal static bool enableGetOutputItemSideEffect = false;
 
   public static void ApplyPatches(Harmony harmony) {
     harmony.Patch(
@@ -62,7 +56,14 @@ class MachineHarmonyPatcher {
     harmony.Patch(
         original: AccessTools.Method(typeof(StardewValley.MachineDataUtility),
           nameof(StardewValley.MachineDataUtility.GetOutputItem)),
+        prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.MachineDataUtility_GetOutputItem_prefix)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.MachineDataUtility_GetOutputItem_postfix)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(SObject),
+          nameof(SObject.PlaceInMachine)),
+        prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_PlaceInMachine_Prefix)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_PlaceInMachine_Postfix)));
 
     harmony.Patch(
         original: AccessTools.Method(typeof(Item),
@@ -129,6 +130,25 @@ class MachineHarmonyPatcher {
   }
 
   // This patch:
+  // * Generates a replacement input item if that is specified
+  private static void MachineDataUtility_GetOutputItem_prefix(SObject machine,
+      MachineItemOutput outputData, ref Item inputItem,
+      Farmer who, bool probe) {
+    if (outputData?.CustomData?.TryGetValue(OverrideInputItemIdKey, out var overrideInput) ?? false) {
+      string overrideInputId = overrideInput == "NEARBY_FLOWER_QUALIFIED_ID" ?
+        ItemRegistry.QualifyItemId(MachineDataUtility.GetNearbyFlowerItemId(machine) ?? null) :
+        overrideInput;
+      if (overrideInputId != null) {
+        ItemQueryContext context = new ItemQueryContext(machine.Location, who, Game1.random);
+  			inputItem = ItemQueryResolver.TryResolveRandomItem(overrideInputId, context);
+      } else {
+        inputItem = null;
+      }
+    }
+  }
+
+
+  // This patch:
   // * Checks for additional fuel requirements specified in the output rule's custom data, and
   // removes them from inventory
   // * Checks if preserve ID is set to inherit the input item's preserve ID, and applies it
@@ -139,9 +159,34 @@ class MachineHarmonyPatcher {
       MachineItemOutput outputData, Item inputItem,
       Farmer who, bool probe,
       ref int? overrideMinutesUntilReady) {
-    if (__result == null || outputData == null || inputItem == null) {
+    if (__result == null || outputData == null) {
       return;
     }
+
+    // Generate the extra output items and save them in a chest saved in the output item's heldObject.
+    if (outputData.CustomData != null &&
+        outputData.CustomData.TryGetValue(ExtraOutputIdsKey, out var extraOutputIds) &&
+        __result is SObject obj) {
+      var chest = new Chest();
+      obj.heldObject.Value = chest;
+      GameStateQueryContext context = new GameStateQueryContext(machine.Location, who, obj, inputItem, Game1.random);
+      ItemQueryContext itemContext = new ItemQueryContext(machine.Location, who, Game1.random);
+      foreach (var extraOutputId in extraOutputIds.Split(',', ' ')) {
+        if (ModEntry.extraOutputAssetHandler.data.TryGetValue(extraOutputId, out var extraOutputData) &&
+            // Disallow ExtraOutputIdsKey inside the extra rules to avoid recursion
+            (!extraOutputData.CustomData?.ContainsKey(ExtraOutputIdsKey) ?? true)) {
+          if (!GameStateQuery.CheckConditions(extraOutputData.Condition, context)) {
+            continue;
+          }
+          var item = MachineDataUtility.GetOutputItem(machine, extraOutputData, inputItem, who, false, out var _);
+          if (item != null) {
+            chest.addItem(item);
+          }
+        }
+      }
+    }
+
+    if (inputItem is null) return;
 
     IInventory inventory = SObject.autoLoadFrom ?? who.Items;
     // Inherit preserve ID
@@ -158,13 +203,15 @@ class MachineHarmonyPatcher {
       return;
     }
     // Remove extra fuel
-    var extraRequirements = ModEntry.ModApi.GetExtraRequirements(outputData);
-    foreach (var entry in extraRequirements) {
-      Utils.RemoveItemFromInventoryById(inventory, entry.Item1, entry.Item2);
-    }
-    var extraTagsRequirements = ModEntry.ModApi.GetExtraTagsRequirements(outputData);
-    foreach (var entry in extraTagsRequirements) {
-      Utils.RemoveItemFromInventoryByTags(inventory, entry.Item1, entry.Item2);
+    if (enableGetOutputItemSideEffect) {
+      var extraRequirements = ModEntry.ModApi.GetExtraRequirements(outputData);
+      foreach (var entry in extraRequirements) {
+        Utils.RemoveItemFromInventoryById(inventory, entry.Item1, entry.Item2);
+      }
+      var extraTagsRequirements = ModEntry.ModApi.GetExtraTagsRequirements(outputData);
+      foreach (var entry in extraTagsRequirements) {
+        Utils.RemoveItemFromInventoryByTags(inventory, entry.Item1, entry.Item2);
+      }
     }
     // Color the item
     if ((outputData.CustomData.ContainsKey(CopyColorKey) ||
@@ -189,38 +236,17 @@ class MachineHarmonyPatcher {
       }
     }
     // Consume extra input items and replace output stack count
-    if (outputData.CustomData.ContainsKey(RequiredCountMaxKey) &&
-        Int32.TryParse(outputData.CustomData[RequiredCountMaxKey], out int requiredCountMax) &&
-        MachineDataUtility.TryGetMachineOutputRule(machine, machine.GetMachineData(), MachineOutputTrigger.ItemPlacedInMachine, inputItem, who, machine.Location, out var _, out var triggerRule, out var _, out var _)) {
-      int requiredCountMin = triggerRule.RequiredCount;
-      if (requiredCountMax < requiredCountMin) {
-        ModEntry.StaticMonitor.Log($"Warning: RequiredCountMax value ({requiredCountMax}) smaller than TriggerCount ({requiredCountMin}) for rule {outputData.Id}, ignoring.", LogLevel.Warn);
-      } else {
-        int baseOutputStack = Math.Min(inputItem.Stack, requiredCountMax);
-        __result.Stack = (int)Utility.ApplyQuantityModifiers(baseOutputStack, outputData.StackModifiers, outputData.StackModifierMode, machine.Location, who, __result, inputItem);
-        SObject.ConsumeInventoryItem(who, inputItem, baseOutputStack - requiredCountMin);
-      }
-    }
-
-    // Generate the extra output items and save them in a chest saved in the output item's heldObject.
-    if (outputData.CustomData.TryGetValue(ExtraOutputIdsKey, out var extraOutputIds) &&
-        __result is SObject obj) {
-      __result.modData[HasExtraItemsKey] = "true";
-      var chest = new Chest();
-      obj.heldObject.Value = chest;
-      GameStateQueryContext context = new GameStateQueryContext(machine.Location, who, obj, inputItem, Game1.random);
-      ItemQueryContext itemContext = new ItemQueryContext(machine.Location, who, Game1.random);
-      foreach (var extraOutputId in extraOutputIds.Split(',', ' ')) {
-        if (ModEntry.extraOutputAssetHandler.data.TryGetValue(extraOutputId, out var extraOutputData) &&
-            // Disallow ExtraOutputIdsKey inside the extra rules to avoid recursion
-            (!extraOutputData.CustomData?.ContainsKey(ExtraOutputIdsKey) ?? true)) {
-          if (!GameStateQuery.CheckConditions(extraOutputData.Condition, context)) {
-            continue;
-          }
-          var item = MachineDataUtility.GetOutputItem(machine, extraOutputData, inputItem, who, false, out var _);
-          if (item != null) {
-            chest.addItem(item);
-          }
+    if (enableGetOutputItemSideEffect) {
+      if (outputData.CustomData.ContainsKey(RequiredCountMaxKey) &&
+          Int32.TryParse(outputData.CustomData[RequiredCountMaxKey], out int requiredCountMax) &&
+          MachineDataUtility.TryGetMachineOutputRule(machine, machine.GetMachineData(), MachineOutputTrigger.ItemPlacedInMachine, inputItem, who, machine.Location, out var _, out var triggerRule, out var _, out var _)) {
+        int requiredCountMin = triggerRule.RequiredCount;
+        if (requiredCountMax < requiredCountMin) {
+          ModEntry.StaticMonitor.Log($"Warning: RequiredCountMax value ({requiredCountMax}) smaller than TriggerCount ({requiredCountMin}) for rule {outputData.Id}, ignoring.", LogLevel.Warn);
+        } else {
+          int baseOutputStack = Math.Min(inputItem.Stack, requiredCountMax);
+          __result.Stack = (int)Utility.ApplyQuantityModifiers(baseOutputStack, outputData.StackModifiers, outputData.StackModifierMode, machine.Location, who, __result, inputItem);
+          SObject.ConsumeInventoryItem(who, inputItem, baseOutputStack - requiredCountMin);
         }
       }
     }
@@ -248,5 +274,16 @@ class MachineHarmonyPatcher {
       }
     }
     obj.heldObject.Value = null;
+  }
+
+  // These two patches ensure GetOutputItem only performs side effects (ie removing items from
+  // inventory for additional fuels) if it's called within the context of PlaceInMachine,
+  // allowing GetOutputItem to be callable anywhere without ill effects.
+  public static void SObject_PlaceInMachine_Prefix(MachineData machineData, Item inputItem, bool probe, Farmer who, bool showMessages = true, bool playSounds = true) {
+    enableGetOutputItemSideEffect = true;
+  }
+
+	public static void SObject_PlaceInMachine_Postfix(MachineData machineData, Item inputItem, bool probe, Farmer who, bool showMessages = true, bool playSounds = true) {
+    enableGetOutputItemSideEffect = false;
   }
 }
