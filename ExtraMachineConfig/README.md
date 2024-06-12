@@ -430,6 +430,7 @@ the ID of a nearby flower if any. Make both of them unqualified (ie. without
 the `(O)` part), or you may get harmless errors in the console.
 
 For example, the following creates nearby flower-flavored mead:
+
 `"ItemId": "selph.ExtraMachineConfig_FLAVORED_ITEM 459 NEARBY_FLOWER_ID"`
 
 The flavored output item spawned by this query will:
