@@ -437,7 +437,10 @@ The flavored output item spawned by this query will:
 * Have its flavor set to the flavor item ID.
 * Inherit the color of the flavor item, if any. If you don't want this, simply
   put an empty sprite next to the item's sprite on the sprite sheet.
-* Inherit the price of the input item, unless explicitly set to a custom value in the third parameter.
+* Have its price set to the first matching entry of the below list:
+  * The optional third parameter, if specified
+  * The flavor item's price, if available
+  * Zero otherwise.
   If you want to scale the price further, use the machine rules' `PriceModifiers`.
 
 Everything else (e.g. display name, etc.) will have to be set manually by the rest of the item/machine query.
