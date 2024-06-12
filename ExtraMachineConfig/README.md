@@ -430,6 +430,7 @@ the ID of a nearby flower if any. Make both of them unqualified (ie. without
 the `(O)` part), or you may get harmless errors in the console.
 
 For example, the following creates nearby flower-flavored mead:
+
 `"ItemId": "selph.ExtraMachineConfig_FLAVORED_ITEM 459 NEARBY_FLOWER_ID"`
 
 The flavored output item spawned by this query will:
@@ -441,7 +442,7 @@ The flavored output item spawned by this query will:
   * The optional third parameter, if specified
   * The flavor item's price, if available
   * Zero otherwise.
-  If you want to scale the price further, use the machine rules' `PriceModifiers`.
+* If you want to scale the price further, use the machine rules' `PriceModifiers`.
 
 Everything else (e.g. display name, etc.) will have to be set manually by the rest of the item/machine query.
 
