@@ -444,7 +444,7 @@ The flavored output item spawned by this query will:
   * The item's base price otherwise. It's recommended that the base price be
     lower than the potential price of the flavor ingredient item to avoid the
     unflavored item being more expensive than flavored ones.
-  If you want to scale the price further, use the machine rules' `PriceModifiers`.
+* If you want to scale the price further, use the machine rules' `PriceModifiers`.
 
 Everything else (e.g. display name, etc.) will have to be set manually by the rest of the item/machine query.
 
