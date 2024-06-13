@@ -450,6 +450,8 @@ Everything else (e.g. display name, etc.) will have to be set manually by the re
 
 Note that this item query technically can be used outside of machine rules.
 
+---
+
 ### Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query
 
 NOTE: This functionality is currently incomplete. It is also *very* specialized
