@@ -216,7 +216,7 @@ sealed class MachineHarmonyPatcher {
     // Color the item
     if ((outputData.CustomData.ContainsKey(CopyColorKey) ||
           outputData.CustomData.ContainsKey(CopyColorKey_Legacy)) &&
-        __result is SObject) {
+        __result is SObject obj2) {
       StardewValley.Objects.ColoredObject newColoredObject;
       if (__result is StardewValley.Objects.ColoredObject coloredObject) {
         newColoredObject = coloredObject;
@@ -228,6 +228,7 @@ sealed class MachineHarmonyPatcher {
             );
         ModEntry.Helper.Reflection.GetMethod(newColoredObject, "GetOneCopyFrom").Invoke(__result);
         newColoredObject.Stack = __result.Stack;
+        newColoredObject.heldObject.Value = obj2.heldObject.Value;
       }
       var color = TailoringMenu.GetDyeColor(inputItem);
       if (color != null) {
