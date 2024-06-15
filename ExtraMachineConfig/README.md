@@ -438,11 +438,12 @@ For example, the following creates nearby flower-flavored mead:
 The flavored output item spawned by this query will:
 
 * Have its flavor set to the flavor item ID.
-  * Note that unlike the vanilla `FLAVORED_ITEM` rule, if the flavor is `-1`
-    (due to the `NEARBY_FLOWER_ID` macro) it will be converted to `null` to not
-    mess up the display name. Stardew Valley 1.6.9 will fix this as part of the new
-    built-in flavor inherit feature, and when that version is released I'll
-    remove the `-1` conversion.
+  * Note that like the vanilla `FLAVORED_ITEM` rule, if the flavor is `-1` (due
+    to the `NEARBY_FLOWER_ID` macro) it will be kept as-is and mess up the
+    display name if you use `%PRESERVED_DISPLAY_NAME`! Stardew Valley 1.6.9
+    will fix this as part of the new built-in flavor inherit feature, but in
+    the mean time use the field `UnflavoredDisplayNameOverride` (as detailed
+    below) to get around this.
 * Inherit the color of the flavor item, if any. If you don't want this, simply
   put an empty sprite next to the item's sprite on the sprite sheet.
 * Have its price set to the first matching entry of the below list:

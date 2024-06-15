@@ -90,7 +90,7 @@ internal sealed class ModEntry : Mod {
     Color color = TailoringMenu.GetDyeColor(flavorItem) ?? Color.White;
     ColoredObject outputObj = new ColoredObject(itemId, 1, color);
     outputObj.Name += " " + itemId;
-    outputObj.preservedParentSheetIndex.Value = flavorObj?.ItemId;
+    outputObj.preservedParentSheetIndex.Value = flavorId;
     outputObj.Price = ArgUtility.GetInt(array, 2, flavorObj?.Price ?? outputObj.Price);
 
     return new ItemQueryResult[1]
