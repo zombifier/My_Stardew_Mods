@@ -357,7 +357,12 @@ Then, set this field in the actual machine output's `CustomData` dict as usual:
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.ExtraOutputIds` | A comma-separated list of item query IDs written to the asset above to also spawn with this output item.|
 
-**KNOWN ISSUE**: Currently this feature only works for machine recipes that have an input item. This will be fixed in a future update, though given that no mods use this feature currently a new version will not be pushed just to fix this bug. If you have a future content pack that relies on this feature let me know.
+**KNOWN ISSUES**:
+
+* This currently only works for machine recipes that have an input item.
+* Does not work if used in conjunction with `CopyColor`.
+
+These issues are fixed in the testing version of EMC.
 
 #### Example
 
