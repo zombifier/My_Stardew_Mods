@@ -457,6 +457,14 @@ Note that this item query technically can be used outside of machine rules.
 
 ---
 
+### Override display name if the output item is unflavored
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.UnflavoredDisplayNameOverride` | The display name to use for this machine rule's output item if the output happens to be unflavored (due to `InheritPreserveId` copying from an unflavored item, or if `NEARBY_FLOWER_ID` cannot find a nearby flower). |
+
+---
+
 ### Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query
 
 NOTE: This functionality is currently incomplete. It is also *very* specialized

@@ -30,6 +30,7 @@ sealed class MachineHarmonyPatcher {
   internal static string RequiredCountMaxKey = $"{ModEntry.UniqueId}.RequiredCountMax";
   internal static string ExtraOutputIdsKey = $"{ModEntry.UniqueId}.ExtraOutputIds";
   internal static string OverrideInputItemIdKey = $"{ModEntry.UniqueId}.OverrideInputItemId";
+  internal static string UnflavoredDisplayNameOverrideKey = $"{ModEntry.UniqueId}.UnflavoredDisplayNameOverride";
 
   // ModData keys
   internal static string ExtraContextTagsKey = $"{ModEntry.UniqueId}.ExtraContextTags";
@@ -155,6 +156,7 @@ sealed class MachineHarmonyPatcher {
   // * Checks if a colored item should be created and apply the changes
   // * Check if more input items should be consumed
   // * Produces extra outputs and put them in a chest saved in the output item's heldObject
+  // * Applies the display name override if the output is unflavored
   private static void MachineDataUtility_GetOutputItem_postfix(ref Item __result, SObject machine,
       MachineItemOutput outputData, Item inputItem,
       Farmer who, bool probe,
@@ -186,8 +188,6 @@ sealed class MachineHarmonyPatcher {
       }
     }
 
-    if (inputItem is null) return;
-
     IInventory inventory = SObject.autoLoadFrom ?? who.Items;
     // Inherit preserve ID
     if ((outputData.PreserveId == "INHERIT" ||
@@ -199,6 +199,17 @@ sealed class MachineHarmonyPatcher {
         __result is SObject resultObject) {
       resultObject.preservedParentSheetIndex.Value = inputObject.preservedParentSheetIndex.Value;
     }
+
+    // Override display name if unflavored
+    if (outputData.CustomData != null &&
+        outputData.CustomData.TryGetValue(UnflavoredDisplayNameOverrideKey, out var unflavoredDislayNameOverride) &&
+        __result is SObject resultObject2 &&
+        (resultObject2.preservedParentSheetIndex.Value == null ||
+         resultObject2.preservedParentSheetIndex.Value == "-1")) {
+      resultObject2.displayNameFormat = unflavoredDislayNameOverride;
+    }
+
+    if (inputItem is null) return;
     if (outputData.CustomData == null) {
       return;
     }
