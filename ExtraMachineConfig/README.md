@@ -215,6 +215,8 @@ honey's flower flavor to the mead, and increment its price accordingly.
       "Entries": {
         "CustomData": {
           "selph.ExtraMachineConfig.InheritPreserveId": "true",
+          // See below for that this does
+          "selph.ExtraMachineConfig.UnflavoredDisplayNameOverride": "{{i18n: selph.FlavoredMead.WildMead.name}}"
         },
         "CopyPrice": true,
         "ObjectInternalName": "{0} Mead",
