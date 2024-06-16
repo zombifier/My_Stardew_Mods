@@ -12,18 +12,22 @@ This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
 ## Table of Contents
-* [Table of Contents](#table-of-contents)
-* [Item Features](#item-features)
-   + [Draw smoke particles around item](#draw-smoke-particles-around-item)
-   + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
-   + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
-   + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
-* [Machine Features](#machine-features)
-   + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
-   + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
-   + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
-   + [Specify range of input count and scale output count with the input amount consumed](#specify-range-of-input-count-and-scale-output-count-with-the-input-amount-consumed)
-   + [Adding extra byproducts for machine recipes](#adding-extra-byproducts-for-machine-recipes)
+- [Extra Machine Configuration Framework](#extra-machine-configuration-framework)
+   * [Table of Contents](#table-of-contents)
+   * [Item Features](#item-features)
+      + [Draw smoke particles around item](#draw-smoke-particles-around-item)
+      + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
+      + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
+      + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
+   * [Machine Features](#machine-features)
+      + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
+      + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
+      + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
+      + [Specify range of input count and scale output count with the input amount consumed](#specify-range-of-input-count-and-scale-output-count-with-the-input-amount-consumed)
+      + [Adding extra byproducts for machine recipes](#adding-extra-byproducts-for-machine-recipes)
+      + [Generate nearby flower-flavored modded items (or, generate flavored items outside of machines)](#generate-nearby-flower-flavored-modded-items-or-generate-flavored-items-outside-of-machines)
+      + [Override display name if the output item is unflavored](#override-display-name-if-the-output-item-is-unflavored)
+      + [Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query](#generate-an-input-item-for-recipes-that-dont-have-any-and-use-nearby-flower-as-a-possible-query)
 
 ## Item Features
 
