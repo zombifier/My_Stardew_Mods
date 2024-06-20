@@ -8,6 +8,13 @@ This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
 ## Table of Contents
+- [Extra Animal Configuration Framework](#extra-animal-configuration-framework)
+   * [Table of Contents](#table-of-contents)
+   * [Animal data asset](#animal-data-asset)
+      + [Setting up animals that eat alternate feed](#setting-up-animals-that-eat-alternate-feed)
+   * [Multiple possible animals from one egg](#multiple-possible-animals-from-one-egg)
+   * [Examples](#examples)
+   * [Known Issues/Future Content Roadmap](#known-issuesfuture-content-roadmap)
 
 ## Animal data asset
 
