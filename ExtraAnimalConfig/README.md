@@ -212,6 +212,7 @@ item IDs to a model that currently only has the following field:
 
 Note that this is not a guarantee these features will be added.
 
+*  Multiple possible harvest types (e.g. animals that can drop *and* be tool-collected)
 *  Disallow hay as food.
 *  Make the animal birth popup show the correct animal type.
 *  Custom grass-like outdoor food.
