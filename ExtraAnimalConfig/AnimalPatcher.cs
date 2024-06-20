@@ -236,12 +236,10 @@ sealed class AnimalDataPatcher {
 
   // When a new animal gives birth, maybe change it to a different animal depending on the custom spawn data
   static void AnimalHouse_adoptAnimal_Prefix(AnimalHouse __instance, ref FarmAnimal animal) {
-    ModEntry.StaticMonitor.Log("OMEGALOL", LogLevel.Warn);
     // NamingMenu should only be active for newly birthed animals... hopefully.
     if (Game1.activeClickableMenu is NamingMenu &&
         (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
          animalExtensionData.AnimalSpawnList != null)) {
-    ModEntry.StaticMonitor.Log("OMEGALOL2", LogLevel.Warn);
       foreach (var animalSpawnData in animalExtensionData.AnimalSpawnList) {
         if (animalSpawnData.Condition != null && !GameStateQuery.CheckConditions(animalSpawnData.Condition, __instance)) {
           continue;
@@ -256,7 +254,6 @@ sealed class AnimalDataPatcher {
           displayName = name,
         };
         animal.parentId.Value = previousParentId;
-        ModEntry.StaticMonitor.Log("OMEGALOL3 " + animal.type.Value, LogLevel.Warn);
         return;
       }
     }

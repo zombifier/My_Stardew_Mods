@@ -1,10 +1,10 @@
 ﻿{
   "Name": "ExtraAnimalConfig",
   "Author": "selph",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Add extra functionalities to animal definitions.",
   "UniqueID": "selph.ExtraAnimalConfig",
   "EntryDll": "ExtraAnimalConfig.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": ["Nexus:"]
+  "UpdateKeys": ["Nexus:25328"]
 }
