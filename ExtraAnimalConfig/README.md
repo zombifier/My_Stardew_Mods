@@ -35,7 +35,7 @@ value a model with the following fields:
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
 | Id          | `string`            | The unique Id for this model within the current list.|
-| AnimalId    | `string`            | The animal to spawn. |
+| AnimalId    | `string`            | The animal to spawn.<br>KNOWN ISSUE: The overnight pop up (X has given birth to a Y) will still show the parent species in Y. This is very hardcoded and difficult to untangle, so don't expect this to be fixed soon unfortunately.|
 | Condition   | `string`            | A [game state query](https://stardewvalleywiki.com/Modding:Game_state_queries) determining whether this animal should be spawned. |
 
 `AnimalProduceExtensionData` is a model with the following fields:
@@ -212,7 +212,6 @@ item IDs to a model that currently only has the following field:
 
 Note that this is not a guarantee these features will be added.
 
-*  Multiple possible harvest types (e.g. animals that can drop *and* be tool-collected)
+*  Animals with both drop overnight and tool-collected produce. Dig-up animals will remain their separate class.
 *  Disallow hay as food.
-*  Make the animal birth popup show the correct animal type.
 *  Custom grass-like outdoor food.
