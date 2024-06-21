@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
-namespace ExtraMachineConfig; 
+namespace Selph.StardewMods.ExtraMachineConfig; 
 
 using SObject = StardewValley.Object;
 
@@ -90,7 +90,7 @@ internal sealed class ModEntry : Mod {
     Color color = TailoringMenu.GetDyeColor(flavorItem) ?? Color.White;
     ColoredObject outputObj = new ColoredObject(itemId, 1, color);
     outputObj.Name += " " + itemId;
-    outputObj.preservedParentSheetIndex.Value = flavorId;
+    outputObj.preservedParentSheetIndex.Value = flavorObj?.ItemId ?? (flavorId == "-1" ? flavorId : null);
     outputObj.Price = ArgUtility.GetInt(array, 2, flavorObj?.Price ?? outputObj.Price);
 
     return new ItemQueryResult[1]

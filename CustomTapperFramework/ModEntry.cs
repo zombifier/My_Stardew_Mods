@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 using SObject = StardewValley.Object;
 
-namespace CustomTapperFramework;
+namespace Selph.StardewMods.MachineTerrainFramework;
 
 internal sealed class ModEntry : Mod {
   internal static new IModHelper Helper;

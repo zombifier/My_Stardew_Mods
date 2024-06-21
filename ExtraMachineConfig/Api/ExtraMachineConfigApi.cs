@@ -14,7 +14,7 @@ using StardewValley.TokenizableStrings;
 using HarmonyLib;
 using System.Collections.Generic;
 
-namespace ExtraMachineConfig;
+namespace Selph.StardewMods.ExtraMachineConfig;
 
 public class ExtraMachineConfigApi : IExtraMachineConfigApi {
   // Extract the additional fuel data from the output data as a list of fuel IDs to fuel count.
@@ -68,4 +68,18 @@ public class ExtraMachineConfigApi : IExtraMachineConfigApi {
     return extraRequirements;
   }
 
+  public IList<MachineItemOutput> GetExtraOutputs(MachineItemOutput outputData) {
+    IList<MachineItemOutput> extraOutputs = new List<MachineItemOutput>();
+    if (outputData.CustomData != null &&
+        outputData.CustomData.TryGetValue(MachineHarmonyPatcher.ExtraOutputIdsKey, out var extraOutputIds)) {
+      foreach (var extraOutputId in extraOutputIds.Split(',', ' ')) {
+        if (ModEntry.extraOutputAssetHandler.data.TryGetValue(extraOutputId, out var extraOutputData) &&
+            // Disallow ExtraOutputIdsKey inside the extra rules to avoid recursion
+            (!extraOutputData.CustomData?.ContainsKey(MachineHarmonyPatcher.ExtraOutputIdsKey) ?? true)) {
+          extraOutputs.Add(extraOutputData);
+        }
+      }
+    }
+    return extraOutputs;
+  }
 }

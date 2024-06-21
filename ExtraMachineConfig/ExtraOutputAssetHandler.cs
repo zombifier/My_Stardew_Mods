@@ -1,7 +1,7 @@
 using StardewValley.GameData.Machines;
-using SelphCommon;
+using Selph.StardewMods.Common;
 
-namespace ExtraMachineConfig;
+namespace Selph.StardewMods.ExtraMachineConfig;
 
 public sealed class ExtraOutputAssetHandler : DictAssetHandler<MachineItemOutput> {
   public ExtraOutputAssetHandler() : base($"{ModEntry.UniqueId}/ExtraOutputs", ModEntry.StaticMonitor) {}

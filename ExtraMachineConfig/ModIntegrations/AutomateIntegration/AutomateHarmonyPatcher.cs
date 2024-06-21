@@ -4,7 +4,7 @@ using StardewValley.Objects;
 using HarmonyLib;
 using StardewModdingAPI;
 
-namespace ExtraMachineConfig;
+namespace Selph.StardewMods.ExtraMachineConfig;
 
 using SObject = StardewValley.Object;
 

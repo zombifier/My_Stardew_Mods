@@ -12,7 +12,7 @@ using StardewValley.GameData.Machines;
 using HarmonyLib;
 using System.Collections.Generic;
 
-namespace ExtraMachineConfig; 
+namespace Selph.StardewMods.ExtraMachineConfig; 
 
 using SObject = StardewValley.Object;
 
@@ -166,24 +166,19 @@ sealed class MachineHarmonyPatcher {
     }
 
     // Generate the extra output items and save them in a chest saved in the output item's heldObject.
-    if (outputData.CustomData != null &&
-        outputData.CustomData.TryGetValue(ExtraOutputIdsKey, out var extraOutputIds) &&
-        __result is SObject obj) {
+    var extraOutputs = ModEntry.ModApi.GetExtraOutputs(outputData);
+    if (extraOutputs.Count > 0 && __result is SObject obj) {
       var chest = new Chest();
       obj.heldObject.Value = chest;
       GameStateQueryContext context = new GameStateQueryContext(machine.Location, who, obj, inputItem, Game1.random);
       ItemQueryContext itemContext = new ItemQueryContext(machine.Location, who, Game1.random);
-      foreach (var extraOutputId in extraOutputIds.Split(',', ' ')) {
-        if (ModEntry.extraOutputAssetHandler.data.TryGetValue(extraOutputId, out var extraOutputData) &&
-            // Disallow ExtraOutputIdsKey inside the extra rules to avoid recursion
-            (!extraOutputData.CustomData?.ContainsKey(ExtraOutputIdsKey) ?? true)) {
-          if (!GameStateQuery.CheckConditions(extraOutputData.Condition, context)) {
-            continue;
-          }
-          var item = MachineDataUtility.GetOutputItem(machine, extraOutputData, inputItem, who, false, out var _);
-          if (item != null) {
-            chest.addItem(item);
-          }
+      foreach (var extraOutputData in extraOutputs) {
+        if (!GameStateQuery.CheckConditions(extraOutputData.Condition, context)) {
+          continue;
+        }
+        var item = MachineDataUtility.GetOutputItem(machine, extraOutputData, inputItem, who, false, out var _);
+        if (item != null) {
+          chest.addItem(item);
         }
       }
     }

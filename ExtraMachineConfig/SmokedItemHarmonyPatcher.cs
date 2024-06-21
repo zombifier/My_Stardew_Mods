@@ -6,7 +6,7 @@ using StardewValley.Objects;
 using StardewValley.ItemTypeDefinitions;
 using HarmonyLib;
 
-namespace ExtraMachineConfig; 
+namespace Selph.StardewMods.ExtraMachineConfig; 
 
 sealed class SmokedItemHarmonyPatcher {
   internal static string SmokedItemTag = "smoked_item";
