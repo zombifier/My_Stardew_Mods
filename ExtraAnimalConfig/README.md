@@ -1,6 +1,6 @@
 # Extra Animal Configuration Framework
 
-[Extra Animal Config](https://www.nexusmods.com/stardewvalley/mods/22256)
+[Extra Animal Config](https://www.nexusmods.com/stardewvalley/mods/25328)
 is a Stardew Valley mod that adds extra functionalities to Content Patcher
 farm animals recipe definitions.
 
