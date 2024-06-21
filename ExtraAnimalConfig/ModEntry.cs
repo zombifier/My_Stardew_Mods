@@ -4,7 +4,7 @@ using System;
 using StardewValley;
 using Microsoft.Xna.Framework;
 
-namespace ExtraAnimalConfig; 
+namespace Selph.StardewMods.ExtraAnimalConfig;
 
 internal sealed class ModEntry : Mod {
   internal new static IModHelper Helper { get;

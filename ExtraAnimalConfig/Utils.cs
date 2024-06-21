@@ -11,7 +11,7 @@ using xTile.Dimensions;
 
 using SObject = StardewValley.Object;
 
-namespace ExtraAnimalConfig; 
+namespace Selph.StardewMods.ExtraAnimalConfig;
 
 sealed class SiloUtils {
   static string SiloCapacityKeyPrefix = $"{ModEntry.UniqueId}.SiloCapacity.";

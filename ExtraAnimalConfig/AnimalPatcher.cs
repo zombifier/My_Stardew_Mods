@@ -19,7 +19,7 @@ using xTile.Dimensions;
 
 using SObject = StardewValley.Object;
 
-namespace ExtraAnimalConfig; 
+namespace Selph.StardewMods.ExtraAnimalConfig;
 
 // Contains Harmony patches related to animals.
 sealed class AnimalDataPatcher {
@@ -420,6 +420,7 @@ sealed class AnimalDataPatcher {
 
   // Returns whether the animal's current produce is hardcoded to drop instead of harvested by tool
   static bool CurrentProduceHasDropOverride(FarmAnimal animal, string produceId) {
+    if (produceId == null) return false;
     return (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
         animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId), out var animalProduceExtensionData) &&
         animalProduceExtensionData.HarvestTool == "DropOvernight");

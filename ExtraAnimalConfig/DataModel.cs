@@ -1,7 +1,7 @@
 using StardewValley.GameData;
 using System.Collections.Generic;
 
-namespace ExtraAnimalConfig;
+namespace Selph.StardewMods.ExtraAnimalConfig;
 
 public class AnimalProduceExtensionData {
   public GenericSpawnItemData ItemQuery;

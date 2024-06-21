@@ -1,6 +1,6 @@
-namespace ExtraAnimalConfig;
+namespace Selph.StardewMods.ExtraAnimalConfig;
 
-using SelphCommon;
+using Selph.StardewMods.Common;
 
 public sealed class AnimalExtensionDataAssetHandler : DictAssetHandler<AnimalExtensionData> {
   public AnimalExtensionDataAssetHandler() : base($"{ModEntry.UniqueId}/AnimalExtensionData", ModEntry.StaticMonitor) {}

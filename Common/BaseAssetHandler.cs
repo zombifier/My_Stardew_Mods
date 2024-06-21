@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using SObject = StardewValley.Object;
 
-namespace SelphCommon;
+namespace Selph.StardewMods.Common;
 
 public abstract class DictAssetHandler<AssetType> {
   private string dataPath;
@@ -39,7 +39,7 @@ public abstract class DictAssetHandler<AssetType> {
   public void OnAssetReady(object sender, AssetReadyEventArgs e) {
     if (e.NameWithoutLocale.IsEquivalentTo(this.dataPath)) {
       this.data = Game1.content.Load<Dictionary<string, AssetType>>(this.dataPath);
-      monitor.Log($"Loaded asset {dataPath} with {data.Count} entries.", LogLevel.Info);
+      monitor.Log($"Loaded asset {dataPath} with {data.Count} entries.");
     }
   }
 
@@ -50,7 +50,7 @@ public abstract class DictAssetHandler<AssetType> {
   public void OnAssetsInvalidated(object sender, AssetsInvalidatedEventArgs e) {
     foreach (var name in e.NamesWithoutLocale) {
       if (name.IsEquivalentTo(this.dataPath)) {
-        monitor.Log($"Asset {dataPath} invalidated, reloading.", LogLevel.Info);
+        monitor.Log($"Asset {dataPath} invalidated, reloading.");
         this.data = Game1.content.Load<Dictionary<string, AssetType>>(this.dataPath);
       }
     }
