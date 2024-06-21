@@ -212,6 +212,6 @@ item IDs to a model that currently only has the following field:
 
 Note that this is not a guarantee these features will be added.
 
-*  Animals with both drop overnight and tool-collected produce. Dig-up animals will remain their separate class.
+*  Animals that can have drop overnight, tool-collected produce, and dig-up produce. They can do only one of these things per day however, and this limitation won't change (both from a balance and a code difficulty reason).
 *  Disallow hay as food.
 *  Custom grass-like outdoor food.
