@@ -50,7 +50,7 @@ value a model with the following fields:
 ### Setting up animals that eat alternate feed
 
 1. Optional: In base animal data, set `GrassEatAmount` to `0` so the animal
-   doesn't eat grass.
+   doesn't eat grass and hay.
 2. In the mod asset, set `FeedItemId` as specified above.
 3. In the map for the building that will house this animal, add custom feeding
    trough tiles in the `Back` layer with the
