@@ -57,18 +57,18 @@ sealed class AnimalDataPatcher {
     harmony.Patch(
         original: AccessTools.Method(typeof(FarmAnimal),
           nameof(FarmAnimal.dayUpdate)),
-        prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_dayUpdate_Prefix)));
+        prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_dayUpdate_Prefix)),
+        transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_dayUpdate_Transpiler)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(FarmAnimal),
+          nameof(FarmAnimal.GetHarvestType)),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_GetHarvestType_Postfix)));
 
     harmony.Patch(
         original: AccessTools.Method(typeof(AnimalHouse),
           nameof(AnimalHouse.adoptAnimal)),
         prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.AnimalHouse_adoptAnimal_Prefix)));
-
-    //harmony.Patch(
-    //    original: AccessTools.Constructor(typeof(FarmAnimal),
-    //      new Type[] {typeof(string), typeof(long), typeof(long)}),
-    //    prefix: new HarmonyMethod(typeof(AnimalDataPatcher),
-    //      nameof(AnimalDataPatcher.FarmAnimal_Constructor_Prefix)));
 
     // Animal house patches for the non-hay food functionality
     harmony.Patch(
@@ -120,7 +120,10 @@ sealed class AnimalDataPatcher {
         ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
         animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value), out var animalProduceExtensionData) &&
         tool != null && tool.BaseName != null && animalProduceExtensionData.HarvestTool != null) {
-      __result = animalProduceExtensionData.HarvestTool == tool.BaseName;
+      // In extremely rare cases (eg debug mode) an animal may spawn with DropOvernight produce in its body.
+      // To help get the produce out, always allow them to harvest
+      __result = (animalProduceExtensionData.HarvestTool == "DropOvernight") ||
+        (animalProduceExtensionData.HarvestTool == tool.BaseName);
     }
   }
 
@@ -185,6 +188,26 @@ sealed class AnimalDataPatcher {
       }
       if (!isFed && eatsGrass) {
         __instance.fullness.Value = 0;
+      }
+    }
+  }
+
+  static void FarmAnimal_GetHarvestType_Postfix(FarmAnimal __instance, ref FarmAnimalHarvestType? __result) {
+    if (__instance.currentProduce.Value != null &&
+        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value), out var animalProduceExtensionData)) {
+      switch (animalProduceExtensionData.HarvestTool) {
+        case "DigUp":
+          __result = FarmAnimalHarvestType.DigUp;
+          break;
+        case "Milk Pail":
+        case "Shears":
+          __result = FarmAnimalHarvestType.HarvestWithTool;
+          break;
+        // NOTE: This branch should NEVER happen (the produce should have been dropped last night) but I'm including it anyway just in case
+        case "DropOvernight":
+          __result = FarmAnimalHarvestType.DropOvernight;
+          break;
       }
     }
   }
@@ -349,7 +372,7 @@ sealed class AnimalDataPatcher {
         new CodeMatch(OpCodes.Ldc_I4_0),
         new CodeMatch(OpCodes.Call, ItemRegistryCreateObjectType)
         )
-      .ThrowIfNotMatch($"Could not find entry point for {nameof(FarmAnimal_behaviors_Transpiler)}")
+      .ThrowIfNotMatch($"Could not find entry point for {nameof(MilkPail_DoFunction_Transpiler)}")
       .Advance(6)
       .InsertAndAdvance(
           new CodeInstruction(OpCodes.Ldarg_0),
@@ -376,13 +399,97 @@ sealed class AnimalDataPatcher {
         new CodeMatch(OpCodes.Ldc_I4_0),
         new CodeMatch(OpCodes.Call, ItemRegistryCreateObjectType)
         )
-      .ThrowIfNotMatch($"Could not find entry point for {nameof(FarmAnimal_behaviors_Transpiler)}")
+      .ThrowIfNotMatch($"Could not find entry point for {nameof(Shears_DoFunction_Transpiler)}")
       .Advance(6)
       .InsertAndAdvance(
           new CodeInstruction(OpCodes.Ldarg_0),
           new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Shears), nameof(Shears.animal))),
           new CodeInstruction(OpCodes.Call, CreateProduceType)
           )
+      .RemoveInstructions(4);
+    return matcher.InstructionEnumeration();
+  }
+
+  // Both of these must false by default
+  // Returns whether this animal only eats modded food and not hay/grass
+  static bool AnimalOnlyEatsModdedFood(FarmAnimal animal) {
+    return (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+        animalExtensionData.FeedItemId != null &&
+        (animal.GetAnimalData()?.GrassEatAmount ?? 0) <= 0);
+  }
+
+  // Returns whether the animal's current produce is hardcoded to drop instead of harvested by tool
+  static bool CurrentProduceHasDropOverride(FarmAnimal animal, string produceId) {
+    return (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId), out var animalProduceExtensionData) &&
+        animalProduceExtensionData.HarvestTool == "DropOvernight");
+  }
+
+  // This transpiler does 3 things:
+  // * Disallow eating hay if not a hay eater
+  // * Override the item create call with the override item query
+  // * Don't drop produce on the ground if override is specified
+  static IEnumerable<CodeInstruction> FarmAnimal_dayUpdate_Transpiler(IEnumerable<CodeInstruction> instructions) {
+    CodeMatcher matcher = new(instructions);
+      // Old: (int)this.fullness < 200 && environment is AnimalHouse
+      // New: ... && !AnimalOnlyEatsModdedFood(this)
+      matcher.MatchEndForward(
+        new CodeMatch(OpCodes.Ldarg_0),
+        new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), nameof(FarmAnimal.fullness))),
+        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(NetInt), "op_Implicit")),
+        new CodeMatch(OpCodes.Ldc_I4, 200),
+        new CodeMatch(OpCodes.Bge_S),
+        new CodeMatch(OpCodes.Ldarg_1),
+        new CodeMatch(OpCodes.Isinst, typeof(AnimalHouse)),
+        new CodeMatch(OpCodes.Brfalse_S)
+          )
+      .ThrowIfNotMatch($"Could not find entry point for hunger portion of {nameof(FarmAnimal_dayUpdate_Transpiler)}");
+      var label = (Label)matcher.Operand;
+      matcher.Advance(1)
+        .InsertAndAdvance(
+          new CodeInstruction(OpCodes.Ldarg_0),
+          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalDataPatcher), nameof(AnimalOnlyEatsModdedFood))),
+          new CodeInstruction(OpCodes.Brtrue_S, label)
+          );
+
+      // Old: animalData.HarvestType != FarmAnimalHarvestType.DropOvernight
+      // New: 
+      matcher.MatchEndForward(
+        new CodeMatch(OpCodes.Ldloc_0),
+        new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimalData), nameof(FarmAnimalData.HarvestType))),
+        new CodeMatch(OpCodes.Ldc_I4_0),
+        new CodeMatch(OpCodes.Cgt_Un),
+        new CodeMatch(OpCodes.Ldloc_S),
+        new CodeMatch(OpCodes.And),
+        new CodeMatch(OpCodes.Brfalse_S)
+          )
+        .ThrowIfNotMatch($"Could not find entry point for drop harvest type check portion of {nameof(FarmAnimal_dayUpdate_Transpiler)}");
+      var label2 = (Label)matcher.Operand;
+      matcher.Advance(1)
+        .InsertAndAdvance(
+          new CodeInstruction(OpCodes.Ldarg_0),
+          new CodeInstruction(OpCodes.Ldloc_S, 7),
+          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalDataPatcher), nameof(CurrentProduceHasDropOverride))),
+          new CodeInstruction(OpCodes.Brtrue_S, label2)
+          );
+
+
+      // Old: ItemRegistry.Create<Object>("(O)" + text);
+      // New: AnimalDataPatcher.CreateProduce("(O)" + text, this);
+      matcher.MatchStartForward(
+        new CodeMatch(OpCodes.Ldstr, "(O)"),
+        new CodeMatch(OpCodes.Ldloc_S),
+        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(String), nameof(String.Concat), new Type[] {typeof(string), typeof(string)})),
+        new CodeMatch(OpCodes.Ldc_I4_1),
+        new CodeMatch(OpCodes.Ldc_I4_0),
+        new CodeMatch(OpCodes.Ldc_I4_0),
+        new CodeMatch(OpCodes.Call, ItemRegistryCreateObjectType)
+      )
+      .ThrowIfNotMatch($"Could not find entry point for item create {nameof(FarmAnimal_dayUpdate_Transpiler)}")
+      .Advance(3)
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Ldarg_0),
+        new CodeInstruction(OpCodes.Call, CreateProduceType))
       .RemoveInstructions(4);
     return matcher.InstructionEnumeration();
   }

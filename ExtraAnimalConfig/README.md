@@ -42,8 +42,8 @@ value a model with the following fields:
 
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
-| ItemQuery          | [`GenericSpawnItemData`](https://stardewvalleywiki.com/Modding:Item_queries)  | The override item query to use to actually generate this produce. Most item query fields will work, aside from quality (which is determined by friendship) and stack size (which will always be 1, or 2 for animals that were fed Golden Crackers).<br>KNOWN ISSUE: This does not work for `DropOvernight` items yet. This will be fixed in the next update.|
-| HarvestTool        | `string`  | For animals whose produce is tool-gathered, the harvest tool to use for this produce. Supports `Milk Pail` and `Shears`. |
+| ItemQuery          | [`GenericSpawnItemData`](https://stardewvalleywiki.com/Modding:Item_queries)  | The override item query to use to actually generate this produce. Most item query fields will work, aside from quality (which is determined by friendship) and stack size (which will always be 1, or 2 for animals that were fed Golden Crackers).|
+| HarvestTool        | `string`  | The harvest tool/method to use for this produce instead of its default method. Supports `DropOvernight`, `Milk Pail`, `Shears` and `DigUp`. |
 | ProduceTexture     | `string`  | The animal's texture asset to override the default texture if it currently has this produce. |
 | SkinProduceTexture | `Dictionary<string, string>` | Same as the above, but for non-default textures (which is the key, with the asset being the value).|
 
@@ -77,11 +77,6 @@ Important notes/current limitations:
 * Animal that can also eat grass will still prefer fresh grass, and won't
   get full happiness from eating their modded feed. If they are not a grass
   eater, they will get full happiness from their modded feed.
-* Even with `GrassEatAmount` set to 0, animals with modded food can *still* eat
-  hay! This functionality is not as straightforward to disable, and as a
-  result, your custom buildings should not have hay troughs if you don't want
-  them to eat hay. If you need non-hay-eating animal functionality for some
-  reason (e.g. mixed farm buildings), please leave a feature request.
 
 ## Multiple possible animals from one egg
 
@@ -212,6 +207,4 @@ item IDs to a model that currently only has the following field:
 
 Note that this is not a guarantee these features will be added.
 
-*  Animals that can have drop overnight, tool-collected produce, and dig-up produce. They can do only one of these things per day however, and this limitation won't change (both from a balance and a code difficulty reason).
-*  Disallow hay as food.
 *  Custom grass-like outdoor food.
