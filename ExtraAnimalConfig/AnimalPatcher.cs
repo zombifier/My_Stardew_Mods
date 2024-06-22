@@ -172,7 +172,8 @@ sealed class AnimalDataPatcher {
   // If there are custom non-hay feed for this animal inside the building, feed the animal
 	static void FarmAnimal_dayUpdate_Prefix(FarmAnimal __instance, GameLocation environment) {
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
-      environment is AnimalHouse) {
+        animalExtensionData.FeedItemId != null &&
+        environment is AnimalHouse) {
       bool isFed = false;
       bool eatsGrass = (__instance.GetAnimalData()?.GrassEatAmount ?? 0) > 0;
       foreach (var pair in environment.objects.Pairs.ToArray()) {
@@ -422,7 +423,8 @@ sealed class AnimalDataPatcher {
   static bool DoNotDropCurrentProduce(FarmAnimal animal, string produceId) {
     if (produceId != null &&
         ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId), out var animalProduceExtensionData)) {
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId), out var animalProduceExtensionData) &&
+        animalProduceExtensionData.HarvestTool != null) {
       return animalProduceExtensionData.HarvestTool != "DropOvernight";
     }
     return animal.GetHarvestType() != FarmAnimalHarvestType.DropOvernight;
