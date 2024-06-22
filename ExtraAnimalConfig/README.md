@@ -42,7 +42,7 @@ value a model with the following fields:
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
 | ItemQuery          | [`GenericSpawnItemData`](https://stardewvalleywiki.com/Modding:Item_queries)  | The override item query to use to actually generate this produce. Most item query fields will work, aside from quality (which is determined by friendship) and stack size (which will always be 1, or 2 for animals that were fed Golden Crackers).|
-| HarvestTool        | `string`  | The harvest tool/method to use for this produce instead of its default method. Supports `DropOvernight`, `Milk Pail`, `Shears` and `DigUp`.|
+| HarvestTool        | `string`  | The harvest tool/method to use for this produce instead of its default method. Supports `DropOvernight`, `Milk Pail`, `Shears` and `DigUp`.<br>KNOWN ISSUE: There are reports of this feature not working if the animal's default harvest method is `DropOvernight`. Set it to tool harvested to resolve the issue.|
 | ProduceTexture     | `string`  | The animal's texture asset to override the default texture if it currently has this produce. |
 | SkinProduceTexture | `Dictionary<string, string>` | Same as the above, but for non-default textures (which is the key, with the asset being the value).|
 
