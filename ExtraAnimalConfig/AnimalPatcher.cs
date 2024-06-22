@@ -410,8 +410,8 @@ sealed class AnimalDataPatcher {
     return matcher.InstructionEnumeration();
   }
 
-  // Both of these must false by default
   // Returns whether this animal only eats modded food and not hay/grass
+  // This must false by default
   static bool AnimalOnlyEatsModdedFood(FarmAnimal animal) {
     return (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
         animalExtensionData.FeedItemId != null &&
@@ -419,11 +419,13 @@ sealed class AnimalDataPatcher {
   }
 
   // Returns whether the animal's current produce is hardcoded to drop instead of harvested by tool
-  static bool CurrentProduceHasDropOverride(FarmAnimal animal, string produceId) {
-    if (produceId == null) return false;
-    return (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId), out var animalProduceExtensionData) &&
-        animalProduceExtensionData.HarvestTool == "DropOvernight");
+  static bool DoNotDropCurrentProduce(FarmAnimal animal, string produceId) {
+    if (produceId != null &&
+        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId), out var animalProduceExtensionData)) {
+      return animalProduceExtensionData.HarvestTool != "DropOvernight";
+    }
+    return animal.GetHarvestType() != FarmAnimalHarvestType.DropOvernight;
   }
 
   // This transpiler does 3 things:
@@ -454,25 +456,20 @@ sealed class AnimalDataPatcher {
           );
 
       // Old: animalData.HarvestType != FarmAnimalHarvestType.DropOvernight
-      // New: 
-      matcher.MatchEndForward(
+      // New: DoNotDropCurrentProduce(animal, text)
+      matcher.MatchStartForward(
         new CodeMatch(OpCodes.Ldloc_0),
         new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimalData), nameof(FarmAnimalData.HarvestType))),
         new CodeMatch(OpCodes.Ldc_I4_0),
-        new CodeMatch(OpCodes.Cgt_Un),
-        new CodeMatch(OpCodes.Ldloc_S),
-        new CodeMatch(OpCodes.And),
-        new CodeMatch(OpCodes.Brfalse_S)
+        new CodeMatch(OpCodes.Cgt_Un)
           )
         .ThrowIfNotMatch($"Could not find entry point for drop harvest type check portion of {nameof(FarmAnimal_dayUpdate_Transpiler)}");
-      var label2 = (Label)matcher.Operand;
-      matcher.Advance(1)
+      var labels = matcher.Labels;
+      matcher.RemoveInstructions(4)
         .InsertAndAdvance(
-          new CodeInstruction(OpCodes.Ldarg_0),
+          new CodeInstruction(OpCodes.Ldarg_0).WithLabels(labels),
           new CodeInstruction(OpCodes.Ldloc_S, 7),
-          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalDataPatcher), nameof(CurrentProduceHasDropOverride))),
-          new CodeInstruction(OpCodes.Brtrue_S, label2)
-          );
+          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalDataPatcher), nameof(DoNotDropCurrentProduce))));
 
 
       // Old: ItemRegistry.Create<Object>("(O)" + text);
