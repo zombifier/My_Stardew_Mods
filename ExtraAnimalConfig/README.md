@@ -8,13 +8,12 @@ This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
 
 ## Table of Contents
-- [Extra Animal Configuration Framework](#extra-animal-configuration-framework)
-   * [Table of Contents](#table-of-contents)
-   * [Animal data asset](#animal-data-asset)
-      + [Setting up animals that eat alternate feed](#setting-up-animals-that-eat-alternate-feed)
-   * [Multiple possible animals from one egg](#multiple-possible-animals-from-one-egg)
-   * [Examples](#examples)
-   * [Known Issues/Future Content Roadmap](#known-issuesfuture-content-roadmap)
+* [Table of Contents](#table-of-contents)
+* [Animal data asset](#animal-data-asset)
+   + [Setting up animals that eat alternate feed](#setting-up-animals-that-eat-alternate-feed)
+* [Multiple possible animals from one egg](#multiple-possible-animals-from-one-egg)
+* [Examples](#examples)
+* [Known Issues/Future Content Roadmap](#known-issuesfuture-content-roadmap)
 
 ## Animal data asset
 
@@ -43,7 +42,7 @@ value a model with the following fields:
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
 | ItemQuery          | [`GenericSpawnItemData`](https://stardewvalleywiki.com/Modding:Item_queries)  | The override item query to use to actually generate this produce. Most item query fields will work, aside from quality (which is determined by friendship) and stack size (which will always be 1, or 2 for animals that were fed Golden Crackers).|
-| HarvestTool        | `string`  | The harvest tool/method to use for this produce instead of its default method. Supports `DropOvernight`, `Milk Pail`, `Shears` and `DigUp`. |
+| HarvestTool        | `string`  | The harvest tool/method to use for this produce instead of its default method. Supports `DropOvernight`, `Milk Pail`, `Shears` and `DigUp`.<br>IMPORTANT NOTE: For this to work correctly, don't set the animal's default harvest method to `DropOvernight`. |
 | ProduceTexture     | `string`  | The animal's texture asset to override the default texture if it currently has this produce. |
 | SkinProduceTexture | `Dictionary<string, string>` | Same as the above, but for non-default textures (which is the key, with the asset being the value).|
 
