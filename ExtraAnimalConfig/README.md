@@ -85,7 +85,7 @@ item IDs to a model that currently only has the following field:
 
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
-| AnimalSpawnList | `List<AnimalSpawnData>`  | A list of animal spawn data to use instead, which will be evaluated in order. See above for details on the `AnimalSpawnData` field.<br>**NOTE**:<br>* You still need to set this egg item as the valid hatch item for at least one animal.<br>* Any conditions will be evaluated when the animal becomes ready for hatching, not when the egg is placed into the incubator. This is only really relevant for time-based conditions.<br> * See the notes on the `AnimalSpawnList` field in the animal data for important details on how the entries will be evaluated (in order, use first valid).|
+| AnimalSpawnList | `List<AnimalSpawnData>`  | A list of animal spawn data to use instead, which will be evaluated in order. See above for details on the `AnimalSpawnData` field.<br>**NOTE**:<br>* The list will be evaluated in order, from top to bottom. Make sure the last entry is always true/has no condition. Also because of this, probability won't work as you initially expect. If you want 3 animals each with the same chance for example, the first one needs a 0.333 probability, the second one needs 0.5, and the third one 1.<br>* You still need to set this egg item as the valid hatch item for at least one animal.<br>* Any conditions will be evaluated when the animal becomes ready for hatching, not when the egg is placed into the incubator. This is only really relevant for time-based conditions.|
 
 ## Examples
 
