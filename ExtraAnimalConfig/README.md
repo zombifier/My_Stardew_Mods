@@ -85,7 +85,7 @@ item IDs to a model that currently only has the following field:
 
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
-| AnimalSpawnList | `List<AnimalSpawnData>`  | A list of animal spawn data to use instead, which will be evaluated in order. See above for details on the `AnimalSpawnData` field.<br>Note that you still need to set this egg item as the valid hatch item for at least one animal, and that any conditions will be evaluated when the animal becomes ready for hatching.|
+| AnimalSpawnList | `List<AnimalSpawnData>`  | A list of animal spawn data to use instead, which will be evaluated in order. See above for details on the `AnimalSpawnData` field.<br>**NOTE**:<br>* You still need to set this egg item as the valid hatch item for at least one animal.<br>* Any conditions will be evaluated when the animal becomes ready for hatching, not when the egg is placed into the incubator. This is only really relevant for time-based conditions.<br> * See the notes on the `AnimalSpawnList` field in the animal data for important details on how the entries will be evaluated (in order, use first valid).|
 
 ## Examples
 
