@@ -27,7 +27,7 @@ value a model with the following fields:
 | MalePercentage          | `float`            | The percentage of this species that will be male. Currently this only affects Marnie's message after buying the animal. |
 | FeedItemId              | `string`           | The *qualified* item ID of this animal's food item. If set, the animal will need to eat this item in addition to/in place of grass and hay. See below for a full guide. |
 | AnimalProduceExtensionData| `Dictionary<string, AnimalProduceExtensionData>` | A map of *qualified* item IDs corresponding to an (unqualified) entry in `(Deluxe)ProduceItemIds` to its extra settings. This is used to store extra settings associated with an animal produce; see below for more info.|
-| AnimalSpawnList          | `List<AnimalSpawnData>`   | A list of animal spawn data objects to determine which new animal to add when this animal gets pregnant and gives birth. The list will be evaluated in order.|
+| AnimalSpawnList          | `List<AnimalSpawnData>`   | A list of animal spawn data objects to determine which new animal to add when this animal gets pregnant and gives birth.<br>**NOTE**: The list will be evaluated in order, from top to bottom. Make sure the last entry is always true/has no condition. Also because of this, probability won't work as you initially expect. If you want 3 animals each with the same chance for example, the first one needs a 0.333 probability, the second one needs 0.5, and the third one 1.|
 
 `AnimalSpawnData` is a model with the following fields:
 
