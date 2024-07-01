@@ -97,10 +97,10 @@ public static class WaterIndoorPotUtils {
       Microsoft.Xna.Framework.Rectangle fertilizerSourceRect = obj.hoeDirt.Value.GetFertilizerSourceRect();
       fertilizerSourceRect.Width = 13;
       fertilizerSourceRect.Height = 13;
-      spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, crabPotData.directionOffset + new Vector2(obj.tileLocation.X * 64f + 4f, obj.tileLocation.Y * 64f + 4f + (int)yBobCrops)), fertilizerSourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (obj.tileLocation.Y + 0.65f) * 64f / 10000f + (float)x * 1E-05f);
+      spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, crabPotData.directionOffset + new Vector2(obj.TileLocation.X * 64f + 4f, obj.TileLocation.Y * 64f + 4f + (int)yBobCrops)), fertilizerSourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (obj.TileLocation.Y + 0.65f) * 64f / 10000f + (float)x * 1E-05f);
     }
-    obj.hoeDirt.Value.crop?.drawWithOffset(spriteBatch, obj.tileLocation.Value, /*(obj.hoeDirt.Value.isWatered() && (int)obj.hoeDirt.Value.crop.currentPhase.Value == 0 && !obj.hoeDirt.Value.crop.raisedSeeds.Value) ? (new Color(180, 100, 200) * 1f) :*/ Color.White, obj.hoeDirt.Value.getShakeRotation(), crabPotData.directionOffset + new Vector2(32f, 24f + (int)yBobCrops));
-    obj.heldObject.Value?.draw(spriteBatch, x * 64, y * 64 - 48, (obj.tileLocation.Y + 0.66f) * 64f / 10000f + (float)x * 1E-05f, 1f);
+    obj.hoeDirt.Value.crop?.drawWithOffset(spriteBatch, obj.TileLocation, /*(obj.hoeDirt.Value.isWatered() && (int)obj.hoeDirt.Value.crop.currentPhase.Value == 0 && !obj.hoeDirt.Value.crop.raisedSeeds.Value) ? (new Color(180, 100, 200) * 1f) :*/ Color.White, obj.hoeDirt.Value.getShakeRotation(), crabPotData.directionOffset + new Vector2(32f, 24f + (int)yBobCrops));
+    obj.heldObject.Value?.draw(spriteBatch, x * 64, y * 64 - 48, (obj.TileLocation.Y + 0.66f) * 64f / 10000f + (float)x * 1E-05f, 1f);
     obj.bush.Value?.draw(spriteBatch, crabPotData.directionOffset.Y + yBobCrops);
   }
 

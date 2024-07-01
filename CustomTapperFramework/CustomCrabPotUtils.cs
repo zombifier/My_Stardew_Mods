@@ -296,6 +296,7 @@ public static class CustomCrabPotUtils
             Game1.haltAfterCheck = false;
           }
           Game1.playSound("coin");
+          obj.performRemoveAction();
           location.objects.Remove(tileLocation);
           removeOverlayTiles(location, tileLocation);
           return true;
@@ -498,6 +499,11 @@ public static class CustomCrabPotUtils
           crabPotData.directionOffset + new Vector2(x * 64, y * 64 + (int)yBob - 64)) + crabPotData.shake,
         SObject.getSourceRectForBigCraftable(texture2D, spriteIndex + offset),
         Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64) + crabPotData.directionOffset.Y + (float)(x % 4)) / 10000f);
+
+    if (obj.isLamp.Value && Game1.isDarkOut(location))
+    {
+//      spriteBatch.Draw(Game1.mouseCursors, new Vector2(x * 64, y * 64 + (int)yBob - 64) + new Vector2(-32f, -32f), new Microsoft.Xna.Framework.Rectangle(88, 1779, 32, 32), Color.White * 0.75f, 0f, Vector2.Zero, 4f, SpriteEffects.None, Math.Max(0f, (float)((y + 1) * 64 - 20) / 10000f) + (float)x / 1000000f);
+    }
 
     if (location.waterTiles != null && x < location.waterTiles.waterTiles.GetLength(0) && y < location.waterTiles.waterTiles.GetLength(1) && location.waterTiles.waterTiles[x, y].isWater)
     {
