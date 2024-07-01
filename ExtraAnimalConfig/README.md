@@ -12,6 +12,7 @@ content packs. For users, install the mod as usual from the link above.
 * [Animal data asset](#animal-data-asset)
    + [Setting up animals that eat alternate feed](#setting-up-animals-that-eat-alternate-feed)
 * [Multiple possible animals from one egg](#multiple-possible-animals-from-one-egg)
+* [Game State Queries](#game-state-queries)
 * [Examples](#examples)
 * [Known Issues/Future Content Roadmap](#known-issuesfuture-content-roadmap)
 
@@ -86,6 +87,13 @@ item IDs to a model that currently only has the following field:
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
 | AnimalSpawnList | `List<AnimalSpawnData>`  | A list of animal spawn data to use instead, which will be evaluated in order. See above for details on the `AnimalSpawnData` field.<br>**NOTE**:<br>* The list will be evaluated in order, from top to bottom. Make sure the last entry is always true/has no condition. Also because of this, probability won't work as you initially expect. If you want 3 animals each with the same chance for example, the first one needs a 0.333 probability, the second one needs 0.5, and the third one 1.<br>* You still need to set this egg item as the valid hatch item for at least one animal.<br>* Any conditions will be evaluated when the animal becomes ready for hatching, not when the egg is placed into the incubator. This is only really relevant for time-based conditions.|
+
+## Game state queries
+Version 1.1.4 introduces the following Game State Query:
+
+| GSQ                          |  Description              |
+| ---------------------------  | ------------------------ |
+| `selph.ExtraAnimalConfig_ANIMAL_HOUSE_COUNT <location> <animal type> [min count] [max count]` | Whether the specified location (only really supports `Here` or `Target`) has the count of the specified animal between min (0 if not specified) and max (no limit if not specified).|
 
 ## Examples
 
