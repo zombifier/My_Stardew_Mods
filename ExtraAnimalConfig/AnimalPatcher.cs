@@ -118,7 +118,7 @@ sealed class AnimalDataPatcher {
   static void FarmAnimal_CanGetProduceWithTool_Postfix(FarmAnimal __instance, ref bool __result, Tool tool) {
     if (__instance.currentProduce.Value != null &&
         ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value), out var animalProduceExtensionData) &&
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value) ?? __instance.currentProduce.Value, out var animalProduceExtensionData) &&
         tool != null && tool.BaseName != null && animalProduceExtensionData.HarvestTool != null) {
       // In extremely rare cases (eg debug mode) an animal may spawn with DropOvernight produce in its body.
       // To help get the produce out, always allow them to harvest
@@ -130,7 +130,7 @@ sealed class AnimalDataPatcher {
 	static void FarmAnimal_GetTexturePath_Postfix(FarmAnimal __instance, ref string __result, FarmAnimalData data) {
     if (__instance.currentProduce.Value != null &&
         ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value), out var animalProduceExtensionData)) {
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value) ?? __instance.currentProduce.Value, out var animalProduceExtensionData)) {
       if (animalProduceExtensionData.ProduceTexture != null) {
         __result = animalProduceExtensionData.ProduceTexture;
       }
@@ -196,7 +196,7 @@ sealed class AnimalDataPatcher {
   static void FarmAnimal_GetHarvestType_Postfix(FarmAnimal __instance, ref FarmAnimalHarvestType? __result) {
     if (__instance.currentProduce.Value != null &&
         ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value), out var animalProduceExtensionData)) {
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value) ?? __instance.currentProduce.Value, out var animalProduceExtensionData)) {
       switch (animalProduceExtensionData.HarvestTool) {
         case "DigUp":
           __result = FarmAnimalHarvestType.DigUp;
@@ -285,7 +285,7 @@ sealed class AnimalDataPatcher {
 
   static SObject CreateProduce(string produceId, FarmAnimal animal) {
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId), out var animalProduceExtensionData) &&
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData) &&
         animalProduceExtensionData.ItemQuery != null) {
       var context = new ItemQueryContext(animal.home?.GetIndoors(), Game1.getFarmer(animal.ownerID.Value), Game1.random);
       var item = ItemQueryResolver.TryResolveRandomItem(animalProduceExtensionData.ItemQuery, context);
@@ -421,9 +421,9 @@ sealed class AnimalDataPatcher {
 
   // Returns whether the animal's current produce is hardcoded to drop instead of harvested by tool
   static bool DoNotDropCurrentProduce(FarmAnimal animal, string produceId) {
-    if (produceId != null &&
+    if (produceId != null && animal?.type?.Value != null &&
         ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId), out var animalProduceExtensionData) &&
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData) &&
         animalProduceExtensionData.HarvestTool != null) {
       return animalProduceExtensionData.HarvestTool != "DropOvernight";
     }
