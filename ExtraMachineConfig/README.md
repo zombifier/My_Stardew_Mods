@@ -725,6 +725,7 @@ Known issues:
   (notably Love of Cooking).
 * With Better Crafting, bulk crafting recipes modified by this mod does not
   currently work, and you need to craft one at a time.
+* Better Crafting support also seems flaky combined with Yet Another Cooking Skill. I am still investigating this.
 
 #### Example
 
