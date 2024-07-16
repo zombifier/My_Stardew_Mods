@@ -93,7 +93,7 @@ Version 1.2.0 introduces the following Game State Query:
 
 | GSQ                          |  Description              |
 | ---------------------------  | ------------------------ |
-| `selph.ExtraAnimalConfig_ANIMAL_HOUSE_COUNT <location> <animal type> <min friendship> [min count] [max count]` | Whether the specified location (in practice only `Here` or `Target` works) has the count of the specified animal between min (0 if not specified) and max (no limit if not specified), with friendship above the specified amount (set to 0 to pick any animal).|
+| `selph.ExtraAnimalConfig_ANIMAL_HOUSE_COUNT <location> <animal type> <min friendship> [min count] [max count]` | Whether the specified location (in practice only `Here` or `Target` works) is an animal house and is the home of the specified animal type with a count between min (0 if not specified) and max (no limit if not specified), with friendship above the specified amount (set to 0 to pick any animal).|
 | `selph.ExtraAnimalConfig_ANIMAL_COUNT <animal type> <min friendship> [min count] [max count]` | Same as above, but checks every owned animals globally.|
 
 ## Examples
