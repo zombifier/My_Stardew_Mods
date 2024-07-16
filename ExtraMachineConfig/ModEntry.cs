@@ -11,6 +11,7 @@ using StardewValley.Menus;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using Leclair.Stardew.BetterCrafting;
 
 namespace Selph.StardewMods.ExtraMachineConfig; 
 
@@ -24,6 +25,7 @@ internal sealed class ModEntry : Mod {
   internal static IMonitor StaticMonitor { get; set; }
   internal static IExtraMachineConfigApi ModApi;
   internal static ExtraOutputAssetHandler extraOutputAssetHandler;
+  internal static ExtraCraftingConfigAssetHandler extraCraftingConfigAssetHandler;
   internal static string UniqueId;
 
   internal static string JunimoLovedItemContextTag = "junimo_loved_item";
@@ -35,14 +37,18 @@ internal sealed class ModEntry : Mod {
     UniqueId = this.ModManifest.UniqueID;
 
     extraOutputAssetHandler = new ExtraOutputAssetHandler();
+    extraCraftingConfigAssetHandler = new ExtraCraftingConfigAssetHandler();
 
     var harmony = new Harmony(this.ModManifest.UniqueID);
 
     MachineHarmonyPatcher.ApplyPatches(harmony);
     SmokedItemHarmonyPatcher.ApplyPatches(harmony);
+    CraftingHarmonyPatcher.ApplyPatches(harmony);
 
     extraOutputAssetHandler.RegisterEvents(Helper);
+    extraCraftingConfigAssetHandler.RegisterEvents(Helper);
     Helper.Events.GameLoop.DayStarted += OnDayStartedJunimoHut;
+    Helper.Events.GameLoop.GameLaunched += OnGameLaunchedBetterCrafting;
 
     // Register item query
     ItemQueryResolver.Register($"{UniqueId}_FLAVORED_ITEM", flavoredItemQuery);
@@ -67,10 +73,28 @@ internal sealed class ModEntry : Mod {
           Chest outputChest = hut.GetOutputChest();
           if (Utils.getItemCountInListByTags(outputChest.Items, JunimoLovedItemContextTag) > 0) {
             hut.raisinDays.Value += 7;
-            Utils.RemoveItemFromInventoryByTags(outputChest.Items, JunimoLovedItemContextTag, 1);
+            Utils.RemoveItemFromInventoryByTags(outputChest.Items, JunimoLovedItemContextTag, 1, /*probe*/false);
           }
         }
       }
+    }
+  }
+
+  public void OnGameLaunchedBetterCrafting(object? sender, GameLaunchedEventArgs e) {
+    try {
+    IBetterCrafting? bcApi = Helper.ModRegistry.GetApi<IBetterCrafting>("leclair.bettercrafting");
+    if (bcApi != null) {
+      bcApi.PostCraft += OnPostCraft;
+    }
+    } catch (Exception exception) {
+      ModEntry.StaticMonitor.Log(exception.Message, LogLevel.Error);
+    }
+  }
+
+  public void OnPostCraft(IPostCraftEvent e) {
+    var recipe = e.Recipe;
+    if (e.Item is not null && ModEntry.extraCraftingConfigAssetHandler.data.TryGetValue(recipe.Name, out var craftingConfig)) {
+      e.Item = Utils.applyCraftingChanges(e.Item, e.ConsumedItems, craftingConfig);
     }
   }
 

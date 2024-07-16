@@ -16,17 +16,15 @@ enum TerrainFeatures {
 }
 
 public static class MachineTerrainGameStateQueries {
-  public static bool TILE_HAS_TERRAIN_FEATURE(string[] query, GameStateQueryContext context) {
-    if (!ArgUtility.TryGetEnum<TerrainFeatures>(query, 1, out var featureEnumCondition, out var error)) {
+  public static bool MACHINE_TILE_HAS_TERRAIN_FEATURE(string[] query, GameStateQueryContext context) {
+    if (!ArgUtility.TryGetEnum<TerrainFeatures>(query, 1, out var featureEnumCondition, out var error) ||
+        !ArgUtility.TryGetOptional(query, 2, out var featureIdCondition, out error)) {
       return Helpers.ErrorResult(query, error);
     }
-    if (!ArgUtility.TryGetOptional(query, 2, out var featureIdCondition, out var error2)) {
-      return Helpers.ErrorResult(query, error2);
-    }
     if (context.CustomFields == null ||
-        context.CustomFields.TryGetValue("Tile", out object tileObj) ||
+        !context.CustomFields.TryGetValue("Tile", out object tileObj) ||
         tileObj is not Vector2 tile) {
-      return Helpers.ErrorResult(query, "No tile found - called outside bigcraftable/machine definitions?");
+      return Helpers.ErrorResult(query, "No tile found - called outside TerrainCondition?");
     }
     if (Utils.GetFeatureAt(context.Location, tile, out var feature, out var unused)) {
       var featureEnum = feature switch {
@@ -38,17 +36,9 @@ public static class MachineTerrainGameStateQueries {
       if (featureEnum != featureEnumCondition) {
         return false;
       }
-      var featureIdList = string.IsNullOrWhiteSpace(featureIdCondition) ? [] : featureIdCondition.Split(",");
-      if (featureIdList.Length > 0) {
-        string featureId = feature switch {
-          Tree tree => tree.treeType.Value,
-          FruitTree fruitTree => fruitTree.treeId.Value,
-          GiantCrop giantCrop => giantCrop.Id,
-          _ => null,
-        };
-        if (Array.IndexOf(featureIdList, featureId) == -1) {
-          return false;
-        }
+      if (featureIdCondition != null) {
+        string featureId = Utils.GetFeatureId(feature);
+        return featureIdCondition == featureId;
       }
       return true;
     }

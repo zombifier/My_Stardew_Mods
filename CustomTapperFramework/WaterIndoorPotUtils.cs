@@ -107,8 +107,6 @@ public static class WaterIndoorPotUtils {
   public static void canPlant(HoeDirt hoeDirt, string itemId, ref bool result) {
     itemId = Crop.ResolveSeedId(itemId, hoeDirt.Location);
     if (Crop.TryGetData(itemId, out var data)) {
-      foreach (var what in hoeDirt.modData.Pairs) {
-      }
       bool isWater = hoeDirt.modData.ContainsKey(HoeDirtIsWaterModDataKey);
       if (isWater &&
           (!data.CustomFields?.ContainsKey(CropIsAmphibiousCustomFieldsKey) ?? true) &&

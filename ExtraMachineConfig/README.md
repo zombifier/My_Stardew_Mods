@@ -19,6 +19,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
       + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
       + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
+      + [Items with multiple flavors and colors](#item-with-multiple-flavors-and-colors)
    * [Machine Features](#machine-features)
       + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
       + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
@@ -28,6 +29,8 @@ content packs. For users, install the mod as usual from the link above.
       + [Generate nearby flower-flavored modded items (or, generate flavored items outside of machines)](#generate-nearby-flower-flavored-modded-items-or-generate-flavored-items-outside-of-machines)
       + [Override display name if the output item is unflavored](#override-display-name-if-the-output-item-is-unflavored)
       + [Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query](#generate-an-input-item-for-recipes-that-dont-have-any-and-use-nearby-flower-as-a-possible-query)
+   * [Crafting/Cooking Features](#craftingcooking-features)
+      + [Use some machine-like features in crafting and cooking (namely copy flavor and color)](#use-some-machine-like-features-in-crafting-and-cooking-namely-copy-flavor-and-color)
 
 ## Item Features
 
@@ -66,11 +69,32 @@ Important notes:
 
 * This feature can be used anywhere item queries are used, such as machines or shops.
 * If you're using this field, it's highly recommended you also set the
-  `ObjectInternalName` field (and optionaly the display name) so the spawned
+  `ObjectInternalName` field (and optionally the display name) so the spawned
   items do not stack with other items of the same ID that may not have this
   field, causing the context tags to be lost.
 
 For an example, scroll down to the example for additional fuels for machine recipes.
+
+### Items with multiple flavors and colors
+
+Set the following fields in the item query's `ModData` field. Note that extra
+colors only work if the base item is also colored, which (until 1.6.9 is
+released) is only available in machine rules, or if you use the modded
+`FLAVORED_ITEM` query added by this mod as detailed below.
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.ExtraPreserveId.1` | The unqualified ID of the extra flavor, aside from the primary one. To add more flavors, add another field with the number incremented. With these flavors, the item's display name can contain the `%EXTRA_PRESERVED_DISPLAY_NAME_1` macro (and `_2`, and `_3`, etc.), which will be replaced with the flavor's display name.|
+| `selph.ExtraMachineConfig.ExtraColor.1` | The extra color, formatted as three numbers separated by commas corresponding to the RGB values (e.g. `"255,120,20"`). The sprite two spaces (or three, or four for any additional colors) from the item's primary sprite will be used as the color mask, just like how the immediate next sprite is used for the main color. To add more colors, add another field with the number incremented.|
+
+See below for how to copy the fuel's colors into the output for machine rules.
+
+Important notes:
+
+* Just like with custom context tags, if you're using these field, it's highly
+  recommended you also set the `ObjectInternalName` field so the spawned items
+  do not stack with other items of the same ID that may not have these fields.
+* Extra flavors can be retrieved with the context tags `extra_preserve_sheet_index_1_flavorid`. Increment the number for additional flavors.
 
 ----
 
@@ -88,6 +112,7 @@ for each recipe, or even each output in the case of multiple possible outputs.
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.RequirementId.1`<br>`selph.ExtraMachineConfig.RequirementTags.1` | The additional fuel that should be consumed by this recipe in addition to the ones specified in the machine's `AdditionalConsumedItems` field.<br> You can specify multiple fuels by adding another field with the same name, but with the number at the end incremented (eg. `ExtraMachineConfig.RequirementId.2`).<br> `RequirementId` allows specifying by qualified ID for a specific item, or a category ID for only categories (eg. `-2` will consume any gemstones as fuel), while `RequirementTags` allow specifying a comma-separated list of tags that must all match.<br>**CURRENT LIMITATION**: Both `RequirementId` and `RequirementTags` currently cannot be used for the same fuel number. If you need to specify both, add the item ID to the tag list (e.g. `"id_(o)itemid"`).|
 | `selph.ExtraMachineConfig.RequirementCount.1` | The count of the additional fuel specified in the field above. Defaults to 1 if not specified. |
+| `selph.ExtraMachineConfig.RequirementAddPriceMultiplier.1` | If specified, the fuel's price will be multiplied by the specified number, and added to the output item's final price (after `PriceModifiers`).|
 | `selph.ExtraMachineConfig.RequirementInvalidMsg` | The message to show to players if all the requirements are not satisfied. Note that if there are multiple output rules with this field for the same input item, only the first one will be shown.|
 
 #### Example
@@ -183,6 +208,133 @@ normal for copper.
     },
   ]
 }
+```
+</details>
+
+#### Inheriting the used fuels' flavor and color (in addition to the primary input item as detailed below)
+
+**NOTE**: This feature is in beta. Please report any issues you find.
+
+This feature integrates with the "Additional flavor and color" feature. The
+`PreserveId` field and `ModData` values documented above in the item query can
+be set to the following values, which will be replaced when the item is
+created:
+
+| Value                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `DROP_IN_ID_1` | Will be replaced with the item ID/color of the fuel with the number `1`.|
+| `DROP_IN_PRESERVE_1` | Will be replaced with the item ID/color of the *flavor* of the fuel with the number `1`.|
+| `INPUT_EXTRA_ID_1` | Will be replaced with the input item's additional flavor/color with the number `1`.|
+
+To avoid stacking, the machine output's internal name can contain the macro `PRESERVE_ID_1`, which will be replaced with the values resolved above.
+
+This example creates a 'peanut butter and jelly' item that are flavored both after the input nut butter and the jelly used as additional fuel (required Cornucopia):
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+
+{
+  "LogName": "Add PBJ Rule",
+  "Action": "EditData",
+  "Target": "Data/Machines",
+  "TargetField": ["(BC)15", "OutputRules"],
+  "Entries": {
+    "PeanutButter": {
+      "Id": "PeanutButter",
+      "Triggers": [
+        {
+          "Id": "ItemPlacedInMachine",
+          "Trigger": "ItemPlacedInMachine",
+          "RequiredItemId": "(O)Cornucopia_PeanutButter",
+          "RequiredCount": 1,
+        }
+      ],
+      "OutputItem": [
+        {
+          "CustomData": {
+            "selph.ExtraMachineConfig.CopyColor": "true",
+            "selph.ExtraMachineConfig.RequirementId.1": "(O)344",
+            "selph.ExtraMachineConfig.RequirementAddPriceMultiplier.1": "1.5",
+            "selph.ExtraMachineConfig.RequirementId.2": "(O)216",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:PBJSandwich.machineMissingFuel}}",
+          },
+          "ItemId": "{{ModId}}.PBJSandwich",
+          "PreserveId": "Cornucopia_Peanut",
+          "ObjectDisplayName": "{{i18n:PBJSandwich.name}}",
+          "ObjectInternalName": "{0} Butter and PRESERVE_ID_1 Jelly Sandwich",
+          "CopyPrice": true,
+          "CopyColor": true,
+          "PriceModifiers": 
+          [
+            // PB is classic, so increment the price by a little bit more (:
+            {
+              "Modification": "Multiply",
+              "Amount": 2,
+            },
+            {
+              "Modification": "Add",
+              "Amount": 100,
+            },
+          ],
+          "ModData": {
+            "selph.ExtraMachineConfig.ExtraPreserveId.1": "DROP_IN_PRESERVE_1",
+            "selph.ExtraMachineConfig.ExtraColor.1": "DROP_IN_ID_1",
+          },
+        },
+      ],
+      "MinutesUntilReady": 10,
+    },
+    "GenericButter": {
+      "Id": "GenericButter",
+      "Triggers": [
+        {
+          "Id": "ItemPlacedInMachine",
+          "Trigger": "ItemPlacedInMachine",
+          "RequiredItemId": "(O)Cornucopia_NutButter",
+          "RequiredCount": 1,
+        }
+      ],
+      "OutputItem": [
+        {
+          "CustomData": {
+            "selph.ExtraMachineConfig.InheritPreserveId": "true",
+            "selph.ExtraMachineConfig.CopyColor": "true",
+            "selph.ExtraMachineConfig.RequirementId.1": "(O)344",
+            "selph.ExtraMachineConfig.RequirementAddPriceMultiplier.1": "1.5",
+            "selph.ExtraMachineConfig.RequirementId.2": "(O)216",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:PBJSandwich.machineMissingFuel}}",
+          },
+          "ItemId": "{{ModId}}.PBJSandwich",
+          "ObjectDisplayName": "{{i18n:PBJSandwich.name}}",
+          "ObjectInternalName": "{0} Butter and PRESERVE_ID_1 Jelly Sandwich",
+          "CopyPrice": true,
+          "CopyColor": true,
+          "PriceModifiers": 
+          [
+            {
+              "Modification": "Multiply",
+              "Amount": 1.5,
+            },
+            {
+              "Modification": "Add",
+              "Amount": 100,
+            },
+          ],
+          "ModData": {
+            "selph.ExtraMachineConfig.ExtraPreserveId.1": "DROP_IN_PRESERVE_1",
+            "selph.ExtraMachineConfig.ExtraColor.1": "DROP_IN_ID_1",
+          },
+        },
+      ],
+      "MinutesUntilReady": 10,
+    },
+  },
+},
+
+
 ```
 </details>
 
@@ -532,4 +684,80 @@ the default mead sprite doesn't have a mask).
 }
 ```
 
+</details>
+
+## Crafting/Cooking Features
+
+**NOTE**: This is in alpha. Please report any issues you find.
+
+### Use some machine-like features in crafting and cooking (namely copy flavor and color)
+
+This feature utilizes a new CP asset to write to named
+`selph.ExtraMachineConfig/ExtraCraftingConfig`. This asset is a map where the
+key is the name of a crafting recipe defined in `Data/CraftingRecipes` or
+`Data/CookingRecipes`, and the value is a model object containing extra configs
+to apply to the recipe. The model contains the following fields, all of which are optional:
+
+| Field Name                         | Type              | Description              |
+| ---------------------------------- | ------------------------ | ------------------------ |
+| `ObjectDisplayName` | `string` | The override display name to use for the item made by this recipe.|
+| `ObjectInternalName` | `string` | The override internal name to use for the item made by this recipe, to avoid stacking in the case of flavored items. The internal name can contain the strings `PRESERVE_ID_0`, `PRESERVE_ID_1`, etc., which will be replaced with the item's flavor IDs (the primary one for `_0`, and the secondary ones added by this mod for `_1` and onward).|
+| `IngredientConfigs` | `List<IngredientConfig>` | A list of options to apply for each of the ingredient consumed by this recipe.|
+
+`IngredientConfig` is an object with the following fields, all of which are optional aside from `Id` and one of `ItemId` or `ContextTags`:
+
+| Field Name                         | Type              | Description              |
+| ---------------------------------- | ------------------------ | ------------------------ |
+| `Id` | `string` | The unique ID of this entry. Must be unique within the same list, but not used outside of CP patching.|
+| `ItemId` | `string` | The item ID of the ingredient this config should apply to. Can be the item ID, or category number.|
+| `ContextTags` | `string` | The context tags of the ingredient this config should apply to. Useful for SpaceCore's context tags-based ingredients feature, or simply for further filtering.|
+| `InputPreserveId` | `string` | The flavor ID to pass in the output item. Use any item IDs here, or `DROP_IN_ID` for the ingredient's ID, or `DROP_IN_PRESERVE` for its flavor.|
+| `OutputPreserveId` | `int` | The output item's flavor ID to override with the input flavor specified above. 0 for the primary flavor, 1 and above for secondary.|
+| `OutputColor` | `int` | The output item's color to override with the input item's color. 0 for the primary color, 1 and above for secondary.|
+| `OutputPriceMultiplier` | `float` | If specified, the ingredient's price will be multiplied by this number and added to the output item's price.|
+
+Multiple configs can be used for one ingredient if more fine grained control is needed, and each ingredient will match with at most one config.
+
+Known issues:
+
+* This feature is compatible with vanilla, SpaceCore, and Better Crafting.
+  Other mods that override the crafting menu are not currently supported
+  (notably Love of Cooking).
+* With Better Crafting, bulk crafting recipes modified by this mod does not
+  currently work, and you need to craft one at a time.
+
+#### Example
+
+This example modifies the base game's sashimi recipe to make it flavored after
+the input fish, setting the output display name (e.g. Tuna Sashimi) and price
+(add the input fish's price times 0.5, so not that profitable depending on the
+fish used) to match:
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "LogName": "Add flavored sashimi cooking rules",
+  "Action": "EditData",
+  "Target": "selph.ExtraMachineConfig/ExtraCraftingConfig",
+  "Entries": {
+    "Sashimi": {
+      "Id": "Sashimi",
+      "IngredientConfigs": [
+        {
+          "ItemId": "-4",
+          "InputPreserveId": "DROP_IN_ID",
+          "OutputPreserveId": 0,
+          "OutputPriceMultiplier": 0.5,
+        },
+      ],
+      // This should be in i18n obviously
+      "ObjectDisplayName": "%PRESERVED_DISPLAY_NAME Sashimi",
+      "ObjectInternalName": "PRESERVE_ID_0 Sashimi",
+    },
+  },
+},
+```
 </details>

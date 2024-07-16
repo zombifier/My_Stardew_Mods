@@ -24,6 +24,7 @@ sealed class MachineHarmonyPatcher {
   internal static Regex RequirementTagsKeyRegex =
     new Regex(@$"{ModEntry.UniqueId}\.RequirementTags\.(\d+)");
   internal static string RequirementCountKeyPrefix = $"{ModEntry.UniqueId}.RequirementCount";
+  internal static string RequirementAddPriceMultiplierKeyPrefix = $"{ModEntry.UniqueId}.RequirementAddPriceMultiplier";
   internal static string RequirementInvalidMsgKey = $"{ModEntry.UniqueId}.RequirementInvalidMsg";
   internal static string InheritPreserveIdKey = $"{ModEntry.UniqueId}.InheritPreserveId";
   internal static string CopyColorKey = $"{ModEntry.UniqueId}.CopyColor";
@@ -34,14 +35,16 @@ sealed class MachineHarmonyPatcher {
 
   // ModData keys
   internal static string ExtraContextTagsKey = $"{ModEntry.UniqueId}.ExtraContextTags";
+  internal static string ExtraPreserveIdKeyPrefix = $"{ModEntry.UniqueId}.ExtraPreserveId";
+  internal static string ExtraColorKeyPrefix = $"{ModEntry.UniqueId}.ExtraColor";
 
-  // Legacy versions, no mod IDs because I'm stupid
-  internal static Regex RequirementIdKeyRegex_Legacy =
-    new Regex(@"ExtraMachineConfig\.RequirementId\.(\d+)");
-  internal static string RequirementCountKeyPrefix_Legacy = "ExtraMachineConfig.RequirementCount";
-  internal static string RequirementInvalidMsgKey_Legacy = "ExtraMachineConfig.RequirementInvalidMsg";
-  internal static string InheritPreserveIdKey_Legacy = "ExtraMachineConfig.InheritPreserveId";
-  internal static string CopyColorKey_Legacy = "ExtraMachineConfig.CopyColor";
+  // ModData value regexes
+  internal static Regex DropInIdRegex = new Regex(@"DROP_IN_ID_(\d+)");
+  internal static Regex DropInPreserveRegex = new Regex(@"DROP_IN_PRESERVE_(\d+)");
+  internal static Regex InputExtraIdRegex = new Regex(@"INPUT_EXTRA_ID_(\d+)");
+  
+  // Display name macros
+  internal static string ExtraPreservedDisplayNamePrefix = "%EXTRA_PRESERVED_DISPLAY_NAME";
 
   internal static bool enableGetOutputItemSideEffect = false;
 
@@ -68,7 +71,7 @@ sealed class MachineHarmonyPatcher {
 
     harmony.Patch(
         original: AccessTools.Method(typeof(Item),
-          nameof(Item.GetContextTags)),
+          "_PopulateContextTags"),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Item_GetContextTags_postfix)));
 
     harmony.Patch(
@@ -80,6 +83,10 @@ sealed class MachineHarmonyPatcher {
         original: AccessTools.Method(typeof(Chest),
           nameof(Chest.addItem)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Chest_addItem_postfix)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(SObject), "loadDisplayName"),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_loadDisplayName_postfix)));
   }
 
   // This patch:
@@ -91,7 +98,7 @@ sealed class MachineHarmonyPatcher {
     if (outputs == null || outputs.Count < 0) {
       return;
     }
-    string invalidMessage = null;
+    string? invalidMessage = null;
     IInventory inventory = SObject.autoLoadFrom ?? who.Items;
     List<MachineItemOutput> newOutputs = new List<MachineItemOutput>();
     foreach (MachineItemOutput output in outputs) {
@@ -118,9 +125,6 @@ sealed class MachineHarmonyPatcher {
         if (output.CustomData.TryGetValue(RequirementInvalidMsgKey, out var msg)) {
           invalidMessage ??= msg;
         }
-        if (output.CustomData.TryGetValue(RequirementInvalidMsgKey_Legacy, out var msgLegacy)) {
-          invalidMessage ??= msgLegacy;
-        }
       }
     }
     outputs = newOutputs;
@@ -133,7 +137,7 @@ sealed class MachineHarmonyPatcher {
   // This patch:
   // * Generates a replacement input item if that is specified
   private static void MachineDataUtility_GetOutputItem_prefix(SObject machine,
-      MachineItemOutput outputData, ref Item inputItem,
+      MachineItemOutput outputData, ref Item? inputItem,
       Farmer who, bool probe) {
     if (outputData?.CustomData?.TryGetValue(OverrideInputItemIdKey, out var overrideInput) ?? false) {
       string overrideInputId = overrideInput == "NEARBY_FLOWER_QUALIFIED_ID" ?
@@ -157,6 +161,7 @@ sealed class MachineHarmonyPatcher {
   // * Check if more input items should be consumed
   // * Produces extra outputs and put them in a chest saved in the output item's heldObject
   // * Applies the display name override if the output is unflavored
+  // * Saves extra flavor and color info if specified
   private static void MachineDataUtility_GetOutputItem_postfix(ref Item __result, SObject machine,
       MachineItemOutput outputData, Item inputItem,
       Farmer who, bool probe,
@@ -164,13 +169,15 @@ sealed class MachineHarmonyPatcher {
     if (__result == null || outputData == null) {
       return;
     }
+    
+    var resultObject = __result as SObject;
 
     // Generate the extra output items and save them in a chest saved in the output item's heldObject.
     var extraOutputs = ModEntry.ModApi.GetExtraOutputs(outputData);
-    if (extraOutputs.Count > 0 && __result is SObject obj) {
+    if (extraOutputs.Count > 0 && resultObject != null) {
       var chest = new Chest();
-      obj.heldObject.Value = chest;
-      GameStateQueryContext context = new GameStateQueryContext(machine.Location, who, obj, inputItem, Game1.random);
+      resultObject.heldObject.Value = chest;
+      GameStateQueryContext context = new GameStateQueryContext(machine.Location, who, resultObject, inputItem, Game1.random);
       ItemQueryContext itemContext = new ItemQueryContext(machine.Location, who, Game1.random);
       foreach (var extraOutputData in extraOutputs) {
         if (!GameStateQuery.CheckConditions(extraOutputData.Condition, context)) {
@@ -187,42 +194,129 @@ sealed class MachineHarmonyPatcher {
     // Inherit preserve ID
     if ((outputData.PreserveId == "INHERIT" ||
           (outputData.CustomData != null &&
-           (outputData.CustomData.ContainsKey(InheritPreserveIdKey) ||
-            outputData.CustomData.ContainsKey(InheritPreserveIdKey_Legacy)))) &&
+           outputData.CustomData.ContainsKey(InheritPreserveIdKey))) &&
         inputItem is SObject inputObject &&
         inputObject.preservedParentSheetIndex.Value != "-1" &&
-        __result is SObject resultObject) {
+        resultObject != null) {
       resultObject.preservedParentSheetIndex.Value = inputObject.preservedParentSheetIndex.Value;
     }
 
     // Override display name if unflavored
     if (outputData.CustomData != null &&
         outputData.CustomData.TryGetValue(UnflavoredDisplayNameOverrideKey, out var unflavoredDislayNameOverride) &&
-        __result is SObject resultObject2 &&
-        (resultObject2.preservedParentSheetIndex.Value == null ||
-         resultObject2.preservedParentSheetIndex.Value == "-1")) {
-      resultObject2.displayNameFormat = unflavoredDislayNameOverride;
+        resultObject != null &&
+        (resultObject.preservedParentSheetIndex.Value == null ||
+         resultObject.preservedParentSheetIndex.Value == "-1")) {
+      resultObject.displayNameFormat = unflavoredDislayNameOverride;
     }
 
     if (inputItem is null) return;
     if (outputData.CustomData == null) {
       return;
     }
-    // Remove extra fuel
-    if (enableGetOutputItemSideEffect) {
-      var extraRequirements = ModEntry.ModApi.GetExtraRequirements(outputData);
-      foreach (var entry in extraRequirements) {
-        Utils.RemoveItemFromInventoryById(inventory, entry.Item1, entry.Item2);
-      }
-      var extraTagsRequirements = ModEntry.ModApi.GetExtraTagsRequirements(outputData);
-      foreach (var entry in extraTagsRequirements) {
-        Utils.RemoveItemFromInventoryByTags(inventory, entry.Item1, entry.Item2);
+
+    // Remove extra fuel (and add their prices if specified)
+    var extraRequirements = Utils.GetExtraRequirementsImpl(outputData, /*isContextTag=*/false);
+    IDictionary<string, Item> usedFuels = new Dictionary<string, Item>();
+    foreach (var entry in extraRequirements) {
+      var item = Utils.RemoveItemFromInventoryById(inventory, entry.itemId, entry.count, !enableGetOutputItemSideEffect);
+      if (item != null) {
+        usedFuels[entry.fuelEntryId] = item;
+        if (entry.priceMultiplier > 0 && resultObject is not null) {
+          resultObject.Price += (int)(((item as SObject)?.Price ?? 0) * entry.priceMultiplier);
+        }
       }
     }
+    var extraTagsRequirements = Utils.GetExtraRequirementsImpl(outputData, /*isContextTag=*/true);
+    foreach (var entry in extraTagsRequirements) {
+      var item = Utils.RemoveItemFromInventoryByTags(inventory, entry.itemId, entry.count, !enableGetOutputItemSideEffect);
+      if (item != null) {
+        usedFuels[entry.fuelEntryId] = item;
+        if (entry.priceMultiplier > 0 && resultObject is not null) {
+          resultObject.Price += (int)(((item as SObject)?.Price ?? 0) * entry.priceMultiplier);
+        }
+      }
+    }
+
+    int i = 1;
+    // Record the extra fuels' ID/preserve ID if needed
+    while (true) {
+      string? val = Utils.getPreserveId(__result, i);
+      if (val is not null) {
+        // Fuel id -> flavor
+        var dropInIdMatch = DropInIdRegex.Match(val);
+        if (dropInIdMatch.Success) {
+          string idToCheck = dropInIdMatch.Groups[1].Value;
+          if (usedFuels.TryGetValue(idToCheck, out var fuelItem)) {
+            __result.modData[$"{ExtraPreserveIdKeyPrefix}.{i}"] = fuelItem.ItemId;
+            if (resultObject is not null) {
+              resultObject.Name = resultObject.Name.Replace($"PRESERVE_ID_{idToCheck}", fuelItem.ItemId);
+            }
+          }
+        }
+        // Fuel flavor -> flavor
+        var dropIdPreserveMatch = DropInPreserveRegex.Match(val);
+        if (dropIdPreserveMatch.Success) {
+          string idToCheck = dropIdPreserveMatch.Groups[1].Value;
+          if (usedFuels.TryGetValue(idToCheck, out var fuelItem)) {
+            __result.modData[$"{ExtraPreserveIdKeyPrefix}.{i}"] = (fuelItem as SObject)?.preservedParentSheetIndex.Value ?? "";
+            if (resultObject is not null) {
+              resultObject.Name = resultObject.Name.Replace($"PRESERVE_ID_{idToCheck}", (fuelItem as SObject)?.preservedParentSheetIndex.Value ?? "");
+            }
+          }
+        }
+        // Input item's extra flavors -> flavor
+        var inputExtraPreserveIdMatch = InputExtraIdRegex.Match(val);
+        if (inputExtraPreserveIdMatch.Success) {
+          string idToCheck = inputExtraPreserveIdMatch.Groups[1].Value;
+          if (inputItem.modData.TryGetValue($"{ExtraPreserveIdKeyPrefix}.{idToCheck}", out var preserveId)) {
+            __result.modData[$"{ExtraPreserveIdKeyPrefix}.{i}"] = preserveId;
+            if (resultObject is not null) {
+              resultObject.Name = resultObject.Name.Replace($"PRESERVE_ID_{idToCheck}", preserveId);
+            }
+          }
+        }
+        // TODO: Fuel's extra flavors??? This is super niche I sincerely hope no mod authors plan on using this lmao
+        i++;
+      } else {
+        break;
+      }
+    }
+    // Record the extra fuels' color if needed
+    i = 1;
+    while (true) {
+      if (__result.modData.TryGetValue($"{ExtraColorKeyPrefix}.{i}", out var val)) {
+        var dropInIdMatch = DropInIdRegex.Match(val);
+        if (dropInIdMatch.Success) {
+          string idToCheck = dropInIdMatch.Groups[1].Value;
+          if (usedFuels.TryGetValue(idToCheck, out var fuelItem)) {
+            __result.modData[$"{ExtraColorKeyPrefix}.{i}"] = Utils.colorToString(TailoringMenu.GetDyeColor(fuelItem) ?? Color.White);
+          }
+        }
+        var dropIdPreserveMatch = DropInPreserveRegex.Match(val);
+        if (dropIdPreserveMatch.Success) {
+          string idToCheck = dropIdPreserveMatch.Groups[1].Value;
+          if (usedFuels.TryGetValue(idToCheck, out var fuelItem)) {
+            var preservedIdItem = ItemRegistry.Create((fuelItem as SObject)?.preservedParentSheetIndex.Value);
+            __result.modData[$"{ExtraColorKeyPrefix}.{i}"] = Utils.colorToString(TailoringMenu.GetDyeColor(preservedIdItem) ?? Color.White);
+          }
+        }
+        var inputExtraPreserveIdMatch = InputExtraIdRegex.Match(val);
+        if (inputExtraPreserveIdMatch.Success) {
+          string idToCheck = inputExtraPreserveIdMatch.Groups[1].Value;
+          if (inputItem.modData.TryGetValue($"{ExtraColorKeyPrefix}.{idToCheck}", out var color)) {
+            __result.modData[$"{ExtraColorKeyPrefix}.{i}"] = color;
+          }
+        }
+        i++;
+      } else {
+        break;
+      }
+    }
+
     // Color the item
-    if ((outputData.CustomData.ContainsKey(CopyColorKey) ||
-          outputData.CustomData.ContainsKey(CopyColorKey_Legacy)) &&
-        __result is SObject obj2) {
+    if ((outputData.CustomData.ContainsKey(CopyColorKey)) &&
+        resultObject is not null) {
       StardewValley.Objects.ColoredObject newColoredObject;
       if (__result is StardewValley.Objects.ColoredObject coloredObject) {
         newColoredObject = coloredObject;
@@ -234,12 +328,13 @@ sealed class MachineHarmonyPatcher {
             );
         ModEntry.Helper.Reflection.GetMethod(newColoredObject, "GetOneCopyFrom").Invoke(__result);
         newColoredObject.Stack = __result.Stack;
-        newColoredObject.heldObject.Value = obj2.heldObject.Value;
+        newColoredObject.heldObject.Value = resultObject.heldObject.Value;
       }
       var color = TailoringMenu.GetDyeColor(inputItem);
       if (color != null) {
         newColoredObject.color.Value = (Color)color;
         __result = newColoredObject;
+        resultObject = __result as SObject;
       }
     }
     // Consume extra input items and replace output stack count
@@ -259,9 +354,23 @@ sealed class MachineHarmonyPatcher {
     }
   }
 
-  private static void Item_GetContextTags_postfix(Item __instance, ref HashSet<string> __result) {
+  private static void Item_GetContextTags_postfix(Item __instance, ref HashSet<string> tags) {
     if (__instance.modData.TryGetValue(ExtraContextTagsKey, out string contextTags)) {
-      __result.UnionWith(contextTags.Split(","));
+      tags.UnionWith(contextTags.Split(","));
+    }
+    // Some extra helper tags
+    //if (__instance is SObject obj && obj.preservedParentSheetIndex.Value is null) {
+    //  __result.Add("no_preserve_parent_sheet_index");
+    //}
+    int i = 1;
+    while (true) {
+      var extraPreserveId = Utils.getPreserveId(__instance, i);
+      if (extraPreserveId is not null) {
+        tags.Add($"extra_preserve_sheet_index_{i}_{ItemContextTagManager.SanitizeContextTag(extraPreserveId)}");
+        i++;
+      } else {
+        break;
+      }
     }
   }
 
@@ -292,5 +401,19 @@ sealed class MachineHarmonyPatcher {
 
 	public static void SObject_PlaceInMachine_Postfix(MachineData machineData, Item inputItem, bool probe, Farmer who, bool showMessages = true, bool playSounds = true) {
     enableGetOutputItemSideEffect = false;
+  }
+
+  public static void SObject_loadDisplayName_postfix(ref string __result, SObject __instance) {
+    int i = 1;
+    while (true) {
+      var val = Utils.getPreserveId(__instance, i);
+      if (val is not null) {
+        string preserveDisplayName = (ItemRegistry.GetData("(O)" + val)?.DisplayName ?? "");
+        __result = __result.Replace($"{ExtraPreservedDisplayNamePrefix}_{i}", preserveDisplayName);
+        i++;
+      } else {
+        break;
+      }
+    }
   }
 }

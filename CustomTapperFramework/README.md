@@ -24,17 +24,14 @@ content packs. For users, install the mod as usual from the link above.
 There are two APIs available:
 
 * The Machine API using context tags and machine rules, which is more powerful
-  and supports water placement, but doesn't support some features of the Tapper
-  API (notably, specifying output based on the terrain feature's produce).
-* The Tapper API using a custom asset to define automatic produce overtime.
-  This API doesn't support water-placeable buildings, but is simpler to use and
-  supports defining conditions and outputs based on the terrain feature's
-  produce. If you want to modify the output of the base game Tapper and Heavy
-  Tapper items this API should be used.
+  and supports water placement.
+* The (deprecated) Tapper API using a custom asset to define automatic produce
+  overtime. This API doesn't support water-placeable buildings, but if you want
+  to modify the output of the base game Tapper and Heavy Tapper items this API
+  should still be used.
 
-In the future the Tapper API's "output based on terrain" feature is expected to
-be folded into the Machine API, but both will continue to work into the future.
-For now use only one for your machine, not both.
+Both APIs will continue to work into the future, but for now use only one for
+your machine, not both.
 
 ### Machine API
 First, set the appropriate context tags for your big craftables:
@@ -48,6 +45,23 @@ First, set the appropriate context tags for your big craftables:
 
 Then define your machine behavior in
 [`Data/Machines`](https://stardewvalleywiki.com/Modding:Machines) as usual.
+
+For tapper-like machines placed on terrain features, this mod allows defining the following new
+field in the machine output rule's `CustomData` field:
+
+| Field Name |  Description |
+| ---------- |  ----------- |
+| `selph.CustomTapperFramework.TerrainCondition` | Similar to the output rule's `Condition` field, but with the following crucial differences:<br>* The `Target` item will be the terrain feature's primary produce: Seed object for wild trees, first defined fruit for fruit trees, and first defined cut-down drop for giant crops.<br>* The `Input` item will be the machine itself.<br>* The `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE` GSQ is usable in (and *only* in) this field.|
+
+The `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE` GSQ takes the following format:
+
+```
+selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE <feature type> [optional feature ID]
+```
+
+where feature type can be one of `Tree`, `FruitTree` or `GiantCrop`. A feature
+ID can optionally be specified, to limit the condition to certain types of wild
+trees/fruit trees/giant crops.
 
 ### Tapper API
 First, add `"tapper_item"` context tag to your big craftables.

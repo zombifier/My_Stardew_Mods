@@ -62,6 +62,9 @@ internal sealed class ModEntry : Mod {
     } catch (Exception e) {
       Monitor.Log("Failed patching Custom Bush. Detail: " + e.Message, LogLevel.Error);
     }
+
+    GameStateQuery.Register($"{UniqueId}_MACHINE_TILE_HAS_TERRAIN_FEATURE",
+        MachineTerrainGameStateQueries.MACHINE_TILE_HAS_TERRAIN_FEATURE);
   }
 
   public void OnDayStarted(object sender, DayStartedEventArgs e) {

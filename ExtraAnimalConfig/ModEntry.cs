@@ -35,6 +35,7 @@ internal sealed class ModEntry : Mod {
     GameLocation.RegisterTileAction($"{UniqueId}.CustomFeedHopper", CustomFeedHopper);
 
     GameStateQuery.Register($"{UniqueId}_ANIMAL_HOUSE_COUNT", AnimalGameStateQueries.ANIMAL_HOUSE_COUNT);
+    GameStateQuery.Register($"{UniqueId}_ANIMAL_COUNT", AnimalGameStateQueries.ANIMAL_COUNT);
   }
 
   private static bool CustomFeedSilo(GameLocation location, string[] args, Farmer player, Point tile) {

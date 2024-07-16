@@ -55,13 +55,7 @@ public static class Utils {
           _ => null,
       };
       if (outputRules == null) return null;
-      string sourceId = feature switch {
-        Tree tree => tree.treeType.Value,
-        FruitTree fruitTree => fruitTree.treeId.Value,
-        GiantCrop giantCrop => giantCrop.Id,
-          _ => null,
-      };
-      IEnumerable<ExtendedTapItemData> filteredOutputRules;
+      string sourceId = GetFeatureId(feature);      IEnumerable<ExtendedTapItemData> filteredOutputRules;
       if (ruleId != null) {
         filteredOutputRules = from outputRule in outputRules
           where outputRule.Id == ruleId
@@ -108,27 +102,7 @@ public static class Utils {
         // Allow game state and item queries to use an input item.
         // For trees, this will be their seeds.
         // For fruit trees and giant crops, this will be their first produce defined in the list.
-        Item inputItem = null;
-        switch (feature) {
-          case Tree tree:
-            inputItem = ItemRegistry.Create(tree.GetData().SeedItemId);
-            break;
-          case FruitTree fruitTree:
-            if (fruitTree.GetData().Fruit.Count == 0) {
-              break;
-            }
-            inputItem = ItemQueryResolver.TryResolveRandomItem(fruitTree.GetData().Fruit[0], new ItemQueryContext(tapper.Location, farmer, null));
-            break;
-          case GiantCrop giantCrop:
-            if (giantCrop.GetData().HarvestItems.Count == 0) {
-              break;
-            }
-            inputItem = ItemQueryResolver.TryResolveRandomItem(giantCrop.GetData().HarvestItems[0], new ItemQueryContext(tapper.Location, farmer, null));
-            break;
-          default:
-            break;
-        }
-
+        Item inputItem = GetFeatureItem(feature, farmer);
         if (!GameStateQuery.CheckConditions(tapItem.Condition, tapper.Location, farmer, targetItem: null, inputItem: inputItem)) {
           continue;
         }
@@ -244,4 +218,32 @@ public static class Utils {
     isVanillaTapper = !disallowBaseTapperRules;
     return false;
   } 
+
+  public static string? GetFeatureId(TerrainFeature feature) {
+    return feature switch {
+      Tree tree => tree.treeType.Value,
+      FruitTree fruitTree => fruitTree.treeId.Value,
+      GiantCrop giantCrop => giantCrop.Id,
+      _ => null,
+    };
+  }
+
+  public static Item? GetFeatureItem(TerrainFeature feature, Farmer player) {
+    switch (feature) {
+      case Tree tree:
+        return ItemRegistry.Create(tree.GetData().SeedItemId);
+      case FruitTree fruitTree:
+        if (fruitTree.GetData().Fruit.Count == 0) {
+          return null;
+        }
+        return ItemQueryResolver.TryResolveRandomItem(fruitTree.GetData().Fruit[0], new ItemQueryContext(feature.Location, player, null));
+      case GiantCrop giantCrop:
+        if (giantCrop.GetData().HarvestItems.Count == 0) {
+          return null;
+        }
+        return ItemQueryResolver.TryResolveRandomItem(giantCrop.GetData().HarvestItems[0], new ItemQueryContext(feature.Location, player, null));
+      default:
+        return null;
+    }
+  }
 }

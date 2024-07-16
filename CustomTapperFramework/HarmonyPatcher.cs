@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Collections.Generic;
 using StardewValley;
+using StardewValley.Delegates;
+using StardewValley.GameData.Machines;
 using StardewValley.Internal;
 using StardewValley.Objects;
 using StardewValley.Tools;
@@ -10,7 +12,6 @@ using StardewValley.TerrainFeatures;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 
 namespace Selph.StardewMods.MachineTerrainFramework;
 
@@ -130,6 +131,24 @@ public class HarmonyPatcher {
           nameof(HoeDirt.paddyWaterCheck)),
         postfix: new HarmonyMethod(typeof(HarmonyPatcher),
           nameof(HarmonyPatcher.HoeDirt_paddyWaterCheck_Postfix)));
+
+    // Machine condition logic patch
+    harmony.Patch(
+        original: AccessTools.Method(
+          typeof(StardewValley.MachineDataUtility),
+          nameof(StardewValley.MachineDataUtility.GetOutputData),
+          new Type[] { typeof(SObject), typeof(MachineData), typeof(MachineOutputRule),
+          typeof(Item), typeof(Farmer), typeof(GameLocation) }),
+        prefix: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.MachineDataUtility_GetOutputDataParent_Prefix)),
+        postfix: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.MachineDataUtility_GetOutputDataParent_Postfix)));
+
+    harmony.Patch(
+        original: AccessTools.Method(
+          typeof(StardewValley.MachineDataUtility),
+          nameof(StardewValley.MachineDataUtility.GetOutputData),
+          new Type[] { typeof(List<MachineItemOutput>), typeof(bool), typeof(Item),
+          typeof(Farmer), typeof(GameLocation) }),
+        prefix: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.MachineDataUtility_GetOutputData_Prefix)));
   }
 
 	static void SObject_canBePlacedHere_Postfix(SObject __instance, ref bool __result, GameLocation l, Vector2 tile, CollisionMask collisionMask = CollisionMask.All, bool showError = false) {
@@ -403,5 +422,43 @@ public class HarmonyPatcher {
         !__instance.hasPaddyCrop()) return;
     __instance.nearWaterForPaddy.Value = 1;
     __result = true;
+  }
+
+  internal static string TerrainConditionKey = $"{ModEntry.UniqueId}.TerrainCondition";
+  private static SObject machineBeingChecked = null;
+
+  // This is a super hacky way of essentially passing in the machine object as an extra parameter to (the second) GetOutputData,
+  // but it's the only way that guarantees maximum compatibility and not outright replace the entire function, so...
+	static void MachineDataUtility_GetOutputDataParent_Prefix(SObject machine, MachineData machineData, MachineOutputRule outputRule, Item inputItem, Farmer who, GameLocation location) {
+    machineBeingChecked = machine;
+  }
+	static void MachineDataUtility_GetOutputDataParent_Postfix(SObject machine, MachineData machineData, MachineOutputRule outputRule, Item inputItem, Farmer who, GameLocation location) {
+    machineBeingChecked = null;
+  }
+
+  // Checks for terrain conditions and remove rules that cannot be satisfied
+  static void MachineDataUtility_GetOutputData_Prefix(ref List<MachineItemOutput> outputs,
+      bool useFirstValidOutput, Item inputItem, Farmer who,
+      GameLocation location) {
+    if (outputs == null || outputs.Count < 0 || machineBeingChecked == null) {
+      return;
+    }
+    List<MachineItemOutput> newOutputs = new List<MachineItemOutput>();
+    foreach (MachineItemOutput output in outputs) {
+      if (output.CustomData == null || !output.CustomData.TryGetValue(TerrainConditionKey, out var terrainCondition)) {
+        newOutputs.Add(output);
+        continue;
+      }
+      Utils.GetFeatureAt(machineBeingChecked.Location, machineBeingChecked.TileLocation, out var feature, out var unused);
+      Item produceItem = Utils.GetFeatureItem(feature, who);
+      var customFields = new Dictionary<string, object>() {
+        {"Tile", machineBeingChecked.TileLocation}
+      };
+      GameStateQueryContext context = new(location, who, produceItem, machineBeingChecked, Game1.random, null, customFields);
+      if (GameStateQuery.CheckConditions(terrainCondition, context)) {
+        newOutputs.Add(output);
+      }
+    }
+    outputs = newOutputs;
   }
 }
