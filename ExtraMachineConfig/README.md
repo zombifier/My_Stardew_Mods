@@ -725,7 +725,9 @@ Known issues:
   (notably Love of Cooking).
 * With Better Crafting, bulk crafting recipes modified by this mod does not
   currently work, and you need to craft one at a time.
-* Better Crafting support also seems flaky combined with Yet Another Cooking Skill. I am still investigating this.
+* Compatible with Yet Another Cooking Skill, but *only if* Better Crafting's
+  crafting/cooking menu is not used. YAFC seems to be using BC's API in a way
+  that overrides all changes made by this mod.
 
 #### Example
 
