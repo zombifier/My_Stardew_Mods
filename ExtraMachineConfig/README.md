@@ -721,13 +721,9 @@ Multiple configs can be used for one ingredient if more fine grained control is 
 Known issues:
 
 * This feature is compatible with vanilla, SpaceCore, and Better Crafting.
-  Other mods that override the crafting menu are not currently supported
-  (notably Love of Cooking).
 * With Better Crafting, bulk crafting recipes modified by this mod does not
   currently work, and you need to craft one at a time.
-* Compatible with Yet Another Cooking Skill, but *only if* Better Crafting's
-  crafting/cooking menu is not used. YAFC seems to be using BC's API in a way
-  that overrides all changes made by this mod.
+* Not currently compatible with Yet Another Cooking Skill and Love of Cooking.
 
 #### Example
 
