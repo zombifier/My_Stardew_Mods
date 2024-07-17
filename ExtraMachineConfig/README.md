@@ -19,7 +19,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
       + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
       + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
-      + [Items with multiple flavors and colors](#item-with-multiple-flavors-and-colors)
+      + [Items with multiple flavors and colors](#items-with-multiple-flavors-and-colors)
    * [Machine Features](#machine-features)
       + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
       + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
