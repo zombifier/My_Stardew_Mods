@@ -33,6 +33,10 @@ There are two APIs available:
 Both APIs will continue to work into the future, but for now use only one for
 your machine, not both.
 
+KNOWN ISSUE: Machine rules don't support putting the terrain produce as the
+input item query yet. I forgor to implement this feature, so the Tapper API
+isn't quite deprecated yet if you need it.
+
 ### Machine API
 First, set the appropriate context tags for your big craftables:
 
