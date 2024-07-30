@@ -14,6 +14,7 @@ public class AnimalExtensionData {
   public float MalePercentage = -1;
   public Dictionary<string, AnimalProduceExtensionData> AnimalProduceExtensionData = new Dictionary<string, AnimalProduceExtensionData>();
   public string FeedItemId;
+  public bool OutsideForager = false;
   public List<AnimalSpawnData> AnimalSpawnList = null;
 }
 

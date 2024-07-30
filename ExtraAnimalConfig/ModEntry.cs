@@ -1,8 +1,9 @@
 ﻿using StardewModdingAPI;
 using HarmonyLib;
-using System;
+using System.Collections.Generic;
 using StardewValley;
 using Microsoft.Xna.Framework;
+using xTile.Dimensions;
 
 namespace Selph.StardewMods.ExtraAnimalConfig;
 
@@ -39,11 +40,21 @@ internal sealed class ModEntry : Mod {
   }
 
   private static bool CustomFeedSilo(GameLocation location, string[] args, Farmer player, Point tile) {
-    if (!ArgUtility.TryGet(args, 1, out var itemId, out var error)) {
+    if (!ArgUtility.TryGetOptional(args, 1, out var parsedItemId, out var error)) {
       ModEntry.StaticMonitor.Log(error, LogLevel.Warn);
       return false;
     }
-    if (player.ActiveObject?.QualifiedItemId == itemId) {
+    List<string> itemIds = parsedItemId is not null ? new(parsedItemId.Split(",")) :
+      SiloUtils.GetFeedForThisBuilding(location.getBuildingAt(new Vector2(tile.X, tile.Y)));
+
+    if (player.ActiveObject?.QualifiedItemId == "(O)178" || 
+        (itemIds.Contains("(O)178") && itemIds.Count == 1)) {
+      location.performAction("BuildingSilo", player, new Location(tile.X, tile.Y));
+      return true;
+    }
+
+    if (player.ActiveObject is not null && itemIds.Contains(player.ActiveObject.QualifiedItemId)) {
+      var itemId = player.ActiveObject.QualifiedItemId;
       int remainingCount = SiloUtils.StoreFeedInAnySilo(itemId, player.ActiveObject.Stack);
       if (remainingCount < player.ActiveObject.Stack) {
         Game1.playSound("Ship");
@@ -60,12 +71,20 @@ internal sealed class ModEntry : Mod {
       }
     }
     else {
-      Game1.drawObjectDialogue(Helper.Translation.Get($"{UniqueId}.SiloCountMsg",
-            new {
-            displayName = ItemRegistry.GetDataOrErrorItem(itemId).DisplayName,
-            count = SiloUtils.GetFeedCountFor(location, itemId),
-            maxCount = SiloUtils.GetFeedCapacityFor(location, itemId),
-            }));
+      List<string> display = new();
+      foreach (var itemId in itemIds) {
+        if (itemId == "(O)178") {
+          display.Add(Game1.content.LoadString("Strings\\Buildings:PiecesOfHay", location.piecesOfHay.Value, location.GetHayCapacity()));
+        } else {
+          display.Add(Helper.Translation.Get($"{UniqueId}.SiloCountMsg",
+              new {
+              displayName = ItemRegistry.GetDataOrErrorItem(itemId).DisplayName,
+              count = SiloUtils.GetFeedCountFor(location, itemId),
+              maxCount = SiloUtils.GetFeedCapacityFor(location, itemId),
+              }));
+        }
+      }
+      Game1.drawObjectDialogue(string.Join("  ^", display.ToArray()));
     }
     return true;
   }
@@ -90,10 +109,17 @@ internal sealed class ModEntry : Mod {
           player.removeItemFromInventory(player.ActiveObject);
         }
       }
-    } else if (player.ActiveObject == null) {
-      if (location is AnimalHouse animalHouse) {
-        player.addItemToInventory(SiloUtils.GetFeedFromAnySilo(itemId, animalHouse.animalsThatLiveHere.Count));
-        Game1.playSound("shwip");
+    } else if (location is AnimalHouse animalHouse) {
+      if (player.freeSpotsInInventory() > 0) {
+        var obj = SiloUtils.GetFeedFromAnySilo(itemId, animalHouse.animalsThatLiveHere.Count);
+        if (obj is not null) {
+          player.addItemToInventory(obj);
+          Game1.playSound("shwip");
+        } else {
+          Game1.drawObjectDialogue(ModEntry.Helper.Translation.Get($"{ModEntry.UniqueId}.HopperEmpty"));
+        }
+      } else {
+				Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
       }
     }
     return true;

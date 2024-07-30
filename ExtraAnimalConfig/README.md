@@ -29,6 +29,7 @@ value a model with the following fields:
 | FeedItemId              | `string`           | The *qualified* item ID of this animal's food item. If set, the animal will need to eat this item in addition to/in place of grass and hay. See below for a full guide. |
 | AnimalProduceExtensionData| `Dictionary<string, AnimalProduceExtensionData>` | A map of *qualified* item IDs corresponding to an (unqualified) entry in `(Deluxe)ProduceItemIds` to its extra settings. This is used to store extra settings associated with an animal produce; see below for more info.|
 | AnimalSpawnList          | `List<AnimalSpawnData>`   | A list of animal spawn data objects to determine which new animal to add when this animal gets pregnant and gives birth.<br>**NOTE**: The list will be evaluated in order, from top to bottom. Make sure the last entry is always true/has no condition. Also because of this, probability won't work as you initially expect. If you want 3 animals each with the same chance for example, the first one needs a 0.333 probability, the second one needs 0.5, and the third one 1.|
+| OutsideForager          | `bool` | Whether this animal still needs to eat even with `GrassEatAmount` set to 0 and no custom feed, but if let outside can forage from dirt. Note that if this is set, the animal *will* eat grass if available (and benefit from the happiness bonus from eating fresh grass/blue grass), hence it's recommended their grass eat amount set to 0 so they don't consume any grass while foraging. If there's no grass available, they may forage from dirt, which will feed them for the day but doesn't grant them the friendship/happiness bonus.<br>This settings' main purpose is to emulate how chickens work in Harvest Moon.|
 
 `AnimalSpawnData` is a model with the following fields:
 
@@ -63,9 +64,15 @@ value a model with the following fields:
    desired tiles on the building exterior or interior (replace `(O)ItemId1` with
    the actual qualified ID of your item):
    * `selph.ExtraAnimalConfig.CustomFeedSilo (O)ItemId1`: Put the currently
-     held feed into storage, or show the current feed capacity.
+     held feed into storage, or show the current feed capacity. The item ID is
+     *optional*; if not set it will accept all feed item that can be stored in
+     the building (including vanilla hay).
+   * If you're adding modded feed capacity to the vanilla silo (see below),
+     make sure to also convert its default building action to using this action 
    * `selph.ExtraAnimalConfig.CustomFeedHopper (O)ItemId1`: Put into, or take
-     the specified feed out of storage. Usable only inside an animal building.\
+     the specified feed out of storage. Usable only inside an animal building.
+     As of 1.3.0 this tile action is optional - the default hay hopper will
+     also work with modded feed.\
    Then, set the following field on your building's `CustomFields` map to
    specify the feed capacity provided by this building:
    * key : `selph.ExtraAnimalConfig.SiloCapacity.(O)ItemId1`
@@ -95,6 +102,14 @@ Version 1.2.0 introduces the following Game State Query:
 | ---------------------------  | ------------------------ |
 | `selph.ExtraAnimalConfig_ANIMAL_HOUSE_COUNT <location> <animal type> <min friendship> [min count] [max count]` | Whether the specified location (in practice only `Here` or `Target` works) is an animal house and is the home of the specified animal type with a count between min (0 if not specified) and max (no limit if not specified), with friendship above the specified amount (set to 0 to pick any animal).|
 | `selph.ExtraAnimalConfig_ANIMAL_COUNT <animal type> <min friendship> [min count] [max count]` | Same as above, but checks every owned animals globally.|
+
+## Override hay with another feed item for a specific building
+
+Set this field on the building data's custom fields:
+
+| Field Name                          |  Description              |
+| ---------------------------  | ------------------------ |
+| `selph.ExtraAnimalConfig.BuildingFeedOverrideId` | If set to a qualified item ID, the building's hay troughs/hoppers will be modified to accept that item instead of hay, and any animals living inside that building that usually eat hay will instead eat that item.<br>Use this field *only* if you want to override a vanilla building, and building animals, to eat a certain feed type and don't want to add compat to every other animal and animal house interior mods. Otherwise, follow the guide above for custom feed.|
 
 ## Examples
 
