@@ -1,0 +1,30 @@
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Add new BigCraftables",
+      "Action": "Include",
+      "FromFile": "Data/bigcraftables.json"
+    },
+    {
+      "LogName": "Add Crafting & Unlock",
+      "Action": "Include",
+      "FromFile": "Data/craftingrecipes.json",
+    },
+    {
+      "LogName": "Add Machine rules",
+      "Action": "Include",
+      "FromFile": "Data/machines.json",
+    },
+    {
+      "LogName": "Tapper Rules",
+      "Action": "Include",
+      "FromFile": "Data/tappers.json"
+    },
+    {
+      "LogName": "Add Textures",
+      "Action": "Include",
+      "FromFile": "Data/assets.json",
+    },
+  ]
+}

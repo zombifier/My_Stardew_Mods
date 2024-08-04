@@ -1,0 +1,94 @@
+{
+  "Changes": [
+    {
+      "LogName": "Change rabbits to not consume grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Fields": {
+        "Rabbit": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "AllDirtForagers": "true",
+      },
+    },
+    {
+      "LogName": "Initialize asset with empty objects for compat",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Rabbit": {},
+      },
+      "When": {
+        "AllDirtForagers": "true",
+      },
+    },
+    {
+      "LogName": "Make rabbit foragers",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Late",
+      "Fields": {
+        "Rabbit": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "AllDirtForagers": "true",
+      },
+    },
+    //{
+    //  "LogName": "Mt Vapius - no grass",
+    //  "Action": "EditData",
+    //  "Target": "Data/FarmAnimals",
+    //  "Priority": "Late",
+    //  "Fields": {
+    //    "Lumisteria.MtVapius_Goose": {
+    //      "GrassEatAmount": 0,
+    //    },
+    //    "Lumisteria.MtVapius_StellarGoose": {
+    //      "GrassEatAmount": 0,
+    //    },
+    //  },
+    //  "When": {
+    //    "HasMod |contains=Lumisteria.MtVapius": "true",
+    //    "BarnDirtForagers": "true",
+    //  },
+    //},
+    //{
+    //  "LogName": "Mt Vapius - initialize",
+    //  "Action": "EditData",
+    //  "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+    //  "Priority": "Early",
+    //  "Entries": {
+    //    "Lumisteria.MtVapius_Goose": {
+    //    },
+    //    "Lumisteria.MtVapius_StellarGoose": {
+    //    },
+    //  },
+    //  "When": {
+    //    "HasMod |contains=Lumisteria.MtVapius": "true",
+    //    "BarnDirtForagers": "true",
+    //  },
+    //},
+    //{
+    //  "LogName": "Mt Vapius - dirt forager",
+    //  "Action": "EditData",
+    //  "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+    //  "Fields": {
+    //    "Lumisteria.MtVapius_Goose": {
+    //      "OutsideForager": true,
+    //    },
+    //    "Lumisteria.MtVapius_StellarGoose": {
+    //      "OutsideForager": true,
+    //    },
+    //  },
+    //  "When": {
+    //    "HasMod |contains=Lumisteria.MtVapius": "true",
+    //    "BarnDirtForagers": "true",
+    //  },
+    //},
+  ]
+}

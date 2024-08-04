@@ -1,0 +1,172 @@
+{
+  "Changes": [
+    {
+      "LogName": "Modify silo action",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Silo"],
+      "Entries": {
+        "DefaultAction": "selph.ExtraAnimalConfig.CustomFeedSilo",
+      },
+    },
+    {
+      "LogName": "Modify silo capacity",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Silo"],
+      "Entries": {
+        "HayCapacity": 120,
+      },
+      "When": {
+        "SiloResize": "true",
+      },
+    },
+    {
+      "LogName": "Add chicken feed to silo",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Silo", "CustomFields"],
+      "Entries": {
+        "selph.ExtraAnimalConfig.SiloCapacity.(O){{ModId}}.ChickenFeed": "120",
+      },
+      "When": {
+        "SiloResize": "true",
+      },
+    },
+    {
+      "LogName": "Add chicken feed to silo - 240",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Silo", "CustomFields"],
+      "Entries": {
+        "selph.ExtraAnimalConfig.SiloCapacity.(O){{ModId}}.ChickenFeed": "240",
+      },
+      "When": {
+        "SiloResize": "false",
+      },
+    },
+    {
+      "LogName": "Override coop default feed",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Coop", "CustomFields"],
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+    },
+    {
+      "LogName": "Override big coop default feed",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Big Coop", "CustomFields"],
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+    },
+    {
+      "LogName": "Override deluxe coop default feed",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Deluxe Coop", "CustomFields"],
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+    },
+    {
+      "LogName": "Override ResourceChickens' giant coop default feed",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["UncleArya.ResourceChickens.GiantCoop", "CustomFields"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+      "When": {
+        "HasMod |contains=UncleArya.ResourceChickens": "true",
+      },
+    },
+    {
+      "LogName": "Override Jen's mega coop default feed",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["jenf1.megacoopbarn_MegaCoop", "CustomFields"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+      "When": {
+        "HasMod |contains=jenf1.megacoopbarn": "true",
+      },
+    },
+    {
+      "LogName": "Add mixed seeds to mill recipe",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Mill", "ItemConversions"],
+      "Entries": {
+        "{{ModId}}.SeedsToFeed": {
+          "Id": "{{ModId}}.SeedsToFeed",
+					"SourceChest": "Input",
+					"DestinationChest": "Output",
+					"RequiredTags": [
+						"id_o_770"
+					],
+					"ProducedItems": [
+						{
+							"Id": "(O){{ModId}}.ChickenFeed",
+							"ItemId": "(O){{ModId}}.ChickenFeed",
+							"MinStack": 3,
+							"MaxStack": 5,
+						},
+					],
+        },
+      },
+    },
+    {
+      "LogName": "Add corn to mill recipe",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Mill", "ItemConversions"],
+      "When": {
+        "HasMod |contains=Cornucopia.ArtisanMachines": "false",
+      },
+      "Entries": {
+        "{{ModId}}.CornToFeed": {
+          "Id": "{{ModId}}.CornToFeed",
+					"SourceChest": "Input",
+					"DestinationChest": "Output",
+					"RequiredTags": [
+						"id_o_270"
+					],
+					"ProducedItems": [
+						{
+							"Id": "(O){{ModId}}.ChickenFeed",
+							"ItemId": "(O){{ModId}}.ChickenFeed",
+							"MinStack": 6,
+							"MaxStack": 8,
+						},
+					],
+          "MaxDailyConversions": -1,
+        },
+      },
+    },
+    {
+      "LogName": "Add corn to mill recipe - Cornucopia compat",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "Priority": "Late",
+      "TargetField": ["Mill", "ItemConversions", "Cornucopia_CornFlour", "ProducedItems"],
+      "When": {
+        "HasMod |contains=Cornucopia.ArtisanMachines": "true",
+      },
+      "Entries": {
+        "(O){{ModId}}.ChickenFeed": {
+          "Id": "(O){{ModId}}.ChickenFeed",
+          "ItemId": "(O){{ModId}}.ChickenFeed",
+          "MinStack": 6,
+          "MaxStack": 8,
+        },
+      },
+    },
+  ]
+}

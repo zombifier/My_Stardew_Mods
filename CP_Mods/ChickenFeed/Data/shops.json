@@ -1,0 +1,62 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add poultry feed to Marnie's shop",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["AnimalShop", "Items"],
+      "Entries": {
+        "{{ModId}}.ChickenFeed": {
+          "Id": "{{ModId}}.ChickenFeed",
+          "ItemId": "{{ModId}}.ChickenFeed",
+          "Price": 30,
+        },
+      },
+      "MoveEntries": [
+        {
+          "ID": "{{ModId}}.ChickenFeed",
+          "AfterID": "(O)178",
+        }
+      ],
+    },
+    {
+      "LogName": "Add poultry feed to Moira's shop - Mt Vapius",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["Lumisteria.MtVapius_MoiraShop", "Items"],
+      "Priority": "Late",
+      "Entries": {
+        "{{ModId}}.ChickenFeed": {
+          "Id": "{{ModId}}.ChickenFeed",
+          "ItemId": "{{ModId}}.ChickenFeed",
+          "Price": 36,
+          "AvailableStock": 50,
+          "AvailableStockLimit": "Player",
+        },
+        "{{ModId}}.ChickenFeed.PriceCoins": {
+          "Id": "{{ModId}}.ChickenFeed.PriceCoins",
+          "ItemId": "{{ModId}}.ChickenFeed",
+          "TradeItemId": "Lumisteria.MtVapius_WeirdCoins",
+          "TradeItemAmount": 1,
+          "AvailableStock": 10,
+          "AvailableStockLimit": "Player",
+          "MinStack": 3,
+          "MaxStack": 6,
+        },
+      },
+      "MoveEntries": [
+        {
+          "ID": "{{ModId}}.ChickenFeed",
+          "AfterID": "Lumisteria.MtVapius_MoiraShop.Hay.PriceCoins",
+        },
+        {
+          "ID": "{{ModId}}.ChickenFeed.PriceCoins",
+          "AfterID": "{{ModId}}.ChickenFeed",
+        },
+      ],
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+    },
+  ]
+}

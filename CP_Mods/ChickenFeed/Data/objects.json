@@ -1,0 +1,23 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add chicken feed item",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}.ChickenFeed": {
+          "Name": "{{ModId}}.ChickenFeed",
+          "SpriteIndex": 0,
+          "DisplayName": "{{i18n:ChickenFeed.name}}",
+          "Description": "{{i18n:ChickenFeed.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 0,
+          "ContextTags": [
+						"color_cream",
+          ]
+        },
+      },
+    },
+  ]
+}

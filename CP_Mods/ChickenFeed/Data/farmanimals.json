@@ -1,0 +1,76 @@
+{
+  "Changes": [
+    {
+      "LogName": "Change ducks and chickens to not consume grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Fields": {
+        "Brown Chicken": {
+          "GrassEatAmount": 0,
+        },
+        "White Chicken": {
+          "GrassEatAmount": 0,
+        },
+        "Blue Chicken": {
+          "GrassEatAmount": 0,
+        },
+        "Duck": {
+          "GrassEatAmount": 0,
+        },
+        "Void Chicken": {
+          "GrassEatAmount": 0,
+        },
+        "Dinosaur": {
+          "GrassEatAmount": 0,
+        },
+        "Golden Chicken": {
+          "GrassEatAmount": 0,
+        },
+      },
+    },
+    {
+      "LogName": "Initialize asset with empty objects for compat",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Brown Chicken": {},
+        "Blue Chicken": {},
+        "White Chicken": {},
+        "Duck": {},
+        "Void Chicken": {},
+        "Dinosaur": {},
+        "Golden Chicken": {},
+      },
+    },
+    {
+      "LogName": "Make poultry foragers",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Late",
+      "Fields": {
+        "Brown Chicken": {
+          "OutsideForager": true,
+        },
+        "Blue Chicken": {
+          "OutsideForager": true,
+        },
+        "White Chicken": {
+          "OutsideForager": true,
+        },
+        "Duck": {
+          "OutsideForager": true,
+        },
+        "Void Chicken": {
+          "OutsideForager": true,
+        },
+        "Dinosaur": {
+          "OutsideForager": true,
+        },
+        "Golden Chicken": {
+          "OutsideForager": true,
+        },
+      },
+    },
+  ]
+}

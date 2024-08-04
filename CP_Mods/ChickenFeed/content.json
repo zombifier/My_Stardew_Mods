@@ -1,0 +1,86 @@
+{
+  "Format": "2.0.0",
+  "ConfigSchema": {
+    "DirtForagers": {
+      "AllowValues": "true, false",
+      "Default": "true",
+    },
+    "AllDirtForagers": {
+      "AllowValues": "true, false",
+      "Default": "false",
+    },
+    "SiloResize": {
+      "AllowValues": "true, false",
+      "Default": "true",
+    },
+  },
+  "Changes": [
+    {
+      "LogName": "Farm Animal Rules",
+      "Action": "Include",
+      "FromFile": "Data/farmanimals.json",
+      "When": {
+        "DirtForagers": "true",
+      },
+    },
+    {
+      "LogName": "Modded Farm Animal Rules",
+      "Action": "Include",
+      "FromFile": "Data/farmanimalsmodded.json",
+      "When": {
+        "DirtForagers": "true",
+      },
+    },
+    {
+      "LogName": "Modded Farm Animal Rules 2",
+      "Action": "Include",
+      "FromFile": "Data/farmanimalsmodded2.json",
+      "When": {
+        "DirtForagers": "true",
+      },
+    },
+    {
+      "LogName": "Extra Farm Animal Rules",
+      "Action": "Include",
+      "FromFile": "Data/extrafarmanimals.json",
+      "When": {
+        "DirtForagers": "true",
+      },
+    },
+    {
+      "LogName": "Add Crafting",
+      "Action": "Include",
+      "FromFile": "Data/craftingrecipes.json",
+    },
+    {
+      "LogName": "Building changes",
+      "Action": "Include",
+      "FromFile": "Data/buildings.json",
+    },
+    {
+      "LogName": "Objects changes",
+      "Action": "Include",
+      "FromFile": "Data/objects.json",
+    },
+    {
+      "LogName": "Shop changes",
+      "Action": "Include",
+      "FromFile": "Data/shops.json",
+    },
+    {
+      "LogName": "Mail changes",
+      "Action": "Include",
+      "FromFile": "Data/mails.json",
+    },
+    {
+      "LogName": "Map & Location changes",
+      "Action": "Include",
+      "FromFile": "Data/maps.json",
+    },
+    {
+      "Action": "Load",
+      "Target": "{{ModId}}/Objects",
+      "FromFile": "assets/{{TargetWithoutPath}}.png" // assets/Objects.png
+    },
+  ]
+}

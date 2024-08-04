@@ -1,0 +1,731 @@
+{
+  "Changes": [
+    // Mizu's Quails
+    {
+      "LogName": "Mizu's quails - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "Mizu.Quail_CommonQuail": {
+          "GrassEatAmount": 0,
+        },
+        "Mizu.Quail_PlumedQuail": {
+          "GrassEatAmount": 0,
+        },
+        "Mizu.Quail_ScaledQuail": {
+          "GrassEatAmount": 0,
+        },
+        "Mizu.Quail_BobwhiteQuail": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Mizu.Quail": "true",
+      },
+    },
+    {
+      "LogName": "Mizu's quail - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Mizu.Quail_CommonQuail": {
+        },
+        "Mizu.Quail_PlumedQuail": {
+        },
+        "Mizu.Quail_ScaledQuail": {
+        },
+        "Mizu.Quail_BobwhiteQuail": {
+        },
+      },
+      "When": {
+        "HasMod |contains=Mizu.Quail": "true",
+      },
+    },
+    {
+      "LogName": "Mizu's quail - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Mizu.Quail_CommonQuail": {
+          "OutsideForager": true,
+        },
+        "Mizu.Quail_PlumedQuail": {
+          "OutsideForager": true,
+        },
+        "Mizu.Quail_ScaledQuail": {
+          "OutsideForager": true,
+        },
+        "Mizu.Quail_BobwhiteQuail": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=Mizu.Quail": "true",
+      },
+    },
+    // Resource Chickens
+    {
+      "LogName": "Resource Chickens - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "UncleArya.ResourceChickens.ClayChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.CoalChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.StoneChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.WoodChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.BaitChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.CopperChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.FiberChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.HardwoodChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.SapChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.AquaticChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.IronChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.FarmerChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.GeodeChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.MossChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.QuartzChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.BombChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.BoneChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.GoldChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.MonsterChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.ArtifactChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.IridiumChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.RadioactiveChicken": {
+          "GrassEatAmount": 0,
+        },
+        "UncleArya.ResourceChickens.VolcanoChicken": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=UncleArya.ResourceChickens": "true",
+      },
+    },
+    {
+      "LogName": "Resource Chickens - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "UncleArya.ResourceChickens.ClayChicken": {
+        },
+        "UncleArya.ResourceChickens.CoalChicken": {
+        },
+        "UncleArya.ResourceChickens.StoneChicken": {
+        },
+        "UncleArya.ResourceChickens.WoodChicken": {
+        },
+        "UncleArya.ResourceChickens.BaitChicken": {
+        },
+        "UncleArya.ResourceChickens.CopperChicken": {
+        },
+        "UncleArya.ResourceChickens.FiberChicken": {
+        },
+        "UncleArya.ResourceChickens.HardwoodChicken": {
+        },
+        "UncleArya.ResourceChickens.SapChicken": {
+        },
+        "UncleArya.ResourceChickens.AquaticChicken": {
+        },
+        "UncleArya.ResourceChickens.IronChicken": {
+        },
+        "UncleArya.ResourceChickens.FarmerChicken": {
+        },
+        "UncleArya.ResourceChickens.GeodeChicken": {
+        },
+        "UncleArya.ResourceChickens.MossChicken": {
+        },
+        "UncleArya.ResourceChickens.QuartzChicken": {
+        },
+        "UncleArya.ResourceChickens.BombChicken": {
+        },
+        "UncleArya.ResourceChickens.BoneChicken": {
+        },
+        "UncleArya.ResourceChickens.GoldChicken": {
+        },
+        "UncleArya.ResourceChickens.MonsterChicken": {
+        },
+        "UncleArya.ResourceChickens.ArtifactChicken": {
+        },
+        "UncleArya.ResourceChickens.IridiumChicken": {
+        },
+        "UncleArya.ResourceChickens.RadioactiveChicken": {
+        },
+        "UncleArya.ResourceChickens.VolcanoChicken": {
+        },
+      },
+      "When": {
+        "HasMod |contains=UncleArya.ResourceChickens": "true",
+      },
+    },
+    {
+      "LogName": "Resource Chickens - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "UncleArya.ResourceChickens.ClayChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.CoalChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.StoneChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.WoodChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.BaitChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.CopperChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.FiberChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.HardwoodChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.SapChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.AquaticChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.IronChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.FarmerChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.GeodeChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.MossChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.QuartzChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.BombChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.BoneChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.GoldChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.MonsterChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.ArtifactChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.IridiumChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.RadioactiveChicken": {
+          "OutsideForager": true,
+        },
+        "UncleArya.ResourceChickens.VolcanoChicken": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=UncleArya.ResourceChickens": "true",
+      },
+    },
+    // Mt Vapius 
+    {
+      "LogName": "Mt Vapius - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "Lumisteria.MtVapius_SpeckledFowl": {
+          "GrassEatAmount": 0,
+        },
+        "Lumisteria.MtVapius_SpeckledFowlVoid": {
+          "GrassEatAmount": 0,
+        },
+        "Lumisteria.MtVapius_GemPigeon": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+    },
+    {
+      "LogName": "Mt Vapius - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Lumisteria.MtVapius_SpeckledFowl": {
+        },
+        "Lumisteria.MtVapius_SpeckledFowlVoid": {
+        },
+        "Lumisteria.MtVapius_GemPigeon": {
+        },
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+    },
+    {
+      "LogName": "Mt Vapius - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Lumisteria.MtVapius_SpeckledFowl": {
+          "OutsideForager": true,
+        },
+        "Lumisteria.MtVapius_SpeckledFowlVoid": {
+          "OutsideForager": true,
+        },
+        "Lumisteria.MtVapius_GemPigeon": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+    },
+    // Pigeons
+    {
+      "LogName": "Pigeons - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "pigeon": {
+          "GrassEatAmount": 0,
+        },
+        "Modena Pigeon": {
+          "GrassEatAmount": 0,
+        },
+        "Racing Pigeon": {
+          "GrassEatAmount": 0,
+        },
+        "White Dove": {
+          "GrassEatAmount": 0,
+        },
+        "Pioneer Pigeon": {
+          "GrassEatAmount": 0,
+        },
+        "Mourning Dove": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=birdb.CP.Pigeons": "true",
+      },
+    },
+    {
+      "LogName": "Pigeons - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "pigeon": {
+        },
+        "Modena Pigeon": {
+        },
+        "Racing Pigeon": {
+        },
+        "White Dove": {
+        },
+        "Pioneer Pigeon": {
+        },
+        "Mourning Dove": {
+        },
+      },
+      "When": {
+        "HasMod |contains=birdb.CP.Pigeons": "true",
+      },
+    },
+    {
+      "LogName": "pigeons - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "pigeon": {
+          "OutsideForager": true,
+        },
+        "Modena Pigeon": {
+          "OutsideForager": true,
+        },
+        "Racing Pigeon": {
+          "OutsideForager": true,
+        },
+        "White Dove": {
+          "OutsideForager": true,
+        },
+        "Pioneer Pigeon": {
+          "OutsideForager": true,
+        },
+        "Mourning Dove": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=birdb.CP.Pigeons": "true",
+      },
+    },
+    // Trent's new Animals
+    {
+      "LogName": "Trent's new animals - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "Brown Mole": {
+          "GrassEatAmount": 0,
+        },
+        "Orange Mole": {
+          "GrassEatAmount": 0,
+        },
+        "Albino Mole": {
+          "GrassEatAmount": 0,
+        },
+        "Blind Mole": {
+          "GrassEatAmount": 0,
+        },
+        "Broad Footed Mole": {
+          "GrassEatAmount": 0,
+        },
+        "Brown Armadillo": {
+          "GrassEatAmount": 0,
+        },
+        "Cream Armadillo": {
+          "GrassEatAmount": 0,
+        },
+        "Purple Armadillo": {
+          "GrassEatAmount": 0,
+        },
+        "Pink Fairy Armadillo": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "LogName": "Trent's - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Brown Mole": {
+        },
+        "Orange Mole": {
+        },
+        "Albino Mole": {
+        },
+        "Blind Mole": {
+        },
+        "Broad Footed Mole": {
+        },
+        "Brown Armadillo": {
+        },
+        "Cream Armadillo": {
+        },
+        "Purple Armadillo": {
+        },
+        "Pink Fairy Armadillo": {
+        },
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "LogName": "Trent's - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Brown Mole": {
+          "OutsideForager": true,
+        },
+        "Orange Mole": {
+          "OutsideForager": true,
+        },
+        "Albino Mole": {
+          "OutsideForager": true,
+        },
+        "Blind Mole": {
+          "OutsideForager": true,
+        },
+        "Broad Footed Mole": {
+          "OutsideForager": true,
+        },
+        "Brown Armadillo": {
+          "OutsideForager": true,
+        },
+        "Cream Armadillo": {
+          "OutsideForager": true,
+        },
+        "Purple Armadillo": {
+          "OutsideForager": true,
+        },
+        "Pink Fairy Armadillo": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    // Quails for Sharkles
+    {
+      "LogName": "Quails - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "Alazdriel.Quails_CommonQuail": {
+          "GrassEatAmount": 0,
+        },
+        "Alazdriel.Quails_ValleyQuail": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Alazdriel.Quails": "true",
+      },
+    },
+    {
+      "LogName": "Quails - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Alazdriel.Quails_CommonQuail": {
+        },
+        "Alazdriel.Quails_ValleyQuail": {
+        },
+      },
+      "When": {
+        "HasMod |contains=Alazdriel.Quails": "true",
+      },
+    },
+    {
+      "LogName": "Quails - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Alazdriel.Quails_CommonQuail": {
+          "OutsideForager": true,
+        },
+        "Alazdriel.Quails_ValleyQuail": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=Alazdriel.Quails": "true",
+      },
+    },
+    // Chocobo Valley
+    {
+      "LogName": "Chocobo - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "Kitsutsune.Chocobovalley_FerngillCommon": {
+          "GrassEatAmount": 0,
+        },
+        "Kitsutsune.Chocobovalley_FerngillUncommon": {
+          "GrassEatAmount": 0,
+        },
+        "Kitsutsune.Chocobovalley_FerngillRare": {
+          "GrassEatAmount": 0,
+        },
+        "Kitsutsune.Chocobovalley_JyllandCommon": {
+          "GrassEatAmount": 0,
+        },
+        "Kitsutsune.Chocobovalley_JyllandUncommon": {
+          "GrassEatAmount": 0,
+        },
+        "Kitsutsune.Chocobovalley_JyllandRare": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "LogName": "Quails - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Kitsutsune.Chocobovalley_FerngillCommon": {
+        },
+        "Kitsutsune.Chocobovalley_FerngillUncommon": {
+        },
+        "Kitsutsune.Chocobovalley_FerngillRare": {
+        },
+        "Kitsutsune.Chocobovalley_JyllandCommon": {
+        },
+        "Kitsutsune.Chocobovalley_JyllandUncommon": {
+        },
+        "Kitsutsune.Chocobovalley_JyllandRare": {
+        },
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "LogName": "Trent's - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Kitsutsune.Chocobovalley_FerngillCommon": {
+          "OutsideForager": true,
+        },
+        "Kitsutsune.Chocobovalley_FerngillUncommon": {
+          "OutsideForager": true,
+        },
+        "Kitsutsune.Chocobovalley_FerngillRare": {
+          "OutsideForager": true,
+        },
+        "Kitsutsune.Chocobovalley_JyllandCommon": {
+          "OutsideForager": true,
+        },
+        "Kitsutsune.Chocobovalley_JyllandUncommon": {
+          "OutsideForager": true,
+        },
+        "Kitsutsune.Chocobovalley_JyllandRare": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    // Trent's Silkworm
+    {
+      "LogName": "Trent's silkmoths - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "Domestic Silkmoth": {
+          "GrassEatAmount": 0,
+        },
+        "Oak Silkmoth": {
+          "GrassEatAmount": 0,
+        },
+        "Luna Silkmoth": {
+          "GrassEatAmount": 0,
+        },
+        "Tropical Silkmoth": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+        "AllDirtForagers": "true",
+      },
+    },
+    {
+      "LogName": "Trent's silkmoths - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Domestic Silkmoth": {
+          "GrassEatAmount": 0,
+        },
+        "Oak Silkmoth": {
+          "GrassEatAmount": 0,
+        },
+        "Luna Silkmoth": {
+          "GrassEatAmount": 0,
+        },
+        "Tropical Silkmoth": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+        "AllDirtForagers": "true",
+      },
+    },
+    {
+      "LogName": "Trent's silkmoths - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Domestic Silkmoth": {
+          "OutsideForager": true,
+        },
+        "Oak Silkmoth": {
+          "OutsideForager": true,
+        },
+        "Luna Silkmoth": {
+          "OutsideForager": true,
+        },
+        "Tropical Silkmoth": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+        "AllDirtForagers": "true",
+      },
+    },
+  ]
+}

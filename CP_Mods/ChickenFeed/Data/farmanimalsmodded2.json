@@ -1,0 +1,434 @@
+{
+  "Changes": [
+    // Chicken Math 
+    {
+      "LogName": "Chicken Math - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "Ameraucana": {
+          "GrassEatAmount": 0,
+        },
+        "Araucana": {
+          "GrassEatAmount": 0,
+        },
+        "Ayam Cemani": {
+          "GrassEatAmount": 0,
+        },
+        "Barnevelder": {
+          "GrassEatAmount": 0,
+        },
+        "Cream Legbar": {
+          "GrassEatAmount": 0,
+        },
+        "Easter Egger": {
+          "GrassEatAmount": 0,
+        },
+        "Faverolles": {
+          "GrassEatAmount": 0,
+        },
+        "Marans": {
+          "GrassEatAmount": 0,
+        },
+        "Olive Egger": {
+          "GrassEatAmount": 0,
+        },
+        "Orpington": {
+          "GrassEatAmount": 0,
+        },
+        "Polish": {
+          "GrassEatAmount": 0,
+        },
+        "Silkie": {
+          "GrassEatAmount": 0,
+        },
+        "Silverudd Blue": {
+          "GrassEatAmount": 0,
+        },
+        "Swedish Flower Hen": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=shroudrat.ChickenMath": "true",
+      },
+    },
+    {
+      "LogName": "Chicken Math - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Ameraucana": {
+        },
+        "Araucana": {
+        },
+        "Ayam Cemani": {
+        },
+        "Barnevelder": {
+        },
+        "Cream Legbar": {
+        },
+        "Easter Egger": {
+        },
+        "Faverolles": {
+        },
+        "Marans": {
+        },
+        "Olive Egger": {
+        },
+        "Orpington": {
+        },
+        "Polish": {
+        },
+        "Silkie": {
+        },
+        "Silverudd Blue": {
+        },
+        "Swedish Flower Hen": {
+        },
+      },
+      "When": {
+        "HasMod |contains=shroudrat.ChickenMath": "true",
+      },
+    },
+    {
+      "LogName": "Chicken Math - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Ameraucana": {
+          "OutsideForager": true,
+        },
+        "Araucana": {
+          "OutsideForager": true,
+        },
+        "Ayam Cemani": {
+          "OutsideForager": true,
+        },
+        "Barnevelder": {
+          "OutsideForager": true,
+        },
+        "Cream Legbar": {
+          "OutsideForager": true,
+        },
+        "Easter Egger": {
+          "OutsideForager": true,
+        },
+        "Faverolles": {
+          "OutsideForager": true,
+        },
+        "Marans": {
+          "OutsideForager": true,
+        },
+        "Olive Egger": {
+          "OutsideForager": true,
+        },
+        "Orpington": {
+          "OutsideForager": true,
+        },
+        "Polish": {
+          "OutsideForager": true,
+        },
+        "Silkie": {
+          "OutsideForager": true,
+        },
+        "Silverudd Blue": {
+          "OutsideForager": true,
+        },
+        "Swedish Flower Hen": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=shroudrat.ChickenMath": "true",
+      },
+    },
+    // Arrbyte's Birds 
+    {
+      "LogName": "Arrbyte's Zebrafinches - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "Arrbyte.Zebrafinches_Zebrafinch": {
+          "GrassEatAmount": 0,
+        },
+        "Arrbyte.Zebrafinches_GoldZebrafinch": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Arrbyte.Zebrafinches": "true",
+      },
+    },
+    {
+      "LogName": "Arrbyte's Zebrafinches - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Arrbyte.Zebrafinches_Zebrafinch": {
+        },
+        "Arrbyte.Zebrafinches_GoldZebrafinch": {
+        },
+      },
+      "When": {
+        "HasMod |contains=Arrbyte.Zebrafinches": "true",
+      },
+    },
+    {
+      "LogName": "Arrbyte's Zebrafinches - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Arrbyte.Zebrafinches_Zebrafinch": {
+          "OutsideForager": true,
+        },
+        "Arrbyte.Zebrafinches_GoldZebrafinch": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=Arrbyte.Zebrafinches": "true",
+      },
+    },
+
+    {
+      "LogName": "Arrbyte's Lovebirds - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "Arrbyte.Lovebirds_Lovebird": {
+          "GrassEatAmount": 0,
+        },
+        "Arrbyte.Lovebirds_GoldLovebird": {
+          "GrassEatAmount": 0,
+        },
+        "Arrbyte.Lovebirds_VoidLovebird": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Arrbyte.Lovebird": "true",
+      },
+    },
+    {
+      "LogName": "Arrbyte's Lovebird - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Arrbyte.Lovebirds_Lovebird": {
+        },
+        "Arrbyte.Lovebirds_GoldLovebird": {
+        },
+        "Arrbyte.Lovebirds_VoidLovebird": {
+        },
+      },
+      "When": {
+        "HasMod |contains=Arrbyte.Lovebird": "true",
+      },
+    },
+    {
+      "LogName": "Arrbyte's Lovebird - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Arrbyte.Lovebirds_Lovebird": {
+          "GrassEatAmount": 0,
+        },
+        "Arrbyte.Lovebirds_GoldLovebird": {
+          "GrassEatAmount": 0,
+        },
+        "Arrbyte.Lovebirds_VoidLovebird": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Arrbyte.Lovebird": "true",
+      },
+    },
+
+    {
+      "LogName": "Arrbyte's Canaries - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "Arrbyte.Canaries_Canary": {
+          "GrassEatAmount": 0,
+        },
+        "Arrbyte.Canaries_VoidCanary": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Arrbyte.Canaries": "true",
+      },
+    },
+    {
+      "LogName": "Arrbyte's Canaries - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Arrbyte.Canaries_Canary": {
+        },
+        "Arrbyte.Canaries_VoidCanary": {
+        },
+      },
+      "When": {
+        "HasMod |contains=Arrbyte.Canaries": "true",
+      },
+    },
+    {
+      "LogName": "Arrbyte's Canaries - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Arrbyte.Canaries_Canary": {
+          "GrassEatAmount": 0,
+        },
+        "Arrbyte.Canaries_VoidCanary": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Arrbyte.Canaries": "true",
+      },
+    },
+    // Roosters
+    {
+      "LogName": "Roosters - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "cockbrown": {
+          "GrassEatAmount": 0,
+        },
+        "cockwhite": {
+          "GrassEatAmount": 0,
+        },
+        "cockblue": {
+          "GrassEatAmount": 0,
+        },
+        "cockvoid": {
+          "GrassEatAmount": 0,
+        },
+        "cockgold": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=Meara.Roosters": "true",
+      },
+    },
+    {
+      "LogName": "Roosters - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "cockbrown": {
+        },
+        "cockwhite": {
+        },
+        "cockblue": {
+        },
+        "cockvoid": {
+        },
+        "cockgold": {
+        },
+      },
+      "When": {
+        "HasMod |contains=Meara.Roosters": "true",
+      },
+    },
+    {
+      "LogName": "Roosters - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "cockbrown": {
+          "OutsideForager": true,
+        },
+        "cockwhite": {
+          "OutsideForager": true,
+        },
+        "cockblue": {
+          "OutsideForager": true,
+        },
+        "cockvoid": {
+          "OutsideForager": true,
+        },
+        "cockgold": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=Meara.Roosters": "true",
+      },
+    },
+    // Desert chickens
+    {
+      "LogName": "Desert Chickens - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "hiyajules98.DesertChickenCP_DesertChicken": {
+          "GrassEatAmount": 0,
+        },
+        "Purple": {
+          "GrassEatAmount": 0,
+        },
+        "Pink": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=hiyajules98.DesertChickenCP": "true",
+      },
+    },
+    {
+      "LogName": "Desert Chickens - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "hiyajules98.DesertChickenCP_DesertChicken": {
+        },
+        "Purple": {
+        },
+        "Pink": {
+        },
+      },
+      "When": {
+        "HasMod |contains=hiyajules98.DesertChickenCP": "true",
+      },
+    },
+    {
+      "LogName": "Desert Chickens - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "hiyajules98.DesertChickenCP_DesertChicken": {
+          "OutsideForager": true,
+        },
+        "Purple": {
+          "OutsideForager": true,
+        },
+        "Pink": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=hiyajules98.DesertChickenCP": "true",
+      },
+    },
+  ]
+}

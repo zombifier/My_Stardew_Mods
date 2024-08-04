@@ -1,0 +1,9 @@
+{
+  "Changes": [
+    {
+      "Action": "Load",
+      "Target": "Mods/selph.ExtraTappers/Machines",
+      "FromFile": "Assets/Machines.png"
+    },
+  ]
+}

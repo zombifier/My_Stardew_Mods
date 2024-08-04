@@ -1,0 +1,13 @@
+{
+    "Name": "Additional Tree Equipments",
+    "Author": "selph",
+    "Version": "1.2.6",
+    "Description": "Adds extra tappers and tapper-like items you can put on your trees, fruit trees or giant crops.",
+    "UniqueID": "selph.ExtraTappers",
+    "MinimumApiVersion": "4.0.0",
+    "Dependencies": [{"UniqueID": "selph.CustomTapperFramework", "IsRequired": true}],
+    "ContentPackFor": {
+        "UniqueID": "Pathoschild.ContentPatcher"
+    },
+    "UpdateKeys": ["Nexus:22991"]
+}

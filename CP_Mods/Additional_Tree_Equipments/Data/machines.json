@@ -1,0 +1,23 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add new tapper to machine data",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "Entries": {
+        "(BC)selph.ExtraTappers.BirdHouse": {
+          "WobbleWhileWorking": false,
+          "ShowNextIndexWhenReady": true,
+        },
+        "(BC)selph.ExtraTappers.BeeHouse": {
+          "WobbleWhileWorking": false,
+          "ShowNextIndexWhenReady": true,
+        },
+        "(BC)selph.ExtraTappers.MushroomGrower": {
+          "WobbleWhileWorking": false,
+          "ShowNextIndexWhenReady": true,
+        },
+      }
+    },
+  ]
+}

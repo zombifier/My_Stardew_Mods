@@ -1,0 +1,32 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add Marnie's hint mails",
+      "Action": "EditData",
+      "Target": "Data/Mail",
+      "Entries": {
+        "{{ModId}}.MarnieCoopHint" : "{{i18n:MarnieCoopHint}}",
+        "{{ModId}}.MarnieBarnHint" : "{{i18n:MarnieBarnHint}}",
+      },
+    },
+    {
+      "LogName": "Send Marnie's hint mails",
+      "Action": "EditData",
+      "Target": "Data/TriggerActions",
+      "Entries": {
+        "{{ModId}}.MarnieCoopHint" : {
+					"Id": "{{ModId}}.MarnieCoopHint",
+					"Trigger": "DayStarted",
+					"Condition": "ANY \"BUILDINGS_CONSTRUCTED All Coop\" \"BUILDINGS_CONSTRUCTED All \\\"Big Coop\\\"\" \"BUILDINGS_CONSTRUCTED All \\\"Deluxe Coop\\\"\"",
+					"Action": "AddMail Current {{ModId}}.MarnieCoopHint",
+        },
+        "{{ModId}}.MarnieBarnHint" : {
+					"Id": "{{ModId}}.MarnieBarnHint",
+					"Trigger": "DayStarted",
+					"Condition": "ANY \"BUILDINGS_CONSTRUCTED All Barn\" \"BUILDINGS_CONSTRUCTED All \\\"Big Barn\\\"\" \"BUILDINGS_CONSTRUCTED All \\\"Deluxe Barn\\\"\"",
+					"Action": "AddMail Current {{ModId}}.MarnieBarnHint",
+        },
+      },
+    },
+  ]
+}

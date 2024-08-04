@@ -1,0 +1,16 @@
+﻿{
+  "Name": "Toggle Crops and Artisan Goods",
+  "Author": "selph",
+  "Version": "1.3.1",
+  "Description": "Toggle between duplicate versions of crops and artisan goods from various mods.",
+  "UniqueID": "selph.ToggleItemsWFCN",
+  "Dependencies": [
+    {
+      "UniqueID": "selph.ToggleItems",
+    }
+  ],
+  "ContentPackFor": {
+    "UniqueID": "selph.ToggleItems"
+  },
+  "UpdateKeys": ["Nexus:21363"]
+}

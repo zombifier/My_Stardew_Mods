@@ -1,0 +1,12 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add early game feed recipe",
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "{{ModId}}.ChickenFeed": "770 1/Field/{{ModId}}.ChickenFeed/false/default/"
+      },
+    },
+  ]
+}

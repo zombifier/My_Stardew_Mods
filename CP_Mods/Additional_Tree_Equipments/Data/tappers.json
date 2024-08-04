@@ -1,0 +1,570 @@
+//      {
+//        "PreviousItemId": null,
+//        "DaysUntilReady": 1,
+//        "DaysUntilReadyModifiers": null,
+//        "DaysUntilReadyModifierMode": "Stack",
+//        "Season": null,
+//        "Chance": 1.0,
+//        "Condition": null,
+//        "Id": "Default",
+//        "ItemId": "(O)92",
+//        "RandomItemId": null,
+//        "MaxItems": null,
+//        "MinStack": 5,
+//        "MaxStack": 10,
+//        "Quality": -1,
+//        "ObjectInternalName": null,
+//        "ObjectDisplayName": null,
+//        "ToolUpgradeLevel": -1,
+//        "IsRecipe": false,
+//        "StackModifiers": null,
+//        "StackModifierMode": "Stack",
+//        "QualityModifiers": null,
+//        "QualityModifierMode": "Stack",
+//        "ModData": null,
+//        "PerItemCondition": null
+
+//        "SourceId": null
+//        "RecalculateOnCollect": null
+//      }
+{
+  "Changes": [
+    {
+      "LogName": "Add Custom Tapper Framework Data",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/Data",
+      "Entries": {
+        "(BC)selph.ExtraTappers.BirdHouse": {
+          "AlsoUseBaseGameRules": false,
+          "FruitTreeOutputRules": [
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.05,
+              "Id": "Gemstones",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CATEGORY Target -2",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.1,
+              "Id": "Minerals",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CATEGORY Target -12",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.1,
+              "Id": "Artifacts",
+              "ItemId": "RANDOM_ARTIFACT_FOR_DIG_SPOT",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.15,
+              "Id": "Metal Bars",
+              "RandomItemId": [
+                "(O)334", "(O)335", "(O)336", "(O)338", "(O)337", "(O)338",
+              ],
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.4,
+              "Season": "Spring",
+              "Id": "Forage Items Spring",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CONTEXT_TAG Target forage_item season_spring",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.4,
+              "Season": "Summer",
+              "Id": "Forage Items Summer",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CONTEXT_TAG Target forage_item season_summer",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.4,
+              "Season": "Fall",
+              "Id": "Forage Items Fall",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CONTEXT_TAG Target forage_item season_fall",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.4,
+              "Season": "Winter",
+              "Id": "Forage Items Winter",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CONTEXT_TAG Target forage_item season_winter",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.6,
+              "Id": "Tree Seeds",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CONTEXT_TAG Target tree_seed_item",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Id": "Trash",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CATEGORY Target -20",
+            },
+          ],
+          "TreeOutputRules": [
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.05,
+              "Id": "Gemstones",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CATEGORY Target -2",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.1,
+              "Id": "Minerals",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CATEGORY Target -12",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.1,
+              "Id": "Artifacts",
+              "ItemId": "RANDOM_ARTIFACT_FOR_DIG_SPOT",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.15,
+              "Id": "Metal Bars",
+              "RandomItemId": [
+                "(O)334", "(O)335", "(O)336", "(O)338", "(O)337", "(O)338",
+              ],
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.4,
+              "Season": "Spring",
+              "Id": "Forage Items Spring",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CONTEXT_TAG Target forage_item season_spring",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.4,
+              "Season": "Summer",
+              "Id": "Forage Items Summer",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CONTEXT_TAG Target forage_item season_summer",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.4,
+              "Season": "Fall",
+              "Id": "Forage Items Fall",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CONTEXT_TAG Target forage_item season_fall",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.4,
+              "Season": "Winter",
+              "Id": "Forage Items Winter",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CONTEXT_TAG Target forage_item season_winter",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Chance": 0.6,
+              "Id": "Tree Seeds",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CONTEXT_TAG Target tree_seed_item",
+            },
+            {
+              "DaysUntilReady": 1,
+              "Id": "Trash",
+              "ItemId": "RANDOM_ITEMS (O)",
+              "PerItemCondition": "ITEM_CATEGORY Target -20",
+            },
+          ],
+        },
+        "(BC)selph.ExtraTappers.MushroomGrower": {
+          "AlsoUseBaseGameRules": false,
+          "FruitTreeOutputRules": [
+            {
+              "DaysUntilReady": 3,
+              "Chance": 0.1,
+              "Id": "Purple Mushrooms",
+              "ItemId": "(O)422",
+              "MinStack": 5,
+              "QualityModifierMode": "Maximum",
+              "QualityModifiers": [
+                {
+                  "Modification": "Set",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.75 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 2,
+                  "Condition": "RANDOM 0.5 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 4,
+                  "Condition": "RANDOM 0.25 @addDailyLuck",
+                },
+              ],
+            },
+            {
+              "DaysUntilReady": 3,
+              "Chance": 0.333333,
+              "Id": "Red Mushrooms",
+              "ItemId": "(O)420",
+              "MinStack": 5,
+              "QualityModifierMode": "Maximum",
+              "QualityModifiers": [
+                {
+                  "Modification": "Set",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.75 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 2,
+                  "Condition": "RANDOM 0.5 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 4,
+                  "Condition": "RANDOM 0.25 @addDailyLuck",
+                },
+              ],
+            },
+            {
+              "DaysUntilReady": 3,
+              "Chance": 0.25,
+              "Id": "Morel",
+              "ItemId": "(O)257",
+              "MinStack": 5,
+              "QualityModifierMode": "Maximum",
+              "QualityModifiers": [
+                {
+                  "Modification": "Set",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.75 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 2,
+                  "Condition": "RANDOM 0.5 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 4,
+                  "Condition": "RANDOM 0.25 @addDailyLuck",
+                },
+              ],
+            },
+            {
+              "DaysUntilReady": 3,
+              "Chance": 0.25,
+              "Id": "Chanterelle",
+              "ItemId": "(O)281",
+              "MinStack": 5,
+              "QualityModifierMode": "Maximum",
+              "QualityModifiers": [
+                {
+                  "Modification": "Set",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.75 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 2,
+                  "Condition": "RANDOM 0.5 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 4,
+                  "Condition": "RANDOM 0.25 @addDailyLuck",
+                },
+              ],
+            },
+            {
+              "DaysUntilReady": 3,
+              "Id": "Common",
+              "ItemId": "(O)404",
+              "MinStack": 5,
+              "QualityModifierMode": "Maximum",
+              "QualityModifiers": [
+                {
+                  "Modification": "Set",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.75 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 2,
+                  "Condition": "RANDOM 0.5 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 4,
+                  "Condition": "RANDOM 0.25 @addDailyLuck",
+                },
+              ],
+            },
+          ],
+          "TreeOutputRules": [
+            {
+              "DaysUntilReady": 3,
+              "Chance": 0.1,
+              "Id": "Purple Mushrooms",
+              "ItemId": "(O)422",
+              "MinStack": 5,
+              "QualityModifierMode": "Maximum",
+              "QualityModifiers": [
+                {
+                  "Modification": "Set",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.5 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 2,
+                  "Condition": "RANDOM 0.25 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 4,
+                  "Condition": "RANDOM 0.1 @addDailyLuck",
+                },
+              ],
+            },
+            {
+              "DaysUntilReady": 3,
+              "Chance": 0.333333,
+              "Id": "Red Mushrooms",
+              "ItemId": "(O)420",
+              "MinStack": 5,
+              "QualityModifierMode": "Maximum",
+              "QualityModifiers": [
+                {
+                  "Modification": "Set",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.5 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 2,
+                  "Condition": "RANDOM 0.25 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 4,
+                  "Condition": "RANDOM 0.1 @addDailyLuck",
+                },
+              ],
+            },
+            {
+              "DaysUntilReady": 3,
+              "Chance": 0.25,
+              "Id": "Morel",
+              "ItemId": "(O)257",
+              "MinStack": 5,
+              "QualityModifierMode": "Maximum",
+              "QualityModifiers": [
+                {
+                  "Modification": "Set",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.5 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 2,
+                  "Condition": "RANDOM 0.25 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 4,
+                  "Condition": "RANDOM 0.1 @addDailyLuck",
+                },
+              ],
+            },
+            {
+              "DaysUntilReady": 3,
+              "Chance": 0.25,
+              "Id": "Chanterelle",
+              "ItemId": "(O)281",
+              "MinStack": 5,
+              "QualityModifierMode": "Maximum",
+              "QualityModifiers": [
+                {
+                  "Modification": "Set",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.5 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 2,
+                  "Condition": "RANDOM 0.25 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 4,
+                  "Condition": "RANDOM 0.1 @addDailyLuck",
+                },
+              ],
+            },
+            {
+              "DaysUntilReady": 3,
+              "Id": "Common",
+              "ItemId": "(O)404",
+              "MinStack": 5,
+              "QualityModifierMode": "Maximum",
+              "QualityModifiers": [
+                {
+                  "Modification": "Set",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.5 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 2,
+                  "Condition": "RANDOM 0.25 @addDailyLuck",
+                },
+                {
+                  "Modification": "Set",
+                  "Amount": 4,
+                  "Condition": "RANDOM 0.1 @addDailyLuck",
+                },
+              ],
+            },
+          ],
+        },
+
+        "(BC)selph.ExtraTappers.BeeHouse": {
+          "AlsoUseBaseGameRules": false,
+          "FruitTreeOutputRules": [
+            {
+              "DaysUntilReady": 4,
+              "Condition": "!LOCATION_SEASON Target Winter",
+              "Id": "Honey",
+              "ItemId": "FLAVORED_ITEM Honey DROP_IN_ID",
+            },
+          ],
+          "TreeOutputRules": [
+            {
+              "RecalculateOnCollect": true,
+              "DaysUntilReady": 4,
+              "Condition": "!LOCATION_SEASON Target Winter",
+              "Id": "Honey",
+              "ItemId": "FLAVORED_ITEM Honey NEARBY_FLOWER_ID",
+            },
+          ],
+        },
+      },
+    },
+    {
+      "LogName": "Modify honey rules to default if better beehouses are installed",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/Data",
+      "TargetField": ["(BC)selph.ExtraTappers.BeeHouse", "FruitTreeOutputRules", "Honey"],
+      "When": {
+        "HasMod": "tlitookilakin.BetterBeehouses"
+      },
+      "Priority": "Late",
+      "Entries": {
+        "ItemId": "FLAVORED_ITEM Honey DROP_IN_ID",
+      },
+    },
+    {
+      "LogName": "Modify base tapper rules",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/Data",
+      "TargetField": ["(BC)105", "FruitTreeOutputRules"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraTappers.Sap": {
+          "DaysUntilReady": 1,
+          "Chance": 1.0,
+          "Id": "selph.ExtraTappers.Sap",
+          "ItemId": "(O)92",
+          "MinStack": 3,
+          "MaxStack": 8,
+        },
+      },
+      "MoveEntries": [
+        {"Id": "selph.ExtraTappers.Sap", "ToPosition": "Bottom"}
+      ],
+    },
+    {
+      "LogName": "Modify base tapper rules",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/Data",
+      "TargetField": ["(BC)105", "GiantCropOutputRules"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraTappers.GiantCropHoney": {
+          "DaysUntilReady": 1,
+          "Condition": "ITEM_CATEGORY Input -80",
+          "Id": "selph.ExtraTappers.GiantCropHoney",
+          "ItemId": "FLAVORED_ITEM Honey DROP_IN_ID",
+          "MinStack": 1,
+          "MaxStack": 1,
+        },
+        "selph.ExtraTappers.GiantCropJuice": {
+          "DaysUntilReady": 1,
+          "Id": "selph.ExtraTappers.GiantCropJuice",
+          "ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
+          "MinStack": 1,
+          "MaxStack": 1,
+        },
+      },
+    },
+    {
+      "LogName": "Modify base heavy tapper rules",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/Data",
+      "TargetField": ["(BC)264", "FruitTreeOutputRules"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraTappers.Sap": {
+          "DaysUntilReady": 1,
+          "Chance": 1.0,
+          "Id": "selph.ExtraTappers.Sap",
+          "ItemId": "(O)92",
+          "MinStack": 6,
+          "MaxStack": 16,
+        },
+      },
+      "MoveEntries": [
+        {"Id": "selph.ExtraTappers.Sap", "ToPosition": "Bottom"}
+      ],
+    },
+    {
+      "LogName": "Modify base heavy tapper rules",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/Data",
+      "TargetField": ["(BC)264", "GiantCropOutputRules"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraTappers.GiantCropHoney": {
+          "DaysUntilReady": 1,
+          "Condition": "ITEM_CATEGORY Input -80",
+          "Id": "selph.ExtraTappers.GiantCropHoney",
+          "ItemId": "FLAVORED_ITEM Honey DROP_IN_ID",
+          "MinStack": 2,
+          "MaxStack": 2,
+        },
+        "selph.ExtraTappers.GiantCropJuice": {
+          "DaysUntilReady": 1,
+          "Id": "selph.ExtraTappers.GiantCropJuice",
+          "ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
+          "MinStack": 2,
+          "MaxStack": 2,
+        },
+      },
+    },
+  ]
+}

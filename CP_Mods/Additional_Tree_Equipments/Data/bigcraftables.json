@@ -1,0 +1,51 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add new tapper to big craftables",
+      "Action": "EditData",
+      "Target": "Data/BigCraftables",
+      "Entries": {
+        "selph.ExtraTappers.BirdHouse": {
+          "Name": "selph.ExtraTappers.BirdHouse",
+          "DisplayName": "{{i18n: selph.ExtraTappers.BirdHouse.name}}",
+          "Description": "{{i18n: selph.ExtraTappers.BirdHouse.description}}",
+          "CanBePlacedOutdoors": true,
+          "CanBePlacedIndoors": false,
+          "IsLamp": false,
+          "Texture": "Mods/selph.ExtraTappers/Machines",
+          "SpriteIndex": 2,
+          "ContextTags": [
+            "tapper_item"
+          ],
+        },
+        "selph.ExtraTappers.BeeHouse": {
+          "Name": "selph.ExtraTappers.BeeHouse",
+          "DisplayName": "{{i18n: selph.ExtraTappers.BeeHouse.name}}",
+          "Description": "{{i18n: selph.ExtraTappers.BeeHouse.description}}",
+          "CanBePlacedOutdoors": true,
+          "CanBePlacedIndoors": false,
+          "IsLamp": false,
+          "Texture": "Mods/selph.ExtraTappers/Machines",
+          "SpriteIndex": 0,
+          "ContextTags": [
+            "tapper_item",
+            "bee_house"
+          ],
+        },
+        "selph.ExtraTappers.MushroomGrower": {
+          "Name": "selph.ExtraTappers.MushroomGrower",
+          "DisplayName": "{{i18n: selph.ExtraTappers.MushroomGrower.name}}",
+          "Description": "{{i18n: selph.ExtraTappers.MushroomGrower.description}}",
+          "CanBePlacedOutdoors": true,
+          "CanBePlacedIndoors": false,
+          "IsLamp": false,
+          "Texture": "Mods/selph.ExtraTappers/Machines",
+          "SpriteIndex": 4,
+          "ContextTags": [
+            "tapper_item"
+          ],
+        },
+      }
+    },
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "ChickenFeed.name": "Poultry Feed",
+  "ChickenFeed.description": "Milled seeds and corn used as food for chickens and other coop animals.",
+  "MarnieCoopHint": "Dear @,^^Congratulations on your new coop! You're on your way to raising some wonderful chickens and collect their eggs - just come over and I can sell you some baby chicks to get started!^^Chickens (and most coop animals) are very self-sufficient, and if you let them outside they can dig for worms and seeds all by themselves. They do prefer foraging in tall grass though, so you should plant some around your coop if you can. If they have to stay inside, you can make poultry feed by milling corn and mixed seeds - or you can buy them from me if you have money to spare.^^Oh, and last but not least, make sure to pet them every day! Animals need love too, not just food.^   -Marnie[#]Marnie's Coop Tips",
+  "MarnieBarnHint": "Dear @,^^I heard you have built a barn on your farm - if you need some livestock, I can sell you baby cows to get you started!^^Taking care of cows and livestock is not as hard as it sounds - make sure to pet them (this is important!) and feed them every day either with fresh grass, or hay if they don't feel like going outside. You can buy hay from me, or scythe down some grass to collect hay yourself if you have a silo. Once your cows are of age, you can milk them with a Milk Pail for their oh-so-delicious milk. That's all, and good luck!^   -Marnie[#]Marnie's Barn Tips",
+  "config.DirtForagers.name": "Most Coop Animals are Foragers",
+  "config.DirtForagers.description": "Whether to make most coop animals (including chickens, ducks and dinos) able to forage on dirt and not eat grass when outside. True by default - if set to false they will still eat grass when outside.",
+  "config.AllDirtForagers.name": "All Coop Animals are Foragers",
+  "config.AllDirtForagers.description": "Some coop animals - including rabbits and some modded animals like Trent's Silkmoth - still eat grass when outside. Set to true to make them also dirt foragers. Only applies if 1st settings is also true.",
+  "config.SiloResize.name": "Resize Silos",
+  "config.SiloResize.description": "Whether to make resize silos to store 120 of each feed type to match the vanilla capacity of 240. True by default; set to false to make them store 240 of each.",
+}
