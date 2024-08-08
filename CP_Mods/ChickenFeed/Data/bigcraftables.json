@@ -1,0 +1,17 @@
+{
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "Data/BigCraftables",
+			"Entries": {
+				"{{ModId}}.HandMill": {
+					"Name": "{{ModId}}.HandMill",
+					"DisplayName": "{{i18n:HandMill.name}}",
+					"Description": "{{i18n:HandMill.description}}",
+					"Texture": "{{ModId}}/BigCraftables",
+					"SpriteIndex": 0
+				},
+			}
+		},
+	]
+}

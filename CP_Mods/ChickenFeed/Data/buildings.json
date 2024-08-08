@@ -19,6 +19,7 @@
       },
       "When": {
         "SiloResize": "true",
+        "FeedSilo": "false",
       },
     },
     {
@@ -31,6 +32,7 @@
       },
       "When": {
         "SiloResize": "true",
+        "FeedSilo": "false",
       },
     },
     {
@@ -43,6 +45,124 @@
       },
       "When": {
         "SiloResize": "false",
+        "FeedSilo": "false",
+      },
+    },
+    {
+      "LogName": "Add chicken feed to silo - 30",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Silo", "CustomFields"],
+      "Entries": {
+        "selph.ExtraAnimalConfig.SiloCapacity.(O){{ModId}}.ChickenFeed": "10",
+      },
+      "When": {
+        "FeedSilo": "true",
+      },
+    },
+    {
+      "LogName": "Add chicken feed silo upgrade",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "Entries": {
+        "{{ModId}}.FeedSilo": {
+          "Name": "{{i18n:FeedSilo.name}}",
+          "Description": "{{i18n:FeedSilo.description}}",
+          "Texture": "Buildings\\Silo",
+          "Skins": [],
+          "DrawShadow": true,
+          "UpgradeSignTile": "1, 2",
+          "UpgradeSignHeight": 16.0,
+          "Size": {
+            "X": 3,
+            "Y": 3
+          },
+          "FadeWhenBehind": true,
+          "SourceRect": {
+            "X": 0,
+            "Y": 0,
+            "Width": 0,
+            "Height": 0
+          },
+          "SeasonOffset": {
+            "X": 0,
+            "Y": 0
+          },
+          "DrawOffset": "0, 0",
+          "SortTileOffset": 0.0,
+          "CollisionMap": null,
+          "AdditionalPlacementTiles": null,
+          "BuildingType": null,
+          "Builder": "Robin",
+          "BuildCondition": null,
+          "BuildDays": 0,
+          "BuildCost": 100,
+          "BuildMaterials": null,
+          "BuildingToUpgrade": "Silo",
+          "MagicalConstruction": false,
+          "BuildMenuDrawOffset": {
+            "X": 0,
+            "Y": 0
+          },
+          "HumanDoor": {
+            "X": -1,
+            "Y": -1
+          },
+          "AnimalDoor": {
+            "X": -1,
+            "Y": -1,
+            "Width": 0,
+            "Height": 0
+          },
+          "AnimalDoorOpenDuration": 0.0,
+          "AnimalDoorOpenSound": null,
+          "AnimalDoorCloseDuration": 0.0,
+          "AnimalDoorCloseSound": null,
+          "NonInstancedIndoorLocation": null,
+          "IndoorMap": null,
+          "IndoorMapType": null,
+          "MaxOccupants": 20,
+          "ValidOccupantTypes": [],
+          "AllowAnimalPregnancy": false,
+          "IndoorItemMoves": null,
+          "IndoorItems": null,
+          "AddMailOnBuild": null,
+          "Metadata": {},
+          "ModData": {},
+          "HayCapacity": 10,
+          "Chests": null,
+          "DefaultAction": "selph.ExtraAnimalConfig.CustomFeedSilo",
+          "AdditionalTilePropertyRadius": 0,
+          "AllowsFlooringUnderneath": true,
+          "ActionTiles": [],
+          "TileProperties": [],
+          "ItemConversions": null,
+          "DrawLayers": [
+            {
+              "Id": "{{ModId}}.FeedSign",
+              "Texture": "{{ModId}}/FeedSign",
+              "SourceRect": {
+                "X": 0,
+                "Y": 0,
+                "Width": 16,
+                "Height": 16
+              },
+              "DrawPosition": "16, 96",
+              "DrawInBackground": false,
+              "SortTileOffset": 0,
+              "OnlyDrawIfChestHasContents": null,
+              "FrameDuration": 90,
+              "FrameCount": 1,
+              "FramesPerRow": -1,
+            },
+          ],
+          "CustomFields": {
+            "selph.ExtraAnimalConfig.SiloCapacity.(O){{ModId}}.ChickenFeed": "240",
+          },
+        },
+      },
+      "When": {
+        "FeedSilo": "true",
       },
     },
     {
@@ -99,26 +219,43 @@
       },
     },
     {
-      "LogName": "Add mixed seeds to mill recipe",
+      "LogName": "Add mill recipes",
       "Action": "EditData",
       "Target": "Data/Buildings",
       "TargetField": ["Mill", "ItemConversions"],
       "Entries": {
         "{{ModId}}.SeedsToFeed": {
           "Id": "{{ModId}}.SeedsToFeed",
-					"SourceChest": "Input",
-					"DestinationChest": "Output",
-					"RequiredTags": [
-						"id_o_770"
-					],
-					"ProducedItems": [
-						{
-							"Id": "(O){{ModId}}.ChickenFeed",
-							"ItemId": "(O){{ModId}}.ChickenFeed",
-							"MinStack": 3,
-							"MaxStack": 5,
-						},
-					],
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "RequiredTags": [
+            "id_o_770"
+          ],
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}.ChickenFeed",
+              "ItemId": "(O){{ModId}}.ChickenFeed",
+              "MinStack": 2,
+              "MaxStack": 3,
+            },
+          ],
+          "MaxDailyConversions": -1,
+        },
+        "{{ModId}}.PremiumPoultryFeedMix": {
+          "Id": "{{ModId}}.PremiumPoultryFeedMix",
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "RequiredTags": [
+            "id_o_selph.coopfeed.premiumpoultryfeedmix"
+          ],
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}.ChickenFeed",
+              "ItemId": "(O){{ModId}}.ChickenFeed",
+              "MinStack": 200,
+            },
+          ],
+          "MaxDailyConversions": -1,
         },
       },
     },
@@ -133,19 +270,19 @@
       "Entries": {
         "{{ModId}}.CornToFeed": {
           "Id": "{{ModId}}.CornToFeed",
-					"SourceChest": "Input",
-					"DestinationChest": "Output",
-					"RequiredTags": [
-						"id_o_270"
-					],
-					"ProducedItems": [
-						{
-							"Id": "(O){{ModId}}.ChickenFeed",
-							"ItemId": "(O){{ModId}}.ChickenFeed",
-							"MinStack": 6,
-							"MaxStack": 8,
-						},
-					],
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "RequiredTags": [
+            "id_o_270"
+          ],
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}.ChickenFeed",
+              "ItemId": "(O){{ModId}}.ChickenFeed",
+              "MinStack": 4,
+              "MaxStack": 6,
+            },
+          ],
           "MaxDailyConversions": -1,
         },
       },
@@ -163,8 +300,8 @@
         "(O){{ModId}}.ChickenFeed": {
           "Id": "(O){{ModId}}.ChickenFeed",
           "ItemId": "(O){{ModId}}.ChickenFeed",
-          "MinStack": 6,
-          "MaxStack": 8,
+          "MinStack": 4,
+          "MaxStack": 6,
         },
       },
     },

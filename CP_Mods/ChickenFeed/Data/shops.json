@@ -20,6 +20,23 @@
       ],
     },
     {
+      "LogName": "Add golden animal cracker recipe to Qi's shop",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["QiGemShop", "Items"],
+      "Entries": {
+        "{{ModId}}.GoldenAnimalCracker (Recipe)": {
+          "Id": "{{ModId}}.GoldenAnimalCracker (Recipe)",
+          "ItemId": "(O)GoldenAnimalCracker",
+          "TradeItemId": "(O)858",
+          "TradeItemAmount": 50,
+          "IsRecipe": true,
+          "ObjectInternalName": "{{ModId}}.GoldenAnimalCracker",
+          "Condition": "PLAYER_HAS_MAIL Any {{ModId}}.QiAnimalCrackerRecipe Received"
+        },
+      },
+    },
+    {
       "LogName": "Add poultry feed to Moira's shop - Mt Vapius",
       "Action": "EditData",
       "Target": "Data/Shops",

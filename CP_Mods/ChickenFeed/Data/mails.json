@@ -7,10 +7,13 @@
       "Entries": {
         "{{ModId}}.MarnieCoopHint" : "{{i18n:MarnieCoopHint}}",
         "{{ModId}}.MarnieBarnHint" : "{{i18n:MarnieBarnHint}}",
+        "{{ModId}}.MarnieFreeMill" : "{{i18n:MarnieFreeMill}}%item bigobject selph.CoopFeed.HandMill %%[#]{{i18n:MarnieFreeMill.title}}",
+        "{{ModId}}.MarnieQuestCompleteLetter" : "{{i18n:MarnieQuestCompleteLetter}}%item craftingrecipe selph.CoopFeed.PremiumLivestockFodderMix %%%item craftingrecipe selph.CoopFeed.PremiumPoultryFeedMix %%[#]{{i18n:MarnieQuestCompleteLetter.title}}",
+        "{{ModId}}.QiAnimalCrackerRecipe" : "{{i18n:QiAnimalCrackerRecipe}}",
       },
     },
     {
-      "LogName": "Send Marnie's hint mails",
+      "LogName": "Send mails",
       "Action": "EditData",
       "Target": "Data/TriggerActions",
       "Entries": {
@@ -18,13 +21,25 @@
 					"Id": "{{ModId}}.MarnieCoopHint",
 					"Trigger": "DayStarted",
 					"Condition": "ANY \"BUILDINGS_CONSTRUCTED All Coop\" \"BUILDINGS_CONSTRUCTED All \\\"Big Coop\\\"\" \"BUILDINGS_CONSTRUCTED All \\\"Deluxe Coop\\\"\"",
-					"Action": "AddMail Current {{ModId}}.MarnieCoopHint",
+					"Action": "AddMail Current {{ModId}}.MarnieCoopHint now",
         },
         "{{ModId}}.MarnieBarnHint" : {
 					"Id": "{{ModId}}.MarnieBarnHint",
 					"Trigger": "DayStarted",
 					"Condition": "ANY \"BUILDINGS_CONSTRUCTED All Barn\" \"BUILDINGS_CONSTRUCTED All \\\"Big Barn\\\"\" \"BUILDINGS_CONSTRUCTED All \\\"Deluxe Barn\\\"\"",
-					"Action": "AddMail Current {{ModId}}.MarnieBarnHint",
+					"Action": "AddMail Current {{ModId}}.MarnieBarnHint now",
+        },
+        "{{ModId}}.MarnieFreeMill" : {
+					"Id": "{{ModId}}.MarnieFreeMill",
+					"Trigger": "DayEnding",
+					"Condition": "PLAYER_STAT Current chickenEggsLayed 10",
+					"Action": "AddMail Current {{ModId}}.MarnieFreeMill",
+        },
+        "{{ModId}}.QiAnimalCrackerRecipe" : {
+					"Id": "{{ModId}}.QiAnimalCrackerRecipe",
+					"Trigger": "DayEnding",
+					"Condition": "PLAYER_SPECIAL_ORDER_COMPLETE Any {{ModId}}.MarnieFiberSpecialOrder, PLAYER_VISITED_LOCATION Any QiNutRoom",
+					"Action": "AddMail Current {{ModId}}.QiAnimalCrackerRecipe",
         },
       },
     },

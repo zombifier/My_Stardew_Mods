@@ -1,0 +1,79 @@
+{
+  "Changes": [
+		{
+      "LogName": "Add drop point in Marnie's shop",
+			"Action": "EditMap",
+			"Target": "Maps/AnimalShop",
+			"Priority": "Late",
+			"MapTiles": [
+				{
+					"Position": {
+						"X": 28,
+						"Y": 14
+					},
+					"Layer": "Buildings",
+					"SetProperties": {
+						"Action": "DropBox MarnieFridge"
+					}
+				}
+			]
+		},
+    {
+      "LogName": "Add special orders",
+      "Action": "EditData",
+      "Target": "Data/SpecialOrders",
+      "Entries": {
+        "{{ModId}}.MarnieFiberSpecialOrder": {
+					"Name": "{{i18n:MarnieFiberSpecialOrder.name}}",
+					"Requester": "Marnie",
+					"Duration": "TwoWeeks",
+					"Repeatable": false,
+					"RequiredTags": "!dropbox_MarnieFridge",
+					"Condition": "SEASON fall winter",
+					"OrderType": "",
+					"SpecialRule": "",
+					"Text": "{{i18n:MarnieFiberSpecialOrder.text}}",
+					"ItemToRemoveOnEnd": null,
+					"MailToRemoveOnEnd": null,
+					"RandomizedElements": null,
+					"Objectives": [
+						{
+							"Type": "Collect",
+							"Text": "{{i18n:MarnieFiberSpecialOrder.obj}}",
+							"RequiredCount": "150",
+							"Data": {
+								"AcceptedContextTags": "id_o_771"
+							}
+						},
+						{
+							"Type": "Donate",
+							"Text": "{{i18n:MarnieFiberSpecialOrder.obj2}}",
+							"RequiredCount": "150",
+							"Data": {
+								"DropBox": "MarnieFridge",
+								"DropBoxGameLocation": "AnimalShop",
+								"DropBoxIndicatorLocation": "28 13",
+								"AcceptedContextTags": "id_o_771"
+							}
+						}
+					],
+					"Rewards": [
+						{
+							"Type": "Money",
+							"Data": {
+								"Amount": "2000"
+							}
+						},
+						{
+							"Type": "Mail",
+							"Data": {
+								"MailReceived": "{{ModId}}.MarnieQuestCompleteLetter",
+                "NoLetter": "false",
+							}
+						}
+					]
+        },
+      },
+    },
+  ]
+}

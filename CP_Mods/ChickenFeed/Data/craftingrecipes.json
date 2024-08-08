@@ -1,12 +1,29 @@
 {
   "Changes": [
     {
-      "LogName": "Add early game feed recipe",
+      "LogName": "Add recipes",
       "Action": "EditData",
       "Target": "Data/CraftingRecipes",
       "Entries": {
-        "{{ModId}}.ChickenFeed": "770 1/Field/{{ModId}}.ChickenFeed/false/default/"
+        "{{ModId}}.ChickenFeed": "770 1/Field/{{ModId}}.ChickenFeed/false/default/",
+        "{{ModId}}.PremiumPoultryFeedMix": "262 10 270 10 Carrot 5 684 2/Field/{{ModId}}.PremiumPoultryFeedMix/false/none/",
+        "{{ModId}}.PremiumLivestockFodderMix": "771 30 300 10 188 5 78 2/Field/{{ModId}}.PremiumLivestockFodderMix/false/none/",
+        "{{ModId}}.GoldenAnimalCracker": "{{ModId}}.PremiumPoultryFeedMix 5 {{ModId}}.PremiumLivestockFodderMix 5 MysticSyrup 5/Field/GoldenAnimalCracker/false/none/",
       },
+    },
+    {
+      "LogName": "Modify recipes if Cornucopia extended crops is enabled",
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "{{ModId}}.PremiumPoultryFeedMix": "262 10 270 10 Cornucopia_GreenPeas 10 Carrot 5 Cornucopia_Oats 5 684 5/Field/{{ModId}}.PremiumPoultryFeedMix 2/false/none/",
+        "{{ModId}}.PremiumLivestockFodderMix": "771 30 300 10 Cornucopia_Barley 10 188 5 Cornucopia_Soybeans 5 78 5/Field/{{ModId}}.PremiumLivestockFodderMix 2/false/none/",
+      },
+      "When": {
+        "HasMod |contains=Cornucopia.MoreCrops": "true",
+        "CornucopiaExtendedRecipe": "true",
+        "HasFlag |contains=Cornucopia.MoreCrops_ExtendedCropsPackEnabled": "true",
+      }
     },
   ]
 }

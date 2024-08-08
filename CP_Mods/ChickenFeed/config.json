@@ -1,5 +1,7 @@
 {
   "DirtForagers": "true",
-  "AllDirtForagers": "true",
-  "SiloResize": "true"
+  "AllDirtForagers": "false",
+  "SiloResize": "true",
+  "FeedSilo": "false",
+  "CornucopiaExtendedRecipe": "false"
 }

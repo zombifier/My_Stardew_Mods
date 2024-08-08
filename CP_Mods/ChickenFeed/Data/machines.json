@@ -1,0 +1,138 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add premium hay drying",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)Dehydrator", "OutputRules"],
+      "Entries": {
+        "{{ModId}}.PremiumLivestockFodderMix": {
+          "Id": "{{ModId}}.PremiumLivestockFodderMix",
+          "Triggers": [
+            {
+              "Id": "{{ModId}}.PremiumLivestockFodderMix",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}.PremiumLivestockFodderMix",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "Default",
+              "ItemId": "(O)178",
+              "MinStack": 200,
+            }
+          ],
+          "DaysUntilReady": 1,
+        },
+      },
+    },
+    {
+      "LogName": "Add hand mill recipes",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "Entries": {
+        "(BC){{ModId}}.HandMill": {
+          "OutputRules": [
+            {
+              "Id": "{{ModId}}.CornToFeed",
+              "Triggers": [
+                {
+                  "Id": "{{ModId}}.CornToFeed",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O)270",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "Default",
+                  "ItemId": "(O){{ModId}}.ChickenFeed",
+                  "MinStack": 4,
+                }
+              ],
+              "MinutesUntilReady": 180,
+            },
+            {
+              "Id": "{{ModId}}.SeedToFeed",
+              "Triggers": [
+                {
+                  "Id": "{{ModId}}.SeedsToFeed",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O)770",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "Default",
+                  "ItemId": "(O){{ModId}}.ChickenFeed",
+                  "MinStack": 2,
+                }
+              ],
+              "MinutesUntilReady": 180,
+            },
+            {
+              "Id": "WheatFlour",
+              "Triggers": [
+                {
+                  "Id": "Wheat",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O)262",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "Default",
+                  "ItemId": "(O)246",
+                }
+              ],
+              "MinutesUntilReady": 180,
+            },
+            {
+              "Id": "Sugar",
+              "Triggers": [
+                {
+                  "Id": "Beet",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O)284",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "Default",
+                  "ItemId": "(O)245",
+                  "MinStack": 3,
+                }
+              ],
+              "MinutesUntilReady": 180,
+            },
+            {
+              "Id": "Rice",
+              "Triggers": [
+                {
+                  "Id": "UnmilledRice",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O)271",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "Default",
+                  "ItemId": "(O)423",
+                }
+              ],
+              "MinutesUntilReady": 180,
+            },
+          ],
+					"LoadEffects": [
+						{
+							"Sounds": [
+								{
+									"Id": "boulderBreak"
+								}
+							],
+						}
+					],
+        }
+      },
+    },
+  ]
+}

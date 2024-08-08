@@ -17,6 +17,28 @@
 						"color_cream",
           ]
         },
+        "{{ModId}}.PremiumPoultryFeedMix": {
+          "Name": "{{ModId}}.PremiumPoultryFeedMix",
+          "SpriteIndex": 1,
+          "DisplayName": "{{i18n:PremiumPoultryFeedMix.name}}",
+          "Description": "{{i18n:PremiumPoultryFeedMix.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 0,
+          "ContextTags": [
+          ]
+        },
+        "{{ModId}}.PremiumLivestockFodderMix": {
+          "Name": "{{ModId}}.PremiumLivestockFodderMix",
+          "SpriteIndex": 2,
+          "DisplayName": "{{i18n:PremiumLivestockFodderMix.name}}",
+          "Description": "{{i18n:PremiumLivestockFodderMix.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 0,
+          "ContextTags": [
+          ]
+        },
       },
     },
   ]

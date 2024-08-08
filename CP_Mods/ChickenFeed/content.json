@@ -13,6 +13,14 @@
       "AllowValues": "true, false",
       "Default": "true",
     },
+    "FeedSilo": {
+      "AllowValues": "true, false",
+      "Default": "false",
+    },
+    "CornucopiaExtendedRecipe": {
+      "AllowValues": "true, false",
+      "Default": "false",
+    },
   },
   "Changes": [
     {
@@ -78,9 +86,24 @@
       "FromFile": "Data/maps.json",
     },
     {
+      "LogName": "Bigcraftable changes",
+      "Action": "Include",
+      "FromFile": "Data/bigcraftables.json",
+    },
+    {
+      "LogName": "Machine changes",
+      "Action": "Include",
+      "FromFile": "Data/machines.json",
+    },
+    {
+      "LogName": "Special Order changes",
+      "Action": "Include",
+      "FromFile": "Data/specialorders.json",
+    },
+    {
       "Action": "Load",
-      "Target": "{{ModId}}/Objects",
-      "FromFile": "assets/{{TargetWithoutPath}}.png" // assets/Objects.png
+      "Target": "{{ModId}}/Objects, {{ModId}}/BigCraftables, {{ModId}}/FeedSign",
+      "FromFile": "assets/{{TargetWithoutPath}}.png"
     },
   ]
 }

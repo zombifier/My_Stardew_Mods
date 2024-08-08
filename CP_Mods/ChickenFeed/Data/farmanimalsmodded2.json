@@ -430,5 +430,62 @@
         "HasMod |contains=hiyajules98.DesertChickenCP": "true",
       },
     },
+    // Resourceful Friends
+    {
+      "LogName": "Resourceful Friends - no grass",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Priority": "Late",
+      "Fields": {
+        "ItsBenter.ResourcefulFriends.Coalclaw": {
+          "GrassEatAmount": 0,
+        },
+        "ItsBenter.ResourcefulFriends.Honeypuff": {
+          "GrassEatAmount": 0,
+        },
+        "ItsBenter.ResourcefulFriends.Molecat": {
+          "GrassEatAmount": 0,
+        },
+      },
+      "When": {
+        "HasMod |contains=ItsBenter.ResourcefulFriends.CP": "true",
+      },
+    },
+    {
+      "LogName": "Resourceful Friends - initialize",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "ItsBenter.ResourcefulFriends.Coalclaw": {
+        },
+        "ItsBenter.ResourcefulFriends.Honeypuff": {
+        },
+        "ItsBenter.ResourcefulFriends.Molecat": {
+        },
+      },
+      "When": {
+        "HasMod |contains=ItsBenter.ResourcefulFriends.CP": "true",
+      },
+    },
+    {
+      "LogName": "Resourceful Friends - dirt forager",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "ItsBenter.ResourcefulFriends.Coalclaw": {
+          "OutsideForager": true,
+        },
+        "ItsBenter.ResourcefulFriends.Honeypuff": {
+          "OutsideForager": true,
+        },
+        "ItsBenter.ResourcefulFriends.Molecat": {
+          "OutsideForager": true,
+        },
+      },
+      "When": {
+        "HasMod |contains=ItsBenter.ResourcefulFriends.CP": "true",
+      },
+    },
   ]
 }
