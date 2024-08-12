@@ -75,9 +75,9 @@ public sealed class SiloUtils {
           totalCount -= count;
           location.modData[FeedCountKeyPrefix + itemId] = totalCount.ToString();
           feedObj = ItemRegistry.Create<SObject>(itemId, count);
-          return true;
+          return false;
         }
-        return false;
+        return true;
     });
     return feedObj;
   }
@@ -93,9 +93,9 @@ public sealed class SiloUtils {
       }
       count -= newCount - currentCount;
       if (count <= 0) {
-        return true;
+        return false;
       }
-      return false;
+      return true;
     });
     return count;
   }

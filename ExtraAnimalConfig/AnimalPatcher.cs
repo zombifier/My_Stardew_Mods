@@ -58,7 +58,7 @@ sealed class AnimalDataPatcher {
     harmony.Patch(
         original: AccessTools.Method(typeof(FarmAnimal),
           nameof(FarmAnimal.dayUpdate)),
-        prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_dayUpdate_Prefix)),
+        prefix: new HarmonyMethod(AccessTools.Method(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_dayUpdate_Prefix)), Priority.High + 1),
         transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_dayUpdate_Transpiler)));
 
     harmony.Patch(
