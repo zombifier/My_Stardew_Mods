@@ -21,7 +21,8 @@ public sealed class SiloUtils {
   public static int GetFeedCapacityFor(GameLocation location, string itemId) {
     int totalCapacity = 0;
     foreach (Building building in location.buildings) {
-      if ((building.GetData()?.CustomFields?.TryGetValue(SiloCapacityKeyPrefix + itemId, out var capacityStr) ?? false) &&
+      if (building.daysOfConstructionLeft.Value <= 0 &&
+          (building.GetData()?.CustomFields?.TryGetValue(SiloCapacityKeyPrefix + itemId, out var capacityStr) ?? false) &&
           int.TryParse(capacityStr, out var capacity)) {
         totalCapacity += capacity;
       }

@@ -13,6 +13,7 @@ content packs. For users, install the mod as usual from the link above.
    + [Setting up animals that eat alternate feed](#setting-up-animals-that-eat-alternate-feed)
 * [Multiple possible animals from one egg](#multiple-possible-animals-from-one-egg)
 * [Game State Queries](#game-state-queries)
+*-[Override-hay-with-another-feed-item-for-a-specific-building](#override-hay-with-another-feed-item-for-a-specific-building)
 * [Examples](#examples)
 * [Known Issues/Future Content Roadmap](#known-issuesfuture-content-roadmap)
 
