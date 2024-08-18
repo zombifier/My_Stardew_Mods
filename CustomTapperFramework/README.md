@@ -216,3 +216,5 @@ Crops in water planters/pots are automatically considered watered every day,
 for obvious reasons.
 
 Bushes (specifically [Custom Bushes](https://www.nexusmods.com/stardewvalley/mods/20619)) currently are not supported.
+
+For an example content pack, see the optional file on [this page](https://www.nexusmods.com/stardewvalley/mods/22975?tab=files).
