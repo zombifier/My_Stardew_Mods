@@ -1,0 +1,39 @@
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Objects changes",
+      "Action": "Include",
+      "FromFile": "Data/objects.json",
+    },
+    {
+      "LogName": "Shop changes",
+      "Action": "Include",
+      "FromFile": "Data/shops.json",
+    },
+    // Assets
+    {
+      "Action": "Load",
+      "Target": "{{ModId}}/Tools",
+      "FromFile": "assets/{{TargetWithoutPath}}.png"
+    },
+    //{
+    //  "Action": "EditImage",
+    //  "Target": "{{ModId}}/Objects",
+    //  "FromFile": "assets/feed_medieval_{{season}}.png",
+		//	"ToArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+    //  "When": {
+    //    "FeedStyle": "medieval",
+    //  },
+    //},
+    //{
+    //  "Action": "EditImage",
+    //  "Target": "{{ModId}}/Objects",
+    //  "FromFile": "assets/feed_lavender.png",
+		//	"ToArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+    //  "When": {
+    //    "FeedStyle": "lavender",
+    //  },
+    //},
+  ]
+}

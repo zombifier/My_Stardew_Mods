@@ -1,0 +1,30 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add extractor tool",
+      "Action": "EditData",
+      "Target": "Data/Tools",
+      "Entries": {
+        "{{ModId}}.CrackerExtractor": {
+          "ClassName": "GenericTool",
+          "Name": "{{ModId}}.CrackerExtractor",
+          "AttachmentSlots": 1,
+          "SalePrice": -1,
+          "DisplayName": "{{i18n:CrackerExtractor.name}}",
+          "Description": "{{i18n:CrackerExtractor.description}}",
+          "Texture": "{{ModId}}/Tools",
+          "SpriteIndex": 0,
+          "MenuSpriteIndex": -1,
+          "UpgradeLevel": 0,
+          "ApplyUpgradeLevelToDisplayName": false,
+          "ConventionalUpgradeFrom": null,
+          "UpgradeFrom": null,
+          "CanBeLostOnDeath": false,
+          "SetProperties": null,
+          "ModData": null,
+          "CustomFields": null
+        },
+      },
+    },
+  ]
+}

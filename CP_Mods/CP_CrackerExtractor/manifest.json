@@ -1,0 +1,17 @@
+{
+  "Name": "[CP] Golden Animal Cracker Extractor",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "CP Component - Adds a tool that can extract a consumed golden animal cracker from an animal or fish pond.",
+  "UniqueID": "selph.CrackerExtractorCP",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    { "UniqueID": "selph.CrackerExtractor",
+      "IsRequired": true,
+    },
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "UpdateKeys": [ "Nexus:27071" ],
+}

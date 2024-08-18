@@ -1,0 +1,10 @@
+﻿{
+  "Name": "[C#] Golden Animal Cracker Extractor",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Adds a tool that can extract a consumed golden animal cracker from an animal or fish pond.",
+  "UniqueID": "selph.CrackerExtractor",
+  "EntryDll": "CrackerExtractor.dll",
+  "MinimumApiVersion": "4.0.7",
+  "UpdateKeys": ["Nexus:27071"]
+}

@@ -1,0 +1,18 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add extractor tool to Qi's shop",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["QiGemShop", "Items"],
+      "Entries": {
+        "{{ModId}}.CrackerExtractor": {
+          "Id": "{{ModId}}.CrackerExtractor",
+          "ItemId": "(T){{ModId}}.CrackerExtractor",
+          "TradeItemId": "(O)858",
+          "TradeItemAmount": 30,
+        },
+      },
+    },
+  ]
+}

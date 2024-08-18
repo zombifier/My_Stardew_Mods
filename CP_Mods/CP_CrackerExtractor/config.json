@@ -1,0 +1,10 @@
+{
+  "DirtForagers": "true",
+  "AllDirtForagers": "false",
+  "SiloResize": "true",
+  "FeedSilo": "false",
+  "CornucopiaExtendedRecipe": "true",
+  "HayCapacity": "120",
+  "FeedCapacity": "120",
+  "FeedStyle": "medieval"
+}
