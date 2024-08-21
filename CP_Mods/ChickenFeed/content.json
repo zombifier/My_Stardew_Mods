@@ -21,6 +21,18 @@
       "AllowValues": "true, false",
       "Default": "false",
     },
+    "HayCapacity": {
+      "AllowValues": "120,180,240,300,360,420,480",
+      "Default": 120,
+    },
+    "FeedCapacity": {
+      "AllowValues": "120,180,240,300,360,420,480",
+      "Default": 120,
+    },
+    "FeedStyle": {
+      "AllowValues": "default, medieval, lavender",
+      "Default": "default",
+    },
   },
   "Changes": [
     {
@@ -100,10 +112,29 @@
       "Action": "Include",
       "FromFile": "Data/specialorders.json",
     },
+    // Assets
     {
       "Action": "Load",
       "Target": "{{ModId}}/Objects, {{ModId}}/BigCraftables, {{ModId}}/FeedSign",
       "FromFile": "assets/{{TargetWithoutPath}}.png"
+    },
+    {
+      "Action": "EditImage",
+      "Target": "{{ModId}}/Objects",
+      "FromFile": "assets/feed_medieval_{{season}}.png",
+			"ToArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+      "When": {
+        "FeedStyle": "medieval",
+      },
+    },
+    {
+      "Action": "EditImage",
+      "Target": "{{ModId}}/Objects",
+      "FromFile": "assets/feed_lavender.png",
+			"ToArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+      "When": {
+        "FeedStyle": "lavender",
+      },
     },
   ]
 }

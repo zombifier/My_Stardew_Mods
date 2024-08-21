@@ -15,11 +15,10 @@
       "Target": "Data/Buildings",
       "TargetField": ["Silo"],
       "Entries": {
-        "HayCapacity": 120,
+        "HayCapacity": "{{HayCapacity}}",
       },
       "When": {
         "SiloResize": "true",
-        "FeedSilo": "false",
       },
     },
     {
@@ -28,28 +27,14 @@
       "Target": "Data/Buildings",
       "TargetField": ["Silo", "CustomFields"],
       "Entries": {
-        "selph.ExtraAnimalConfig.SiloCapacity.(O){{ModId}}.ChickenFeed": "120",
+        "selph.ExtraAnimalConfig.SiloCapacity.(O){{ModId}}.ChickenFeed": "{{FeedCapacity}}",
       },
       "When": {
-        "SiloResize": "true",
         "FeedSilo": "false",
       },
     },
     {
-      "LogName": "Add chicken feed to silo - 240",
-      "Action": "EditData",
-      "Target": "Data/Buildings",
-      "TargetField": ["Silo", "CustomFields"],
-      "Entries": {
-        "selph.ExtraAnimalConfig.SiloCapacity.(O){{ModId}}.ChickenFeed": "240",
-      },
-      "When": {
-        "SiloResize": "false",
-        "FeedSilo": "false",
-      },
-    },
-    {
-      "LogName": "Add chicken feed to silo - 30",
+      "LogName": "Add chicken feed to silo - 10",
       "Action": "EditData",
       "Target": "Data/Buildings",
       "TargetField": ["Silo", "CustomFields"],
@@ -157,7 +142,7 @@
             },
           ],
           "CustomFields": {
-            "selph.ExtraAnimalConfig.SiloCapacity.(O){{ModId}}.ChickenFeed": "240",
+            "selph.ExtraAnimalConfig.SiloCapacity.(O){{ModId}}.ChickenFeed": "{{FeedCapacity}}",
           },
         },
       },
