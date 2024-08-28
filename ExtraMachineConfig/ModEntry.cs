@@ -61,6 +61,15 @@ internal sealed class ModEntry : Mod {
     } catch (Exception e) {
       Monitor.Log("Failed patching Automate. Detail: " + e.Message, LogLevel.Error);
     }
+
+    try {
+      if (Helper.ModRegistry.IsLoaded("moonslime.CookingSkill")) {
+        this.Monitor.Log("This mod patches YetAnotherCookingSkill. If you notice issues with YACS, make sure it happens without this mod before reporting it to the YACS page.", LogLevel.Debug);
+        YACSPatcher.ApplyPatches(harmony);
+      }
+    } catch (Exception e) {
+      Monitor.Log("Failed patching YACS. Detail: " + e.Message, LogLevel.Error);
+    }
   }
 
   // If a junimo hut has custom loved items, feed them
@@ -82,10 +91,10 @@ internal sealed class ModEntry : Mod {
 
   public void OnGameLaunchedBetterCrafting(object? sender, GameLaunchedEventArgs e) {
     try {
-    IBetterCrafting? bcApi = Helper.ModRegistry.GetApi<IBetterCrafting>("leclair.bettercrafting");
-    if (bcApi != null) {
-      bcApi.PostCraft += OnPostCraft;
-    }
+      IBetterCrafting? bcApi = Helper.ModRegistry.GetApi<IBetterCrafting>("leclair.bettercrafting");
+      if (bcApi != null) {
+        bcApi.PostCraft += OnPostCraft;
+      }
     } catch (Exception exception) {
       ModEntry.StaticMonitor.Log(exception.Message, LogLevel.Error);
     }

@@ -20,6 +20,8 @@ content packs. For users, install the mod as usual from the link above.
       + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
       + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
       + [Items with multiple flavors and colors](#items-with-multiple-flavors-and-colors)
+      + [Items that can be used as slingshot ammo](#items-that-can-be-used-as-slingshot-ammo)
+      + [Extra context tag for unflavored items](#extra-context-tag-for-unflavored-items)
    * [Machine Features](#machine-features)
       + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
       + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
@@ -95,6 +97,21 @@ Important notes:
   recommended you also set the `ObjectInternalName` field so the spawned items
   do not stack with other items of the same ID that may not have these fields.
 * Extra flavors can be retrieved with the context tags `extra_preserve_sheet_index_1_flavorid`. Increment the number for additional flavors.
+
+### Extra context tag for unflavored items
+Items without a flavor now has the `no_preserve_parent_sheet_index` tag.
+
+----
+
+### Items that can be used as slingshot ammo
+
+Set the following fields in the object definition's `CustomFields` dict:
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.SlingshotDamage` | The impact damage dealt by this item when used as ammo for a slingshot. If set, it will be usable as ammo. Keep in mind the master slingshot doubles this value.|
+| `selph.ExtraMachineConfig.SlingshotExplosiveRadius` | The explosion radius of this ammo. If not set, it will not explode.|
+| `selph.ExtraMachineConfig.SlingshotExplosiveDamage` | The damage dealt by this item's explosion. If not set (even if only to `"0"`), it will not explode.|
 
 ----
 
@@ -512,6 +529,8 @@ Then, set this field in the actual machine output's `CustomData` dict as usual:
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.ExtraOutputIds` | A comma-separated list of item query IDs written to the asset above to also spawn with this output item.|
+
+NOTE: You can also set this field on the machine data's `CustomFields` dict to add a byproduct to *every* recipe associated with this machine!
 
 #### Example
 

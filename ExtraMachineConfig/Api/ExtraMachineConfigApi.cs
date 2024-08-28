@@ -2,6 +2,8 @@ using System.Linq;
 using StardewValley.GameData.Machines;
 using System.Collections.Generic;
 
+using SObject = StardewValley.Object;
+
 namespace Selph.StardewMods.ExtraMachineConfig;
 
 public class ExtraMachineConfigApi : IExtraMachineConfigApi {
@@ -15,13 +17,26 @@ public class ExtraMachineConfigApi : IExtraMachineConfigApi {
     return Utils.GetExtraRequirementsImpl(outputData, true).Select(additionalFuelSettings => (additionalFuelSettings.itemId, additionalFuelSettings.count)).ToList();
   }
 
-  public IList<MachineItemOutput> GetExtraOutputs(MachineItemOutput outputData) {
+  public IList<MachineItemOutput> GetExtraOutputs(MachineItemOutput outputData, SObject? machine = null) {
     IList<MachineItemOutput> extraOutputs = new List<MachineItemOutput>();
+    if (!MachineHarmonyPatcher.addByproducts) {
+      return extraOutputs;
+    }
     if (outputData.CustomData != null &&
         outputData.CustomData.TryGetValue(MachineHarmonyPatcher.ExtraOutputIdsKey, out var extraOutputIds)) {
       foreach (var extraOutputId in extraOutputIds.Split(',', ' ')) {
         if (ModEntry.extraOutputAssetHandler.data.TryGetValue(extraOutputId, out var extraOutputData) &&
             // Disallow ExtraOutputIdsKey inside the extra rules to avoid recursion
+            (!extraOutputData.CustomData?.ContainsKey(MachineHarmonyPatcher.ExtraOutputIdsKey) ?? true)) {
+          extraOutputs.Add(extraOutputData);
+        }
+      }
+    }
+    if (machine is not null &&
+        machine.GetMachineData()?.CustomFields is not null &&
+        machine.GetMachineData().CustomFields.TryGetValue(MachineHarmonyPatcher.ExtraOutputIdsKey, out var globalExtraOutputIds)) {
+      foreach (var extraOutputId in globalExtraOutputIds.Split(',', ' ')) {
+        if (ModEntry.extraOutputAssetHandler.data.TryGetValue(extraOutputId, out var extraOutputData) &&
             (!extraOutputData.CustomData?.ContainsKey(MachineHarmonyPatcher.ExtraOutputIdsKey) ?? true)) {
           extraOutputs.Add(extraOutputData);
         }

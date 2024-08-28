@@ -3,12 +3,15 @@ using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.Objects;
+using StardewValley.Tools;
 using StardewValley.Delegates;
 using StardewValley.Internal;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Inventories;
 using StardewValley.GameData.Machines;
+using StardewValley.Projectiles;
 using HarmonyLib;
 using System.Collections.Generic;
 
@@ -45,6 +48,11 @@ sealed class MachineHarmonyPatcher {
   
   // Display name macros
   internal static string ExtraPreservedDisplayNamePrefix = "%EXTRA_PRESERVED_DISPLAY_NAME";
+
+  // CustomFields keys
+  internal static string SlingshotDamage = $"{ModEntry.UniqueId}.SlingshotDamage";
+  internal static string SlingshotExplosiveRadius = $"{ModEntry.UniqueId}.SlingshotExplosiveRadius";
+  internal static string SlingshotExplosiveDamage = $"{ModEntry.UniqueId}.SlingshotExplosiveDamage";
 
   internal static bool enableGetOutputItemSideEffect = false;
 
@@ -87,6 +95,23 @@ sealed class MachineHarmonyPatcher {
     harmony.Patch(
         original: AccessTools.Method(typeof(SObject), "loadDisplayName"),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_loadDisplayName_postfix)));
+
+    // Slingshot patches
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Slingshot), nameof(Slingshot.canThisBeAttached), new Type[]{typeof(SObject), typeof(int)}),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Slingshot_canThisBeAttached_postfix)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Slingshot), nameof(Slingshot.GetAmmoDamage)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Slingshot_GetAmmoDamage_postfix)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Slingshot), nameof(Slingshot.GetAmmoCollisionBehavior)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Slingshot_GetAmmoCollisionBehavior_postfix)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Slingshot), nameof(Slingshot.GetAmmoCollisionSound)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Slingshot_GetAmmoCollisionSound_postfix)));
   }
 
   // This patch:
@@ -152,6 +177,11 @@ sealed class MachineHarmonyPatcher {
     }
   }
 
+  // This is a dirty, dirty hack to prevent an infinite loop where the machine byproducts get
+  // their own global machine byproducts attached, leading to cascading calls of
+  // GetOutputItems on top of GetOutputItems.
+  // (Gods why did I code it like this?)
+  public static bool addByproducts = true;
 
   // This patch:
   // * Checks for additional fuel requirements specified in the output rule's custom data, and
@@ -173,7 +203,7 @@ sealed class MachineHarmonyPatcher {
     var resultObject = __result as SObject;
 
     // Generate the extra output items and save them in a chest saved in the output item's heldObject.
-    var extraOutputs = ModEntry.ModApi.GetExtraOutputs(outputData);
+    var extraOutputs = ModEntry.ModApi.GetExtraOutputs(outputData, machine);
     if (extraOutputs.Count > 0 && resultObject != null) {
       var chest = new Chest();
       resultObject.heldObject.Value = chest;
@@ -183,7 +213,9 @@ sealed class MachineHarmonyPatcher {
         if (!GameStateQuery.CheckConditions(extraOutputData.Condition, context)) {
           continue;
         }
+        addByproducts = false;
         var item = MachineDataUtility.GetOutputItem(machine, extraOutputData, inputItem, who, false, out var _);
+        addByproducts = true;
         if (item != null) {
           chest.addItem(item);
         }
@@ -359,9 +391,9 @@ sealed class MachineHarmonyPatcher {
       tags.UnionWith(contextTags.Split(","));
     }
     // Some extra helper tags
-    //if (__instance is SObject obj && obj.preservedParentSheetIndex.Value is null) {
-    //  __result.Add("no_preserve_parent_sheet_index");
-    //}
+    if (__instance is SObject obj && obj.preservedParentSheetIndex.Value is null) {
+      tags.Add("no_preserve_parent_sheet_index");
+    }
     int i = 1;
     while (true) {
       var extraPreserveId = Utils.getPreserveId(__instance, i);
@@ -414,6 +446,42 @@ sealed class MachineHarmonyPatcher {
       } else {
         break;
       }
+    }
+  }
+
+  public static void Slingshot_canThisBeAttached_postfix(ref bool __result, SObject o, int slot) {
+    if (!__result &&
+        ItemRegistry.GetDataOrErrorItem(o.QualifiedItemId).RawData is ObjectData objectData &&
+        (objectData.CustomFields?.ContainsKey(SlingshotDamage) ?? false)) {
+      __result = true;
+    }
+  }
+
+  public static void Slingshot_GetAmmoDamage_postfix(ref int __result, SObject ammunition) {
+    if (ItemRegistry.GetDataOrErrorItem(ammunition.QualifiedItemId).RawData is ObjectData objectData &&
+        (objectData.CustomFields?.TryGetValue(SlingshotDamage, out var slingshotDamageStr) ?? false) &&
+        Int32.TryParse(slingshotDamageStr, out var slingshotDamage)) {
+      __result = slingshotDamage;
+    }
+  }
+
+  public static void Slingshot_GetAmmoCollisionSound_postfix(ref string __result, SObject ammunition) {
+    if (ItemRegistry.GetDataOrErrorItem(ammunition.QualifiedItemId).RawData is ObjectData objectData) {
+      __result = (objectData.CustomFields?.ContainsKey(SlingshotExplosiveRadius) ?? false) ?
+        "explosion" :
+        "hammer";
+    }
+  }
+
+  public static void Slingshot_GetAmmoCollisionBehavior_postfix(ref BasicProjectile.onCollisionBehavior? __result, SObject ammunition) {
+    if (__result is null && ItemRegistry.GetDataOrErrorItem(ammunition.QualifiedItemId).RawData is ObjectData objectData &&
+        (objectData.CustomFields?.TryGetValue(SlingshotExplosiveRadius, out var slingshotExplosiveRadiusStr) ?? false) &&
+        (objectData.CustomFields?.TryGetValue(SlingshotExplosiveDamage, out var slingshotExplosiveDamageStr) ?? false) &&
+        Int32.TryParse(slingshotExplosiveRadiusStr, out var slingshotExplosiveRadius) &&
+        Int32.TryParse(slingshotExplosiveDamageStr, out var slingshotExplosiveDamage)) {
+        __result = (GameLocation location, int x, int y, Character who) => {
+          location.explode(new Vector2(x / 64, y / 64), slingshotExplosiveRadius, who as Farmer, damage_amount: slingshotExplosiveDamage);
+          };
     }
   }
 }

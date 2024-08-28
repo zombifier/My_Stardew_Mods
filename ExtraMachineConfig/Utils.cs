@@ -14,6 +14,7 @@ using SObject = StardewValley.Object;
 namespace Selph.StardewMods.ExtraMachineConfig; 
 
 static class Utils {
+  static string CookingItemModifiedKey = $"{ModEntry.UniqueId}.CookingItemModified";
   // Removes items with the specified ID from the inventory, and returns a clone of the removed item
   // If multiple item stacks are removed, return only the first one
   // This differs from ReduceId is that itemId can also be category IDs.
@@ -122,6 +123,10 @@ static class Utils {
   }
 
   public static Item applyCraftingChanges(Item item, List<Item> ingredients, ExtraCraftingConfig craftingConfig) {
+    if (item.modData.ContainsKey(CookingItemModifiedKey)) {
+      return item;
+    }
+
     SObject? obj = item as SObject;
     try {
       if (craftingConfig.IngredientConfigs is not null) {
@@ -202,9 +207,11 @@ static class Utils {
           }
         }
 
+        item.modData[CookingItemModifiedKey] = "true";
         return item;
       }
-    } catch {
+    } catch (Exception e) {
+      ModEntry.StaticMonitor.Log("Error when modifying crafting item: " + e.Message, LogLevel.Warn);
     }
     return item;
   }

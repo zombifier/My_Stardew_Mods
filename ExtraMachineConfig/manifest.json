@@ -1,10 +1,10 @@
 ﻿{
   "Name": "ExtraMachineConfig",
   "Author": "selph",
-  "Version": "1.9.0",
+  "Version": "1.10.0",
   "Description": "Add extra functionalities to machine artisan recipes and other misc data structures.",
   "UniqueID": "selph.ExtraMachineConfig",
   "EntryDll": "ExtraMachineConfig.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": ["Nexus:22256"]
+  "UpdateKeys": ["Nexus:22256"],
 }
