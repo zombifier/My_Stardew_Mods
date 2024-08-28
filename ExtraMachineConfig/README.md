@@ -738,7 +738,8 @@ Known issues:
 * This feature is compatible with vanilla, SpaceCore, and Better Crafting.
 * With Better Crafting, bulk crafting recipes modified by this mod does not
   currently work, and you need to craft one at a time.
-* Not currently compatible with Yet Another Cooking Skill and Love of Cooking.
+* Partially compatible with Yet Another Cooking Skill (requires Better Crafting).
+* Not currently compatible with Love of Cooking.
 
 #### Example
 
