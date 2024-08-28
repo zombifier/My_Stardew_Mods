@@ -391,9 +391,9 @@ sealed class MachineHarmonyPatcher {
       tags.UnionWith(contextTags.Split(","));
     }
     // Some extra helper tags
-    if (__instance is SObject obj && obj.preservedParentSheetIndex.Value is null) {
-      tags.Add("no_preserve_parent_sheet_index");
-    }
+    //if (__instance is SObject obj && obj.preservedParentSheetIndex.Value is null) {
+    //  tags.Add("no_preserve_parent_sheet_index");
+    //}
     int i = 1;
     while (true) {
       var extraPreserveId = Utils.getPreserveId(__instance, i);

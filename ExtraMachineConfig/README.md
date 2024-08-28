@@ -21,7 +21,6 @@ content packs. For users, install the mod as usual from the link above.
       + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
       + [Items with multiple flavors and colors](#items-with-multiple-flavors-and-colors)
       + [Items that can be used as slingshot ammo](#items-that-can-be-used-as-slingshot-ammo)
-      + [Extra context tag for unflavored items](#extra-context-tag-for-unflavored-items)
    * [Machine Features](#machine-features)
       + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
       + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
@@ -97,9 +96,6 @@ Important notes:
   recommended you also set the `ObjectInternalName` field so the spawned items
   do not stack with other items of the same ID that may not have these fields.
 * Extra flavors can be retrieved with the context tags `extra_preserve_sheet_index_1_flavorid`. Increment the number for additional flavors.
-
-### Extra context tag for unflavored items
-Items without a flavor now has the `no_preserve_parent_sheet_index` tag.
 
 ----
 
