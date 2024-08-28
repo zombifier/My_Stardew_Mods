@@ -17,7 +17,7 @@ public class ExtraMachineConfigApi : IExtraMachineConfigApi {
     return Utils.GetExtraRequirementsImpl(outputData, true).Select(additionalFuelSettings => (additionalFuelSettings.itemId, additionalFuelSettings.count)).ToList();
   }
 
-  public IList<MachineItemOutput> GetExtraOutputs(MachineItemOutput outputData, SObject? machine = null) {
+  public IList<MachineItemOutput> GetExtraOutputs(MachineItemOutput outputData, MachineData? machineData = null) {
     IList<MachineItemOutput> extraOutputs = new List<MachineItemOutput>();
     if (!MachineHarmonyPatcher.addByproducts) {
       return extraOutputs;
@@ -32,9 +32,8 @@ public class ExtraMachineConfigApi : IExtraMachineConfigApi {
         }
       }
     }
-    if (machine is not null &&
-        machine.GetMachineData()?.CustomFields is not null &&
-        machine.GetMachineData().CustomFields.TryGetValue(MachineHarmonyPatcher.ExtraOutputIdsKey, out var globalExtraOutputIds)) {
+    if (machineData?.CustomFields is not null &&
+        machineData.CustomFields.TryGetValue(MachineHarmonyPatcher.ExtraOutputIdsKey, out var globalExtraOutputIds)) {
       foreach (var extraOutputId in globalExtraOutputIds.Split(',', ' ')) {
         if (ModEntry.extraOutputAssetHandler.data.TryGetValue(extraOutputId, out var extraOutputData) &&
             (!extraOutputData.CustomData?.ContainsKey(MachineHarmonyPatcher.ExtraOutputIdsKey) ?? true)) {

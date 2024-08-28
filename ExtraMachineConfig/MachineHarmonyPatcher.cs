@@ -203,7 +203,7 @@ sealed class MachineHarmonyPatcher {
     var resultObject = __result as SObject;
 
     // Generate the extra output items and save them in a chest saved in the output item's heldObject.
-    var extraOutputs = ModEntry.ModApi.GetExtraOutputs(outputData, machine);
+    var extraOutputs = ModEntry.ModApi.GetExtraOutputs(outputData, machine?.GetMachineData());
     if (extraOutputs.Count > 0 && resultObject != null) {
       var chest = new Chest();
       resultObject.heldObject.Value = chest;
