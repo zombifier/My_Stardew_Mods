@@ -89,17 +89,18 @@ internal sealed class ModEntry : Mod {
           || (cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsAmphibiousCustomFieldsKey) ?? false)) {
         hasAquaticCrops = true;
       }
-      if (hasAquaticCrops) {
-        Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPlanterItemId, 0);
-
-        if (Game1.player.craftingRecipes.ContainsKey("Garden Pot")) {
-          Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPotItemId, 0);
-        }
-      } else {
-        Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPlanterItemId);
-        Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPotItemId);
-      }
     }
+    if (hasAquaticCrops) {
+      Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPlanterItemId, 0);
+
+      if (Game1.player.craftingRecipes.ContainsKey("Garden Pot")) {
+        Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPotItemId, 0);
+      }
+    } else {
+      Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPlanterItemId);
+      Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPotItemId);
+    }
+    
   }
 
   private bool IsNormalGameplay() {
