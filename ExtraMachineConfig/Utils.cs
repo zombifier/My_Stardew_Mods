@@ -53,6 +53,25 @@ static class Utils {
     return null;
   }
 
+  public static int getItemCountInList(IList<Item> list, Func<Item, bool> func, out Item? item, bool oneStack = false) {
+    int num = 0;
+    item = null;
+    for (int i = 0; i < list.Count; i++) {
+      if (list[i] != null && func(list[i])) {
+        if (oneStack) {
+          if (list[i].Stack > num) {
+            num = list[i].Stack;
+            item = list[i];
+          }
+        } else {
+          num += list[i].Stack;
+          item ??= list[i];
+        }
+      }
+    }
+    return num;
+  }
+
   public static int getItemCountInListByTags(IList<Item> list, string itemTags) {
     int num = 0;
     for (int i = 0; i < list.Count; i++) {
@@ -68,6 +87,7 @@ static class Utils {
     public string itemId;
     public int count;
     public float priceMultiplier;
+    public bool noDuplicate;
   }
 
   public static IList<AdditionalFuelSettings> GetExtraRequirementsImpl(MachineItemOutput outputData, bool isContextTag) {
@@ -88,12 +108,19 @@ static class Utils {
         }
 
         string addPriceMultiplierKey = MachineHarmonyPatcher.RequirementAddPriceMultiplierKeyPrefix + "." + match.Groups[1].Value;
+        string noDuplicateKey = MachineHarmonyPatcher.RequirementNoDuplicateKeyPrefix + "." + match.Groups[1].Value;
         float priceMultiplier = 0;
         if (outputData.CustomData.TryGetValue(addPriceMultiplierKey, out var addPriceMultiplierString) &&
             float.TryParse(addPriceMultiplierString, out float parsedAddPriceMultiplier)) {
           priceMultiplier = parsedAddPriceMultiplier;
         }
-        extraRequirements.Add(new AdditionalFuelSettings(){fuelEntryId = match.Groups[1].Value, itemId = entry.Value, count = count, priceMultiplier = priceMultiplier});
+        extraRequirements.Add(new AdditionalFuelSettings(){
+            fuelEntryId = match.Groups[1].Value,
+            itemId = entry.Value,
+            count = count,
+            priceMultiplier = priceMultiplier,
+            noDuplicate = outputData.CustomData.ContainsKey(noDuplicateKey),
+            });
       }
     }
     return extraRequirements;
@@ -214,5 +241,43 @@ static class Utils {
       ModEntry.StaticMonitor.Log("Error when modifying crafting item: " + e.Message, LogLevel.Warn);
     }
     return item;
+  }
+
+  // This is used instead of canStackWith to make sure "silver Apple" and "gold Apple" are considered the same items.
+  public static bool isSameItem(Item item1, Item item2) {
+    return item1.QualifiedItemId == item2.QualifiedItemId && item1.Name == item2.Name;
+  }
+
+  public static IList<(Item, AdditionalFuelSettings)>? GetFuelsForThisRecipe(MachineItemOutput outputData, Item inputItem, IInventory inventory) {
+    List<(Item, AdditionalFuelSettings)> usedItems = [(inputItem, new())];
+    var extraRequirements = Utils.GetExtraRequirementsImpl(outputData, false);
+    bool valid = true;
+    foreach (var entry in extraRequirements) {
+      if (Utils.getItemCountInList(inventory, (item) => 
+            CraftingRecipe.ItemMatchesForCrafting(item, entry.itemId) &&
+            (!entry.noDuplicate || !usedItems.Exists(i => isSameItem(i.Item1, item))),
+            out var fuelItem, entry.noDuplicate) >= entry.count) {
+        usedItems.Add((fuelItem!, entry));
+      } else {
+        valid = false;
+      }
+    }
+    var extraTagsRequirements = Utils.GetExtraRequirementsImpl(outputData, true);
+    foreach (var entry in extraTagsRequirements) {
+      if (Utils.getItemCountInList(inventory, (item) => 
+            ItemContextTagManager.DoesTagQueryMatch(entry.itemId, item.GetContextTags()) &&
+            (!entry.noDuplicate || !usedItems.Exists(i => isSameItem(i.Item1, item))),
+            out var fuelItem, entry.noDuplicate) >= entry.count) {
+        usedItems.Add((fuelItem!, entry));
+      } else {
+        valid = false;
+      }
+    }
+    if (valid) {
+      usedItems.RemoveAt(0);
+      return usedItems;
+    } else {
+      return null;
+    }
   }
 }

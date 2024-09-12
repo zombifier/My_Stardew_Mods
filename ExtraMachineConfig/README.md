@@ -126,7 +126,11 @@ for each recipe, or even each output in the case of multiple possible outputs.
 | `selph.ExtraMachineConfig.RequirementId.1`<br>`selph.ExtraMachineConfig.RequirementTags.1` | The additional fuel that should be consumed by this recipe in addition to the ones specified in the machine's `AdditionalConsumedItems` field.<br> You can specify multiple fuels by adding another field with the same name, but with the number at the end incremented (eg. `ExtraMachineConfig.RequirementId.2`).<br> `RequirementId` allows specifying by qualified ID for a specific item, or a category ID for only categories (eg. `-2` will consume any gemstones as fuel), while `RequirementTags` allow specifying a comma-separated list of tags that must all match.<br>**CURRENT LIMITATION**: Both `RequirementId` and `RequirementTags` currently cannot be used for the same fuel number. If you need to specify both, add the item ID to the tag list (e.g. `"id_(o)itemid"`).|
 | `selph.ExtraMachineConfig.RequirementCount.1` | The count of the additional fuel specified in the field above. Defaults to 1 if not specified. |
 | `selph.ExtraMachineConfig.RequirementAddPriceMultiplier.1` | If specified, the fuel's price will be multiplied by the specified number, and added to the output item's final price (after `PriceModifiers`).|
+| `selph.ExtraMachineConfig.RequirementNoDuplicate.1` | If specified, the fuel cannot have be the same item as the input item or any other consumed fuels (**NOTE**: Will *not* check `AdditionalConsumedItems`). Use this to make rules like "take any 3 fruit, but must be different fruits". Same item is defined as "have the same item ID or internal name" (so no mixing silver and gold quality apples!).|
 | `selph.ExtraMachineConfig.RequirementInvalidMsg` | The message to show to players if all the requirements are not satisfied. Note that if there are multiple output rules with this field for the same input item, only the first one will be shown.|
+
+KNOWN ISSUE: Recipes using `RequirementNoDuplicate` are not compatible with
+Junimatic yet. I'll submit a PR to Junimatic to fix this.
 
 #### Example
 

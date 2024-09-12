@@ -29,6 +29,7 @@ sealed class MachineHarmonyPatcher {
   internal static string RequirementCountKeyPrefix = $"{ModEntry.UniqueId}.RequirementCount";
   internal static string RequirementAddPriceMultiplierKeyPrefix = $"{ModEntry.UniqueId}.RequirementAddPriceMultiplier";
   internal static string RequirementInvalidMsgKey = $"{ModEntry.UniqueId}.RequirementInvalidMsg";
+  internal static string RequirementNoDuplicateKeyPrefix = $"{ModEntry.UniqueId}.RequirementNoDuplicate";
   internal static string InheritPreserveIdKey = $"{ModEntry.UniqueId}.InheritPreserveId";
   internal static string CopyColorKey = $"{ModEntry.UniqueId}.CopyColor";
   internal static string RequiredCountMaxKey = $"{ModEntry.UniqueId}.RequiredCountMax";
@@ -131,20 +132,7 @@ sealed class MachineHarmonyPatcher {
         newOutputs.Add(output);
         continue;
       }
-      bool valid = true;
-      var extraRequirements = ModEntry.ModApi.GetExtraRequirements(output);
-      foreach (var entry in extraRequirements) {
-        if (Game1.player.getItemCountInList(inventory, entry.Item1) < entry.Item2) {
-          valid = false;
-        }
-      }
-      var extraTagsRequirements = ModEntry.ModApi.GetExtraTagsRequirements(output);
-      foreach (var entry in extraTagsRequirements) {
-        if (Utils.getItemCountInListByTags(inventory, entry.Item1) < entry.Item2) {
-          valid = false;
-        }
-      }
-      if (valid) {
+      if (ModEntry.ModApi.GetFuelsForThisRecipe(output, inputItem, inventory) is not null) {
         newOutputs.Add(output);
       } else {
         if (output.CustomData.TryGetValue(RequirementInvalidMsgKey, out var msg)) {
@@ -203,7 +191,7 @@ sealed class MachineHarmonyPatcher {
     var resultObject = __result as SObject;
 
     // Generate the extra output items and save them in a chest saved in the output item's heldObject.
-    var extraOutputs = ModEntry.ModApi.GetExtraOutputs(outputData, machine?.GetMachineData());
+    var extraOutputs = ModEntry.ModApi.GetExtraOutputs(outputData, machine.GetMachineData());
     if (extraOutputs.Count > 0 && resultObject != null) {
       var chest = new Chest();
       resultObject.heldObject.Value = chest;
@@ -248,25 +236,17 @@ sealed class MachineHarmonyPatcher {
     }
 
     // Remove extra fuel (and add their prices if specified)
-    var extraRequirements = Utils.GetExtraRequirementsImpl(outputData, /*isContextTag=*/false);
     IDictionary<string, Item> usedFuels = new Dictionary<string, Item>();
-    foreach (var entry in extraRequirements) {
-      var item = Utils.RemoveItemFromInventoryById(inventory, entry.itemId, entry.count, !enableGetOutputItemSideEffect);
-      if (item != null) {
-        usedFuels[entry.fuelEntryId] = item;
-        if (entry.priceMultiplier > 0 && resultObject is not null) {
-          resultObject.Price += (int)(((item as SObject)?.Price ?? 0) * entry.priceMultiplier);
+    foreach (var (fuelItem, entry) in Utils.GetFuelsForThisRecipe(outputData, inputItem, inventory) ?? []) {
+      if (enableGetOutputItemSideEffect) {
+        fuelItem.Stack -= entry.count;
+        if (fuelItem.Stack == 0) {
+          inventory.RemoveButKeepEmptySlot(fuelItem);
         }
       }
-    }
-    var extraTagsRequirements = Utils.GetExtraRequirementsImpl(outputData, /*isContextTag=*/true);
-    foreach (var entry in extraTagsRequirements) {
-      var item = Utils.RemoveItemFromInventoryByTags(inventory, entry.itemId, entry.count, !enableGetOutputItemSideEffect);
-      if (item != null) {
-        usedFuels[entry.fuelEntryId] = item;
-        if (entry.priceMultiplier > 0 && resultObject is not null) {
-          resultObject.Price += (int)(((item as SObject)?.Price ?? 0) * entry.priceMultiplier);
-        }
+      usedFuels[entry.fuelEntryId] = fuelItem;
+      if (entry.priceMultiplier > 0 && resultObject is not null) {
+        resultObject.Price += (int)(((fuelItem as SObject)?.Price ?? 0) * entry.priceMultiplier);
       }
     }
 

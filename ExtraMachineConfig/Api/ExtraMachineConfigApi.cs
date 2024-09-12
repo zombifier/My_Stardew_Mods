@@ -1,4 +1,6 @@
 using System.Linq;
+using StardewValley;
+using StardewValley.Inventories;
 using StardewValley.GameData.Machines;
 using System.Collections.Generic;
 
@@ -42,5 +44,9 @@ public class ExtraMachineConfigApi : IExtraMachineConfigApi {
       }
     }
     return extraOutputs;
+  }
+
+  public IList<Item>? GetFuelsForThisRecipe(MachineItemOutput outputData, Item inputItem, IInventory inventory) {
+    return Utils.GetFuelsForThisRecipe(outputData, inputItem, inventory)?.Select(e => e.Item1).ToList();
   }
 }
