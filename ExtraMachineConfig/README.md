@@ -355,6 +355,140 @@ This example creates a 'peanut butter and jelly' item that are flavored both aft
 ```
 </details>
 
+This second example adds a new recipe to the Furnace (yeah) which requires 2 of
+any 4 fruits, and produces a "Fruit A, Fruit B, Fruit C and Fruit D" Jelly
+item.
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "LogName": "Modify Furnace Rules",
+  "Action": "EditData",
+  "Target": "Data/Machines",
+  "TargetField": ["(BC)13", "OutputRules"],
+  "Entries": {
+    "PurifyDiamond": {
+      "Id": "PurifyDiamond",
+      "Triggers": [
+        {
+          "Id": "ItemPlacedInMachine",
+          "Trigger": "ItemPlacedInMachine",
+          "RequiredItemId": "(O)72",
+          "RequiredCount": 1,
+        }
+      ],
+      "UseFirstValidOutput": true,
+      "OutputItem": [
+        {
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementId.1": "(O)386",
+            "selph.ExtraMachineConfig.RequirementCount.1": "5",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:OMEGALUL2}}",
+            "selph.ExtraMachineConfig.RequirementId.2": "-6",
+          },
+          "ItemId": "(O)72",
+          "MinStack": 4,
+          "Quality": 3,
+          "ModData": {
+            "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished,milk_polished_iridium,junimo_loved_item",
+            "TESTKEK": "yes",
+          },
+        },
+        {
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementId.1": "(O)384",
+            "selph.ExtraMachineConfig.RequirementCount.1": "5",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:OMEGALUL2}}",
+            "selph.ExtraMachineConfig.RequirementTags.2": "category_milk",
+          },
+          "ItemId": "(O)72",
+          "MinStack": 3,
+          "Quality": 2,
+          "ModData": {
+            "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished,milk_polished_gold",
+          },
+        },
+        {
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementId.1": "(O)380",
+            "selph.ExtraMachineConfig.RequirementCount.1": "5",
+            "selph.ExtraMachineConfig.RequirementTags.2": "category_egg",
+          },
+          "ItemId": "(O)72",
+          "MinStack": 2,
+          "Quality": 1,
+          "ModData": {
+            "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished,milk_polished_silver",
+          },
+        },
+        {
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementId.1": "(O)378",
+            "selph.ExtraMachineConfig.RequirementCount.1": "5",
+            "selph.ExtraMachineConfig.RequirementId.2": "-5",
+          },
+          "ItemId": "(O)72",
+          "MinStack": 1,
+          "Quality": 0,
+          "ModData": {
+            "selph.ExtraMachineConfig.ExtraContextTags": "milk_polished",
+          },
+        },
+      ],
+      "MinutesUntilReady": 10,
+    },
+    "FruitSalad": {
+      "Id": "FruitSalad",
+      "Triggers": [
+        {
+          "Id": "ItemPlacedInMachine",
+          "Trigger": "ItemPlacedInMachine",
+          "RequiredTags": ["category_fruits"],
+          "RequiredCount": 2,
+        }
+      ],
+      "UseFirstValidOutput": true,
+      "OutputItem": [
+        {
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementTags.1": "category_fruits",
+            "selph.ExtraMachineConfig.RequirementCount.1": "2",
+            "selph.ExtraMachineConfig.RequirementAddPriceMultiplier.1": "2",
+            "selph.ExtraMachineConfig.RequirementNoDuplicate.1": "true",
+            "selph.ExtraMachineConfig.RequirementTags.2": "category_fruits",
+            "selph.ExtraMachineConfig.RequirementCount.2": "2",
+            "selph.ExtraMachineConfig.RequirementAddPriceMultiplier.2": "2",
+            "selph.ExtraMachineConfig.RequirementNoDuplicate.2": "true",
+            "selph.ExtraMachineConfig.RequirementTags.3": "category_fruits",
+            "selph.ExtraMachineConfig.RequirementCount.3": "2",
+            "selph.ExtraMachineConfig.RequirementAddPriceMultiplier.3": "2",
+            "selph.ExtraMachineConfig.RequirementNoDuplicate.3": "true",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:OMEGALUL2}}",
+            "selph.ExtraMachineConfig.CopyColor": "true",
+          },
+          "ItemId": "(O)344",
+          "PreserveId": "DROP_IN",
+          "ObjectInternalName": "Jelly PRESERVE_ID PRESERVE_ID_1 PRESERVE_ID_2 PRESERVE_ID_3",
+          "ObjectDisplayName": "%PRESERVED_DISPLAY_NAME, %EXTRA_PRESERVED_DISPLAY_NAME_1, %EXTRA_PRESERVED_DISPLAY_NAME_2 and %EXTRA_PRESERVED_DISPLAY_NAME_3 Jelly",
+          "ModData": {
+            "selph.ExtraMachineConfig.ExtraPreserveId.1": "DROP_IN_ID_1",
+            "selph.ExtraMachineConfig.ExtraPreserveId.2": "DROP_IN_ID_2",
+            "selph.ExtraMachineConfig.ExtraPreserveId.3": "DROP_IN_ID_3",
+          },
+        },
+      ],
+      "MinutesUntilReady": 10,
+    },
+  },
+},
+
+
+```
+</details>
+
 ----
 
 ### Output inherit the flavor of input items
