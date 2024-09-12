@@ -396,7 +396,7 @@ item.
             "selph.ExtraMachineConfig.RequirementCount.3": "2",
             "selph.ExtraMachineConfig.RequirementAddPriceMultiplier.3": "2",
             "selph.ExtraMachineConfig.RequirementNoDuplicate.3": "true",
-            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:OMEGALUL2}}",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "Requires 2 of any 4 fruits",
             "selph.ExtraMachineConfig.CopyColor": "true",
           },
           "ItemId": "(O)344",
