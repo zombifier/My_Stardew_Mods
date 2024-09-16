@@ -15,6 +15,7 @@ internal sealed class ModEntry : Mod {
   internal static IMonitor StaticMonitor { get; set; }
   internal static AnimalExtensionDataAssetHandler animalExtensionDataAssetHandler;
   internal static EggExtensionDataAssetHandler eggExtensionDataAssetHandler;
+  internal static GrassDropExtensionDataAssetHandler grassDropExtensionDataAssetHandler;
   internal static string UniqueId;
 
   public override void Entry(IModHelper helper) {
@@ -24,11 +25,13 @@ internal sealed class ModEntry : Mod {
 
     animalExtensionDataAssetHandler = new AnimalExtensionDataAssetHandler();
     eggExtensionDataAssetHandler = new EggExtensionDataAssetHandler();
+    grassDropExtensionDataAssetHandler = new GrassDropExtensionDataAssetHandler();
 
     var harmony = new Harmony(this.ModManifest.UniqueID);
 
     animalExtensionDataAssetHandler.RegisterEvents(Helper);
     eggExtensionDataAssetHandler.RegisterEvents(Helper);
+    grassDropExtensionDataAssetHandler.RegisterEvents(Helper);
 
     AnimalDataPatcher.ApplyPatches(harmony);
 

@@ -4,6 +4,7 @@ using StardewValley;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.Events;
+using StardewValley.Extensions;
 using StardewValley.Tools;
 using StardewValley.Triggers;
 using StardewValley.Internal;
@@ -59,12 +60,14 @@ sealed class AnimalDataPatcher {
         original: AccessTools.Method(typeof(FarmAnimal),
           nameof(FarmAnimal.dayUpdate)),
         prefix: new HarmonyMethod(AccessTools.Method(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_dayUpdate_Prefix)), Priority.High + 1),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_dayUpdate_Postfix)),
         transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_dayUpdate_Transpiler)));
 
     harmony.Patch(
         original: AccessTools.Method(typeof(FarmAnimal),
           nameof(FarmAnimal.OnDayStarted)),
-        prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_OnDayStarted_Prefix)));
+        prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_OnDayStarted_Prefix)),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_OnDayStarted_Postfix)));
 
     harmony.Patch(
         original: AccessTools.Method(typeof(FarmAnimal),
@@ -95,25 +98,42 @@ sealed class AnimalDataPatcher {
         postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.AnimalHouse_feedAllAnimals_Postfix)));
 
     // Transpilers to override animal produce
+    // Prefixes to set animal produce (if there are extras)
     harmony.Patch(
         original: AccessTools.Method(typeof(FarmAnimal),
           nameof(FarmAnimal.behaviors)),
+        prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_behaviors_Prefix)),
         transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_behaviors_Transpiler)));
 
     harmony.Patch(
         original: AccessTools.Method(typeof(SObject),
           nameof(SObject.DayUpdate)),
+//        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.SObject_DayUpdate_Postfix)),
         transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.SObject_DayUpdate_Transpiler)));
 
     harmony.Patch(
         original: AccessTools.Method(typeof(MilkPail),
           nameof(MilkPail.DoFunction)),
+        prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.MilkPail_DoFunction_Prefix)),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.MilkPail_DoFunction_Postfix)),
         transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.MilkPail_DoFunction_Transpiler)));
 
     harmony.Patch(
         original: AccessTools.Method(typeof(Shears),
           nameof(Shears.DoFunction)),
+        prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.Shears_DoFunction_Prefix)),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.Shears_DoFunction_Postfix)),
         transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.Shears_DoFunction_Transpiler)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(MilkPail),
+          nameof(MilkPail.beginUsing)),
+        prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.MilkPail_beginUsing_Prefix)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Shears),
+          nameof(Shears.beginUsing)),
+        prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.Shears_beginUsing_Prefix)));
 
     // Patch functionalities for the feed hopper
     harmony.Patch(
@@ -149,6 +169,18 @@ sealed class AnimalDataPatcher {
         original: AccessTools.Method(typeof(Grass),
           nameof(Grass.reduceBy)),
         prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.Grass_reduceBy_Prefix)));
+
+    // Scythe drop patch
+    harmony.Patch(
+        original: AccessTools.Method(typeof(Grass),
+          nameof(Grass.TryDropItemsOnCut)),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.Grass_TryDropItemsOnCut_Postfix)));
+
+    // Pass in animal cracker into GetProduceID's GSQ checker
+    harmony.Patch(
+        original: AccessTools.Method(typeof(FarmAnimal),
+          nameof(FarmAnimal.GetProduceID)),
+        transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_GetProduceID_Transpiler)));
   }
 
   static void FarmAnimal_isMale_Postfix(FarmAnimal __instance, ref bool __result) {
@@ -160,26 +192,35 @@ sealed class AnimalDataPatcher {
 
   static void FarmAnimal_CanGetProduceWithTool_Postfix(FarmAnimal __instance, ref bool __result, Tool tool) {
     if (__instance.currentProduce.Value != null &&
-        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value) ?? __instance.currentProduce.Value, out var animalProduceExtensionData) &&
-        tool != null && tool.BaseName != null && animalProduceExtensionData.HarvestTool != null) {
-      // In extremely rare cases (eg debug mode) an animal may spawn with DropOvernight produce in its body.
+        ExtraProduceUtils.GetHarvestMethodOverride(__instance, __instance.currentProduce.Value, out var harvestMethod) &&
+        tool != null && tool.BaseName != null) {
+      // In extremely rare cases (eg debug mode) an animal may spawn with DropOvernight/Debris produce in its body.
       // To help get the produce out, always allow them to harvest
-      __result = (animalProduceExtensionData.HarvestTool == "DropOvernight") ||
-        (animalProduceExtensionData.HarvestTool == tool.BaseName);
+      __result = (harvestMethod == "DropOvernight") ||
+        (harvestMethod == "Debris") ||
+        (harvestMethod == tool.BaseName);
     }
   }
 
   static void FarmAnimal_GetTexturePath_Postfix(FarmAnimal __instance, ref string __result, FarmAnimalData data) {
     if (__instance.currentProduce.Value != null &&
+        Game1.farmAnimalData.TryGetValue(__instance.type.Value, out var animalData) &&
         ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
         animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value) ?? __instance.currentProduce.Value, out var animalProduceExtensionData)) {
       if (animalProduceExtensionData.ProduceTexture != null) {
         __result = animalProduceExtensionData.ProduceTexture;
       }
-      if (__instance.skinID.Value != null &&
-          animalProduceExtensionData.SkinProduceTexture.TryGetValue(__instance.skinID.Value, out var skinTexture)) {
-        __result = skinTexture;
+      if (__instance.skinID.Value is not null) {
+        if (animalProduceExtensionData.ProduceTexture is not null &&
+            ModEntry.Helper.GameContent.ParseAssetName(animalProduceExtensionData.ProduceTexture ?? "").IsEquivalentTo(animalData.HarvestedTexture)) {
+          __result = animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.HarvestedTexture ?? __result;
+        }
+        //if (animalProduceExtensionData.ProduceTexture == animalData.Texture) {
+        //  __result = animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.Texture ?? __result;
+        //}
+        if (animalProduceExtensionData.SkinProduceTexture.TryGetValue(__instance.skinID.Value, out var skinTexture)) {
+          __result = skinTexture;
+        }
       }
     }
   }
@@ -235,19 +276,24 @@ sealed class AnimalDataPatcher {
     }
   }
 
-  // Set up hunger state for a new day
-  static bool FarmAnimal_OnDayStarted_Prefix(FarmAnimal __instance) {
+  // Set up produce and hunger state for a new day
+  static void FarmAnimal_OnDayStarted_Prefix(FarmAnimal __instance, ref int __state) {
+    ExtraProduceUtils.DropDebrisOnDayStart(__instance);
+    ExtraProduceUtils.PopQueueAndReplaceProduce(__instance);
+    __state = __instance.fullness.Value;
+  }
+
+  // Restore old value if an outside forager (the main game will set it to 255 if grass eat amount < 0)
+  // (Future: maybe custom grass? That'd be a long, long time before I implement that though)
+  static void FarmAnimal_OnDayStarted_Postfix(FarmAnimal __instance, int __state) {
     if (AnimalUtils.AnimalIsOutsideForager(__instance)) {
-      return false;
+      __instance.fullness.Value = __state;
     }
-    return true;
   }
 
   static void FarmAnimal_GetHarvestType_Postfix(FarmAnimal __instance, ref FarmAnimalHarvestType? __result) {
-    if (__instance.currentProduce.Value != null &&
-        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value) ?? __instance.currentProduce.Value, out var animalProduceExtensionData)) {
-      switch (animalProduceExtensionData.HarvestTool) {
+    if (ExtraProduceUtils.GetHarvestMethodOverride(__instance, __instance.currentProduce.Value, out var harvestMethod)) {
+      switch (harvestMethod) {
         case "DigUp":
           __result = FarmAnimalHarvestType.DigUp;
           break;
@@ -257,6 +303,8 @@ sealed class AnimalDataPatcher {
           break;
         // NOTE: This branch should NEVER happen (the produce should have been dropped last night) but I'm including it anyway just in case
         case "DropOvernight":
+        case "Debris":
+        default:
           __result = FarmAnimalHarvestType.DropOvernight;
           break;
       }
@@ -385,19 +433,6 @@ sealed class AnimalDataPatcher {
     }
   }
 
-  static SObject CreateProduce(string produceId, FarmAnimal animal) {
-    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData) &&
-        animalProduceExtensionData.ItemQuery != null) {
-      var context = new ItemQueryContext(animal.home?.GetIndoors(), Game1.GetPlayer(animal.ownerID.Value), Game1.random);
-      var item = ItemQueryResolver.TryResolveRandomItem(animalProduceExtensionData.ItemQuery, context);
-      if (item is SObject obj) {
-        return obj;
-      }
-    }
-    // Vanilla fallback
-    return ItemRegistry.Create<SObject>(produceId);
-  }
 
   static readonly MethodInfo ItemRegistryCreateObjectType = AccessTools
     .GetDeclaredMethods(typeof(ItemRegistry))
@@ -405,8 +440,8 @@ sealed class AnimalDataPatcher {
     .MakeGenericMethod(typeof(SObject));
 
   static readonly MethodInfo CreateProduceType = AccessTools.Method(
-      typeof(AnimalDataPatcher),
-      nameof(AnimalDataPatcher.CreateProduce));
+      typeof(ExtraProduceUtils),
+      nameof(ExtraProduceUtils.CreateProduce));
 
 
   static IEnumerable<CodeInstruction> FarmAnimal_behaviors_Transpiler(IEnumerable<CodeInstruction> instructions) {
@@ -517,17 +552,6 @@ sealed class AnimalDataPatcher {
     return matcher.InstructionEnumeration();
   }
 
-  // Returns whether the animal's current produce is hardcoded to drop instead of harvested by tool
-  static bool DoNotDropCurrentProduce(FarmAnimal animal, string produceId) {
-    if (produceId != null && animal?.type?.Value != null &&
-        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData) &&
-        animalProduceExtensionData.HarvestTool != null) {
-      return animalProduceExtensionData.HarvestTool != "DropOvernight";
-    }
-    return animal.GetHarvestType() != FarmAnimalHarvestType.DropOvernight;
-  }
-
   // This transpiler does 3 things:
   // * Disallow eating hay if not a hay eater
   // * Override the item create call with the override item query
@@ -581,7 +605,7 @@ sealed class AnimalDataPatcher {
         .InsertAndAdvance(
           new CodeInstruction(OpCodes.Ldarg_0).WithLabels(labels),
           new CodeInstruction(OpCodes.Ldloc_S, produceIdVar),
-          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalDataPatcher), nameof(DoNotDropCurrentProduce))));
+          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ExtraProduceUtils), nameof(ExtraProduceUtils.DoNotDropCurrentProduce))));
 
 
       // Old: ItemRegistry.Create<Object>("(O)" + text);
@@ -695,7 +719,7 @@ sealed class AnimalDataPatcher {
       return;
     }
     if (AnimalUtils.AnimalIsOutsideForager(__instance) &&
-        __instance.currentLocation.isOutdoors.Value &&
+        __instance.currentLocation.IsOutdoors &&
         __instance.fullness.Value < 255 &&
         !__instance.IsActuallySwimming() &&
         Game1.random.NextDouble() < 0.0015 &&
@@ -707,7 +731,7 @@ sealed class AnimalDataPatcher {
   static bool shouldNotConsumeGrass = false;
 
   static void FarmAnimal_Eat_Prefix(FarmAnimal __instance, GameLocation location) {
-    if (AnimalUtils.AnimalIsOutsideForager(__instance) && (__instance.GetAnimalData()?.GrassEatAmount ?? 2) == 0) {
+    if (AnimalUtils.AnimalIsOutsideForager(__instance)) {
       shouldNotConsumeGrass = true;
     }
   }
@@ -722,5 +746,130 @@ sealed class AnimalDataPatcher {
       return false;
     }
     return true;
+  }
+
+  // These patches handle the extra produce queue
+  static void FarmAnimal_dayUpdate_Postfix(FarmAnimal __instance, GameLocation environment) {
+    ExtraProduceUtils.DecrementProduceDays(__instance);
+    ExtraProduceUtils.QueueExtraProduceIds(__instance, environment);
+  }
+
+  static void MilkPail_beginUsing_Prefix(MilkPail __instance, GameLocation location, int x, int y, Farmer who) {
+    x = (int)who.GetToolLocation().X;
+    y = (int)who.GetToolLocation().Y;
+    var animal = Utility.GetBestHarvestableFarmAnimal(toolRect: new Microsoft.Xna.Framework.Rectangle(x - 32, y - 32, 64, 64), animals: location.animals.Values, tool: __instance);
+    if (animal is not null) {
+      ExtraProduceUtils.ReplaceCurrentProduceWithMatching(animal, FarmAnimalHarvestType.HarvestWithTool, "Milk Pail");
+    }
+  }
+
+	static void MilkPail_DoFunction_Prefix(ref FarmAnimal __state, MilkPail __instance, GameLocation location, int x, int y, int power, Farmer who) {
+    if (__instance.animal is null) {
+      return;
+    }
+    __state = __instance.animal;
+  }
+
+	static void MilkPail_DoFunction_Postfix(FarmAnimal? __state, MilkPail __instance, GameLocation location, int x, int y, int power, Farmer who) {
+    if (__state is null) {
+      return;
+    }
+    ExtraProduceUtils.PopQueueAndReplaceProduce(__state);
+  }
+
+
+  static void Shears_beginUsing_Prefix(Shears __instance, GameLocation location, int x, int y, Farmer who) {
+    x = (int)who.GetToolLocation().X;
+    y = (int)who.GetToolLocation().Y;
+    var animal = Utility.GetBestHarvestableFarmAnimal(toolRect: new Microsoft.Xna.Framework.Rectangle(x - 32, y - 32, 64, 64), animals: location.animals.Values, tool: __instance);
+    if (animal is not null) {
+      ExtraProduceUtils.ReplaceCurrentProduceWithMatching(animal, FarmAnimalHarvestType.HarvestWithTool, "Shears");
+    }
+  }
+
+	static void Shears_DoFunction_Prefix(ref FarmAnimal __state, Shears __instance, GameLocation location, int x, int y, int power, Farmer who) {
+    if (__instance.animal is null) {
+      return;
+    }
+    __state = __instance.animal;
+  }
+
+	static void Shears_DoFunction_Postfix(FarmAnimal? __state, Shears __instance, GameLocation location, int x, int y, int power, Farmer who) {
+    if (__state is null) {
+      return;
+    }
+    ExtraProduceUtils.PopQueueAndReplaceProduce(__state);
+  }
+
+	static void FarmAnimal_behaviors_Prefix(FarmAnimal __instance, GameTime time, GameLocation location) {
+    ExtraProduceUtils.ReplaceCurrentProduceWithMatching(__instance, FarmAnimalHarvestType.DigUp);
+  }
+
+	static void FarmAnimal_behaviors_Postfix(FarmAnimal __instance, GameTime time, GameLocation location) {
+    ExtraProduceUtils.PopQueueAndReplaceProduce(__instance);
+  }
+
+  static void Grass_TryDropItemsOnCut_Postfix(Grass __instance, Tool? tool, bool addAnimation = true) {
+    if (!(tool?.isScythe() ?? false) ||
+        __instance.numberOfWeeds.Value > 0 ||
+        !(__instance.grassType.Value == 1 || __instance.grassType.Value == 7)) {
+      return;
+    }
+    Vector2 tile = __instance.Tile;
+    GameLocation location = __instance.Location;
+    Farmer farmer = tool.getLastFarmerToUse() ?? Game1.player;
+    Random random = (Game1.IsMultiplayer ? Game1.recentMultiplayerRandom : Utility.CreateRandom(Game1.uniqueIDForThisGame, (double)tile.X * 1000.0, (double)tile.Y * 11.0));
+    foreach (var keyVal in ModEntry.grassDropExtensionDataAssetHandler.data) {
+      double num = ((tool.ItemId == "66") ? 2.0 : ((tool.ItemId == "53") ? 1.5 : 1.0)) * keyVal.Value.BaseChance;
+      if (farmer.currentLocation.IsWinterHere()) {
+        num *= 0.33;
+      }
+      if (random.NextDouble() < num) {
+        var itemId = ItemRegistry.QualifyItemId(keyVal.Key);
+        var itemData = ItemRegistry.GetDataOrErrorItem(itemId);
+        int count = ((__instance.grassType.Value != 7) ? 1 : 2);
+        if (SiloUtils.ScytheHasGatherer(tool) && random.NextBool()) {
+          count += 1;
+        }
+        var remainingCount = SiloUtils.StoreFeedInAnySilo(itemId, count);
+        if (remainingCount == 0) {
+          if (addAnimation) {
+            TemporaryAnimatedSprite temporaryAnimatedSprite = new TemporaryAnimatedSprite(itemData.GetTextureName(), Game1.getSourceRectForStandardTileSheet(itemData.GetTexture(), itemData.SpriteIndex, 16, 16), 750f, 1, 0, farmer.Position - new Vector2(0f, 128f), flicker: false, flipped: false, farmer.Position.Y / 10000f, 0.005f, Color.White, 4f, -0.005f, 0f, 0f);
+            temporaryAnimatedSprite.motion.Y = -3f + (float)Game1.random.Next(-10, 11) / 100f;
+            temporaryAnimatedSprite.acceleration.Y = 0.07f + (float)Game1.random.Next(-10, 11) / 1000f;
+            temporaryAnimatedSprite.motion.X = (float)Game1.random.Next(-20, 21) / 10f;
+            temporaryAnimatedSprite.layerDepth = 1f - (float)Game1.random.Next(100) / 10000f;
+            temporaryAnimatedSprite.delayBeforeAnimationStart = Game1.random.Next(150);
+            Game1.Multiplayer.broadcastSprites(location, temporaryAnimatedSprite);
+          }
+          Game1.addHUDMessage(HUDMessage.ForItemGained(ItemRegistry.Create(itemId), count));
+        } else if (keyVal.Value.EnterInventoryIfSilosFull) {
+          farmer.addItemToInventory(ItemRegistry.Create(itemId, count));
+        }
+      }
+    }
+  }
+
+  static IEnumerable<CodeInstruction> FarmAnimal_GetProduceID_Transpiler(IEnumerable<CodeInstruction> instructions) {
+    CodeMatcher matcher = new(instructions);
+    // Old: GameStateQuery.CheckConditions(list[i].Condition, base.currentLocation, null, null, null, r)
+    // New: GameStateQuery.CheckConditions(list[i].Condition, base.currentLocation, null, null, GetGoldenAnimalCracker(this), r)
+    matcher.MatchStartForward(
+        new CodeMatch(OpCodes.Ldnull), // farmer
+        new CodeMatch(OpCodes.Ldnull), // target item
+        new CodeMatch(OpCodes.Ldnull), // input item (THIS!)
+        new CodeMatch(OpCodes.Ldarg_1),
+        new CodeMatch(OpCodes.Ldnull),
+        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(GameStateQuery), nameof(GameStateQuery.CheckConditions),
+            new Type[] {typeof(string), typeof(GameLocation), typeof(Farmer), typeof(Item), typeof(Item), typeof(Random), typeof(HashSet<string>)}))
+        )
+      .ThrowIfNotMatch($"Could not find entry point for {nameof(FarmAnimal_GetProduceID_Transpiler)}");
+    matcher.Advance(2)
+      .InsertAndAdvance(
+          new CodeInstruction(OpCodes.Ldarg_0),
+          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalUtils), nameof(AnimalUtils.GetGoldenAnimalCracker)))
+          )
+      .RemoveInstructions(1);
+    return matcher.InstructionEnumeration();
   }
 }

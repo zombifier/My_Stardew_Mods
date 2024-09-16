@@ -9,3 +9,7 @@ public sealed class AnimalExtensionDataAssetHandler : DictAssetHandler<AnimalExt
 public sealed class EggExtensionDataAssetHandler : DictAssetHandler<EggExtensionData> {
   public EggExtensionDataAssetHandler() : base($"{ModEntry.UniqueId}/EggExtensionData", ModEntry.StaticMonitor) {}
 }
+
+public sealed class GrassDropExtensionDataAssetHandler : DictAssetHandler<GrassDropExtensionData> {
+  public GrassDropExtensionDataAssetHandler() : base($"{ModEntry.UniqueId}/GrassDropExtensionData", ModEntry.StaticMonitor) {}
+}

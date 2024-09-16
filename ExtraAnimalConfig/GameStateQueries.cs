@@ -37,7 +37,7 @@ sealed class AnimalGameStateQueries {
     if (location is AnimalHouse animalHouse) {
       var count = animalHouse.animalsThatLiveHere
         .Select(animalId => Utility.getAnimal(animalId))
-        .Where(animal => animal.type.Value == animalType && animal.friendshipTowardFarmer.Value >= minFriendship)
+        .Where(animal => (animalType == "ANY" || animal.type.Value == animalType) && animal.friendshipTowardFarmer.Value >= minFriendship)
         .Count();
       return count >= minCount && count <= maxCount;
     }
@@ -60,7 +60,7 @@ sealed class AnimalGameStateQueries {
       if (location is AnimalHouse animalHouse) {
         var locationCount = animalHouse.animalsThatLiveHere
         .Select(animalId => Utility.getAnimal(animalId))
-        .Where(animal => animal.type.Value == animalType && animal.friendshipTowardFarmer.Value >= minFriendship)
+        .Where(animal => (animalType == "ANY" || animal.type.Value == animalType) && animal.friendshipTowardFarmer.Value >= minFriendship)
         .Count();
         count += locationCount;
       }
