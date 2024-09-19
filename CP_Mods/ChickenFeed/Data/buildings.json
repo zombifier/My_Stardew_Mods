@@ -204,6 +204,58 @@
       },
     },
     {
+      "LogName": "Override Aviary default feed",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Aviary", "CustomFields"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+      "When": {
+        "HasMod |contains=silvermoonchan.Aviary": "true",
+      },
+    },
+    {
+      "LogName": "Override Cave Coop default feed",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["mytigio.dwarven_expansion_CaveCoop", "CustomFields"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+      "When": {
+        "HasMod |contains=mytigio.dwarven_expansion": "true",
+      },
+    },
+    {
+      "LogName": "Override Big Cave Coop default feed",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["mytigio.dwarven_expansion_BigCaveCoop", "CustomFields"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+      "When": {
+        "HasMod |contains=mytigio.dwarven_expansion": "true",
+      },
+    },
+    {
+      "LogName": "Override Deluxe Cave Coop default feed",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["mytigio.dwarven_expansion_DeluxeCaveCoop", "CustomFields"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+      "When": {
+        "HasMod |contains=mytigio.dwarven_expansion": "true",
+      },
+    },
+    {
       "LogName": "Add mill recipes",
       "Action": "EditData",
       "Target": "Data/Buildings",

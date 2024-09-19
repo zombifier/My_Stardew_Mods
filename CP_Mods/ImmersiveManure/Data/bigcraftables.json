@@ -1,0 +1,17 @@
+{
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "Data/BigCraftables",
+			"Entries": {
+				"{{ModId}}.Composter": {
+					"Name": "{{ModId}}.Composter",
+					"DisplayName": "{{i18n:Composter.name}}",
+					"Description": "{{i18n:Composter.description}}",
+					"Texture": "{{ModId}}/BigCraftables",
+					"SpriteIndex": 0
+				},
+			}
+		},
+	]
+}

@@ -1,0 +1,21 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add powers",
+      "Action": "EditData",
+      "Target": "Data/Powers",
+      "Entries": {
+        "{{ModId}}.MaruBook": {
+          "DisplayName": "{{i18n:MaruBook.name}}",
+          "Description": "{{i18n:MaruBook.description}}",
+          "TexturePath": "{{ModId}}/Objects",
+          "TexturePosition": {
+            "X": 32,
+            "Y": 0
+          },
+          "UnlockedCondition": "PLAYER_STAT Current {{ModId}}.MaruBook 1",
+        },
+      },
+    },
+  ]
+}

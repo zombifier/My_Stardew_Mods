@@ -1,0 +1,30 @@
+{
+  "Changes": [
+    {
+      "LogName": "Change meadowlands farm starter gift",
+      "Action": "EditMap",
+      "Target": "Maps/Farm_Ranching",
+      "MapProperties": {
+        "FarmHouseStarterGift": "(O){{ModId}}.ChickenFeed 15",
+      },
+    },
+    {
+      "LogName": "Add feed to possible artifact spot dig",
+      "Action": "EditData",
+      "Target": "Data/Locations",
+      "TargetField": ["Default", "ArtifactSpots"],
+      "Entries": {
+        "{{ModId}}.ChickenFeed": {
+          "Chance": 0.05,
+          "ApplyGenerousEnchantment": true,
+          "OneDebrisPerDrop": true,
+          "Precedence": 1,
+          "Id": "{{ModId}}.ChickenFeed",
+          "ItemId": "{{ModId}}.ChickenFeed",
+          "MinStack": 3,
+          "MaxStack": 5,
+        },
+      }
+    }
+  ]
+}

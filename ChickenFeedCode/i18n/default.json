@@ -1,0 +1,6 @@
+{
+  "config.DirtForagers.name": "Most Coop Animals are Foragers",
+  "config.DirtForagers.description": "Whether to make most coop animals (including chickens, ducks and dinos) able to forage on dirt and not eat grass when outside. True by default - if set to false they will still eat grass when outside.",
+  "config.AllDirtForagers.name": "All Coop Animals are Foragers",
+  "config.AllDirtForagers.description": "Some coop animals - including rabbits and some modded animals like Trent's Silkmoth - still eat grass when outside. Set to true to make them also dirt foragers. Only applies if 1st settings is also true.",
+}

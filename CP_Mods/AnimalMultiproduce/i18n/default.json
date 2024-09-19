@@ -1,0 +1,4 @@
+{
+  "config.SheepMilkToUse.name": "Which sheep milk to use",
+  "config.SheepMilkToUse.description": "If both Milkable Sheep and Mount Vapius is installed, choose which mod's sheep milk item to have the sheep produce.",
+}

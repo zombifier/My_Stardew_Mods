@@ -1,0 +1,535 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add composter recipes",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "Entries": {
+        "(BC){{ModId}}.Composter": {
+          "OutputRules": [
+            {
+              "Id": "{{ModId}}.PoultryManure",
+              "Triggers": [
+                {
+                  "Id": "Default",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O){{ModId}}.PoultryManure",
+                  "RequiredCount": 3,
+                },
+              ],
+              "UseFirstValidOutput": true,
+              "OutputItem": [
+                {
+                  "Id": "OrganicHyperSpeedGroWithBone",
+                  "ItemId": "(O)918",
+                  "MinStack": 10,
+                  "Quality": 4,
+                  "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1, ITEM_QUALITY Input 2",
+                  "CustomData": {
+                    "selph.ExtraMachineConfig.RequirementId.1": "(O)881",
+                    "selph.ExtraMachineConfig.RequirementCount.1": "6",
+                  },
+                  "StackModifiers": [
+                    {
+                      "Id": "IridiumQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 2,
+                      "Condition": "ITEM_QUALITY Input 4",
+                    }
+                  ],
+                },
+                {
+                  "Id": "OrganicDeluxeSpeedGroWithBone",
+                  "ItemId": "(O)466",
+                  "MinStack": 10,
+                  "Quality": 4,
+                  "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1",
+                  "CustomData": {
+                    "selph.ExtraMachineConfig.RequirementId.1": "(O)881",
+                    "selph.ExtraMachineConfig.RequirementCount.1": "6",
+                  },
+                  "StackModifiers": [
+                    {
+                      "Id": "SilverQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 2,
+                      "Condition": "ITEM_QUALITY Input 1 1",
+                    },
+                  ],
+                },
+                {
+                  "Id": "OrganicHyperSpeedGro",
+                  "ItemId": "(O)918",
+                  "MinStack": 5,
+                  "Quality": 4,
+                  "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1, ITEM_QUALITY Input 2",
+                  "StackModifiers": [
+                    {
+                      "Id": "IridiumQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 1,
+                      "Condition": "ITEM_QUALITY Input 4",
+                    }
+                  ],
+                },
+                {
+                  "Id": "OrganicDeluxeSpeedGro",
+                  "ItemId": "(O)466",
+                  "MinStack": 5,
+                  "Quality": 4,
+                  "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1",
+                  "StackModifiers": [
+                    {
+                      "Id": "SilverQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 1,
+                      "Condition": "ITEM_QUALITY Input 1 1",
+                    },
+                  ],
+                },
+                {
+                  "Id": "DeluxeSpeedGro",
+                  "ItemId": "(O)466",
+                  "MinStack": 5,
+                  "Condition": "ITEM_QUALITY Input 2",
+                  "StackModifiers": [
+                    {
+                      "Id": "IridiumQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 1,
+                      "Condition": "ITEM_QUALITY Input 4",
+                    },
+                  ],
+                },
+                {
+                  "Id": "SpeedGro",
+                  "ItemId": "(O)465",
+                  "MinStack": 5,
+                  "StackModifiers": [
+                    {
+                      "Id": "SilverQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 1,
+                      "Condition": "ITEM_QUALITY Input 1 1",
+                    }
+                  ],
+                },
+              ],
+              "DaysUntilReady": 1,
+            },
+            {
+              "Id": "{{ModId}}.LivestockManure",
+              "Triggers": [
+                {
+                  "Id": "Default",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O){{ModId}}.LivestockManure",
+                  "RequiredCount": 3,
+                },
+              ],
+              "UseFirstValidOutput": true,
+              "OutputItem": [
+                {
+                  "Id": "OrganicDeluxeFertilizerWithFish",
+                  "ItemId": "(O)919",
+                  "MinStack": 10,
+                  "Quality": 4,
+                  "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1, ITEM_QUALITY Input 2",
+                  "CustomData": {
+                    "selph.ExtraMachineConfig.RequirementTags.1": "category_fish,!fish_legendary",
+                    "selph.ExtraMachineConfig.RequirementCount.1": "3",
+                  },
+                  "StackModifiers": [
+                    {
+                      "Id": "IridiumQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 2,
+                      "Condition": "ITEM_QUALITY Input 4",
+                    },
+                  ],
+                },
+                {
+                  "Id": "OrganicQualityFertilizerWithFish",
+                  "ItemId": "(O)369",
+                  "MinStack": 10,
+                  "Quality": 4,
+                  "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1",
+                  "CustomData": {
+                    "selph.ExtraMachineConfig.RequirementTags.1": "category_fish,!fish_legendary",
+                    "selph.ExtraMachineConfig.RequirementCount.1": "3",
+                  },
+                  "StackModifiers": [
+                    {
+                      "Id": "SilverQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 2,
+                      "Condition": "ITEM_QUALITY Input 1 1",
+                    },
+                  ],
+                },
+                {
+                  "Id": "OrganicDeluxeFertilizer",
+                  "ItemId": "(O)919",
+                  "MinStack": 5,
+                  "Quality": 4,
+                  "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1, ITEM_QUALITY Input 2",
+                  "StackModifiers": [
+                    {
+                      "Id": "IridiumQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 1,
+                      "Condition": "ITEM_QUALITY Input 4",
+                    },
+                  ],
+                },
+                {
+                  "Id": "OrganicQualityFertilizer",
+                  "ItemId": "(O)369",
+                  "MinStack": 5,
+                  "Quality": 4,
+                  "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1",
+                  "StackModifiers": [
+                    {
+                      "Id": "SilverQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 1,
+                      "Condition": "ITEM_QUALITY Input 1 1",
+                    },
+                  ],
+                },
+                {
+                  "Id": "QualityFertilizer",
+                  "ItemId": "(O)369",
+                  "MinStack": 5,
+                  "Condition": "ITEM_QUALITY Input 2",
+                  "StackModifiers": [
+                    {
+                      "Id": "IridiumQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 1,
+                      "Condition": "ITEM_QUALITY Input 4",
+                    },
+                  ],
+                },
+                {
+                  "Id": "BasicFertilizer",
+                  "ItemId": "(O)368",
+                  "MinStack": 5,
+                  "StackModifiers": [
+                    {
+                      "Id": "SilverQualityBonus",
+                      "Modification": "Add",
+                      "Amount": 1,
+                      "Condition": "ITEM_QUALITY Input 1 1",
+                    },
+                  ],
+                },
+              ],
+              "DaysUntilReady": 1,
+            },
+          ],
+          "InvalidItemMessage": "{{i18n:Composter.invalid}}",
+          "InvalidCountMessage": "{{i18n:Composter.invalid}}",
+					"LoadEffects": [
+						{
+							"Sounds": [
+								{
+									"Id": "slimeHit",
+								}
+							],
+						}
+					],
+          "ShowNextIndexWhileWorking": true,
+          "ShowNextIndexWhenReady": true,
+        }
+      },
+    },
+    {
+      "LogName": "Add manure to coal recipe in charcoal kiln",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)114", "OutputRules"],
+      "Entries": {
+        "{{ModId}}.ManureToCoal": {
+          "Id": "{{ModId}}.ManureToCoal",
+          "Triggers": [
+            {
+              "Id": "DefaultPoultry",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}.PoultryManure",
+              "RequiredCount": 2,
+            },
+            {
+              "Id": "DefaultLivestock",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}.LivestockManure",
+              "RequiredCount": 2,
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "Coal",
+              "ItemId": "(O)382",
+            },
+          ],
+          "MinutesUntilReady": 30,
+          "InvalidCountMessage": "{{i18n:CharcoalKiln.invalid}}",
+        },
+      },
+    },
+    {
+      "LogName": "Change Vapius Compost Bin Fertilizer to Copy Quality",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)Lumisteria.MtVapius_CompostBin", "OutputRules", "Lumisteria.MtVapius_QualityFertiliser", "OutputItem", "Lumisteria.MtVapius_DeluxeFertiliser"],
+      "Entries": {
+        "CopyQuality": true,
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+    },
+    {
+      "LogName": "Change Vapius Compost Bin Fertilizer to Copy Quality",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)Lumisteria.MtVapius_CompostBin", "OutputRules", "Lumisteria.MtVapius_DeluxeSpeedGro", "OutputItem", "Lumisteria.MtVapius_HyperSpeedGro"],
+      "Entries": {
+        "CopyQuality": true,
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+    },
+    {
+      "LogName": "Add composter recipes to VMV's Composters",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)Lumisteria.MtVapius_CompostBin", "OutputRules"],
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+      "Entries": {
+        "{{ModId}}.PoultryManure": {
+          "Id": "{{ModId}}.PoultryManure",
+          "Triggers": [
+            {
+              "Id": "Default",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}.PoultryManure",
+              "RequiredCount": 3,
+            },
+          ],
+          "UseFirstValidOutput": true,
+          "OutputItem": [
+            {
+              "Id": "OrganicHyperSpeedGroWithBone",
+              "ItemId": "(O)918",
+              "MinStack": 12,
+              "Quality": 4,
+              "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1, ITEM_QUALITY Input 2",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O)881",
+                "selph.ExtraMachineConfig.RequirementCount.1": "6",
+              },
+              "StackModifiers": [
+                {
+                  "Id": "IridiumQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 2,
+                  "Condition": "ITEM_QUALITY Input 4",
+                }
+              ],
+            },
+            {
+              "Id": "OrganicDeluxeSpeedGroWithBone",
+              "ItemId": "(O)466",
+              "MinStack": 12,
+              "Quality": 4,
+              "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O)881",
+                "selph.ExtraMachineConfig.RequirementCount.1": "6",
+              },
+              "StackModifiers": [
+                {
+                  "Id": "SilverQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 2,
+                  "Condition": "ITEM_QUALITY Input 1 1",
+                },
+              ],
+            },
+            {
+              "Id": "OrganicHyperSpeedGro",
+              "ItemId": "(O)918",
+              "MinStack": 6,
+              "Quality": 4,
+              "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1, ITEM_QUALITY Input 2",
+              "StackModifiers": [
+                {
+                  "Id": "IridiumQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 1,
+                  "Condition": "ITEM_QUALITY Input 4",
+                }
+              ],
+            },
+            {
+              "Id": "OrganicDeluxeSpeedGro",
+              "ItemId": "(O)466",
+              "MinStack": 6,
+              "Quality": 4,
+              "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1",
+              "StackModifiers": [
+                {
+                  "Id": "SilverQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 1,
+                  "Condition": "ITEM_QUALITY Input 1 1",
+                },
+              ],
+            },
+            {
+              "Id": "DeluxeSpeedGro",
+              "ItemId": "(O)466",
+              "MinStack": 6,
+              "Condition": "ITEM_QUALITY Input 2",
+              "StackModifiers": [
+                {
+                  "Id": "IridiumQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 1,
+                  "Condition": "ITEM_QUALITY Input 4",
+                },
+              ],
+            },
+            {
+              "Id": "SpeedGro",
+              "ItemId": "(O)465",
+              "MinStack": 6,
+              "StackModifiers": [
+                {
+                  "Id": "SilverQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 1,
+                  "Condition": "ITEM_QUALITY Input 1 1",
+                }
+              ],
+            },
+          ],
+          "DaysUntilReady": 1,
+        },
+        "{{ModId}}.LivestockManure": {
+          "Id": "{{ModId}}.LivestockManure",
+          "Triggers": [
+            {
+              "Id": "Default",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}.LivestockManure",
+              "RequiredCount": 3,
+            },
+          ],
+          "UseFirstValidOutput": true,
+          "OutputItem": [
+            {
+              "Id": "OrganicDeluxeFertilizerWithFish",
+              "ItemId": "(O)919",
+              "MinStack": 12,
+              "Quality": 4,
+              "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1, ITEM_QUALITY Input 2",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementTags.1": "category_fish,!fish_legendary",
+                "selph.ExtraMachineConfig.RequirementCount.1": "3",
+              },
+              "StackModifiers": [
+                {
+                  "Id": "IridiumQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 2,
+                  "Condition": "ITEM_QUALITY Input 4",
+                },
+              ],
+            },
+            {
+              "Id": "OrganicQualityFertilizerWithFish",
+              "ItemId": "(O)369",
+              "MinStack": 12,
+              "Quality": 4,
+              "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementTags.1": "category_fish,!fish_legendary",
+                "selph.ExtraMachineConfig.RequirementCount.1": "3",
+              },
+              "StackModifiers": [
+                {
+                  "Id": "SilverQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 2,
+                  "Condition": "ITEM_QUALITY Input 1 1",
+                },
+              ],
+            },
+            {
+              "Id": "OrganicDeluxeFertilizer",
+              "ItemId": "(O)919",
+              "MinStack": 6,
+              "Quality": 4,
+              "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1, ITEM_QUALITY Input 2",
+              "StackModifiers": [
+                {
+                  "Id": "IridiumQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 1,
+                  "Condition": "ITEM_QUALITY Input 4",
+                },
+              ],
+            },
+            {
+              "Id": "OrganicQualityFertilizer",
+              "ItemId": "(O)369",
+              "MinStack": 6,
+              "Quality": 4,
+              "Condition": "PLAYER_STAT Current {{ModId}}.MaruBook 1",
+              "StackModifiers": [
+                {
+                  "Id": "SilverQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 1,
+                  "Condition": "ITEM_QUALITY Input 1 1",
+                },
+              ],
+            },
+            {
+              "Id": "QualityFertilizer",
+              "ItemId": "(O)369",
+              "MinStack": 6,
+              "Condition": "ITEM_QUALITY Input 2",
+              "StackModifiers": [
+                {
+                  "Id": "IridiumQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 1,
+                  "Condition": "ITEM_QUALITY Input 4",
+                },
+              ],
+            },
+            {
+              "Id": "BasicFertilizer",
+              "ItemId": "(O)368",
+              "MinStack": 6,
+              "StackModifiers": [
+                {
+                  "Id": "SilverQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 1,
+                  "Condition": "ITEM_QUALITY Input 1 1",
+                },
+              ],
+            },
+          ],
+        },
+      },
+    },
+  ],
+}

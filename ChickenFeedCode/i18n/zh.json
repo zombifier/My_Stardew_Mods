@@ -1,0 +1,6 @@
+{
+  "config.DirtForagers.name": "大多数鸡舍动物都是草地觅食者",
+  "config.DirtForagers.description": "是否使大多数鸡舍动物（包括鸡、鸭和恐龙）能够在泥土上觅食，并且在户外不吃草。默认情况下为 True - 如果设置为 false，它们在外面时仍会吃草。",
+  "config.AllDirtForagers.name": "所有鸡舍动物都是觅食者",
+  "config.AllDirtForagers.description": "一些鸡舍动物 - 包括兔子和一些经过改造的动物，如特伦特的丝蛾 - 在外面仍然吃草。设置为 true 可使它们也成为草地的觅食者。仅当第 1 个设置也为真时才适用。",
+}

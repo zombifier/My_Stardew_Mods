@@ -1,0 +1,12 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add recipes",
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "{{ModId}}.Composter": "388 10 390 5 330 1/Field/{{ModId}}.Composter/true/Farming 2/",
+      },
+    },
+  ]
+}

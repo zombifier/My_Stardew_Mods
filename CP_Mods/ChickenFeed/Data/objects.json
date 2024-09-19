@@ -41,5 +41,16 @@
         },
       },
     },
+    {
+      "LogName": "Add chicken feed to grass scythe drops",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/GrassDropExtensionData",
+      "Entries": {
+        "(O){{ModId}}.ChickenFeed": {
+          "BaseChance": 0.0625,
+          "EnterInventoryIfSilosFull": true,
+        },
+      },
+    },
   ]
 }

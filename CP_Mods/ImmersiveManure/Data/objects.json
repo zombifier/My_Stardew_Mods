@@ -1,0 +1,69 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add items",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}.LivestockManure": {
+          "Name": "{{ModId}}.LivestockManure",
+          "SpriteIndex": 0,
+          "DisplayName": "{{i18n:LivestockManure.name}}",
+          "Description": "{{i18n:LivestockManure.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 10,
+        },
+        "{{ModId}}.PoultryManure": {
+          "Name": "{{ModId}}.PoultryManure",
+          "SpriteIndex": 1,
+          "DisplayName": "{{i18n:PoultryManure.name}}",
+          "Description": "{{i18n:PoultryManure.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 10,
+        },
+        "{{ModId}}.MaruBook": {
+          "Name": "{{ModId}}.MaruBook",
+          "SpriteIndex": 2,
+          "DisplayName": "{{i18n:MaruBook.name}}",
+          "Description": "{{i18n:MaruBook.description}}",
+          "Type": "asdf",
+          "Category": -102,
+          "Texture": "{{ModId}}/Objects",
+          "Price": 2500,
+          "ContextTags": [
+            "book_item",
+            "color_blue",
+          ],
+        },
+        "{{ModId}}.GoldenLivestockManure": {
+          "Name": "{{ModId}}.GoldenLivestockManure",
+          "SpriteIndex": 3,
+          "DisplayName": "{{i18n:GoldenManure.name}}",
+          "Description": "{{i18n:GoldenManure.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 1000,
+        },
+        "{{ModId}}.GoldenPoultryManure": {
+          "Name": "{{ModId}}.GoldenPoultryManure",
+          "SpriteIndex": 4,
+          "DisplayName": "{{i18n:GoldenManure.name}}",
+          "Description": "{{i18n:GoldenManure.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 1000,
+        },
+      },
+    },
+    //{
+    //  "LogName": "Add organic string",
+    //  "Action": "EditData",
+    //  "Target": "Strings/Objects",
+    //  "Entries": {
+    //    "{{ModId}}.OrganicFertilizer.name": "{{i18n: OrganicFertilizer.name}}",
+    //  },
+    //},
+  ]
+}

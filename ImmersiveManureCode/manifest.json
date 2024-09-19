@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Immersive Manure C# Component",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Farm animals drop manure, which can be processed into fertilizer - C# Component",
+  "UniqueID": "selph.ImmersiveManureCode",
+  "EntryDll": "ImmersiveManureCode.dll",
+  "MinimumApiVersion": "4.0.8",
+  "UpdateKeys": ["Nexus:27432"],
+  "Dependencies": [
+    {"UniqueID": "selph.ExtraAnimalConfig", "IsRequired": true},
+  ],
+}

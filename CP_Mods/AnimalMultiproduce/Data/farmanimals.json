@@ -1,0 +1,503 @@
+{
+  "Changes": [
+    {
+      "LogName": "Remove feather from duck",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Duck", "DeluxeProduceItemIds"],
+      "Entries": {
+        "Default": null,
+      },
+    },
+    {
+      "LogName": "Remove feet from rabbit",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Rabbit", "DeluxeProduceItemIds"],
+      "Entries": {
+        "Default": null,
+      },
+    },
+    {
+      "LogName": "Initialize asset with empty objects for compat",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Duck": {},
+        "Sheep": {},
+        "Rabbit": {},
+      },
+    },
+    {
+      "LogName": "Make rabbit drop feet as additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Rabbit", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "Entries": {
+        "{{ModId}}.RabbitsFoot": {
+          "Id": "{{ModId}}.RabbitsFoot",
+          "DaysToProduce": 4,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "{{ModId}}.RabbitsFoot",
+              "ItemId": "446",
+              "MinimumFriendship": 250,
+              "Condition": "RANDOM 0.33 @addDailyLuck",
+            }
+          ]
+        }
+      },
+    },
+    {
+      "LogName": "Make duck drop feather as additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Duck", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "Entries": {
+        "{{ModId}}.DuckFeather": {
+          "Id": "{{ModId}}.DuckFeather",
+          "DaysToProduce": 4,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "{{ModId}}.DuckFeather",
+              "ItemId": "444",
+              "MinimumFriendship": 200,
+            }
+          ]
+        }
+      },
+    },
+    {
+      "LogName": "Make ewe milk use milk pail",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Late",
+      "TargetField": ["Sheep", "AnimalProduceExtensionData"],
+      "Entries": {
+        "(O)Lumisteria.MtVapius_EweMilkExtraLarge": {
+          "HarvestTool": "Milk Pail",
+          "ProduceTexture": "Animals\\ShearedSheep",
+        },
+        "(O)Lumisteria.MtVapius_EweMilkLarge": {
+          "HarvestTool": "Milk Pail",
+          "ProduceTexture": "Animals\\ShearedSheep",
+        },
+        "(O)Lumisteria.MtVapius_EweMilk": {
+          "HarvestTool": "Milk Pail",
+          "ProduceTexture": "Animals\\ShearedSheep",
+        },
+      },
+    },
+    // Milkable sheep compat
+    {
+      "LogName": "Revert sheep back to producing every 3 days",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Sheep"],
+      "Entries": {
+        "DaysToProduce": 2,
+      },
+      "When": {
+        "HasMod |contains=radm.milkdasheep": "true",
+        "Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR 'SheepMilkToUse' = 'MilkableSheep'": true,
+      }
+    },
+    {
+      "LogName": "Remove milk from sheep",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Sheep", "ProduceItemIds"],
+      "Entries": {
+        "Sheep's Milk": null,
+      },
+      "When": {
+        "HasMod |contains=radm.milkdasheep": "true",
+        "Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR 'SheepMilkToUse' = 'MilkableSheep'": true,
+      }
+    },
+    {
+      "LogName": "Remove large milk from sheep",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Sheep", "DeluxeProduceItemIds"],
+      "Entries": {
+        "Large Sheep's Milk": null,
+      },
+      "When": {
+        "HasMod |contains=radm.milkdasheep": "true",
+        "Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR 'SheepMilkToUse' = 'MilkableSheep'": true,
+      }
+    },
+    {
+      "LogName": "Make sheep milk additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Late",
+      "TargetField": ["Sheep", "ExtraProduceSpawnList"],
+      "When": {
+        "HasMod |contains=radm.milkdasheep": "true",
+        "Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR 'SheepMilkToUse' = 'MilkableSheep'": true,
+      },
+      "Entries": {
+        "{{ModId}}.SheepMilk": {
+          "Id": "{{ModId}}.SheepMilk",
+          "DaysToProduce": 1,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "{{ModId}}.LargeSheepMilk",
+              "ItemId": "radm.milkdasheep_LargeSheepMilk",
+              "MinimumFriendship": 200,
+            },
+            {
+              "Id": "{{ModId}}.SheepMilk",
+              "ItemId": "radm.milkdasheep_SheepMilk",
+              "MinimumFriendship": 0,
+            }
+          ]
+        }
+      },
+    },
+    // Mt Vapius compat
+    {
+      "LogName": "Remove feather from goose",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Lumisteria.MtVapius_Goose", "DeluxeProduceItemIds"],
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+      "Entries": {
+        "Lumisteria.MtVapius_GooseDown": null,
+      },
+    },
+    {
+      "LogName": "Remove egg from stellar goose",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Lumisteria.MtVapius_StellarGoose", "DeluxeProduceItemIds"],
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+      "Entries": {
+        "Lumisteria.MtVapius_StellarGooseEgg": null,
+      },
+    },
+    {
+      "LogName": "Remove feather from speckled fowl",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Lumisteria.MtVapius_SpeckledFowl", "DeluxeProduceItemIds"],
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+      "Entries": {
+        "Lumisteria.MtVapius_Default": null,
+      },
+    },
+    {
+      "LogName": "Make speckled fowl always make eggs",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Lumisteria.MtVapius_SpeckledFowl", "DeluxeProduceItemIds", "Lumisteria.MtVapius_BaseEgg"],
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+      "Entries": {
+        "Condition": null,
+      },
+    },
+    {
+      "LogName": "Remove feathers from void speckled fowl",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Lumisteria.MtVapius_SpeckledFowlVoid", "DeluxeProduceItemIds"],
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+      "Entries": {
+        "Lumisteria.MtVapius_VoidFeather": null,
+        "Lumisteria.MtVapius_SpeckledFowlVoidFeather": null,
+      },
+    },
+
+    {
+      "LogName": "Make ewe milk additional item from sheep",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Late",
+      "TargetField": ["Sheep", "ExtraProduceSpawnList"],
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+        "Query: NOT {{HasMod |contains=radm.milkdasheep}} OR 'SheepMilkToUse' = 'MtVapius'": true,
+      },
+      "Entries": {
+        "{{ModId}}.SheepMilk": {
+          "Id": "{{ModId}}.SheepMilk",
+          "DaysToProduce": 2,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "{{ModId}}.ExtraLargeEweMilk",
+              "ItemId": "Lumisteria.MtVapius_EweMilkExtraLarge",
+              "Condition": "ANY \"LOCATION_CONTEXT Target Lumisteria_MtVapius_Main\" \"RANDOM 0.08\"",
+              "MinimumFriendship": 200,
+            },
+            {
+              "Id": "{{ModId}}.LargeEweMilk",
+              "ItemId": "Lumisteria.MtVapius_EweMilkLarge",
+              "MinimumFriendship": 200,
+            },
+            {
+              "Id": "{{ModId}}.EweMilk",
+              "ItemId": "Lumisteria.MtVapius_EweMilk",
+              "MinimumFriendship": 0,
+            },
+          ]
+        }
+      },
+    },
+    {
+      "LogName": "Initialize asset with empty objects for compat - Vapius animals",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Lumisteria.MtVapius_Goose": {},
+        "Lumisteria.MtVapius_StellarGoose": {},
+        "Lumisteria.MtVapius_SpeckledFowl": {},
+        "Lumisteria.MtVapius_SpeckledFowlVoid": {},
+      },
+    },
+    {
+      "LogName": "Make goose drop down as additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Lumisteria.MtVapius_Goose", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+      "Entries": {
+        "{{ModId}}.GooseDown": {
+          "Id": "{{ModId}}.GooseDown",
+          "DaysToProduce": 2,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "Lumisteria.MtVapius_GooseDown",
+              "ItemId": "Lumisteria.MtVapius_GooseDown",
+              "MinimumFriendship": 200,
+            }
+          ]
+        }
+      },
+    },
+    {
+      "LogName": "Make stellar goose drop down as additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Lumisteria.MtVapius_StellarGoose", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+      "Entries": {
+        "{{ModId}}.StellarGooseEgg": {
+          "Id": "{{ModId}}.StellarGooseEgg",
+          "DaysToProduce": 2,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "Lumisteria.MtVapius_StellarGooseEgg",
+              "ItemId": "Lumisteria.MtVapius_StellarGooseEgg",
+              "MinimumFriendship": 200,
+            }
+          ]
+        }
+      },
+    },
+    {
+      "LogName": "Make speckled fowl drop feather as additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Lumisteria.MtVapius_SpeckledFowl", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+      "Entries": {
+        "{{ModId}}.SpeckledFowlFeather": {
+          "Id": "{{ModId}}.SpeckledFowlFeather",
+          "DaysToProduce": 2,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "Lumisteria.MtVapius_SpeckledFowlFeather",
+              "ItemId": "Lumisteria.MtVapius_SpeckledFowlFeather",
+              "MinimumFriendship": 200,
+            }
+          ]
+        }
+      },
+    },
+    {
+      "LogName": "Make void speckled fowl drop feather as additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Lumisteria.MtVapius_SpeckledFowlVoid", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+      "Entries": {
+        "{{ModId}}.SpeckledFowlVoidFeather": {
+          "Id": "{{ModId}}.SpeckledFowlVoidFeather",
+          "DaysToProduce": 2,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "Lumisteria.MtVapius_SpeckledFowlVoidFeather",
+              "ItemId": "Lumisteria.MtVapius_SpeckledFowlVoidFeather",
+              "MinimumFriendship": 200,
+              "Condition": "RANDOM .2",
+            },
+            {
+              "Id": "Lumisteria.MtVapius_VoidFeather",
+              "ItemId": "Lumisteria.MtVapius_VoidFeather",
+              "MinimumFriendship": 200,
+            }
+          ]
+        }
+      },
+    },
+    // Mizu's Turkeys
+    {
+      "LogName": "Remove feather from brown turkeys",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Mizu.Turkey_BrownTurkey", "DeluxeProduceItemIds"],
+      "Entries": {
+        "Default": null,
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+      },
+    },
+    {
+      "LogName": "Remove feather from white turkeys",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Mizu.Turkey_WhiteTurkey", "DeluxeProduceItemIds"],
+      "Entries": {
+        "Default": null,
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+      },
+    },
+    {
+      "LogName": "Remove feather from gray turkeys",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Mizu.Turkey_GrayTurkey", "DeluxeProduceItemIds"],
+      "Entries": {
+        "Default": null,
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+      },
+    },
+    {
+      "LogName": "Initialize asset with empty objects for compat",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Priority": "Early",
+      "Entries": {
+        "Mizu.Turkey_BrownTurkey": {},
+        "Mizu.Turkey_WhiteTurkey": {},
+        "Mizu.Turkey_GrayTurkey": {},
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+      },
+    },
+    {
+      "LogName": "Make brown turkey drop feather as additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Mizu.Turkey_BrownTurkey", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "Entries": {
+        "{{ModId}}.TurkeyFeather": {
+          "Id": "{{ModId}}.TurkeyFeather",
+          "DaysToProduce": 6,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "{{ModId}}.TurkeyFeather",
+              "ItemId": "Mizu.Turkey_TurkeyFeather",
+              "MinimumFriendship": 200,
+            }
+          ]
+        }
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+      },
+    },
+    {
+      "LogName": "Make white turkey drop feather as additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Mizu.Turkey_WhiteTurkey", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "Entries": {
+        "{{ModId}}.TurkeyFeather": {
+          "Id": "{{ModId}}.TurkeyFeather",
+          "DaysToProduce": 6,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "{{ModId}}.TurkeyFeather",
+              "ItemId": "Mizu.Turkey_TurkeyFeather",
+              "MinimumFriendship": 200,
+            }
+          ]
+        }
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+      },
+    },
+    {
+      "LogName": "Make gray turkey drop feather as additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Mizu.Turkey_GrayTurkey", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "Entries": {
+        "{{ModId}}.TurkeyFeather": {
+          "Id": "{{ModId}}.TurkeyFeather",
+          "DaysToProduce": 6,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "{{ModId}}.TurkeyFeather",
+              "ItemId": "Mizu.Turkey_TurkeyFeather",
+              "MinimumFriendship": 200,
+            }
+          ]
+        }
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+      },
+    },
+  ]
+}

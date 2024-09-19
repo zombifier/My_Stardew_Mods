@@ -1,0 +1,18 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add Maru's book to bookseller shop in case the player accidentally trashed it",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["Bookseller", "Items"],
+      "Entries": {
+        "{{ModId}}.MaruBook": {
+          "Id": "{{ModId}}.MaruBook",
+          "ItemId": "{{ModId}}.MaruBook",
+          "Price": 1000,
+          "Condition": "PLAYER_SPECIAL_ORDER_COMPLETE Any {{ModId}}.MaruManureSpecialOrder",
+        },
+      },
+    },
+  ]
+}

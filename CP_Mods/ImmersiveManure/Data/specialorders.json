@@ -1,0 +1,67 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add special orders",
+      "Action": "EditData",
+      "Target": "Data/SpecialOrders",
+      "Entries": {
+        "{{ModId}}.MaruManureSpecialOrder": {
+					"Name": "{{i18n:MaruManureSpecialOrder.name}}",
+					"Requester": "Maru",
+					"Duration": "Week",
+					"Repeatable": false,
+					"Text": "{{i18n:MaruManureSpecialOrder.text}}",
+					"Objectives": [
+						{
+							"Type": "Collect",
+							"Text": "{{i18n:MaruManureSpecialOrder.obj1}}",
+							"RequiredCount": "30",
+							"Data": {
+								"AcceptedContextTags": "id_o_selph.immersivemanure.poultrymanure"
+							}
+						},
+						{
+							"Type": "Collect",
+							"Text": "{{i18n:MaruManureSpecialOrder.obj2}}",
+							"RequiredCount": "30",
+							"Data": {
+								"AcceptedContextTags": "id_o_selph.immersivemanure.livestockmanure"
+							}
+						},
+						{
+							"Type": "Ship",
+							"Text": "{{i18n:MaruManureSpecialOrder.obj3}}",
+							"RequiredCount": "30",
+							"Data": {
+								"AcceptedContextTags": "id_o_selph.immersivemanure.poultrymanure"
+							}
+						},
+						{
+							"Type": "Ship",
+							"Text": "{{i18n:MaruManureSpecialOrder.obj4}}",
+							"RequiredCount": "30",
+							"Data": {
+								"AcceptedContextTags": "id_o_selph.immersivemanure.livestockmanure"
+							}
+						},
+					],
+					"Rewards": [
+						{
+							"Type": "Money",
+							"Data": {
+								"Amount": "10000"
+							}
+						},
+						{
+							"Type": "Mail",
+							"Data": {
+								"MailReceived": "{{ModId}}.MaruQuestCompleteLetter",
+                "NoLetter": "false",
+							}
+						}
+					]
+        },
+      },
+    },
+  ]
+}

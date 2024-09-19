@@ -1,0 +1,18 @@
+{
+  "Name": "Immersive Manure",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Farm animals drop manure, which can be processed into fertilizer.",
+  "UniqueID": "selph.ImmersiveManure",
+  "MinimumApiVersion": "4.0.8",
+  "Dependencies": [
+    {"UniqueID": "selph.ExtraAnimalConfig", "IsRequired": true},
+    {"UniqueID": "selph.ExtraMachineConfig", "IsRequired": true},
+    {"UniqueID": "selph.ImmersiveManureCode", "IsRequired": true},
+    {"UniqueID": "Lumisteria.MtVapius", "IsRequired": false},
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "UpdateKeys": ["Nexus:27432"],
+}

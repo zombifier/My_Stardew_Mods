@@ -37,12 +37,12 @@
     [
       "(O)wildflour.ateliercrops_lavender",
       "(O)Cornucopia_Lavender",
-      "(O)QL_Lavender"
+      "(O)QL_Lavender",
     ],
     [
       "(O)wildflour.ateliercrops_jasmine",
       "(O)Cornucopia_Jasmine",
-      "(O)QL_Jasmine"
+      "(O)QL_Jasmine",
     ],
     [
       "(O)wildflour.ateliercrops_pistachio",
@@ -109,6 +109,7 @@
       "(O)wildflour.gourmetpantry_butter",
       "(O)Cornucopia_Butter",
       "(O)Lumisteria.MtVapius_Butter",
+      "(O)FlashShifter.StardewValleyExpandedCP_Butter",
     ],
     [
       "(O)wildflour.gourmetpantry_cream",
@@ -134,6 +135,10 @@
     [
       "(O)wildflour.honeybees_honeycomb",
       "(O)Cornucopia_Beeswax",
+    ],
+    [
+      "(O)wildflour.gourmetpantry_corn_flour",
+      "(O)Cornucopia_CornFlour",
     ],
     // Grains Overhull
     [
@@ -235,6 +240,7 @@
     [
       "(O)Cornucopia_Persimmon",
       "(O)BFV.CombinedCrops_AmericanPersimmon",
+      "(O)FlashShifter.StardewValleyExpandedCP_Persimmon",
     ],
     [
       "(O)Cornucopia_Avocado",
@@ -251,6 +257,61 @@
     [
       "(O)Cornucopia_Pear",
       "(O)BFV.CombinedCrops_YaLiPear",
+      "(O)FlashShifter.StardewValleyExpandedCP_Pear",
+    ],
+    // Grow your meat and Animal Husbandry
+    [
+      "(O)Wizadroid.GYM_CowMP",
+      "(O)639",
+    ],
+    [
+      "(O)Wizadroid.GYM_SheepMP",
+      "(O)644",
+    ],
+    [
+      "(O)Wizadroid.GYM_PigMP",
+      "(O)640",
+    ],
+    [
+      "(O)Wizadroid.GYM_ChickenMP",
+      "(O)641",
+    ],
+    // SVE Stuff (some of which is above)
+    [
+      "(O)Cornucopia_ButternutSquash",
+      "(O)FlashShifter.StardewValleyExpandedCP_Butternut_Squash",
+    ],
+    [
+      "(O)Cornucopia_Nectarine",
+      "(O)FlashShifter.StardewValleyExpandedCP_Nectarine",
+    ],
+    [
+      "(O)Lumisteria.MtVapius_BirchtreeSeeds",
+      "(O)FlashShifter.StardewValleyExpandedCP_Birch_Seed",
+    ],
+    [
+      "(O)Lumisteria.MtVapius_BirchSap",
+      "(O)FlashShifter.StardewValleyExpandedCP_Birch_Syrup",
+    ],
+    [
+      "(O)Cornucopia_Cucumber",
+      "(O)FlashShifter.StardewValleyExpandedCP_Cucumber",
+    ],
+    [
+      "(O)Cornucopia_SweetPotato",
+      "(O)FlashShifter.StardewValleyExpandedCP_Sweet_Potato",
+    ],
+    [
+      "(O)Lumisteria.MtVapius_Amber",
+      "(O)FlashShifter.StardewValleyExpandedCP_Amber",
+    ],
+    [
+      "(O)Lumisteria.MtVapius_GooseEgg",
+      "(O)FlashShifter.StardewValleyExpandedCP_Goose_Egg",
+    ],
+    [
+      "(O)Lumisteria.MtVapius_GooseMayonnaise",
+      "(O)FlashShifter.StardewValleyExpandedCP_Goose_Mayonnaise",
     ],
   ]
 }

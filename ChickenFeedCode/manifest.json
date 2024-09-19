@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Chicken Feed C# Component",
+  "Author": "selph",
+  "Version": "4.0.0",
+  "Description": "Rework chickens and other coop animals to resemble their Harvest Moon counterpart - eats chicken feed made from corn and can forage from dirt.",
+  "UniqueID": "selph.CoopFeedCode",
+  "EntryDll": "CoopFeedCode.dll",
+  "MinimumApiVersion": "4.0.8",
+  "UpdateKeys": ["Nexus:26443"],
+  "Dependencies": [
+    {"UniqueID": "selph.ExtraAnimalConfig", "IsRequired": true},
+  ],
+}

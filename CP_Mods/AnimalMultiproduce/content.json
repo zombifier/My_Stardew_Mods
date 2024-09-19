@@ -1,0 +1,16 @@
+{
+  "Format": "2.0.0",
+  "ConfigSchema": {
+    "SheepMilkToUse": {
+      "AllowValues": "MilkableSheep, MtVapius",
+      "Default": "MilkableSheep",
+    },
+  },
+  "Changes": [
+    {
+      "LogName": "Farm Animal Rules",
+      "Action": "Include",
+      "FromFile": "Data/farmanimals.json",
+    },
+  ]
+}

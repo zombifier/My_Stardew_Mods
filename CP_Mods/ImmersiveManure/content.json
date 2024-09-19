@@ -1,0 +1,51 @@
+{
+  "Format": "2.3.0",
+  "Changes": [
+    {
+      "LogName": "Add Crafting",
+      "Action": "Include",
+      "FromFile": "Data/craftingrecipes.json",
+    },
+    {
+      "LogName": "Objects changes",
+      "Action": "Include",
+      "FromFile": "Data/objects.json",
+    },
+    {
+      "LogName": "Shop changes",
+      "Action": "Include",
+      "FromFile": "Data/shops.json",
+    },
+    {
+      "LogName": "Mail changes",
+      "Action": "Include",
+      "FromFile": "Data/mails.json",
+    },
+    {
+      "LogName": "Bigcraftable changes",
+      "Action": "Include",
+      "FromFile": "Data/bigcraftables.json",
+    },
+    {
+      "LogName": "Machine changes",
+      "Action": "Include",
+      "FromFile": "Data/machines.json",
+    },
+    {
+      "LogName": "Special Order changes",
+      "Action": "Include",
+      "FromFile": "Data/specialorders.json",
+    },
+    {
+      "LogName": "Powers changes",
+      "Action": "Include",
+      "FromFile": "Data/powers.json",
+    },
+    // Assets
+    {
+      "Action": "Load",
+      "Target": "{{ModId}}/Objects, {{ModId}}/BigCraftables",
+      "FromFile": "assets/{{TargetWithoutPath}}.png"
+    },
+  ]
+}

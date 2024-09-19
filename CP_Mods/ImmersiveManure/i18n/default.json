@@ -1,0 +1,25 @@
+{
+  // Items
+  "PoultryManure.name": "Poultry Manure",
+  "PoultryManure.description": "An excellent source of nitrogen, phosphorous and potassium.",
+  "LivestockManure.name": "Livestock Manure",
+  "LivestockManure.description": "Rich in nutrients and organic materials.",
+  "GoldenManure.name": "Golden Manure",
+  "GoldenManure.description": "???",
+  "Composter.name": "Manure Composter",
+  "Composter.description": "Composts manure into fertilizer. Higher quality manure yields better results.",
+  "Composter.invalid": "Requires 3 manure.",
+  "CharcoalKiln.invalid": "Requires 2 manure.",
+  "MaruBook.name": "'Composition of Decaying Organic Material as a Function Over Time'",
+  "MaruBook.description": "Improve tier and quality of composted fertilizer, and unlocks the ability to add fish or bone fragments as fuel for higher yield.",
+  // Letters
+  "MaruQuestCompleteLetter.title": "Maru's Research Paper",
+  "MaruQuestCompleteLetter": "Hey @,^^Thanks for the fresh manure samples! I'm almost done with my research paper, but to keep things short I've found that the composting process will greatly benefit from a more diverse source of organic materials - basically, add some fishmeal or bonemeal into your Fertilizer or Speed-Gro composting pile respectively, and you'd be surprised with the effects they have on crops!^^If you're interested in the fine details I've attached an excerpt of my paper for you to read at your leisure. Cheers!^^  -Maru",
+  // Quests
+  "MaruManureSpecialOrder.name": "Manure Research",
+  "MaruManureSpecialOrder.text": "Hi all, I'm looking for fresh manure samples for my upcoming project on the chemical and nutritional components of organic material in the process of decay and compost. Just ship them and I can collect them the next day!",
+  "MaruManureSpecialOrder.obj1": "Collect 30 Poultry Manure",
+  "MaruManureSpecialOrder.obj2": "Collect 30 Livestock Manure",
+  "MaruManureSpecialOrder.obj3": "Ship 30 Poultry Manure",
+  "MaruManureSpecialOrder.obj4": "Ship 30 Livestock Manure",
+}

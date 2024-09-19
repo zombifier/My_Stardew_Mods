@@ -1,14 +1,6 @@
 {
   "Format": "2.0.0",
   "ConfigSchema": {
-    "DirtForagers": {
-      "AllowValues": "true, false",
-      "Default": "true",
-    },
-    "AllDirtForagers": {
-      "AllowValues": "true, false",
-      "Default": "false",
-    },
     "SiloResize": {
       "AllowValues": "true, false",
       "Default": "true",
@@ -30,43 +22,43 @@
       "Default": 120,
     },
     "FeedStyle": {
-      "AllowValues": "default, medieval, lavender",
+      "AllowValues": "default, medieval, lavender, vbr",
       "Default": "default",
     },
   },
   "Changes": [
-    {
-      "LogName": "Farm Animal Rules",
-      "Action": "Include",
-      "FromFile": "Data/farmanimals.json",
-      "When": {
-        "DirtForagers": "true",
-      },
-    },
-    {
-      "LogName": "Modded Farm Animal Rules",
-      "Action": "Include",
-      "FromFile": "Data/farmanimalsmodded.json",
-      "When": {
-        "DirtForagers": "true",
-      },
-    },
-    {
-      "LogName": "Modded Farm Animal Rules 2",
-      "Action": "Include",
-      "FromFile": "Data/farmanimalsmodded2.json",
-      "When": {
-        "DirtForagers": "true",
-      },
-    },
-    {
-      "LogName": "Extra Farm Animal Rules",
-      "Action": "Include",
-      "FromFile": "Data/extrafarmanimals.json",
-      "When": {
-        "DirtForagers": "true",
-      },
-    },
+    //{
+    //  "LogName": "Farm Animal Rules",
+    //  "Action": "Include",
+    //  "FromFile": "Data/farmanimals.json",
+    //  "When": {
+    //    "DirtForagers": "true",
+    //  },
+    //},
+    //{
+    //  "LogName": "Modded Farm Animal Rules",
+    //  "Action": "Include",
+    //  "FromFile": "Data/farmanimalsmodded.json",
+    //  "When": {
+    //    "DirtForagers": "true",
+    //  },
+    //},
+    //{
+    //  "LogName": "Modded Farm Animal Rules 2",
+    //  "Action": "Include",
+    //  "FromFile": "Data/farmanimalsmodded2.json",
+    //  "When": {
+    //    "DirtForagers": "true",
+    //  },
+    //},
+    //{
+    //  "LogName": "Extra Farm Animal Rules",
+    //  "Action": "Include",
+    //  "FromFile": "Data/extrafarmanimals.json",
+    //  "When": {
+    //    "DirtForagers": "true",
+    //  },
+    //},
     {
       "LogName": "Add Crafting",
       "Action": "Include",
@@ -134,6 +126,15 @@
 			"ToArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
       "When": {
         "FeedStyle": "lavender",
+      },
+    },
+    {
+      "Action": "EditImage",
+      "Target": "{{ModId}}/Objects",
+      "FromFile": "assets/feed_vbr.png",
+			"ToArea": { "X": 0, "Y": 0, "Width": 16, "Height": 16 },
+      "When": {
+        "FeedStyle": "vbr",
       },
     },
   ]

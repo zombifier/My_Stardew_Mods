@@ -1,0 +1,12 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add mails",
+      "Action": "EditData",
+      "Target": "Data/Mail",
+      "Entries": {
+        "{{ModId}}.MaruQuestCompleteLetter" : "{{i18n:MaruQuestCompleteLetter}}%item object selph.ImmersiveManure.MaruBook 1 %%[#]{{i18n:MaruQuestCompleteLetter.title}}",
+      },
+    },
+  ]
+}
