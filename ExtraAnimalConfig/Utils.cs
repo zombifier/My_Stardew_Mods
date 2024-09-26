@@ -214,7 +214,7 @@ public sealed class ExtraProduceUtils {
       return harvestMethodOverride == moddedHarvestToolString;
     }
     var vanillaTool = animal.GetAnimalData()?.HarvestTool;
-    return animal.GetHarvestType() == harvestMethod && (vanillaTool is null || vanillaTool == tool);
+    return animal.GetHarvestType() == harvestMethod && (tool is null || vanillaTool == tool);
   }
 
   // Returns whether the animal's current produce is hardcoded to drop instead of harvested by tool
