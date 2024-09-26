@@ -594,7 +594,7 @@ Then, set this field in the actual machine output's `CustomData` dict as usual:
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.ExtraOutputIds` | A comma-separated list of item query IDs written to the asset above to also spawn with this output item.|
 
-NOTE: You can also set this field on the machine data's `CustomFields` dict to add a byproduct to *every* recipe associated with this machine!
+NOTE: You can also set this field on the `Data/Machines`  data's `CustomFields` dict to add a byproduct to *every* recipe associated with this machine!
 
 #### Example
 
