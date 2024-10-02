@@ -1,8 +1,11 @@
 ﻿#nullable enable
 using HarmonyLib;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using StardewValley;
+using StardewValley.GameData.Objects;
+using StardewValley.Triggers;
 using StardewValley.Delegates;
 using StardewValley.Buildings;
 using StardewValley.Internal;
@@ -49,9 +52,12 @@ internal sealed class ModEntry : Mod {
     extraCraftingConfigAssetHandler.RegisterEvents(Helper);
     Helper.Events.GameLoop.DayStarted += OnDayStartedJunimoHut;
     Helper.Events.GameLoop.GameLaunched += OnGameLaunchedBetterCrafting;
+    Helper.Events.Content.AssetRequested += OnAssetRequested;
 
     // Register item query
     ItemQueryResolver.Register($"{UniqueId}_FLAVORED_ITEM", flavoredItemQuery);
+    // Register trigger action
+    TriggerActionManager.RegisterAction($"{UniqueId}_AddItemQuery", addItemQueryAction);
 
     try {
       if (Helper.ModRegistry.IsLoaded("Pathoschild.Automate")) {
@@ -131,5 +137,40 @@ internal sealed class ModEntry : Mod {
       new ItemQueryResult(outputObj)
     };
 
+  }
+
+  public static bool addItemQueryAction(string[] args, TriggerActionContext context, out string? error) {
+    if (args.Length <= 1) {
+      error = "No item query IDs provided!";
+      return false;
+    }
+    error = null;
+    foreach (var itemQueryId in args.Skip(1)) {
+      if (extraOutputAssetHandler.data.TryGetValue(itemQueryId, out var itemQuery)) {
+        Item item = ItemQueryResolver.TryResolveRandomItem(itemQuery, new ItemQueryContext());
+        if (item != null) {
+          Game1.player.addItemByMenuIfNecessary(item);
+          error = null;
+          return true;
+        }
+      } else {
+        error = $"Warning: Item Query ID {itemQueryId} not defined in asset!";
+      }
+    }
+    return true;
+  }
+
+  public void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
+    if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects")) {
+      e.Edit(asset =>
+          {
+          var data = asset.AsDictionary<string, ObjectData>().Data;
+          data[MachineHarmonyPatcher.HolderId] = new ObjectData {
+            DisplayName = ModEntry.Helper.Translation.Get("HolderName"),
+            Description = ModEntry.Helper.Translation.Get("HolderDescription"),
+            Type = "Basic",
+          };
+          });
+    }
   }
 }

@@ -21,12 +21,14 @@ content packs. For users, install the mod as usual from the link above.
       + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
       + [Items with multiple flavors and colors](#items-with-multiple-flavors-and-colors)
       + [Items that can be used as slingshot ammo](#items-that-can-be-used-as-slingshot-ammo)
+      + [Use item queries in add item trigger action](#use-item-queries-in-add-item-trigger-action)
    * [Machine Features](#machine-features)
       + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
       + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
       + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
       + [Specify range of input count and scale output count with the input amount consumed](#specify-range-of-input-count-and-scale-output-count-with-the-input-amount-consumed)
       + [Adding extra byproducts for machine recipes](#adding-extra-byproducts-for-machine-recipes)
+      + [Allow non-Object outputs from machines](#allow-non-object-outputs-from-machines)
       + [Generate nearby flower-flavored modded items (or, generate flavored items outside of machines)](#generate-nearby-flower-flavored-modded-items-or-generate-flavored-items-outside-of-machines)
       + [Override display name if the output item is unflavored](#override-display-name-if-the-output-item-is-unflavored)
       + [Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query](#generate-an-input-item-for-recipes-that-dont-have-any-and-use-nearby-flower-as-a-possible-query)
@@ -108,6 +110,24 @@ Set the following fields in the object definition's `CustomFields` dict:
 | `selph.ExtraMachineConfig.SlingshotDamage` | The impact damage dealt by this item when used as ammo for a slingshot. If set, it will be usable as ammo. Keep in mind the master slingshot doubles this value.|
 | `selph.ExtraMachineConfig.SlingshotExplosiveRadius` | The explosion radius of this ammo. If not set, it will not explode.|
 | `selph.ExtraMachineConfig.SlingshotExplosiveDamage` | The damage dealt by this item's explosion. If not set (even if only to `"0"`), it will not explode.|
+
+----
+
+### Use item queries in add item trigger action
+
+First, write your item queries to a new asset named
+`selph.ExtraMachineConfig/ExtraOutputs`. This asset is a map of unique IDs to
+[item query](https://stardewvalleywiki.com/Modding:Item_queries) objects.
+
+Then use the trigger action like below:
+
+`selph.ExtraMachineConfig_AddItemQuery UniqueIdAddedAbove AnotherUniqueIdIfYouWant OrAnotherIdHere`
+
+If multiple IDs are provided, the action will evaluate them left to right,
+stopping at the first item query that gives an item.
+
+This action can be used to add flavored items, add items only if a GSQ
+satisfies, or add a random item from a list.
 
 ----
 
@@ -643,6 +663,73 @@ This example modifies the vanilla fruit to wine keg recipe to also spawn fruit-f
       "TargetField": ["(BC)12", "OutputRules", "Default_Wine", "OutputItem", "Default", "CustomData"],
       "Entries": {
         "selph.ExtraMachineConfig.ExtraOutputIds": "JellyExtra,MeadExtra",
+      },
+    },
+  ]
+}
+```
+
+</details>
+
+---
+
+### Allow non-Object outputs from machines
+
+SDV machines currently have a limitation where they're unable to output
+weapons, hats, and other item types that do not inherit from the `Object` type.
+You can get around this by leveraging the 'multiple outputs' feature
+and setting the primary input as an item the qualified ID
+`(O)selph.ExtraMachineConfig.Holder`, and the secondary input as the actual
+non-`Object` output. The holder item's only purpose is to wrap the secondary
+output in a way that the machine can hold it, and it will immediately disappear
+if it enters the player's inventory or a chest.
+
+#### Example
+
+This example allows mystery boxes to be crushable by the Geode crusher;
+previously this was impossible because mystery boxes may contain weapons or
+hats, which cannot be outputted by a machine.
+
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "Changes": [
+    {
+      "LogName": "Change geode crusher output to holder item as the primary input",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)182", "OutputRules", "Default", "OutputItem", "Default"],
+      "Entries": {
+        "CustomData": {
+          "selph.ExtraMachineConfig.ExtraOutputIds": "ActualGeodeCrusherOutput",
+        },
+        "OutputMethod": null,
+        "ItemId": "selph.ExtraMachineConfig.Holder",
+        "CopyColor": true,
+      },
+    },
+    {
+      "LogName": "Add Geode Crusher actual output",
+      "Action": "EditData",
+      "Target": "selph.ExtraMachineConfig/ExtraOutputs",
+      "Entries": {
+        "ActualGeodeCrusherOutput": {
+          "Id": "ActualGeodeCrusherOutput",
+          "OutputMethod": "StardewValley.Object, Stardew Valley: OutputGeodeCrusher",
+        },
+      },
+    },
+    {
+      "LogName": "Unban mystery boxes from geode crushers",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["MysteryBox", "ContextTags"],
+      "Entries": {
+        "geode_crusher_ignored": null,
       },
     },
   ]

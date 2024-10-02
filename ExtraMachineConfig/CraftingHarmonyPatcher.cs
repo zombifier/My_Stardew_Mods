@@ -102,22 +102,31 @@ sealed class CraftingHarmonyPatcher {
   static IEnumerable<CodeInstruction> CraftingPage_clickCraftingRecipe_Transpiler(IEnumerable<CodeInstruction> instructions) {
     CodeMatcher matcher = new(instructions);
     var createItemType = AccessTools.DeclaredMethod(typeof(CraftingRecipe), nameof(CraftingRecipe.createItem));
-    // Matched code: Item item = craftingRecipe.createItem();
-    // Inserted afterwards: item = CraftingHarmonyPatcher.ApplyChanges(craftingRecipe, item, this._materialContainers);
-    matcher.MatchEndForward(
+    // Matched code: Item item = recipe.createItem();
+    // Inserted afterwards: item = CraftingHarmonyPatcher.ApplyChanges(recipe, item, this._materialContainers);
+    matcher.MatchStartForward(
         new CodeMatch(OpCodes.Ldloc_0),
+        new CodeMatch(OpCodes.Ldfld),
         new CodeMatch(OpCodes.Callvirt, createItemType),
-        new CodeMatch(OpCodes.Stloc_1)
+        new CodeMatch(OpCodes.Stfld)
         )
-      .ThrowIfNotMatch($"Could not find entry point for {nameof(CraftingPage_clickCraftingRecipe_Transpiler)}")
+      .ThrowIfNotMatch($"Could not find entry point for {nameof(CraftingPage_clickCraftingRecipe_Transpiler)}");
+    matcher.Advance(1);
+    var recipeVar = matcher.Operand;
+    matcher.Advance(2);
+    var itemVar = matcher.Operand;
+    matcher
       .Advance(1)
       .InsertAndAdvance(
           new CodeInstruction(OpCodes.Ldloc_0),
-          new CodeInstruction(OpCodes.Ldloc_1),
+          new CodeInstruction(OpCodes.Ldloc_0),
+          new CodeInstruction(OpCodes.Ldfld, recipeVar),
+          new CodeInstruction(OpCodes.Ldloc_0),
+          new CodeInstruction(OpCodes.Ldfld, itemVar),
           new CodeInstruction(OpCodes.Ldarg_0),
           new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CraftingPage), nameof(CraftingPage._materialContainers))),
           new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(CraftingHarmonyPatcher), nameof(CraftingHarmonyPatcher.ApplyChanges))),
-          new CodeInstruction(OpCodes.Stloc_1)
+          new CodeInstruction(OpCodes.Stfld, itemVar)
           );
     return matcher.InstructionEnumeration();
   }

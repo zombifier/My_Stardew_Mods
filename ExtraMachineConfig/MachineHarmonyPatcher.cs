@@ -55,6 +55,10 @@ sealed class MachineHarmonyPatcher {
   internal static string SlingshotExplosiveRadius = $"{ModEntry.UniqueId}.SlingshotExplosiveRadius";
   internal static string SlingshotExplosiveDamage = $"{ModEntry.UniqueId}.SlingshotExplosiveDamage";
 
+  // The ID of the holder item to get around the `Object` only limitation.
+  internal static string HolderId = $"{ModEntry.UniqueId}.Holder";
+  internal static string HolderQualifiedId = $"(O){HolderId}";
+
   internal static bool enableGetOutputItemSideEffect = false;
 
   public static void ApplyPatches(Harmony harmony) {
@@ -113,6 +117,23 @@ sealed class MachineHarmonyPatcher {
     harmony.Patch(
         original: AccessTools.DeclaredMethod(typeof(Slingshot), nameof(Slingshot.GetAmmoCollisionSound)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Slingshot_GetAmmoCollisionSound_postfix)));
+    
+    // Holder item patches (the draw patches are in SmokedItemHarmonyPatcher)
+    harmony.Patch(
+        original: AccessTools.DeclaredPropertyGetter(typeof(SObject),
+          nameof(SObject.DisplayName)),
+        prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_DisplayName_prefix)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(SObject),
+          nameof(SObject.getDescription)),
+        prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_getDescription_prefix)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Farmer),
+          nameof(Farmer.GetItemReceiveBehavior)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Farmer_GetItemReceiveBehavior_postfix)));
+
   }
 
   // This patch:
@@ -193,7 +214,7 @@ sealed class MachineHarmonyPatcher {
     // Generate the extra output items and save them in a chest saved in the output item's heldObject.
     var extraOutputs = ModEntry.ModApi.GetExtraOutputs(outputData, machine.GetMachineData());
     if (extraOutputs.Count > 0 && resultObject != null) {
-      var chest = new Chest();
+      var chest = new Chest(false);
       resultObject.heldObject.Value = chest;
       GameStateQueryContext context = new GameStateQueryContext(machine.Location, who, resultObject, inputItem, Game1.random);
       ItemQueryContext itemContext = new ItemQueryContext(machine.Location, who, Game1.random);
@@ -387,6 +408,9 @@ sealed class MachineHarmonyPatcher {
   }
 
   private static void Farmer_OnItemReceived_postfix(Farmer __instance, Item item, int countAdded, Item mergedIntoStack, bool hideHudNotification = false) {
+    if (item.QualifiedItemId == HolderQualifiedId) {
+      __instance.removeItemFromInventory(item);
+    }
     if (item is SObject obj && obj.heldObject.Value is Chest chest) {
       __instance.addItemsByMenuIfNecessary(new List<Item>(chest.Items));
       obj.heldObject.Value = null;
@@ -394,6 +418,9 @@ sealed class MachineHarmonyPatcher {
   }
 
   public static void Chest_addItem_postfix(Chest __instance, Item __result, Item item) {
+    if (item.QualifiedItemId == HolderQualifiedId) {
+      __instance.Items.Remove(item);
+    }
     if (__result != null || item is not SObject {heldObject.Value: Chest chest} obj) return;
     foreach (var extraItem in chest.Items) {
       var leftoverItem = __instance.addItem(extraItem);
@@ -462,6 +489,34 @@ sealed class MachineHarmonyPatcher {
         __result = (GameLocation location, int x, int y, Character who) => {
           location.explode(new Vector2(x / 64, y / 64), slingshotExplosiveRadius, who as Farmer, damage_amount: slingshotExplosiveDamage);
           };
+    }
+  }
+
+  public static bool SObject_DisplayName_prefix(SObject __instance, ref string __result) {
+    var item = Utils.GetActualItemForHolder(__instance);
+    if (item is not null) {
+      __result = item.DisplayName;
+      return false;
+    }
+    return true;
+  }
+
+  public static bool SObject_getDescription_prefix(SObject __instance, ref string __result) {
+    var item = Utils.GetActualItemForHolder(__instance);
+    if (item is not null) {
+      __result = item.getDescription();
+      return false;
+    }
+    return true;
+  }
+
+	public static void Farmer_GetItemReceiveBehavior_postfix(Item item, ref bool needsInventorySpace, ref bool showNotification) {
+    if (item.QualifiedItemId == HolderQualifiedId) {
+      showNotification = false;
+      if (item is SObject obj &&
+          (obj.heldObject.Value is null || (obj.heldObject.Value is Chest chest && chest.Items.Count == 0))) {
+        needsInventorySpace = false;
+      }
     }
   }
 }

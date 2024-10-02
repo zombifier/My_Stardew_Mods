@@ -280,4 +280,11 @@ static class Utils {
       return null;
     }
   }
+
+  public static Item? GetActualItemForHolder(SObject obj) {
+    if (obj.QualifiedItemId != MachineHarmonyPatcher.HolderQualifiedId || obj.heldObject.Value is not Chest chest || chest.Items.Count == 0) {
+      return null;
+    }
+    return chest.Items[0];
+  }
 }

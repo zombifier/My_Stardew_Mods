@@ -58,6 +58,12 @@ sealed class SmokedItemHarmonyPatcher {
   }
 
   private static bool ColoredObject_drawInMenu_prefix(ColoredObject __instance, out ParsedItemData? __state, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color colorOverride, bool drawShadow) {
+    var item = Utils.GetActualItemForHolder(__instance);
+    if (item is not null) {
+      item.drawInMenu(spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, colorOverride, drawShadow);
+      __state = null;
+      return false;
+    }
     return drawInMenu(__instance, out __state, spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, colorOverride, drawShadow);
   }
 
