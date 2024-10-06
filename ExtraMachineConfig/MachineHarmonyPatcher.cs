@@ -473,7 +473,8 @@ sealed class MachineHarmonyPatcher {
   }
 
   public static void Slingshot_GetAmmoCollisionSound_postfix(ref string __result, SObject ammunition) {
-    if (ItemRegistry.GetDataOrErrorItem(ammunition.QualifiedItemId).RawData is ObjectData objectData) {
+    if (ItemRegistry.GetDataOrErrorItem(ammunition.QualifiedItemId).RawData is ObjectData objectData &&
+        (objectData.CustomFields?.ContainsKey(SlingshotDamage) ?? false)) {
       __result = (objectData.CustomFields?.ContainsKey(SlingshotExplosiveRadius) ?? false) ?
         "explosion" :
         "hammer";
