@@ -1,0 +1,124 @@
+{
+  "Changes": [
+    {
+      "LogName": "Produce Changes",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Void Chicken", "ProduceItemIds"],
+      "Entries": {
+        "{{ModId}}.VoidTotem": {
+          "Id": "{{ModId}}.VoidTotem",
+          "ItemId": "{{ModId}}.VoidTotem",
+          "Condition": "ANY \"RANDOM 0.02\" \"SEASON_DAY fall 27\"",
+        }
+      },
+    },
+    {
+      "LogName": "Produce Changes 2",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Void Chicken", "ProduceItemIds", "Default"],
+      "Entries": {
+        "Condition": "!SEASON_DAY fall 27",
+      },
+    },
+    {
+      "LogName": "Spooky Changes - Initialize Asset",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Entries": {
+        "Void Chicken": {},
+        "FlashShifter.StardewValleyExpandedCP_Goose": {},
+        "Lumisteria.MtVapius_Goose": {},
+      },
+      "Priority": "Early",
+      "When": {
+        "HasMod |contains=selph.ExtraAnimalConfig": "true",
+      },
+    },
+    {
+      "LogName": "Spooky Changes - Custom Asset",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Void Chicken": {
+          "IgnoreRain": true,
+          "IgnoreWinter": true,
+          "GlowColor": "Purple",
+          "GlowRadius": 1,
+          "SpeedOverride": 6,
+          "IsAttackAnimal": "{{EnableAttack}}",
+        },
+      },
+      "When": {
+        "HasMod |contains=selph.ExtraAnimalConfig": "true",
+      },
+    },
+    {
+      "LogName": "SVE Goose Changes - Produce",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["FlashShifter.StardewValleyExpandedCP_Goose", "ProduceItemIds"],
+      "Entries": {
+        "{{ModId}}.GooseTotem": {
+          "Id": "{{ModId}}.GooseTotem",
+          "ItemId": "{{ModId}}.GooseTotem",
+          "Condition": "ANY \"RANDOM 0.02\" \"SEASON_DAY fall 27\"",
+        },
+      },
+      "When": {
+        "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+      },
+    },
+    {
+      "LogName": "SVE Goose Changes - Custom Asset",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "FlashShifter.StardewValleyExpandedCP_Goose": {
+          "GlowColor": "White",
+          "GlowRadius": 2,
+          "SpeedOverride": 4,
+          "IsAttackAnimal": "{{EnableAttack}}",
+        }
+      },
+      "When": {
+        "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+        "HasMod |contains=selph.ExtraAnimalConfig": "true",
+      }
+    },
+    {
+      "LogName": "VMV Goose Changes - Produce",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Lumisteria.MtVapius_Goose", "ProduceItemIds"],
+      "Entries": {
+        "{{ModId}}.GooseTotem": {
+          "Id": "{{ModId}}.GooseTotem",
+          "ItemId": "{{ModId}}.GooseTotem",
+          "Condition": "ANY \"RANDOM 0.02\" \"SEASON_DAY fall 27\"",
+        },
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+    },
+    {
+      "LogName": "VMV Goose Changes - Custom Asset",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Lumisteria.MtVapius_Goose": {
+          "GlowColor": "White",
+          "GlowRadius": 2,
+          "SpeedOverride": 4,
+          "IsAttackAnimal": "{{EnableAttack}}",
+        }
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+        "HasMod |contains=selph.ExtraAnimalConfig": "true",
+      }
+    },
+  ],
+}

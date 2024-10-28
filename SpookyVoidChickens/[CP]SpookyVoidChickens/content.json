@@ -1,0 +1,54 @@
+{
+  "Format": "2.3.0",
+  "ConfigSchema": {
+    "EnableAttack": {
+      "AllowValues": "true,false",
+      "Default": "true",
+    },
+  },
+  "Changes": [
+    {
+      "LogName": "Farm Animal Rules",
+      "Action": "Include",
+      "FromFile": "Data/farmanimals.json",
+    },
+    {
+      "LogName": "Item, BC and Crafting Rules",
+      "Action": "Include",
+      "FromFile": "Data/objects.json",
+    },
+    {
+      "LogName": "Location Rules",
+      "Action": "Include",
+      "FromFile": "Data/locations.json",
+    },
+    {
+      "LogName": "Mail Rules",
+      "Action": "Include",
+      "FromFile": "Data/mails.json",
+    },
+    {
+      "LogName": "Machine Rules",
+      "Action": "Include",
+      "FromFile": "Data/machines.json",
+    },
+    {
+      "LogName": "Load assets",
+      "Action": "Load",
+      "Target": "{{ModId}}/Objects,{{ModId}}/BigCraftables,{{ModId}}/Bat,{{ModId}}/Shadow Brute,{{ModId}}/Big,{{ModId}}/GOOSE",
+      "FromFile": "assets/{{TargetWithoutPath}}.png",
+    },
+    {
+      "LogName": "Load Void Cave",
+      "Action": "Load",
+      "Target": "Maps/{{ModId}}.VoidCave",
+      "FromFile": "assets/VoidCave.tmx",
+    },
+    {
+      "LogName": "Load DIMENSION",
+      "Action": "Load",
+      "Target": ",Maps/{{ModId}}.DIMENSION",
+      "FromFile": "assets/DIMENSION.tmx",
+    },
+  ]
+}

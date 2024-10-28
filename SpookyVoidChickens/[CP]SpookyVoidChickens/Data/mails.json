@@ -1,0 +1,36 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add mails",
+      "Action": "EditData",
+      "Target": "Data/Mail",
+      "Entries": {
+        // Most of these will be sent in C# component
+        // Intro mail 
+        "{{ModId}}.Intro": "{{i18n:MailIntro}}[#]{{i18n:MailGooseTribe.title}}",
+        // Arena rewards, from low to high (max):
+        // 5 Golden Pumpkin - 5 Prismatic Shards - 3 Golden Animal Crackers - Goose Totem (yes, really)
+        "{{ModId}}.RewardBronze": "{{i18n:MailRewardBronze}}%item id (O)373 5%%[#]{{i18n:MailReward.title}}",
+        "{{ModId}}.RewardSilver": "{{i18n:MailRewardSilver}}%item id (O)74 5%%%item id (O)373 5%%[#]{{i18n:MailReward.title}}",
+        "{{ModId}}.RewardGold": "{{i18n:MailRewardGold}}%item id (O)GoldenAnimalCracker 3%%%item id (O)74 5%%%item id (O)373 5%%[#]{{i18n:MailReward.title}}",
+        "{{ModId}}.RewardMAX": "{{i18n:MailRewardMAX}}%item id (O)selph.SpookyVoidChickensCP.GooseTotem 1%%%item id (O)373 5%%%item id (O)74 5%%%item id (O)GoldenAnimalCracker 3%%[#]{{i18n:MailReward.title}}",
+        // Lore developments
+        "{{ModId}}.VoidTribe" : "{{i18n:MailVoidTribe}}%item craftingRecipe {{ModId}}.VoidTotem%%[letterbg 3][#]{{i18n:MailVoidTribe.title}}",
+        "{{ModId}}.VoidTribe2" : "{{i18n:MailVoidTribe2}}%item id (BC)selph.SpookyVoidChickensCP.VoidChickenStatue 1%%[letterbg 3][#]{{i18n:MailVoidTribe.title}}",
+      },
+    },
+    {
+      "LogName": "Send mails",
+      "Action": "EditData",
+      "Target": "Data/TriggerActions",
+      "Entries": {
+        "{{ModId}}.Intro" : {
+					"Id": "{{ModId}}.Intro",
+					"Trigger": "DayStarted",
+					"Condition": "selph.ExtraAnimalConfig_ANIMAL_COUNT \"Void Chicken\" 0 1",
+					"Action": "AddMail Current {{ModId}}.Intro now",
+        },
+      },
+    },
+  ]
+}

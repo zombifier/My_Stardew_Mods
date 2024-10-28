@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Spooky Void Chickens",
+  "Author": "selph",
+  "Version": "1.1.0-beta1",
+  "Description": "Void Chickens are Spookier - they're fast, they emit shadows, they ignore rain and winter, they can hurt you, and they occasionally produce a cursed item that should probably not be used...",
+  "UniqueID": "selph.SpookyVoidChickens",
+  "EntryDll": "SpookyVoidChickens.dll",
+  "MinimumApiVersion": "4.0.8",
+  "UpdateKeys": ["Nexus:28906"],
+}

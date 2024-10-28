@@ -1,0 +1,16 @@
+{
+  "Name": "[CP] Spooky Void Chickens",
+  "Author": "selph",
+  "Version": "1.1.0-beta1",
+  "Description": "Void Chickens are Spookier - they're fast, they emit shadows, they ignore rain and winter, they can hurt you, and they occasionally produce a cursed item that should probably not be used...",
+  "UniqueID": "selph.SpookyVoidChickensCP",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {"UniqueID": "selph.ExtraAnimalConfig", "IsRequired": false},
+    {"UniqueID": "selph.SpookyVoidChickens", "IsRequired": true},
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "UpdateKeys": ["Nexus:28906"],
+}

@@ -1,0 +1,30 @@
+{
+  // Items
+  "VoidTotem.name": "Void Totem",
+  "VoidTotem.description": "This feels like it will take you (and nearby farmhands) somewhere dangerous. Better prepare yourself if you plan on using it.",
+  "GooseTotem.name": "Goose Totem",
+  "GooseTotem.description": "DANGER! DANGER! DO NOT USE AT ANY COST!",
+  "VoidChickenStatue.name": "Void Chicken Statue",
+  "VoidChickenStatue.description": "Produces a boon of Void Essence every morning. Its unnerving red eyes seem to stare into your soul...",
+  "GooseStatue.name": "Goose Statue",
+  "GooseStatue.description": "Produces a boon of Solar Essence every morning. Primodial malice radiates from this statue, as blinding as the sun itself.",
+  // Locations
+  "VoidCave.displayname": "Void Arena",
+  "DIMENSION.displayname": "DIMENSION OF INFINITE SUFFERING",
+  // Mail titles
+  "MailReward.title": "Void Arena Rewards",
+  "MailGooseTribe.title": "Brightwing Tribe Letter",
+  "MailVoidTribe.title": "Darkwing Tribe Letter",
+  "MailWizard.title": "Void Totem Recipe",
+  // Mail content
+  "MailIntro": "FARMER,^YOU HAVE BESEECHED HELP OF DARKWING TRIBE, KNOWN IN YOUR TONGUE AS \"Void Chickens\"? THEY MUST HAVE PROMISED GREAT REWARDS (EGGS) FOR YOUR COOPERATION.^DO NOT BELIEVE THEIR LIES! THEY ARE EVIL INCARNATE. BUT WE CAN STOP THEM TOGETHER.^ON SPIRITS EVE (OR IF THEY FEEL HOMESICK OCCASIONALLY), THEY WILL CHANNEL MAGIC TO CREATE TOTEM TO THEIR HOMELAND. YOU CAN HIJACK THE TOTEM. USE IT TO ENTER THE VOID DIMENSION. AND SLAY AS MANY OF THEIR KIND AS POSSIBLE. WE WILL HELP YOU ESCAPE ONCE THINGS ARE OVERWHELMING. DO IT AND WE WILL REWARD YOU.^^    THEIR MORTAL ENEMIES, BRIGHTWING TRIBE",
+  "MailRewardBronze": "YOU HAVE ENTERED DARKWING DIMENSION AND SURVIVED. WELL DONE. HERE IS SOME REWARD.^^    BRIGHTWING TRIBE",
+  "MailRewardSilver": "YOU HAVE ENTERED DARKWING DIMENSION AND SLAYED SOME OF THEIR KIND. VERY GOOD. HERE IS REWARD FOR JOB.^^    BRIGHTWING TRIBE",
+  "MailRewardGold": "YOU HAVE ENTERED DARKWING DIMENSION AND SLAYED MANY OF THEIR KIND. VERY GOOD. HERE IS REWARD FOR JOB WELL DONE.^^    BRIGHTWING TRIBE",
+  "MailRewardMAX": "YOU HAVE ENTERED DARKWING DIMENSION AND SLAYED HORDES OF THEIR KIND. VERY VERY GOOD. SUCH BRAVERY DESERVES LEGENDARY REWARD.^^    ATTACHED IS PERSONAL INVITATION TO OUR HOME REALM. YOU WILL BE HONORED GUEST. THIS IS TOTALLY NOT INESCAPABLE DEATH TRAP PLEASE DON'T BRING WITH YOU \"Warp Totem: Farm\" OR \"Return Scepter\". PLEASE ALSO DO NOT SEARCH OUR TERRITORY FOR VERY VALUABLE STATUE. THANK YOU.^^    BRIGHTWING TRIBE",
+  "MailVoidTribe": "To the warrior that traveled into our home dimension and put on quite a show yesterday: Well done.^We don't mind that you attacked us - we are but shadows, and shadows reform easily in the void. What we do mind is the fact that you may have traveled here on false premises, fed by lies from our sworn enemies the Brightwings, or \"Gooses\" as you know them as. We have no interest in restarting our thousand-year Blood war or come into conflict with the material world itself, so you're free to return here - not as an invader (not that you'd ever succeed, mind), but as a challenger if you feel the need to sharpen your skills.^Please accept this gift as a token of mutual understanding - put on a good show again, and we shall bestow upon you another item of great arcane powers.^^    Darkwing Tribe^^",
+  "MailVoidTribe2": "Well done, farmer. Your combat prowess were beyond those of any material travelers we have encountered in our travels. Here is your reward - use it well.    ^^Darkwing Tribe^^",
+  // Config
+  "config.EnableAttack.name": "Enable Attack",
+  "config.EnableAttack.description": "Whether to make Void Chickens and Geese attack farmers.",
+}

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Version>1.1.0-beta1</Version>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <EnableHarmony>true</EnableHarmony>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="manifest.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentPacks Include="[CP]SpookyVoidChickens" Version="$(Version)" />
+  </ItemGroup>
+</Project>

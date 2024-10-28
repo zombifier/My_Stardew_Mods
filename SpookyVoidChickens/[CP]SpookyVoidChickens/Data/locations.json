@@ -1,0 +1,37 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add locations",
+      "Action": "EditData",
+      "Target": "Data/Locations",
+      "Entries": {
+        "{{ModId}}.VoidCave": {
+          "CreateOnLoad": {
+            "MapPath": "Maps/{{ModId}}.VoidCave",
+          },
+          "DisplayName": "{{i18n: VoidCave.displayName}}",
+          "ExcludeFromNpcPathfinding": true,
+          "Music": [
+            {
+              "Id": "Default",
+              "Track": "",
+            }
+          ],
+        },
+        "{{ModId}}.DIMENSION": {
+          "CreateOnLoad": {
+            "MapPath": "Maps/{{ModId}}.DIMENSION",
+          },
+          "DisplayName": "{{i18n: DIMENSION.displayName}}",
+          "ExcludeFromNpcPathfinding": true,
+          "Music": [
+            {
+              "Id": "Default",
+              "Track": "Upper_Ambient",
+            }
+          ],
+        },
+      },
+    },
+  ]
+}

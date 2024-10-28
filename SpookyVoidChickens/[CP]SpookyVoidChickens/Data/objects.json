@@ -1,0 +1,93 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add items",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}.VoidTotem": {
+          "Name": "{{ModId}}.VoidTotem",
+          "SpriteIndex": 0,
+          "DisplayName": "{{i18n:VoidTotem.name}}",
+          "Description": "{{i18n:VoidTotem.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 2000,
+          "ExcludeFromFishingCollection": false,
+          "ExcludeFromShippingCollection": false,
+          "ExcludeFromRandomSale": true,
+          "ContextTags": [
+            "color_black",
+            "totem_item",
+          ],
+        },
+        "{{ModId}}.GooseTotem": {
+          "Name": "{{ModId}}.GooseTotem",
+          "SpriteIndex": 1,
+          "DisplayName": "{{i18n:GooseTotem.name}}",
+          "Description": "{{i18n:GooseTotem.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 5000,
+          "ExcludeFromFishingCollection": false,
+          "ExcludeFromShippingCollection": false,
+          "ExcludeFromRandomSale": true,
+          "ContextTags": [
+            "color_white",
+            "totem_item",
+          ],
+        },
+      },
+    },
+    {
+      "LogName": "Add BCs",
+      "Action": "EditData",
+      "Target": "Data/BigCraftables",
+      "Entries": {
+        "{{ModId}}.VoidChickenStatue": {
+          "Name": "{{ModId}}.VoidChickenStatue",
+          "SpriteIndex": 0,
+          "DisplayName": "{{i18n:VoidChickenStatue.name}}",
+          "Description": "{{i18n:VoidChickenStatue.description}}",
+          "Texture": "{{ModId}}/BigCraftables",
+        },
+        "{{ModId}}.GooseStatue": {
+          "Name": "{{ModId}}.GooseStatue",
+          "SpriteIndex": 2,
+          "DisplayName": "{{i18n:GooseStatue.name}}",
+          "Description": "{{i18n:GooseStatue.description}}",
+          "Texture": "{{ModId}}/BigCraftables",
+        },
+      },
+    },
+    {
+      "LogName": "Add recipes",
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "{{ModId}}.VoidTotem": "305 10 769 500/Field/{{ModId}}.VoidTotem/false/default/",
+      },
+    },
+    //{
+    //  "LogName": "Add warp effects",
+    //  "Action": "EditData",
+    //  "Target": "spacechase0.SpaceCore/ObjectExtensionData",
+    //  "Entries": {
+    //    "{{ModId}}.VoidTotem": {
+    //      "TotemWarp": {
+    //        "Location": "{{ModId}}.VoidCave",
+    //        "Position": "9, 9",
+    //        "Color": { "R": 0, "G": 0, "B": 255, "A": 255 },
+    //      },
+    //    },
+    //    "{{ModId}}.GooseTotem": {
+    //      "TotemWarp": {
+    //        "Location": "{{ModId}}.DIMENSION",
+    //        "Position": "5, 5",
+    //        "Color": { "R": 255, "G": 255, "B": 255, "A": 255 },
+    //      },
+    //    },
+    //  },
+    //},
+  ]
+}

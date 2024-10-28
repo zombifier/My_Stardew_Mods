@@ -1,0 +1,57 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add birb statue recipes",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "Entries": {
+        "(BC){{ModId}}.VoidChickenStatue": {
+          "OutputRules": [
+            {
+              "Id": "{{ModId}}.VoidChickenStatue",
+              "Triggers": [
+                {
+                  "Id": "Default",
+                  "Trigger": "OutputCollected, MachinePutDown, DayUpdate",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "Default",
+                  "ItemId": "(O)769",
+                  "MinStack": 50,
+                },
+              ],
+              "DaysUntilReady": 1,
+            },
+          ],
+          "ShowNextIndexWhenReady": true,
+          "WobbleWhileWorking": false,
+        },
+        "(BC){{ModId}}.GooseStatue": {
+          "OutputRules": [
+            {
+              "Id": "{{ModId}}.GooseStatue",
+              "Triggers": [
+                {
+                  "Id": "Default",
+                  "Trigger": "OutputCollected, MachinePutDown, DayUpdate",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "Default",
+                  "ItemId": "(O)768",
+                  "MinStack": 50,
+                },
+              ],
+              "DaysUntilReady": 1,
+            },
+          ],
+          "ShowNextIndexWhenReady": true,
+          "WobbleWhileWorking": false,
+        },
+      },
+    },
+  ],
+}

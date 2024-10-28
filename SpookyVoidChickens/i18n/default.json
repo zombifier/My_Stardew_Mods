@@ -1,0 +1,10 @@
+{
+  "VoidTotem.alreadyVisited": "You have already visited the Void Arena today.",
+  "VoidTotem.onlyHost": "Only the host may use this item.",
+  "VoidArena.prepare": "Slay the relentless Void Chickens and collect as many Void Eggs as you can!",
+  "VoidArena.begin": "Here they come...",
+  "VoidArena.finished": "You have survived the arena! Returning home...",
+  "VoidArena.highScore": "Eggs collected: {{eggsCollected}}. High score: {{highScore}}",
+  "VoidArena.leftEarly": "You had left the Void Arena early, either due to excess bravery... or cowardice.",
+  "VoidArena.hostLeftEarly": "The host has left the Void Arena early. Warping home...",
+}
