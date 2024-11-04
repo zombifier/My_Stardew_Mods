@@ -684,6 +684,8 @@ non-`Object` output. The holder item's only purpose is to wrap the secondary
 output in a way that the machine can hold it, and it will immediately disappear
 if it enters the player's inventory or a chest.
 
+IMPORTANT NOTE: Also set `CopyColor` on the holder item output. This makes zero mechanical difference, but it makes the game properly draw the holder item as its content properly (colored objects force the game to use the full draw function instead of directly grabbing the item sprite from data).
+
 #### Example
 
 This example allows mystery boxes to be crushable by the Geode crusher;
