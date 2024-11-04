@@ -78,9 +78,8 @@ public static class Utils {
     }
     var data = GetOutputRulesForPlacedTapper(tapper, out var feature);
     var farmer = feature switch {
-      // TODO: FIX THIS BEFORE 1.6.9
-      Tree tree => Game1.getFarmer(tree.lastPlayerToHit.Value),
-      FruitTree fruitTree => Game1.getFarmer(fruitTree.lastPlayerToHit.Value),
+      Tree tree => Game1.GetPlayer(tree.lastPlayerToHit.Value),
+      FruitTree fruitTree => Game1.GetPlayer(fruitTree.lastPlayerToHit.Value),
       _ => null,
     };
     if (data != null) {

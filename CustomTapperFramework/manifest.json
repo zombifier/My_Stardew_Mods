@@ -1,11 +1,11 @@
 ﻿{
   "Name": "Machine Terrain Framework",
   "Author": "selph",
-  "Version": "1.6.1",
+  "Version": "1.7.0",
   "Description": "Adds a framework for implementing custom tappers, crab pots and water crops.",
   "UniqueID": "selph.CustomTapperFramework",
   "EntryDll": "CustomTapperFramework.dll",
-  "MinimumApiVersion": "4.0.8",
+  "MinimumApiVersion": "4.0.9",
   "Dependencies": [
     { "UniqueID": "Pathoschild.Automate",
       "MinimumVersion": "2.0.0",

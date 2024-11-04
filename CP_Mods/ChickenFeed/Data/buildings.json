@@ -53,7 +53,7 @@
         "{{ModId}}.FeedSilo": {
           "Name": "{{i18n:FeedSilo.name}}",
           "Description": "{{i18n:FeedSilo.description}}",
-          "Texture": "Buildings\\Silo",
+          "Texture": "Buildings/Silo",
           "Skins": [],
           "DrawShadow": true,
           "UpgradeSignTile": "1, 2",
@@ -201,6 +201,19 @@
       },
       "When": {
         "HasMod |contains=jenf1.megacoopbarn": "true",
+      },
+    },
+    {
+      "LogName": "Override SVE Premium coop default feed",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["FlashShifter.StardewValleyExpandedCP_PremiumCoop", "CustomFields"],
+      "Priority": "Late",
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+      "When": {
+        "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
       },
     },
     {

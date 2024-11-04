@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using StardewModdingAPI;
@@ -8,22 +9,26 @@ using SObject = StardewValley.Object;
 
 namespace Selph.StardewMods.Common;
 
-public abstract class DictAssetHandler<AssetType> {
-  private string dataPath;
-  private IMonitor monitor;
+public abstract class AssetHandler<AssetType> where AssetType : class, new() {
+  protected string dataPath;
+  protected IMonitor monitor;
 
-  private Dictionary<string, AssetType>? privateData = null;
-  public Dictionary<string, AssetType> data {
+  protected AssetType? privateData = null!;
+  public AssetType data {
     get {
       if (privateData == null) {
-        privateData = Game1.content.Load<Dictionary<string, AssetType>>(this.dataPath);
-        monitor.Log($"Loaded asset {dataPath} with {data.Count} entries.");
+        privateData = Game1.content.Load<AssetType>(this.dataPath);
+        if (data is ICollection i) {
+          monitor.Log($"Loaded asset {dataPath} with {i.Count} entries.");
+        } else {
+          monitor.Log($"Loaded asset {dataPath}.");
+        }
       }
       return privateData!;
     }
   }
 
-  public DictAssetHandler(string dataPath, IMonitor monitor) {
+  public AssetHandler(string dataPath, IMonitor monitor) {
     this.dataPath = dataPath;
     this.monitor = monitor;
   }
@@ -33,10 +38,9 @@ public abstract class DictAssetHandler<AssetType> {
     helper.Events.Content.AssetsInvalidated += this.OnAssetsInvalidated;
   }
 
-  public void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
+  public virtual void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
     if (e.NameWithoutLocale.IsEquivalentTo(this.dataPath)) {
-      var dict = new Dictionary<string, AssetType>();
-      e.LoadFrom(() => dict, AssetLoadPriority.Low);
+      e.LoadFrom(() => new AssetType(), AssetLoadPriority.Exclusive);
     }
   }
 
@@ -46,6 +50,27 @@ public abstract class DictAssetHandler<AssetType> {
         monitor.Log($"Asset {dataPath} invalidated, reloading.");
         this.privateData = null;
       }
+    }
+  }
+}
+
+public abstract class DictAssetHandler<AssetType> : AssetHandler<Dictionary<string, AssetType>> where AssetType : new() {
+  private Func<IEnumerable<string>>? getKeysToFillDelegate;
+
+  public DictAssetHandler(string dataPath, IMonitor monitor, Func<IEnumerable<string>>? getKeysToFillDelegate = null) : base(dataPath, monitor) {
+    this.getKeysToFillDelegate = getKeysToFillDelegate;
+  }
+
+  public override void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
+    if (e.NameWithoutLocale.IsEquivalentTo(this.dataPath)) {
+      var dict = new Dictionary<string, AssetType>();
+      IEnumerable<string>? keysToFill = getKeysToFillDelegate?.Invoke() ?? null;
+      if (keysToFill is not null) {
+        foreach (string key in keysToFill) {
+          dict[key] = new AssetType();
+        }
+      }
+      e.LoadFrom(() => dict, AssetLoadPriority.Exclusive);
     }
   }
 }

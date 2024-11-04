@@ -14,7 +14,7 @@ content packs. For users, install the mod as usual from the link above.
    + [Extra drops from scything grass](#extra-drops-from-scything-grass)
 * [Multiple possible animals from one egg](#multiple-possible-animals-from-one-egg)
 * [Game State Queries](#game-state-queries)
-* [Override hay with another feed item for a specific building](#override-hay-with-another-feed-item-for-a-specific-building)
+* [Building CustomFields](#building-customfields)
 * [Examples](#examples)
 * [Known Issues/Future Content Roadmap](#known-issuesfuture-content-roadmap)
 
@@ -23,7 +23,14 @@ content packs. For users, install the mod as usual from the link above.
 This mod adds a new asset `selph.ExtraAnimalConfig/AnimalExtensionData`, which
 is a dictionary where the key is the animal ID similar to the key of
 [Data/FarmAnimals](https://stardewvalleywiki.com/Modding:Animal_data), and the
-value a model with the following fields:
+value a model with the fields detailed below.
+
+IMPORTANT: This asset will be pre-populated with every animal in game, with
+every values set to default. To ensure compatibility with other mods do not add
+new entries to the asset (ie. use Content Patcher's `Entries` without
+`TargetField`); instead, always use either `Fields`, or `Entries` with
+[`TargetField`](https://github.com/Pathoschild/StardewMods/blob/stable/ContentPatcher/docs/author-guide/action-editdata.md#target-field)
+to edit it.
 
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
@@ -33,6 +40,18 @@ value a model with the following fields:
 | AnimalSpawnList          | `List<AnimalSpawnData>`   | A list of animal spawn data objects to determine which new animal to add when this animal gets pregnant and gives birth.<br>**NOTE**: The list will be evaluated in order, from top to bottom. Make sure the last entry is always true/has no condition. Also because of this, probability won't work as you initially expect. If you want 3 animals each with the same chance for example, the first one needs a 0.333 probability, the second one needs 0.5, and the third one 1.|
 | OutsideForager          | `bool` | Whether to make this animal an outside forager: if let outside they can forage from dirt and not consume any grass, though they'd still get a happiness bonus from eating inside a tuft of (blue) grass.<br>NOTES:<br>* If their `GrassEatAmount` is larger than 0, they would eat hay when inside. They still won't consume grass when outside though.<br>* This settings' main purpose is to emulate how chickens work in Harvest Moon.|
 | ExtraProduceSpawnList          | `List<ExtraProduceSpawnData>`   | A list of extra produce slots to determine which additional produce aside from the primary produce this animal can make.|
+| ExtraHouses           | `List<string>` | A list of extra houses that can house this animal aside from the primary one defined in its animal data.|
+| IgnoreRain | `bool` | Whether this animal can go out in rain. You can also override this on a per-building basis (see below).|
+| IgnoreWinter | `bool` | Whether this animal can go out in winter. You can also override this on a per-building basis (see below).|
+| GlowColor | `string` | If set to a [color](https://stardewvalleywiki.com/Modding:Common_data_field_types#Color), this animal will glow with said color like a light source. KNOWN ISSUE: `patch reload`-ing your mod will only update lights when the animal switches location (ie. when it goes out to eat or goes back in).|
+| GlowRadius | `float` | The radius of the light glow, if color is set above. 10 = 1 tile.|
+| SpeedOverride | `int` | This animal's speed, instead of the default 2.|
+| IsAttackAnimal | `bool` | Whether this animal will attempt to attack the farmer by chasing them and dealing damage on contact.|
+| AttackDamage | `int` | The amount of damage dealt (default 1).|
+| AttackIntervalMs | `int` | The minimum interval between attacks in milliseconds (default 5000 aka 5 seconds).|
+| AttackRange | `int` | The minimum range chasing range (default 10 tiles).|
+| AttackMaxChaseTimeMs | `int` | How long to chase before the animal gets bored (default 10000 aka 10 seconds).|
+
 
 `AnimalSpawnData` is a model with the following fields:
 
@@ -138,7 +157,7 @@ Version 1.2.0 introduces the following Game State Queries:
 
 | GSQ                          |  Description              |
 | ---------------------------  | ------------------------ |
-| `selph.ExtraAnimalConfig_ANIMAL_HOUSE_COUNT <location> <animal type> <min friendship> [min count] [max count]` | Whether the specified location (in practice only `Here` or `Target` works) is an animal house and is the home of the specified animal type (or any animal if set to `ANY`) with a count between min (0 if not specified) and max (no limit if not specified), with friendship above the specified amount (or 0 if not specified).|
+| `selph.ExtraAnimalConfig_ANIMAL_HOUSE_COUNT <location> <animal type> <min friendship> [min count] [max count]` | Whether the specified location (in practice only `Here` or `Target` works reliably) is an animal house and is the home of the specified animal type (or any animal if set to `ANY`) with a count between min (0 if not specified) and max (no limit if not specified), with friendship above the specified amount (or 0 if not specified).|
 | `selph.ExtraAnimalConfig_ANIMAL_COUNT <animal type> <min friendship> [min count] [max count]` | Same as above, but checks every owned animals globally.|
 
 Additionally, this mod enhances the `Condition` field in the animal data's
@@ -148,13 +167,15 @@ allows specifying produce that the animal will only make if it has been fed a
 golden animal cracker. This also works for the condition in the `ProduceData`
 object above.
 
-## Override hay with another feed item for a specific building
+## Building CustomFields
 
-Set this field on the building data's custom fields:
+You can set the following fields on a building data's `CustomFields` field:
 
 | Field Name                          |  Description              |
 | ---------------------------  | ------------------------ |
 | `selph.ExtraAnimalConfig.BuildingFeedOverrideId` | If set to a qualified item ID, the building's hay troughs/hoppers will be modified to accept that item instead of hay, and any animals living inside that building that usually eat hay will instead eat that item.<br>Use this field *only* if you want to override a vanilla building, and building animals, to eat a certain feed type and don't want to add compat to every other animal and animal house interior mods. Otherwise, follow the guide above for custom feed.|
+| `selph.ExtraAnimalConfig.InhabitantsIgnoreRain` | If set to any value, this building type's inhabitants can go out in rainy days.|
+| `selph.ExtraAnimalConfig.InhabitantsIgnoreWinter` | If set to any value, this building type's inhabitants can go out in winter.|
 
 ## Examples
 
@@ -201,17 +222,14 @@ Set this field on the building data's custom fields:
         "LogName": "Modify Truffles",
             "Action": "EditData",
             "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+            "TargetField": ["Pig", "AnimalProduceExtensionData"],
             "Entries": {
-                "Pig": {
-                    "AnimalProduceExtensionData": {
-                        "(O)430": {
-                            "ItemQuery": {
-                                "ItemId": "RANDOM_ITEMS (O)",
-                                "PerItemCondition": "ITEM_CATEGORY Target -12",
-                            },
-                        }
-                    }
-                },
+                "(O)430": {
+                    "ItemQuery": {
+                        "ItemId": "RANDOM_ITEMS (O)",
+                        "PerItemCondition": "ITEM_CATEGORY Target -12",
+                    },
+                }
             },
     },
     ]
@@ -254,15 +272,12 @@ Set this field on the building data's custom fields:
         "LogName": "Make Sheep Milk Harvested by Milk Pail instead of Shears",
         "Action": "EditData",
         "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+        "TargetField": ["Sheep", "AnimalProduceExtensionData"],
         "Entries": {
-            "Sheep": {
-                "AnimalProduceExtensionData": {
-                    "(O)186": {
-                        "HarvestTool": "Milk Pail",
-                        // This makes the sheep have the default sprite if it has milk
-                        "ProduceTexture": "Animals\\ShearedSheep",
-                    },
-                },
+            "(O)186": {
+                "HarvestTool": "Milk Pail",
+                // This makes the sheep have the default sprite if it has milk
+                "ProduceTexture": "Animals\\ShearedSheep",
             },
         },
     },

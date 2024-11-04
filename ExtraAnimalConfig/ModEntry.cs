@@ -1,4 +1,5 @@
 ﻿using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using HarmonyLib;
 using System.Collections.Generic;
 using StardewValley;
@@ -40,6 +41,74 @@ internal sealed class ModEntry : Mod {
 
     GameStateQuery.Register($"{UniqueId}_ANIMAL_HOUSE_COUNT", AnimalGameStateQueries.ANIMAL_HOUSE_COUNT);
     GameStateQuery.Register($"{UniqueId}_ANIMAL_COUNT", AnimalGameStateQueries.ANIMAL_COUNT);
+
+    helper.Events.GameLoop.DayStarted += OnDayStarted;
+    helper.Events.GameLoop.DayEnding += OnDayEnding;
+    helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+    helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+    helper.Events.World.LocationListChanged += OnLocationListChanged;
+  }
+
+  // Set animal override speed, and clear the attack dictionaries
+  static void OnDayStarted(object? sender, DayStartedEventArgs e) {
+    AnimalUtils.ClearDicts();
+		Utility.ForEachLocation((GameLocation location) => {
+			foreach (FarmAnimal animal in location.animals.Values) {
+        if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+            animalExtensionData.SpeedOverride is not null) {
+          animal.speed = animalExtensionData.SpeedOverride ?? 2;
+        }
+        LightUtils.RemoveLight(animal, location);
+        LightUtils.AddLight(animal, location);
+			}
+      return true;
+    });
+  }
+
+  // Reset speed so this mod is save to uninstall
+  static void OnDayEnding(object? sender, DayEndingEventArgs e) {
+		Utility.ForEachLocation((GameLocation location) => {
+			foreach (FarmAnimal animal in location.animals.Values) {
+        if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+            animalExtensionData.SpeedOverride is not null) {
+          // we *could* set everyone to 2, but that might catch animals modified outside of this mod.
+          animal.speed = 2;
+        }
+			}
+      return true;
+    });
+  }
+
+  static void OnUpdateTicked(object? sender, UpdateTickedEventArgs e) {
+		Utility.ForEachLocation((GameLocation location) => {
+      foreach (var animal in location.animals.Values) {
+        LightUtils.UpdateLight(animal,location);
+      }
+      return true;
+    });
+  }
+
+  static void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
+    Utility.ForEachLocation((GameLocation location) => {
+      location.animals.OnValueAdded += (long id, FarmAnimal animal) => {
+        LightUtils.AddLight(animal, location);
+      };
+      location.animals.OnValueRemoved += (long id, FarmAnimal animal) => {
+        LightUtils.RemoveLight(animal, location);
+      };
+      return true;
+    });
+  }
+
+  static void OnLocationListChanged(object? sender, LocationListChangedEventArgs e) {
+    foreach (var location in e.Added) {
+      location.animals.OnValueAdded += (long id, FarmAnimal animal) => {
+        LightUtils.AddLight(animal, location);
+      };
+      location.animals.OnValueRemoved += (long id, FarmAnimal animal) => {
+        LightUtils.RemoveLight(animal, location);
+      };
+    }
   }
 
   private static bool CustomFeedSilo(GameLocation location, string[] args, Farmer player, Point tile) {
@@ -114,7 +183,7 @@ internal sealed class ModEntry : Mod {
       }
     } else if (location is AnimalHouse animalHouse) {
       if (player.freeSpotsInInventory() > 0) {
-        var obj = SiloUtils.GetFeedFromAnySilo(itemId, animalHouse.animalsThatLiveHere.Count);
+        var obj = SiloUtils.GetFeedFromAnySilo(itemId, animalHouse.animalLimit.Value);
         if (obj is not null) {
           player.addItemToInventory(obj);
           Game1.playSound("shwip");

@@ -15,8 +15,20 @@ public class AnimalExtensionData {
   public Dictionary<string, AnimalProduceExtensionData> AnimalProduceExtensionData = new Dictionary<string, AnimalProduceExtensionData>();
   public string? FeedItemId;
   public bool OutsideForager = false;
-  public List<AnimalSpawnData>? AnimalSpawnList;
-  public List<ExtraProduceSpawnData>? ExtraProduceSpawnList;
+  public List<AnimalSpawnData> AnimalSpawnList = [];
+  public List<ExtraProduceSpawnData> ExtraProduceSpawnList = [];
+  public List<string> ExtraHouses = [];
+  public bool IgnoreRain = false;
+  public bool IgnoreWinter = false;
+  public string? GlowColor = null;
+  public float GlowRadius = 10f;
+  public int? SpeedOverride = null;
+  // LMAO
+  public bool IsAttackAnimal = false;
+  public int AttackDamage = 1;
+  public int AttackIntervalMs = 5000;
+  public int AttackRange = 10;
+  public int AttackMaxChaseTimeMs = 10000;
 }
 
 public class EggExtensionData {
@@ -33,7 +45,7 @@ public class ExtraProduceSpawnData {
   public string? Id;
   public int DaysToProduce = 1;
   public bool SyncWithMainProduce = false;
-  public List<ProduceData>? ProduceItemIds = null;
+  public List<ProduceData> ProduceItemIds = [];
 }
 
 public class ProduceData {

@@ -5,9 +5,9 @@
       "Action": "EditData",
       "Target": "Data/CraftingRecipes",
       "Entries": {
-        "selph.ExtraTappers.BeeHouse": "(BC)10 1 388 10/Home/selph.ExtraTappers.BeeHouse/true/Farming 3/",
-        "selph.ExtraTappers.MushroomGrower": "709 10 Moss 10/Home/selph.ExtraTappers.MushroomGrower/true/Foraging 4",
-        "selph.ExtraTappers.BirdHouse": "388 40 335 1 178 20/Home/selph.ExtraTappers.BirdHouse/true/Foraging 8",
+        "selph.ExtraTappers.BeeHouse": "(BC)10 1 388 10/Home/selph.ExtraTappers.BeeHouse/true/s Farming 3/",
+        "selph.ExtraTappers.MushroomGrower": "709 10 Moss 10/Home/selph.ExtraTappers.MushroomGrower/true/s Foraging 4",
+        "selph.ExtraTappers.BirdHouse": "388 40 335 1 178 20/Home/selph.ExtraTappers.BirdHouse/true/s Foraging 8",
       }
     },
   ]

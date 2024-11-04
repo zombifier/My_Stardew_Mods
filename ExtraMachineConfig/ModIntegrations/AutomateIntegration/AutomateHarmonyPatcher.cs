@@ -31,8 +31,15 @@ public class AutomatePatcher {
                   chest.Items.Remove(item);
                   if (chest.Items.Count == 0) {
                     machine.heldObject.Value.heldObject.Value = null;
+                    if (machine.heldObject.Value.QualifiedItemId == MachineHarmonyPatcher.HolderQualifiedId) {
+                      machine.heldObject.Value = null;
+                      machine.readyForHarvest.Value = false;
+                      machine.showNextIndex.Value = false;
+                      machine.ResetParentSheetIndex();
+                    }
                   }
                   });
+            return;
           }
         }
       }

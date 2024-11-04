@@ -673,7 +673,7 @@ This example modifies the vanilla fruit to wine keg recipe to also spawn fruit-f
 
 ---
 
-### Allow non-Object outputs from machines (1.6.9 BETA ONLY)
+### Allow non-Object outputs from machines
 
 SDV machines currently have a limitation where they're unable to output
 weapons, hats, and other item types that do not inherit from the `Object` type.

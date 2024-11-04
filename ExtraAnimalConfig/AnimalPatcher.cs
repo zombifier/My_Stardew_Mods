@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley.Buildings;
 using StardewValley.Events;
 using StardewValley.Extensions;
 using StardewValley.Tools;
@@ -27,6 +28,7 @@ namespace Selph.StardewMods.ExtraAnimalConfig;
 // Contains Harmony patches related to animals.
 sealed class AnimalDataPatcher {
   static string CachedAnimalIdKey = $"{ModEntry.UniqueId}.CachedAnimalId";
+  static MethodInfo? GetProduceIdDelegate = null;
 
   public static void ApplyPatches(Harmony harmony) {
     // Animal patches
@@ -79,6 +81,11 @@ sealed class AnimalDataPatcher {
           nameof(AnimalHouse.adoptAnimal)),
         prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.AnimalHouse_adoptAnimal_Prefix)));
 
+    harmony.Patch(
+        original: AccessTools.Method(typeof(FarmAnimal),
+          nameof(FarmAnimal.CanLiveIn)),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_CanLiveIn_Postfix)));
+
     // Animal house patches for the non-hay food functionality
     harmony.Patch(
         original: AccessTools.Method(typeof(AnimalHouse),
@@ -103,7 +110,13 @@ sealed class AnimalDataPatcher {
         original: AccessTools.Method(typeof(FarmAnimal),
           nameof(FarmAnimal.behaviors)),
         prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_behaviors_Prefix)),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_behaviors_Postfix)),
         transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_behaviors_Transpiler)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(FarmAnimal),
+          nameof(FarmAnimal.DigUpProduce)),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimals_DigUpProduce_Postfix)));
 
     harmony.Patch(
         original: AccessTools.Method(typeof(SObject),
@@ -181,6 +194,24 @@ sealed class AnimalDataPatcher {
         original: AccessTools.Method(typeof(FarmAnimal),
           nameof(FarmAnimal.GetProduceID)),
         transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_GetProduceID_Transpiler)));
+    harmony.Patch(
+        original: GetProduceIdDelegate,
+        transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_GetProduceIDDelegate_Transpiler)));
+
+    // Rain/winter patches
+    harmony.Patch(
+        original: AccessTools.Method(typeof(FarmAnimal),
+          nameof(FarmAnimal.updateWhenNotCurrentLocation)),
+        transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_ReplaceRainWinterTranspiler)));
+    harmony.Patch(
+        original: AccessTools.Method(typeof(FarmAnimal),
+          nameof(FarmAnimal.updatePerTenMinutes)),
+        transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_ReplaceRainWinterTranspiler)));
+    harmony.Patch(
+        original: AccessTools.Method(typeof(FarmAnimal),
+          nameof(FarmAnimal.behaviors)),
+        transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_ReplaceRainWinterTranspiler)));
+
   }
 
   static void FarmAnimal_isMale_Postfix(FarmAnimal __instance, ref bool __result) {
@@ -469,16 +500,15 @@ sealed class AnimalDataPatcher {
 
   static IEnumerable<CodeInstruction> SObject_DayUpdate_Transpiler(IEnumerable<CodeInstruction> instructions) {
     CodeMatcher matcher = new(instructions);
-    // Old: ItemRegistry.Create<Object>("(O)" + pair2.Value.currentProduce.Value);
-    // New: AnimalDataPatcher.CreateProduce("(O)" + pair2.currentProduce.Value, pair2);
+    // Old: ItemRegistry.Create<Object>("(O)" + value2.currentProduce.Value);
+    // New: AnimalDataPatcher.CreateProduce("(O)" + value2.currentProduce.Value, value2);
     matcher.MatchEndForward(
         new CodeMatch(OpCodes.Ldstr, "(O)"),
-        new CodeMatch(OpCodes.Ldloca_S));
-    var pair2Var = matcher.Operand;
+        new CodeMatch(OpCodes.Ldloc_S));
+    var animalVar = matcher.Operand;
     matcher.MatchStartBackwards(
         new CodeMatch(OpCodes.Ldstr, "(O)"),
-        new CodeMatch(OpCodes.Ldloca_S),
-        new CodeMatch(OpCodes.Call),
+        new CodeMatch(OpCodes.Ldloc_S),
         new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), nameof(FarmAnimal.currentProduce))),
         new CodeMatch(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(NetFieldBase<string, NetString>), nameof(NetFieldBase<string, NetString>.Value))),
         new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(String), nameof(String.Concat), new Type[] {typeof(string), typeof(string)})),
@@ -488,10 +518,10 @@ sealed class AnimalDataPatcher {
         new CodeMatch(OpCodes.Call, ItemRegistryCreateObjectType)
         )
       .ThrowIfNotMatch($"Could not find entry point for {nameof(SObject_DayUpdate_Transpiler)}")
-      .Advance(6)
+      .Advance(5)
       .InsertAndAdvance(
-          new CodeInstruction(OpCodes.Ldloca_S, pair2Var),
-          new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(KeyValuePair<long, FarmAnimal>), nameof(KeyValuePair<long, FarmAnimal>.Value))),
+          new CodeInstruction(OpCodes.Ldloc_S, animalVar),
+//          new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(KeyValuePair<long, FarmAnimal>), nameof(KeyValuePair<long, FarmAnimal>.Value))),
           new CodeInstruction(OpCodes.Call, CreateProduceType)
           )
       .RemoveInstructions(4);
@@ -563,7 +593,8 @@ sealed class AnimalDataPatcher {
       matcher.MatchEndForward(
         new CodeMatch(OpCodes.Ldarg_0),
         new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), nameof(FarmAnimal.fullness))),
-        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(NetInt), "op_Implicit")),
+        //new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(NetInt), "op_Implicit")),
+        new CodeMatch(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(NetFieldBase<Int32, NetInt>), nameof(NetInt.Value))),
         new CodeMatch(OpCodes.Ldc_I4, 200),
         new CodeMatch(OpCodes.Bge_S),
         new CodeMatch(OpCodes.Ldarg_1),
@@ -669,7 +700,7 @@ sealed class AnimalDataPatcher {
     bool shownMessage = false;
     foreach (var itemId in itemIds) {
       if (who.freeSpotsInInventory() > 0) {
-        var obj = SiloUtils.GetFeedFromAnySilo(itemId, animalHouse.animalsThatLiveHere.Count);
+        var obj = SiloUtils.GetFeedFromAnySilo(itemId, animalHouse.animalLimit.Value);
         if (obj is not null) {
           who.addItemToInventory(obj);
           Game1.playSound("shwip");
@@ -801,12 +832,21 @@ sealed class AnimalDataPatcher {
     ExtraProduceUtils.PopQueueAndReplaceProduce(__state);
   }
 
+  static void FarmAnimals_DigUpProduce_Postfix(FarmAnimal __instance, GameLocation location, SObject produce) {
+    ExtraProduceUtils.PopQueueAndReplaceProduce(__instance);
+  }
+
 	static void FarmAnimal_behaviors_Prefix(FarmAnimal __instance, GameTime time, GameLocation location) {
     ExtraProduceUtils.ReplaceCurrentProduceWithMatching(__instance, FarmAnimalHarvestType.DigUp);
   }
 
-	static void FarmAnimal_behaviors_Postfix(FarmAnimal __instance, GameTime time, GameLocation location) {
-    ExtraProduceUtils.PopQueueAndReplaceProduce(__instance);
+	static void FarmAnimal_behaviors_Postfix(FarmAnimal __instance, ref bool __result, GameTime time, GameLocation location) {
+    // Evil patch >:)
+    if (!Game1.IsMasterGame || __instance.isBaby() || __instance.home is null || __instance.pauseTimer > 0 ||
+        Game1.timeOfDay >= 2000 || !__instance.currentLocation.farmers.Any()) {
+      return;
+    }
+    AnimalUtils.AnimalAttack(__instance, time, ref __result);
   }
 
   static void Grass_TryDropItemsOnCut_Postfix(Grass __instance, Tool? tool, bool addAnimation = true) {
@@ -854,22 +894,87 @@ sealed class AnimalDataPatcher {
     CodeMatcher matcher = new(instructions);
     // Old: GameStateQuery.CheckConditions(list[i].Condition, base.currentLocation, null, null, null, r)
     // New: GameStateQuery.CheckConditions(list[i].Condition, base.currentLocation, null, null, GetGoldenAnimalCracker(this), r)
+    // Find the bloody delegate passed into RemoveAll and patch that one instead, ugh
+    matcher.MatchStartForward(
+        new CodeMatch(OpCodes.Ldftn),
+        new CodeMatch(OpCodes.Newobj),
+        new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(List<FarmAnimalProduce>), nameof(List<FarmAnimalProduce>.RemoveAll)))
+          )
+      .ThrowIfNotMatch($"Could not find entry point for {nameof(FarmAnimal_GetProduceID_Transpiler)}");
+
+    GetProduceIdDelegate = (MethodInfo)matcher.Operand;
+
+    return matcher.InstructionEnumeration();
+  }
+
+  static IEnumerable<CodeInstruction> FarmAnimal_GetProduceIDDelegate_Transpiler(IEnumerable<CodeInstruction> instructions) {
+    CodeMatcher matcher = new(instructions);
+    // Old: GameStateQuery.CheckConditions(list[i].Condition, base.currentLocation, null, null, null, r)
+    // New: GameStateQuery.CheckConditions(list[i].Condition, base.currentLocation, null, null, GetGoldenAnimalCracker(this), r)
+    // 1. Find where the capture class is getting the farm animal reference
+    matcher.MatchStartForward(
+        new CodeMatch(OpCodes.Ldfld),
+        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(FarmAnimal), nameof(FarmAnimal.currentLocation)))
+    );
+    var thisField = matcher.Operand;
+
+    // 2. Use that reference and pass into the function
     matcher.MatchStartForward(
         new CodeMatch(OpCodes.Ldnull), // farmer
         new CodeMatch(OpCodes.Ldnull), // target item
         new CodeMatch(OpCodes.Ldnull), // input item (THIS!)
-        new CodeMatch(OpCodes.Ldarg_1),
+        new CodeMatch(OpCodes.Ldarg_0),
+        new CodeMatch(OpCodes.Ldfld),
         new CodeMatch(OpCodes.Ldnull),
         new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(GameStateQuery), nameof(GameStateQuery.CheckConditions),
             new Type[] {typeof(string), typeof(GameLocation), typeof(Farmer), typeof(Item), typeof(Item), typeof(Random), typeof(HashSet<string>)}))
         )
-      .ThrowIfNotMatch($"Could not find entry point for {nameof(FarmAnimal_GetProduceID_Transpiler)}");
+      .ThrowIfNotMatch($"Could not find entry point for {nameof(FarmAnimal_GetProduceIDDelegate_Transpiler)}");
     matcher.Advance(2)
       .InsertAndAdvance(
           new CodeInstruction(OpCodes.Ldarg_0),
+          new CodeInstruction(OpCodes.Ldfld, thisField),
           new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalUtils), nameof(AnimalUtils.GetGoldenAnimalCracker)))
           )
       .RemoveInstructions(1);
+    return matcher.InstructionEnumeration();
+  }
+
+  static void FarmAnimal_CanLiveIn_Postfix(FarmAnimal __instance, ref bool __result, Building building) {
+    if (!building.isUnderConstruction() && building.GetIndoors() is AnimalHouse &&
+        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
+        animalExtensionData.ExtraHouses.Contains(building.buildingType.Value)) {
+      __result = true;
+    }
+  }
+
+  static IEnumerable<CodeInstruction> FarmAnimal_ReplaceRainWinterTranspiler(IEnumerable<CodeInstruction> instructions) {
+    CodeMatcher matcher = new(instructions);
+    // Old: location.IsRainingHere()
+    // New: AnimalUtils.AnimalAffectedByRain(this, location)
+    matcher.MatchStartForward(
+        new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(GameLocation), nameof(GameLocation.IsRainingHere))));
+    matcher.Repeat((cm) => {
+      cm
+      .RemoveInstruction()
+      .InsertAndAdvance(
+          new CodeInstruction(OpCodes.Ldarg_0),
+          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalUtils), nameof(AnimalUtils.AnimalAffectedByRain)))
+      );
+    });
+    matcher.Start();
+    // Old: location.IsWinterHere()
+    // New: AnimalUtils.AnimalAffectedByWinter(this, location)
+    matcher.MatchStartForward(
+        new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(GameLocation), nameof(GameLocation.IsWinterHere))));
+    matcher.Repeat((cm) => {
+      cm
+      .RemoveInstruction()
+      .InsertAndAdvance(
+          new CodeInstruction(OpCodes.Ldarg_0),
+          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalUtils), nameof(AnimalUtils.AnimalAffectedByWinter)))
+      );
+    });
     return matcher.InstructionEnumeration();
   }
 }

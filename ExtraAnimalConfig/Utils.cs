@@ -1,4 +1,6 @@
 using StardewValley;
+using StardewValley.Pathfinding;
+using StardewValley.Extensions;
 using StardewValley.Internal;
 using StardewValley.GameData.FarmAnimals;
 using StardewValley.Buildings;
@@ -16,7 +18,7 @@ using SObject = StardewValley.Object;
 
 namespace Selph.StardewMods.ExtraAnimalConfig;
 
-public sealed class SiloUtils {
+public static class SiloUtils {
   static string SiloCapacityKeyPrefix = $"{ModEntry.UniqueId}.SiloCapacity.";
   static string FeedCountKeyPrefix = $"{ModEntry.UniqueId}.FeedCount.";
 
@@ -113,7 +115,7 @@ public sealed class SiloUtils {
   }
 }
 
-public sealed class AnimalUtils {
+public static class AnimalUtils {
   static string CustomTroughTileProperty = $"{ModEntry.UniqueId}.CustomTrough";
   public static string BuildingFeedOverrideIdKey = $"{ModEntry.UniqueId}.BuildingFeedOverrideId";
 
@@ -162,7 +164,7 @@ public sealed class AnimalUtils {
 
   public static bool GetBuildingFeedOverride(GameLocation animalHouse, out string? itemId) {
     itemId = null;
-    if (animalHouse.GetContainingBuilding()?.GetData()?.CustomFields?.TryGetValue(BuildingFeedOverrideIdKey, out var value) ?? false) {
+    if (animalHouse.ParentBuilding?.GetData()?.CustomFields?.TryGetValue(BuildingFeedOverrideIdKey, out var value) ?? false) {
       itemId = value;
       return true;
     }
@@ -176,9 +178,134 @@ public sealed class AnimalUtils {
   public static Item? GetGoldenAnimalCracker(FarmAnimal animal) {
     return animal.hasEatenAnimalCracker.Value ? ItemRegistry.Create("(O)GoldenAnimalCracker") : null;
   }
+
+  static Dictionary<long, double> BeginAttackTimeDict = new();
+  static Dictionary<long, double> LastAttackTimeDict = new();
+  static Dictionary<long, long> CurrentVictimDict = new();
+  static Dictionary<long, double> LastPathfindingTimeDict = new();
+
+  static double GetLastAttackTime(FarmAnimal animal) {
+    if (!LastAttackTimeDict.ContainsKey(animal.myID.Value)) {
+      LastAttackTimeDict[animal.myID.Value] = -1;
+    }
+    return LastAttackTimeDict[animal.myID.Value];
+  }
+
+  static double GetLastPathfindingTime(FarmAnimal animal, GameTime time) {
+    if (!LastPathfindingTimeDict.ContainsKey(animal.myID.Value)) {
+      LastPathfindingTimeDict[animal.myID.Value] = time.TotalGameTime.TotalMilliseconds;
+    }
+    return LastPathfindingTimeDict[animal.myID.Value];
+  }
+
+  static double GetBeginAttackTime(FarmAnimal animal, GameTime time) {
+    if (!BeginAttackTimeDict.ContainsKey(animal.myID.Value)) {
+      BeginAttackTimeDict[animal.myID.Value] = time.TotalGameTime.TotalMilliseconds;
+    }
+    return BeginAttackTimeDict[animal.myID.Value];
+  }
+
+  static Farmer? GetVictim(FarmAnimal animal, int attackRange) {
+    if (CurrentVictimDict.TryGetValue(animal.myID.Value, out var farmerId)) {
+      var farmer = Game1.GetPlayer(farmerId);
+      if (farmer?.currentLocation != animal.currentLocation) {
+        CurrentVictimDict.Remove(animal.myID.Value);
+        return null;
+      }
+    }
+    IList<Farmer> victimList = [];
+    foreach (var potentialVictim in animal.currentLocation.farmers) {
+      // Mercifully, animals will not attack farmers trying to harvest from them with a tool
+      if (!animal.CanGetProduceWithTool(potentialVictim.CurrentTool) &&
+          FarmAnimal.GetFollowRange(animal, attackRange).Contains(potentialVictim.StandingPixel)) {
+        victimList.Add(potentialVictim);
+      }
+    }
+    if (victimList.Count > 0) {
+      var victim = Game1.random.ChooseFrom(victimList);
+      CurrentVictimDict[animal.myID.Value] = victim.UniqueMultiplayerID;
+      return victim;
+    }
+    return null;
+  }
+
+  public static void ClearDicts() {
+    BeginAttackTimeDict.Clear();
+    LastAttackTimeDict.Clear();
+    CurrentVictimDict.Clear();
+    LastPathfindingTimeDict.Clear();
+  }
+
+  // If attack animal
+  // * Find target
+  // * If target already intersects, damage
+  // * Otherwise path to target
+  public static void AnimalAttack(FarmAnimal animal, GameTime time, ref bool result) {
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+        animalExtensionData.IsAttackAnimal &&
+        time.TotalGameTime.TotalMilliseconds - GetLastAttackTime(animal) > animalExtensionData.AttackIntervalMs) {
+      var victim = GetVictim(animal, animalExtensionData.AttackRange);
+      if (victim is not null) {
+        if (FarmAnimal.GetFollowRange(animal, 1).Intersects(victim.GetBoundingBox())) {
+          // RAWR!
+          if (animalExtensionData.AttackDamage > 0) {
+            animal.doEmote(12);
+            victim.takeDamage(animalExtensionData.AttackDamage, false, null);
+          }
+          CurrentVictimDict.Remove(animal.myID.Value);
+          LastAttackTimeDict[animal.myID.Value] = time.TotalGameTime.TotalMilliseconds;
+          BeginAttackTimeDict.Remove(animal.myID.Value);
+          animal.controller = null;
+          result = true;
+        } else if (time.TotalGameTime.TotalMilliseconds - GetBeginAttackTime(animal, time) > animalExtensionData.AttackMaxChaseTimeMs) {
+          // Got bored, stop chasing
+          animal.doEmote(8);
+          animal.controller = null;
+          CurrentVictimDict.Remove(animal.myID.Value);
+          LastAttackTimeDict[animal.myID.Value] = time.TotalGameTime.TotalMilliseconds;
+          BeginAttackTimeDict.Remove(animal.myID.Value);
+//        } else if (FarmAnimal.NumPathfindingThisTick < FarmAnimal.MaxPathfindingPerTick) {
+        } else if (time.TotalGameTime.TotalMilliseconds - GetLastPathfindingTime(animal, time) > 1000 &&
+            FarmAnimal.NumPathfindingThisTick < FarmAnimal.MaxPathfindingPerTick) {
+          // Keep chasing!
+          animal.controller = new PathFindController(animal, animal.currentLocation, victim.TilePoint, Game1.random.Next(4));
+          LastPathfindingTimeDict[animal.myID.Value] = time.TotalGameTime.TotalMilliseconds;
+          FarmAnimal.NumPathfindingThisTick += 1;
+          result = false;
+        }
+        return;
+      } else {
+        // No victim or victim became null, clean up
+        CurrentVictimDict.Remove(animal.myID.Value);
+        BeginAttackTimeDict.Remove(animal.myID.Value);
+      }
+    }
+  }
+
+  static string BuildingInhabitantsIgnoreRainKey = $"${ModEntry.UniqueId}.InhabitantsIgnoreRain";
+  static string BuildingInhabitantsIgnoreWinterKey = $"${ModEntry.UniqueId}.InhabitantsIgnoreWinter";
+
+  // the below functions false if the animal ignore rain/winter
+  public static bool AnimalAffectedByRain(GameLocation location, FarmAnimal animal) {
+    if ((ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+          animalExtensionData.IgnoreRain) ||
+      (animal.home.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreRainKey) ?? false)) {
+      return false;
+    }
+    return location.IsRainingHere();
+  }
+
+  public static bool AnimalAffectedByWinter(GameLocation location, FarmAnimal animal) {
+    if ((ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+          animalExtensionData.IgnoreWinter) ||
+        (animal.home.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreWinterKey) ?? false)) {
+      return false;
+    }
+    return location.IsWinterHere();
+  }
 }
 
-public sealed class ExtraProduceUtils {
+public static class ExtraProduceUtils {
   // Animal modData keys
   static string ProduceDaysSinceLastLayKeyPrefix = $"${ModEntry.UniqueId}.ProduceDaysSinceLastLay";
   static string CurrentProduceIdKeyPrefix = $"${ModEntry.UniqueId}.CurrentProduceId";
@@ -242,9 +369,7 @@ public sealed class ExtraProduceUtils {
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
         animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData) &&
         animalProduceExtensionData.ItemQuery != null) {
-      // DO NOT SUBMIT WITHOUT FIXING THIS FOR 1.6.9
-      //var context = new ItemQueryContext(animal.home?.GetIndoors(), Game1.GetPlayer(animal.ownerID.Value), Game1.random);
-      var context = new ItemQueryContext(animal.home?.GetIndoors(), Game1.getFarmer(animal.ownerID.Value), Game1.random);
+      var context = new ItemQueryContext(animal.home?.GetIndoors(), Game1.GetPlayer(animal.ownerID.Value), Game1.random);
       var item = ItemQueryResolver.TryResolveRandomItem(animalProduceExtensionData.ItemQuery, context);
       if (item is SObject obj) {
         return obj;
@@ -260,7 +385,8 @@ public sealed class ExtraProduceUtils {
   // To be run in the postfix of the day update.
   public static void QueueExtraProduceIds(FarmAnimal animal, GameLocation location) {
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
-        animalExtensionData.ExtraProduceSpawnList is not null) {
+        animalExtensionData.ExtraProduceSpawnList is not null &&
+        animalExtensionData.ExtraProduceSpawnList.Count > 0) {
       // Global conditions - don't produce if the animal's not fed or if it's juvenile
       if (animal.moodMessage.Value == 4 || animal.isBaby()) {
         return;
@@ -397,6 +523,48 @@ public sealed class ExtraProduceUtils {
         debris2.Chunks[0].bounces = 3;
         animal.currentLocation.debris.Add(debris2);
       }
+    }
+  }
+}
+
+public static class LightUtils {
+  // light source ID
+  static string LightSourceIdPrefix = $"${ModEntry.UniqueId}.AnimalLightSourceId_";
+  // Animal modData keys
+  static string LightSourceIdKey = $"${ModEntry.UniqueId}.AnimalLightSourceId";
+
+  public static void AddLight(FarmAnimal animal, GameLocation location) {
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+        animalExtensionData.GlowColor is not null) {
+      if (!animal.modData.ContainsKey(LightSourceIdKey)) {
+        animal.modData[LightSourceIdKey] = LightSourceIdPrefix + animal.myID.Value;
+      }
+      var color = Utility.StringToColor(animalExtensionData.GlowColor) ?? Color.White;
+      if (!location.hasLightSource(animal.modData[LightSourceIdKey])) {
+        location.sharedLights.AddLight(new LightSource(
+              animal.modData[LightSourceIdKey],
+              4,
+              //            new Vector2(animal.Position.X + animal.Sprite.getWidth() / 2, animal.Position.Y + animal.Sprite.getHeight() / 2),
+              new Vector2(animal.StandingPixel.X, animal.StandingPixel.Y),
+              animalExtensionData.GlowRadius,
+              new Color(256 - color.R, 256 - color.G, 256 - color.B),
+              LightSource.LightContext.None,
+              0L));
+      }
+    }
+  }
+
+  public static void UpdateLight(FarmAnimal animal, GameLocation location) {
+    if (animal.modData.TryGetValue(LightSourceIdKey, out var lightSourceId)) {
+      location.repositionLightSource(lightSourceId,
+          new Vector2(animal.StandingPixel.X, animal.StandingPixel.Y));
+    }
+  }
+
+  public static void RemoveLight(FarmAnimal animal, GameLocation location) {
+    if (animal.modData.TryGetValue(LightSourceIdKey, out var lightSourceId) &&
+        location.hasLightSource(lightSourceId)) {
+      location.removeLightSource(lightSourceId);
     }
   }
 }

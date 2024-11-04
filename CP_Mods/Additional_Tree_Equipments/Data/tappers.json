@@ -505,6 +505,22 @@
       "TargetField": ["(BC)105", "GiantCropOutputRules"],
       "Priority": "Late",
       "Entries": {
+        "selph.ExtraTappers.GiantCropCoffee": {
+          "DaysUntilReady": 1,
+          "Condition": "ITEM_ID Input (O)433",
+          "Id": "selph.ExtraTappers.GiantCropCoffee",
+          "ItemId": "(O)395",
+          "MinStack": 1,
+          "MaxStack": 1,
+        },
+        "selph.ExtraTappers.GiantCropTea": {
+          "DaysUntilReady": 1,
+          "Condition": "ITEM_ID Input (O)815",
+          "Id": "selph.ExtraTappers.GiantCropTea",
+          "ItemId": "(O)614",
+          "MinStack": 2,
+          "MaxStack": 2,
+        },
         "selph.ExtraTappers.GiantCropHoney": {
           "DaysUntilReady": 1,
           "Condition": "ITEM_CATEGORY Input -80",
@@ -549,6 +565,22 @@
       "TargetField": ["(BC)264", "GiantCropOutputRules"],
       "Priority": "Late",
       "Entries": {
+        "selph.ExtraTappers.GiantCropCoffee": {
+          "DaysUntilReady": 1,
+          "Condition": "ITEM_ID Input (O)433",
+          "Id": "selph.ExtraTappers.GiantCropCoffee",
+          "ItemId": "(O)395",
+          "MinStack": 2,
+          "MaxStack": 2,
+        },
+        "selph.ExtraTappers.GiantCropTea": {
+          "DaysUntilReady": 1,
+          "Condition": "ITEM_ID Input (O)815",
+          "Id": "selph.ExtraTappers.GiantCropTea",
+          "ItemId": "(O)614",
+          "MinStack": 2,
+          "MaxStack": 2,
+        },
         "selph.ExtraTappers.GiantCropHoney": {
           "DaysUntilReady": 1,
           "Condition": "ITEM_CATEGORY Input -80",

@@ -1,7 +1,7 @@
 {
   "Name": "Chicken Feed",
   "Author": "selph",
-  "Version": "4.0.0",
+  "Version": "4.0.2",
   "Description": "Rework chickens and other coop animals to resemble their Harvest Moon counterpart - eats chicken feed made from corn and can forage from dirt.",
   "UniqueID": "selph.CoopFeed",
   "MinimumApiVersion": "4.0.0",
