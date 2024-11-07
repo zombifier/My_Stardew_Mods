@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <EnableHarmony>true</EnableHarmony>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="manifest.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentPacks Include="[CP]FreshFarmProduce" Version="$(Version)" />
+  </ItemGroup>
+  <Import Project="../Common/Common.projitems" Label="Shared" />
+
+  <!--
+  <ItemGroup>
+    <None Remove="assets/views/CompetitionTracker.sml" />
+    <None Remove="assets/sprites/progress_bar.json" />
+  </ItemGroup>
+  -->
+
+  <ItemGroup>
+    <Content Include="assets/*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

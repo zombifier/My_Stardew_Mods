@@ -1,0 +1,14 @@
+{
+  "Changes": [
+    {
+      "LogName": "Artisan Changes",
+      "Action": "EditData",
+      "Target": "selph.FreshFarmProduce/CompetitionData",
+      "TargetField": ["Categories", "{{ModId}}.ArtisanGoods"],
+      "Entries": {
+        "TotalPoints": 1200,
+        "MaxIndividualPoints": 80,
+      },
+    },
+  ]
+}

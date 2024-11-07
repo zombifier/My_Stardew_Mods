@@ -1,0 +1,15 @@
+{
+  "Name": "[CP]Fresh Farm Produce",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Increase sell price of high quality fresh produce, and adds a month-long competition that encourages selling diverse produce.",
+  "UniqueID": "selph.FreshFarmProduceCP",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {"UniqueID": "selph.FreshFarmProduce", "IsRequired": true},
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+//  "UpdateKeys": ["Nexus:28906"],
+}

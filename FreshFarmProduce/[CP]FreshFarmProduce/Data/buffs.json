@@ -1,0 +1,40 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add buffs",
+      "Action": "EditData",
+      "Target": "Data/Buffs",
+      "Entries": {
+        "{{ModId}}.PrideOfFerngill" : {
+          "DisplayName": "{{i18n:PrideOfFerngill}}",
+          "Description": null,
+          "Duration": -2,
+          "IconTexture": "TileSheets\\BuffsIcons",
+          "IconSpriteIndex": 21,
+          "Effects": {
+            "CombatLevel": 0.0,
+            "FarmingLevel": 2.0,
+            "FishingLevel": 2.0,
+            "MiningLevel": 2.0,
+            "LuckLevel": 2.0,
+            "ForagingLevel": 2.0,
+            "MaxStamina": 0.0,
+            "MagneticRadius": 0.0,
+            "Speed": 0.5,
+            "Defense": 2.0,
+            "Attack": 2.0,
+            "AttackMultiplier": 0.0,
+            "Immunity": 0.0,
+            "KnockbackMultiplier": 0.0,
+            "WeaponSpeedMultiplier": 0.0,
+            "CriticalChanceMultiplier": 0.0,
+            "CriticalPowerMultiplier": 0.0,
+            "WeaponPrecisionMultiplier": 0.0
+          },
+          "ActionsOnApply": null,
+          "CustomFields": null
+        }
+      },
+    },
+  ]
+}

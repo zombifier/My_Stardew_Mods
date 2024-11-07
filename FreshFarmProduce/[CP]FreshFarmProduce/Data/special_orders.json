@@ -1,0 +1,16 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add special orders",
+      "Action": "EditData",
+      "Target": "Data/SpecialOrders",
+      // Everything else is populated in the C# component. This is set here so the game has something to check for repeatable
+      "Entries": {
+        "selph.FreshFarmProduce.FarmCompetition": {
+          "Condition": "FALSE",
+					"Repeatable": true,
+        },
+      },
+    },
+  ]
+}

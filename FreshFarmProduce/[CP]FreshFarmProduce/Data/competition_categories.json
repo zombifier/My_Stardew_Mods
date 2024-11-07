@@ -1,0 +1,288 @@
+{
+  "Changes": [
+    {
+      "LogName": "Set entries",
+      "Action": "EditData",
+      "Target": "selph.FreshFarmProduce/CompetitionData",
+      "TargetField": ["Categories"],
+      "Entries": {
+        "{{ModId}}.FreshVegetables": {
+          "Name": "{{i18n:FreshVegetables}}",
+          "Description": "{{i18n:FreshVegetables.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 250, // Kale
+          "TotalPoints": 1000,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshVegetables",
+              "ContextTags": ["fresh_item", "category_vegetable"],
+            },
+            {
+              "Id": "FreshCoffeeBeans",
+              "ItemIds": ["(O)433"],
+              "ContextTags": ["fresh_item"],
+            },
+          ],
+        },
+        "{{ModId}}.FreshFruits": {
+          "Name": "{{i18n:FreshFruits}}",
+          "Description": "{{i18n:FreshFruits.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 613, // Apple
+          "TotalPoints": 1000,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshFruits",
+              "ContextTags": ["fresh_item", "category_fruits"],
+            },
+            {
+              "Id": "SweetGemBerry",
+              "ItemIds": ["(O)417"],
+            },
+          ],
+        },
+        "{{ModId}}.FreshFlowers": {
+          "Name": "{{i18n:FreshFlowers}}",
+          "Description": "{{i18n:FreshFlowers.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 595, // Fairy Rose
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshFlowers",
+              "ContextTags": ["fresh_item", "category_flowers"],
+            },
+            {
+              "Id": "Honey",
+              "ItemIds": ["(O)340"],
+            },
+          ],
+        },
+        "{{ModId}}.FreshForage": {
+          "Name": "{{i18n:FreshForage}}",
+          "Description": "{{i18n:FreshForage.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 422, // Purple Mushroom
+          "TotalPoints": 800,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshForage",
+              "ContextTags": ["fresh_item", "category_greens"],
+            },
+            {
+              "Id": "Truffles",
+              "ItemIds": ["(O)430"],
+            },
+          ],
+        },
+        "{{ModId}}.FreshMilk": {
+          "Name": "{{i18n:FreshMilk}}",
+          "Description": "{{i18n:FreshMilk.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 186, // Large Milk
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshMilk",
+              "ContextTags": ["fresh_item", "category_milk"],
+            },
+          ],
+        },
+        "{{ModId}}.FreshEggs": {
+          "Name": "{{i18n:FreshEggs}}",
+          "Description": "{{i18n:FreshEggs.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 182, // Large Egg
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshEggs",
+              "ContextTags": ["fresh_item", "category_egg"],
+            },
+          ],
+        },
+        "{{ModId}}.AnimalProduce": {
+          "Name": "{{i18n:AnimalProduce}}",
+          "Description": "{{i18n:AnimalProduce.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 440, // Wool
+          "TotalPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "AnimalProduce",
+              "ContextTags": ["category_sell_at_pierres_and_marnies"],
+            },
+            {
+              "Id": "Meat",
+              "ContextTags": ["category_meat"],
+            },
+            {
+              "Id": "Cloth",
+              "ItemIds": ["(O)440"],
+            },
+          ],
+        },
+        "{{ModId}}.FreshFish": {
+          "Name": "{{i18n:FreshFish}}",
+          "Description": "{{i18n:FreshFish.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 142, // Carp
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 40,
+          "ItemCriterias": [
+            {
+              "Id": "FreshFish",
+              "ContextTags": ["fresh_item", "category_fish"],
+            },
+            {
+              "Id": "SellAtFishShop",
+              "ContextTags": ["category_sell_at_fish_shop"],
+            },
+            {
+              "Id": "SeaweedAlgaeRoe",
+              "ItemIds": ["(O)152", "(O)153", "(O)157", "(O)812", "(O)447", "(O)445"],
+            },
+          ],
+        },
+        "{{ModId}}.ArtisanGoods": {
+          "Name": "{{i18n:ArtisanGoods}}",
+          "Description": "{{i18n:ArtisanGoods.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 432, // Truffle Oil
+          "TotalPoints": 1000,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "ArtisanGoods",
+              // Exclude honey and aged roe
+              "ContextTags": ["category_artisan_goods", "!id_o_340", "!id_o_447", "!id_o_445"],
+            },
+          ],
+        },
+        "{{ModId}}.Cooking": {
+          "Name": "{{i18n:Cooking}}",
+          "Description": "{{i18n:Cooking.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 224, // Spaghetti
+          "TotalPoints": 200,
+          "MaxIndividualPoints": 20,
+          "ItemCriterias": [
+            {
+              "Id": "Cooking",
+              "ContextTags": ["category_cooking"],
+            },
+          ],
+        },
+        "{{ModId}}.Jewellers": {
+          "Name": "{{i18n:Jewellers}}",
+          "Description": "{{i18n:Jewellers.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 72, // Diamond
+          "TotalPoints": 500,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "Gems",
+              "ContextTags": ["category_gem"],
+            },
+            {
+              "Id": "Minerals",
+              "ContextTags": ["category_minerals"],
+            },
+            {
+              "Id": "Metals",
+              "ContextTags": ["category_metal_resources"],
+            },
+          ],
+        },
+        "{{ModId}}.Money": {
+          "Name": "{{i18n:Money}}",
+          "Description": "{{i18n:Money.description}}",
+          "Texture": "TileSheets/Objects_2",
+          "SpriteIndex": 70, // Gold Coin
+          "TotalPoints": 1000000,
+          "UseSalePrice": true,
+        },
+        "{{ModId}}.FreshCropsWinter": {
+          "Name": "{{i18n:FreshCropsWinter}}",
+          "Description": "{{i18n:FreshCropsWinter.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 787, // Battery
+          "TotalPoints": 1500,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshVegetables",
+              "ContextTags": ["fresh_item", "category_vegetable"],
+            },
+            {
+              "Id": "FreshCoffeeBeans",
+              "ItemIds": ["(O)433"],
+              "ContextTags": ["fresh_item"],
+            },
+            {
+              "Id": "FreshFruits",
+              "ContextTags": ["fresh_item", "category_fruits"],
+            },
+            {
+              "Id": "SweetGemBerry",
+              "ItemIds": ["(O)417"],
+            },
+            {
+              "Id": "FreshFlowers",
+              "ContextTags": ["fresh_item", "category_flowers"],
+            },
+          ],
+        },
+      },
+    },
+    {
+      "LogName": "Enable default categories",
+      "Action": "EditData",
+      "Target": "selph.FreshFarmProduce/CompetitionData",
+      "Entries": {
+        "ActiveCategoryIds": [
+          "{{ModId}}.FreshVegetables",
+          "{{ModId}}.FreshFruits",
+          "{{ModId}}.FreshFlowers",
+          "{{ModId}}.FreshForage",
+          "{{ModId}}.FreshMilk",
+          "{{ModId}}.FreshEggs",
+          "{{ModId}}.AnimalProduce",
+          "{{ModId}}.FreshFish",
+          "{{ModId}}.ArtisanGoods",
+          "{{ModId}}.Cooking",
+          "{{ModId}}.Jewellers",
+          "{{ModId}}.Money",
+        ],
+      },
+    },
+    {
+      "LogName": "Modify categories for winter",
+      "Action": "EditData",
+      "When": {
+        "Season": "winter",
+      },
+      "Target": "selph.FreshFarmProduce/CompetitionData",
+      "TargetField": ["ActiveCategoryIds"],
+      "Entries": {
+          "{{ModId}}.FreshVegetables": null,
+          "{{ModId}}.FreshFruits": null,
+          "{{ModId}}.FreshFlowers": null,
+          "{{ModId}}.FreshCropsWinter": "{{ModId}}.FreshCropsWinter",
+      },
+      "MoveEntries": [
+        {
+          "ID": "{{ModId}}.FreshCropsWinter",
+          "ToPosition": "Top",
+        },
+      ],
+    },
+  ],
+}

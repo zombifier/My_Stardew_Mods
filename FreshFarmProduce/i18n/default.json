@@ -1,0 +1,15 @@
+{
+  "CompetitionName": "Farm of the Season",
+  "CompetitionDescription": "Fill in each category by shipping a wide variety of fresh produce and be crowned the best farm in all of the Ferngill Republic!",
+  "StaleItemName": "{{Name}} (Stale)",
+  // Console commands
+  "AddSpecialOrder": "Add the competition special order.",
+  "RemoveSpecialOrder": "Remove the competition special order.",
+  "ResetSpecialOrder": "Reset the competition special order.",
+  "PrintDiagnostics": "Print detailed competition info.",
+  // Use
+  "JojaDash.notActive": "You don't have an active JojaDash(tm) subscription. Win at least a Silver Medal in the Farm of the Season competition to earn one.",
+  "JojaDash.alreadyUsed": "You have already ordered from JojaDash(tm) today.",
+  "JojaDash.subscriptionActive": "JojaDash(tm) Free Daily Delivery subscription active!",
+  "JojaDash.subscriptionAlreadyActive": "You already have a JojaDash(tm) subscription active.",
+}
