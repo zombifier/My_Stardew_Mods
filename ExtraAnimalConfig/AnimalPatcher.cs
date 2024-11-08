@@ -443,7 +443,7 @@ sealed class AnimalDataPatcher {
     // NamingMenu should only be active for newly birthed animals... hopefully.
     if (animal.parentId.Value != -1 &&
         Game1.activeClickableMenu is NamingMenu &&
-        (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+        (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
          animalExtensionData.AnimalSpawnList != null)) {
       foreach (var animalSpawnData in animalExtensionData.AnimalSpawnList) {
         if (animalSpawnData.Condition != null && !GameStateQuery.CheckConditions(animalSpawnData.Condition, __instance)) {
