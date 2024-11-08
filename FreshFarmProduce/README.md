@@ -105,7 +105,9 @@ Be warned however - if you don't immediately sell fresh items the day of
 harvest, they will go stale (marked as such in their display name) after you go
 to bed and revert to boring vanilla prices, even inside fridges! Thankfully,
 they don't spoil or change further, so feel free to turn that years-old apple
-in the back of your fridge into a bottle of refreshing apple wine.
+in the back of your fridge into a bottle of refreshing apple wine. Items inside
+Junimo Chests also don't spoil, which gives you an incentive to use these
+otherwise underwhelming items.
 
 Here is a list of item categories affected by freshness:
 <details>
@@ -187,26 +189,25 @@ rewards through mail depending on how many categories you managed to achieve:
 
 * Bronze Medal (25% of categories):
   * 20,000 gold
+  * Nothing else, sorry :(
 * Silver Medal (50% of categories):
   * 50,000 gold
   * +0.2 heart with every villager
   * A voucher that when used grants a month-long subscription to JojaDash(tm)
-    Daily Delivery, which allows you to use a JojaDash(tm) terminal to order
-    one free food item daily. JojaCorp will send you the terminal in a separate
-    mail, and if you lose it you can buy spares from Pierre's. You can only use
-    the terminal once per day, and the subscription expires at the end of the
-    season.
+    Daily Delivery, allowing you to use the phone to order one free food
+    item of your choice from JojaDash. You can only order from JojaDash(tm) once per
+    day, and the subscription expires at the end of the season.
 * Gold Medal (75% of categories):
   * 100,000 gold
   * +0.5 heart with every villager,
   * JojaDash subscription
-  * Iridium Swag Bag: contains a random assortment of items, including Magic
-    Rock Candies, a Tea Set, Magic Bait, Qi Seasoning, and 5 items that you
-    have yet to ship/donate/cook/fish for Perfection (cooking and fishing will
-    count even if you haven't done the work yourself). Courtesy of Mr Qi, who
-    snuck this in your mailbox as a reward for a job well done.
+  * Iridium Swag Bag: contains a random assortment of items, including a Tea
+    Set, Magic Bait, Qi Seasoning, and 5 random items that you have yet to
+    ship/donate/cook/fish for Perfection (cooking and fishing will count even
+    if you haven't done the work yourself). Courtesy of Mr Qi, who snuck this
+    in your mailbox as a reward for a job well done.
 * Iridium Medal (every category, wow!):
-  * 250,000 gold
+  * 200,000 gold
   * +1 heart with every villager
   * JojaDash
   * Iridium Swag Bag
@@ -326,3 +327,4 @@ The global friendship increase are handled via a custom trigger action `selph.Fr
 | `selph.FreshFarmProduce_RemoveSpecialOrder` | Remove the competition special order.|
 | `selph.FreshFarmProduce_ResetSpecialOrder` | Remove and then readd the competition special order.|
 | `selph.FreshFarmProduce_PrintDiagnostics` | Print detailed info about the competition (including items shipped, points, etc.)|
+| `selph.FreshFarmProduce_AddWinningItems` | Add stacks of items that can be shipped to win the competition.|

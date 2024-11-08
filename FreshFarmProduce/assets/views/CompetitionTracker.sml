@@ -15,6 +15,7 @@
           *repeat={Objectives} >
           <lane
             *outlet="header"
+            focusable="true"
             orientation ="horizontal"
             margin="8">
             <frame
@@ -32,7 +33,7 @@
               orientation="vertical" >
               <lane
                 orientation="horizontal">
-                <banner text={Name} focusable="true" margin="0,4,0,0"/>
+                <banner text={Name} margin="0,4,0,0"/>
                 <spacer layout="stretch 0px" />
                 <label text={Points}
                   font="small"
@@ -58,6 +59,7 @@
             </lane>
           </lane>
           <lane
+            focusable="true"
             margin="0,0,0,16"
             orientation="vertical">
             <label

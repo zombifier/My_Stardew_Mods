@@ -5,12 +5,15 @@ using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Quests;
 using StardewValley.Extensions;
 using StardewValley.Locations;
 using StardewValley.Triggers;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.Delegates;
+using StardewValley.Inventories;
 using StardewValley.Menus;
+using StardewValley.Buildings;
 using StardewValley.Internal;
 using StardewValley.Objects;
 using StardewValley.SpecialOrders;
@@ -39,8 +42,6 @@ internal sealed class ModEntry : Mod {
   static string GetCompetitionFinishedFlag(string reward) {
     return $"{UniqueId}.Finished{reward}";
   }
-  static string JojaDashActive { get => $"{UniqueId}.JojaDashActive"; }
-  //static string PrideOfFerngillActive { get => $"{UniqueId}.PrideOfFerngillActive"; }
 
   public override void Entry(IModHelper helper) {
 //    this.Config = helper.ReadConfig<ModConfig>();
@@ -54,11 +55,12 @@ internal sealed class ModEntry : Mod {
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
     helper.Events.GameLoop.DayEnding += OnDayEnding;
 //    helper.Events.GameLoop.DayStarted += OnDayStarted;
-    helper.Events.Input.ButtonPressed += OnButtonPressed;
 
+    // Register custom stuff
     TriggerActionManager.RegisterAction(
         $"{UniqueId}_AddGlobalFriendshipPoints",
         AddGlobalFriendshipPoints);
+    Phone.PhoneHandlers.Add(new JojaDashPhoneHandler());
 
     helper.ConsoleCommands.Add(
         $"{UniqueId}_AddSpecialOrder",
@@ -80,6 +82,12 @@ internal sealed class ModEntry : Mod {
         Helper.Translation.Get("PrintDiagnostics"),
         PrintDiagnostics);
 
+    helper.ConsoleCommands.Add(
+        $"{UniqueId}_AddWinningItems",
+        Helper.Translation.Get("AddWinningItems"),
+        AddWinningItems);
+
+    // Harmony!
     var harmony = new Harmony(this.ModManifest.UniqueID);
     harmony.Patch(
         original: AccessTools.Method(typeof(SObject),
@@ -117,12 +125,20 @@ internal sealed class ModEntry : Mod {
           nameof(SpecialOrder.HostHandleQuestEnd)),
         postfix: new HarmonyMethod(typeof(ModEntry),
           nameof(ModEntry.SpecialOrder_HostHandleQuestEnd_Postfix)));
-
+    
+    // objects
     harmony.Patch(
         original: AccessTools.Method(typeof(SObject),
           nameof(SObject.performUseAction)),
         prefix: new HarmonyMethod(typeof(ModEntry),
           nameof(ModEntry.SObject_performUseAction_prefix)));
+
+    // waow
+    harmony.Patch(
+        original: AccessTools.Method(typeof(QuestLog),
+          nameof(QuestLog.receiveLeftClick)),
+        postfix: new HarmonyMethod(typeof(ModEntry),
+          nameof(ModEntry.QuestLog_receiveLeftClick_postfix)));
   }
   
   static void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
@@ -179,54 +195,57 @@ internal sealed class ModEntry : Mod {
 
   // Spoil all fresh items
   static void OnDayEnding(object? sender, DayEndingEventArgs e) {
-    Utility.ForEachItemContext((in ForEachItemContext context) => {
-      var obj = context.Item as SObject;
-      if (obj is null) {
-        return true;
-      }
-      // Don't spoil items in mini shipping bins since they'll get yoinked after this function
-      if (context.GetPath().Any((object path) => path is Chest chest && chest.specialChestType.Value == Chest.SpecialChestTypes.MiniShippingBin)) {
-        return true;
-      }
-      // Only spoil indoor objects in animal houses
-      if (obj.Location is not null && obj.Location is not AnimalHouse) {
-        return true;
-      }
-      Utils.SpoilItem(context.Item);
-      return true;
-    });
-    //ForEachItemDelegate Handle = (in ForEachItemContext context) => {
+    //Utility.ForEachItemContext((in ForEachItemContext context) => {
+    //  var obj = context.Item as SObject;
+    //  if (obj is null) {
+    //    return true;
+    //  }
+    //  // Don't spoil items in mini shipping bins since they'll get yoinked after this function
+    //  if (context.GetPath().Any((object path) => path is Chest chest && chest.specialChestType.Value == Chest.SpecialChestTypes.MiniShippingBin)) {
+    //    return true;
+    //  }
+    //  // Only spoil indoor objects in animal houses
+    //  if (obj.Location is not null && obj.Location is not AnimalHouse) {
+    //    return true;
+    //  }
     //  Utils.SpoilItem(context.Item);
     //  return true;
-    //};
-    //Utility.ForEachLocation((GameLocation location) => {
-		//	Chest fridge = location.GetFridge(onlyUnlocked: false);
-		//	fridge?.ForEachItem(Handle, null);
-		//	foreach (SObject obj in location.objects.Values) {
-		//		if (obj != fridge) {
-		//			if (obj is Chest chest && chest.specialChestType.Value != Chest.SpecialChestTypes.MiniShippingBin) {
-		//				obj.ForEachItem(Handle, null);
-		//			}
-		//			else if (obj.heldObject.Value is Chest chest2) {
-		//				chest2.ForEachItem(Handle, null);
-		//			}
-		//		}
-		//	}
-		//	foreach (Furniture furniture in location.furniture) {
-		//		furniture.ForEachItem(Handle, null);
-		//	}
-		//	foreach (Building building in location.buildings) {
-		//		foreach (Chest buildingChest in building.buildingChests) {
-		//			buildingChest.ForEachItem(Handle, null);
-		//		}
-		//	}
-		//	return true;
-		//});
-		//foreach (Item returnedDonation in Game1.player.team.returnedDonations) {
-		//	if (returnedDonation != null) {
-		//		Utils.SpoilItem(returnedDonation);
-		//	}
-		//}
+    //});
+
+    Utility.ForEachLocation((GameLocation location) => {
+			Chest? fridge = location.GetFridge(onlyUnlocked: false);
+      if (fridge is not null) {
+        Utils.SpoilItemInChest(fridge);
+      }
+			foreach (SObject obj in location.objects.Values) {
+				if (obj != fridge) {
+					if (obj is Chest chest && chest.specialChestType.Value != Chest.SpecialChestTypes.MiniShippingBin) {
+            Utils.SpoilItemInChest(chest);
+					}
+					else if (obj.heldObject.Value is Chest chest2) {
+            Utils.SpoilItemInChest(chest2);
+					}
+				}
+			}
+			foreach (Furniture furniture in location.furniture) {
+				furniture.ForEachItem((in ForEachItemContext context) => {
+          Utils.SpoilItem(context.Item);
+          return true;
+        }, null);
+			}
+			foreach (Building building in location.buildings) {
+				foreach (Chest buildingChest in building.buildingChests) {
+          Utils.SpoilItemInChest(buildingChest);
+				}
+			}
+			return true;
+		});
+		foreach (Item returnedDonation in Game1.player.team.returnedDonations) {
+			if (returnedDonation != null) {
+				Utils.SpoilItem(returnedDonation);
+			}
+		}
+    // Ignore Junimo Chests and Special Order Bins
 		//foreach (Inventory globalInventory in Game1.player.team.globalInventories.Values) {
 		//	foreach (Item item in globalInventory) {
 		//		if (item != null) {
@@ -241,13 +260,13 @@ internal sealed class ModEntry : Mod {
 		//		}
 		//	}
 		//}
-    //foreach (var item in Game1.player.Items) {
-    //  // Handle better chests? Idk
-    //  if (item is Chest chest) {
-    //    chest.ForEachItem(Handle, null);
-    //  }
-		//	Utils.SpoilItem(item);
-    //}
+    foreach (var item in Game1.player.Items) {
+      // Handle better chests? Idk
+      if (item is Chest chest) {
+        Utils.SpoilItemInChest(chest);
+      }
+			Utils.SpoilItem(item);
+    }
   }
 
   static void SObject_PopulateContextTags_Postfix(SObject __instance, HashSet<string> tags) {
@@ -302,7 +321,7 @@ internal sealed class ModEntry : Mod {
       Game1.addMail(GetCompetitionFinishedFlag("Bronze"), noLetter: true, sendToEveryone: true);
     } else if (completionRate < 0.75) {
       Game1.addMail(GetCompetitionFinishedFlag("Silver"), noLetter: true, sendToEveryone: true);
-    } else if (__instance.questState.Value != SpecialOrderStatus.Complete) {
+    } else if (completionRate < 1) {
       Game1.addMail(GetCompetitionFinishedFlag("Gold"), noLetter: true, sendToEveryone: true);
     } else {
       Game1.addMail(GetCompetitionFinishedFlag("Iridium"), noLetter: true, sendToEveryone: true);
@@ -310,7 +329,7 @@ internal sealed class ModEntry : Mod {
   }
 
   static bool SObject_performUseAction_prefix(SObject __instance, ref bool __result, GameLocation location) {
-    if (__instance.QualifiedItemId != "selph.FreshFarmProduceCP.SwagBag" && __instance.QualifiedItemId != "selph.FreshFarmProduceCP.JojaDashVoucher") {
+    if (__instance.QualifiedItemId != "(O)selph.FreshFarmProduceCP.SwagBag" && __instance.QualifiedItemId != "(O)selph.FreshFarmProduceCP.JojaDashVoucher") {
       return true;
     }
     bool normalGameplay = !Game1.eventUp && !Game1.isFestival() && !Game1.fadeToBlack && !Game1.player.swimming.Value && !Game1.player.bathingClothes.Value && !Game1.player.onBridge.Value;
@@ -318,15 +337,15 @@ internal sealed class ModEntry : Mod {
       __result = false;
       return false;
     }
-    if (__instance.QualifiedItemId == "selph.FreshFarmProduceCP.JojaDashVoucher") {
-      if (Game1.player.mailReceived.Contains("selph.FreshFarmProduceCP.JojaDashActive")) {
+    if (__instance.QualifiedItemId == "(O)selph.FreshFarmProduceCP.JojaDashVoucher") {
+      if (Game1.player.mailReceived.Contains(JojaDashPhoneHandler.JojaDashActive)) {
         Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("JojaDash.subscriptionAlreadyActive")) {
           noIcon = true,
         });
         __result = false;
         return false;
       }
-      Game1.player.mailReceived.Add("selph.FreshFarmProduceCP.JojaDashActive");
+      Game1.player.mailReceived.Add(JojaDashPhoneHandler.JojaDashActive);
       Game1.addHUDMessage(new HUDMessage(Helper.Translation.Get("JojaDash.subscriptionActive")) {
         noIcon = true,
       });
@@ -334,49 +353,54 @@ internal sealed class ModEntry : Mod {
       __result = true;
       return false;
     }
-    if (__instance.QualifiedItemId == "selph.FreshFarmProduceCP.SwagBag") {
+    if (__instance.QualifiedItemId == "(O)selph.FreshFarmProduceCP.SwagBag") {
       List<Item> missingPerfectionItems = new();
-			foreach (ParsedItemData allDatum in
-          from p in ItemRegistry.GetObjectTypeDefinition().GetAllData()
-          orderby Game1.random.Next()
-          select p) {
-				string itemId = allDatum.ItemId;
-				string qualifiedItemId = allDatum.QualifiedItemId;
-        ObjectData? objectData = allDatum.RawData as ObjectData;
-				var isUncaughtFish = 
-          allDatum.ObjectType == "Fish" &&
-          !(objectData?.ExcludeFromFishingCollection ?? false) &&
-          !Game1.player.fishCaught.ContainsKey(qualifiedItemId) &&
-          !(objectData?.ContextTags.Contains("fish_legendary") ?? false);
-        // Technically we want to iterate over cookingRecipes for each item and determine whether the item is actually cookable, but ehhh
-        // this is good enough
-        var isUncookedDish = 
-          allDatum.ObjectType == "Cooking" &&
-          !Game1.player.recipesCooked.ContainsKey(itemId) &&
-          !(new List<string>{"217", "772", "773", "279", "873"}).Contains(itemId);
-        var isUnshippedItem =
-          SObject.isPotentialBasicShipped(itemId, allDatum.Category, allDatum.ObjectType) &&
-          Game1.player.basicShipped.ContainsKey(itemId);
-        var isUndonatedMuseumItem = LibraryMuseum.IsItemSuitableForDonation(qualifiedItemId);
-				if (isUncookedDish || isUncaughtFish || isUndonatedMuseumItem || isUnshippedItem) {
-          missingPerfectionItems.Add(ItemRegistry.Create(qualifiedItemId));
-          if (isUncaughtFish) {
-            Game1.player.fishCaught.Add(qualifiedItemId, new int[3]);
-          } else if (isUncookedDish) {
-            Game1.player.recipesCooked.Add(itemId, 1);
+      if (!Game1.player.team.farmPerfect.Value) {
+			  foreach (ParsedItemData allDatum in
+            from p in ItemRegistry.GetObjectTypeDefinition().GetAllData()
+            orderby Game1.random.Next()
+            select p) {
+			  	string itemId = allDatum.ItemId;
+			  	string qualifiedItemId = allDatum.QualifiedItemId;
+          ObjectData? objectData = allDatum.RawData as ObjectData;
+			  	var isUncaughtFish = 
+            allDatum.ObjectType == "Fish" &&
+            !(objectData?.ExcludeFromFishingCollection ?? false) &&
+            !Game1.player.fishCaught.ContainsKey(qualifiedItemId) &&
+            !(objectData?.ContextTags.Contains("fish_legendary") ?? false);
+          // Technically we want to iterate over cookingRecipes for each item and determine whether the item is actually cookable, but ehhh
+          // this is good enough
+          var isUncookedDish = 
+            allDatum.ObjectType == "Cooking" &&
+            !Game1.player.recipesCooked.ContainsKey(itemId) &&
+            !(new List<string>{"217", "772", "773", "279", "873"}).Contains(itemId);
+          var isUnshippedItem =
+            SObject.isPotentialBasicShipped(itemId, allDatum.Category, allDatum.ObjectType) &&
+            Game1.player.basicShipped.ContainsKey(itemId);
+          var isUndonatedMuseumItem = LibraryMuseum.IsItemSuitableForDonation(qualifiedItemId);
+			  	if (isUncookedDish || isUncaughtFish || isUndonatedMuseumItem || isUnshippedItem) {
+            missingPerfectionItems.Add(ItemRegistry.Create(qualifiedItemId));
+            if (isUncaughtFish) {
+              Game1.player.fishCaught.Add(qualifiedItemId, new int[3]);
+            } else if (isUncookedDish) {
+              Game1.player.recipesCooked.Add(itemId, 1);
+            }
+			  	}
+          if (missingPerfectionItems.Count() > 5) {
+            break;
           }
-				}
-        if (missingPerfectionItems.Count() > 5) {
-          break;
-        }
-			}
+			  }
+      }
       var swagBagContent = new List<Item>{
-        ItemRegistry.Create("(O)279", 5),
         ItemRegistry.Create("(O)341", 1),
         ItemRegistry.Create("(O)908", 40),
         ItemRegistry.Create("(O)917", 20),
       };
       swagBagContent.AddRange(missingPerfectionItems);
+      // Replace unneeded stuff with magic rock candy
+      if (missingPerfectionItems.Count() < 5) {
+        swagBagContent.Add(ItemRegistry.Create("(O)279", 5 - missingPerfectionItems.Count()));
+      }
       Game1.player.addItemsByMenuIfNecessary(swagBagContent);
       Game1.playSound("newRecipe");
       __result = true;
@@ -387,15 +411,20 @@ internal sealed class ModEntry : Mod {
     return false;
   }
 
-  //static void OnDayStarted(object? sender, DayStartedEventArgs e) {
-  //}
-
-  private void OnButtonPressed(object? sender, ButtonPressedEventArgs e) {
-    if (Context.IsPlayerFree && e.Button == SButton.F8 && Game1.player.team.SpecialOrderActive(FarmCompetitionSpecialOrderId)) {
-      var context = CompetitionTrackerViewModel.LoadFromGameData();
-      Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
-          $"Mods/{UniqueId}/Views/CompetitionTracker",
-          context);
+  static void QuestLog_receiveLeftClick_postfix(QuestLog __instance, int x, int y, bool playSound = true) {
+    try {
+      var specialOrder = Helper.Reflection.GetField<IQuest>(__instance, "_shownQuest").GetValue() as SpecialOrder;
+      var questPage = Helper.Reflection.GetField<int>(__instance, "questPage").GetValue();
+      if (questPage != -1 && specialOrder?.questKey.Value == FarmCompetitionSpecialOrderId) {
+        __instance.exitQuestPage();
+        var context = CompetitionTrackerViewModel.Load();
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
+            $"Mods/{UniqueId}/Views/CompetitionTracker",
+            context);
+        Game1.nextClickableMenu.Add(__instance);
+      }
+    } catch (Exception e) {
+      StaticMonitor.Log($"Error showing custom competition window: {e.Message}", LogLevel.Warn);
     }
   }
 
@@ -433,6 +462,22 @@ internal sealed class ModEntry : Mod {
     } else {
       StaticMonitor.Log("Special order not active", LogLevel.Info);
     }
+  }
+
+  private void AddWinningItems(string command, string[] args) {
+    Game1.player.addItemsByMenuIfNecessary([
+      ItemRegistry.Create("(O)250", 999, 4),
+      ItemRegistry.Create("(O)613", 999, 4),
+      ItemRegistry.Create("(O)595", 999, 4),
+      ItemRegistry.Create("(O)422", 999, 4),
+      ItemRegistry.Create("(O)174", 999, 4),
+      ItemRegistry.Create("(O)186", 999, 4),
+      ItemRegistry.Create("(O)440", 999, 4),
+      ItemRegistry.Create("(O)698", 999, 4),
+      ItemRegistry.Create("(O)348", 999, 4),
+      ItemRegistry.Create("(O)226", 999, 4),
+      ItemRegistry.Create("(O)72", 999, 4),
+    ]);
   }
 
   public static bool AddGlobalFriendshipPoints(string[] args, TriggerActionContext context, out string error){

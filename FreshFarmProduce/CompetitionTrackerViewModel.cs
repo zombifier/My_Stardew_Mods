@@ -81,7 +81,7 @@ class ObjectiveModel {
 internal record CompetitionTrackerViewModel(
     string HeaderText,
     ObjectiveModel[] Objectives) {
-    public static CompetitionTrackerViewModel LoadFromGameData() {
+    public static CompetitionTrackerViewModel Load() {
         var specialOrder = Game1.player.team.specialOrders.First((SpecialOrder so) => so.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId);
         if (specialOrder is not null) {
           return new(ModEntry.Helper.Translation.Get("CompetitionName"),
@@ -90,7 +90,7 @@ internal record CompetitionTrackerViewModel(
                 .Select((OrderObjective oo) => new ObjectiveModel((oo as ShipPointsObjective)!))
                 .ToArray());
         } else {
-          return new("Farm of the Season", []);
+          return new(ModEntry.Helper.Translation.Get("CompetitionName"), []);
         }
     }
 }

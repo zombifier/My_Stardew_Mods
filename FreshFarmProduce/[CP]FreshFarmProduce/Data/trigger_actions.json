@@ -15,6 +15,14 @@
           ],
           "MarkActionApplied": false,
         },
+        "{{ModId}}.RemoveJojaDashUsed" : {
+					"Id": "{{ModId}}.RemoveJojaDashUsed",
+					"Trigger": "DayStarted",
+					"Actions": [
+            "RemoveMail Current {{ModId}}.JojaDashUsed",
+          ],
+          "MarkActionApplied": false,
+        },
         "{{ModId}}.NoReward" : {
 					"Id": "{{ModId}}.NoReward",
 					"Trigger": "DayStarted",
@@ -88,6 +96,7 @@
 					"Id": "{{ModId}}.StartSpecialOrder",
 					"Trigger": "DayStarted",
 					"Condition": "!DAY_OF_MONTH 1, PLAYER_HAS_MAIL Any newsstory",
+//					"Condition": "!DAY_OF_MONTH 1, PLAYER_HAS_MAIL Any newsstory, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedIridium, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedGold, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedSilver, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedBronze,  !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.Finished",
 					"Action": "AddMail Current {{ModId}}.CompetitionStarted_{{Season}} now",
           "MarkActionApplied": true,
         },
