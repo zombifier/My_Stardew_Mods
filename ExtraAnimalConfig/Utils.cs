@@ -122,13 +122,13 @@ public static class AnimalUtils {
   // Whether this animal only eats modded food and not hay/grass
   // Returns false if they do eat grass outside, or don't need to eat at all
   public static bool AnimalOnlyEatsModdedFood(FarmAnimal animal) {
-    return (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+    return (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.FeedItemId != null &&
         (animal.GetAnimalData()?.GrassEatAmount ?? 0) <= 0);
   }
 
   public static bool AnimalIsOutsideForager(FarmAnimal animal) {
-    return (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+    return (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.OutsideForager);
   }
 
@@ -152,7 +152,7 @@ public static class AnimalUtils {
 
   public static string? GetCustomFeedThisAnimalCanEat(FarmAnimal animal, GameLocation animalHouse) {
     string? qualifiedItemId = null;
-    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData)) {
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData)) {
       qualifiedItemId = animalExtensionData.FeedItemId;
     }
     if (qualifiedItemId is null &&
@@ -241,7 +241,7 @@ public static class AnimalUtils {
   // * If target already intersects, damage
   // * Otherwise path to target
   public static void AnimalAttack(FarmAnimal animal, GameTime time, ref bool result) {
-    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.IsAttackAnimal &&
         time.TotalGameTime.TotalMilliseconds - GetLastAttackTime(animal) > animalExtensionData.AttackIntervalMs) {
       var victim = GetVictim(animal, animalExtensionData.AttackRange);
@@ -287,18 +287,18 @@ public static class AnimalUtils {
 
   // the below functions false if the animal ignore rain/winter
   public static bool AnimalAffectedByRain(GameLocation location, FarmAnimal animal) {
-    if ((ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+    if ((ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
           animalExtensionData.IgnoreRain) ||
-      (animal.home.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreRainKey) ?? false)) {
+      (animal.home?.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreRainKey) ?? false)) {
       return false;
     }
     return location.IsRainingHere();
   }
 
   public static bool AnimalAffectedByWinter(GameLocation location, FarmAnimal animal) {
-    if ((ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+    if ((ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
           animalExtensionData.IgnoreWinter) ||
-        (animal.home.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreWinterKey) ?? false)) {
+        (animal.home?.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreWinterKey) ?? false)) {
       return false;
     }
     return location.IsWinterHere();
@@ -320,8 +320,8 @@ public static class ExtraProduceUtils {
   
   public static bool GetHarvestMethodOverride(FarmAnimal animal, string? produceId, out string? harvestMethod) {
     harvestMethod = null;
-    if (produceId != null && animal.type?.Value != null &&
-        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+    if (produceId != null &&
+        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData) &&
         animalProduceExtensionData.HarvestTool != null) {
       harvestMethod = animalProduceExtensionData.HarvestTool;
@@ -366,7 +366,7 @@ public static class ExtraProduceUtils {
   }
 
   public static SObject CreateProduce(string produceId, FarmAnimal animal) {
-    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData) &&
         animalProduceExtensionData.ItemQuery != null) {
       var context = new ItemQueryContext(animal.home?.GetIndoors(), Game1.GetPlayer(animal.ownerID.Value), Game1.random);
@@ -384,7 +384,7 @@ public static class ExtraProduceUtils {
   // If the animal's produce is null then pop the queue and put it in the currentProduce field as well.
   // To be run in the postfix of the day update.
   public static void QueueExtraProduceIds(FarmAnimal animal, GameLocation location) {
-    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.ExtraProduceSpawnList is not null &&
         animalExtensionData.ExtraProduceSpawnList.Count > 0) {
       // Global conditions - don't produce if the animal's not fed or if it's juvenile
@@ -534,7 +534,7 @@ public static class LightUtils {
   static string LightSourceIdKey = $"${ModEntry.UniqueId}.AnimalLightSourceId";
 
   public static void AddLight(FarmAnimal animal, GameLocation location) {
-    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.GlowColor is not null) {
       if (!animal.modData.ContainsKey(LightSourceIdKey)) {
         animal.modData[LightSourceIdKey] = LightSourceIdPrefix + animal.myID.Value;
