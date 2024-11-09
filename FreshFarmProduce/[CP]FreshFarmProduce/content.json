@@ -66,5 +66,13 @@
         "HasMod": "Wildflour.AtelierGoods",
       },
     },
+    {
+      "LogName": "Competition Rules - Inflorescence Atelier Goods",
+      "Action": "Include",
+      "FromFile": "Data/competition_categories_inflorescence.json",
+      "When": {
+        "HasMod": "aceynk.inflorescence",
+      },
+    },
   ]
 }

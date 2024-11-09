@@ -135,18 +135,16 @@ Notably, freshness does not apply to these categories:
 
 ### Farm of the Season
 
-So now farmers are encouraged to process normal, silver and sometimes gold
-quality produce while directly selling gold and iridium stuff, but what about
-variety over a field of just Starfruits? That's where the Farm Of The Season
-competition comes in!
+So now farmers are encouraged to process low quality produce while directly
+selling gold and iridium stuff, but what about variety over a field of just
+Starfruits? That's where the Farm Of The Season competition comes in!
 
 Once your farm gets featured in the Stardew Valley Tribunal (ie. earns a total
-of 27000g), at the start of every season  on the second day of the month, you
-will receive a mail that says you are entered into the Farm of the Season, a
-month-long competition to find the best farm in all of Ferngill, with great
-prizes and amazing perks for those who achieve a good score. Then, you can open
-the competition tracker window by clicking on the Farm of the Season quest in
-your quest tracker.
+of 27000g), on the second day of every season you will receive a letter that says
+you are entered into the Farm of the Season, a month-long competition to find
+the best farm in all of Ferngill, with great prizes and amazing perks for those
+who achieve a good score. Then, you can open the competition tracker window by
+clicking on the Farm of the Season quest in your quest tracker.
 
 Competition Details:
 
@@ -177,19 +175,19 @@ The following is a list of categories in the competition, and the amount of poin
 * Dairy Farm (FRESH milk, 400 points, 200 points)
 * Egg Ranch (FRESH egg, 400 points, 200 points)
 * Butchery (FRESH meat, alongside wool, duck feather, and other animal produce not including truffles, 200 points, no threshold)
-* Fishery (FRESH fish and (aged) roe, 400 points, 40 points)
-* Artisan House (artisan goods excluding honey and aged roe, 1000 points, 100 points)
+* Fishery (FRESH fish, smoked fish and (aged) roe, 400 points, 40 points)
+* Artisan House (artisan goods excluding honey, smoked fish and aged roe, 1000 points, 100 points)
 * Fine Diners (cooked food, 200 points, 20 points)
 * Jewellers (metals, gemstones, and minerals, 500 points, 100 points)
 * Bountiful Farm (1M gold in shipment by season's end)
 * Greenhouse Farm (only during the winter, replaces Vegetable Farm, Fruit Orchard and Flower Garden. Fresh crops, 1500 points, 200 points)
 
-Once the next season begins, the competition will end and you'll receive
+When the next season begins, the competition will end and you'll receive
 rewards through mail depending on how many categories you managed to achieve:
 
 * Bronze Medal (25% of categories):
   * 20,000 gold
-  * Nothing else, sorry :(
+  * Nothing else, better luck next time :(
 * Silver Medal (50% of categories):
   * 50,000 gold
   * +0.2 heart with every villager
@@ -213,38 +211,40 @@ rewards through mail depending on how many categories you managed to achieve:
   * +1 heart with every villager
   * JojaDash
   * Iridium Swag Bag
-  * Pride of the Valley: A month-long buff that adds +2 to all skills and attack/defense, +0.5 move speed and +1 Luck
+  * Pride of the Valley: A buff that lasts the entire month. Adds +2 to all skills and attack/defense, +0.5 move speed and +1 Luck
 
 ### Installation Instruction
 * Download and install SMAPI, Content Patcher, [SpaceCore](https://www.nexusmods.com/stardewvalley/mods/1348) and [StardewUI](https://www.nexusmods.com/stardewvalley/mods/28870).
 * Then unzip this mod into the Mods folder as usual.
 * This mod is safe to install mid-save! If installed mid-save:
-  * Every existing item will be fresh, only spoiling on sleeping. You can
-    exploit this by immediately dumping your fridges and make big bucks, so
-    I'll gently request that you don't ;)
-  * The competition mail will immediately enter your mailbox if your farm meets the
-    requirements, which does make completing it harder if you receive it
-    near the mid or end of season. Future competitions should properly start on a season's second
-    day.
+  * Every existing item will be fresh, only becoming stale on sleeping the next
+    day. You can exploit this by immediately dumping your fridges and make big
+    bucks, so I'll gently request that you don't ;)
+  * The competition immediately start if your farm meets the
+    requirements, which does make completing it very hard if you receive it
+    near the middle or end of season. Future competitions should properly start
+    on a season's second day.
 * OPTIONAL: If starting a new save, also highly recommend setting profit margin
   to a lower value, since this mod does increase the amount of money you can
   make.
 * This mod is safe to uninstall; all fresh and stale items will revert to being
-  regular items and their regular prices, and other items added by this mod
-  will become error items and can be trashed.. The farm competition order might
+  regular items and have regular prices, and other items added by this mod
+  will become error items that can be trashed. The farm competition order might
   still linger harmlessly though, and will do nothing once expiring at the end
   of the month.
 
-MOD COMPATIBILITY: This mod should be fully compatible with other mods, with any interactions noted below:
-* Cornucopia: Recommended; this mod's competition categories are adjusted depending on what's installed:
+MOD COMPATIBILITY: This mod should be fully compatible with other mods, with special interactions noted below:
+* Cornucopia: This mod's competition categories are adjusted depending on what's installed:
   * If More Crops is installed, the veggies and fruits category will have their
     max individual threshold lowered to 100. Gotta make use of all those added
     crops!
-  * If More Flowers installed, the flowers category will have their threshold lowered to 100,
-    and the required points bumped up to 800. Veggies and fruits will also have their max points lowered to 800
-    to compensate.
-* Wildflour Atelier Goods (2.0 only): Also recommended; this mod will make the
-  Artisan category slightly harder!
+  * If More Flowers is installed, the flowers category will have their
+    threshold lowered to 100, and the required points bumped up to 800. Veggies
+    and fruits will also have their max points lowered to 800 to compensate.
+* Wildflour Atelier Goods: This mod will make the
+  Artisan category slightly harder with WAG installed! Better make use of all the artisan goods!
+* Inflorescence: This mod will disable the Flowers category since Inflorescence
+  has its own flower competition.
 * Ferngill Simple Economy: Works well together, the two mod's sell price modifier will stack.
 * Spoilage: Works fine, spoilage should take over spoiling non-fresh items.
 * Machines Copy Quality and other similar "copy quality mods": Fully
