@@ -1,10 +1,11 @@
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
 using System;
 
-namespace StardewUI;
+namespace StardewUI.Framework;
 
 /// <summary>
 /// Public API for StardewUI, abstracting away all implementation details of views and trees.
@@ -76,9 +77,20 @@ public interface IViewEngine
     /// views and sprites.
     /// </summary>
     /// <remarks>
-    /// May impact game performance and should normally only be used during development and/or in debug mode.
+    /// <para>
+    /// If the <paramref name="sourceDirectory"/> argument is specified, and points to a directory with the same asset
+    /// structure as the mod, then an additional sync will be set up such that files modified in the
+    /// <c>sourceDirectory</c> while the game is running will be copied to the active mod directory and subsequently
+    /// reloaded. In other words, pointing this at the mod's <c>.csproj</c> directory allows hot reloading from the
+    /// source files instead of the deployed mod's files.
+    /// </para>
+    /// <para>
+    /// Hot reload may impact game performance and should normally only be used during development and/or in debug mode.
+    /// </para>
     /// </remarks>
-    void EnableHotReloading();
+    /// <param name="sourceDirectory">Optional source directory to watch and sync changes from. If not specified, or not
+    /// a valid source directory, then hot reload will only pick up changes from within the live mod directory.</param>
+    void EnableHotReloading(string? sourceDirectory = null);
 
     /// <summary>
     /// Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.

@@ -16,4 +16,7 @@
   "JojaDash.subscriptionAlreadyActive": "You already have a JojaDash(tm) subscription active.",
   "JojaDash.order": "ORDER!",
   "JojaDash.lucky": "I'm feeling lucky!",
+  "JojaDash.orderTooltip": "You will order one {{foodName}}",
+  "JojaDash.orderTooltipNotSelected": "Select a food item first",
+  "JojaDash.luckyTooltip": "Let JojaDash(tm) pick a random item for you",
 }

@@ -38,6 +38,11 @@
       "FromFile": "Data/special_orders.json",
     },
     {
+      "LogName": "String Rules",
+      "Action": "Include",
+      "FromFile": "Data/strings.json",
+    },
+    {
       "LogName": "Competition Rules - Cornucopia",
       "Action": "Include",
       "FromFile": "Data/competition_categories_cornucopia_crops.json",

@@ -197,6 +197,8 @@ rewards through mail depending on how many categories you managed to achieve:
     Daily Delivery, allowing you to use the phone to order one free food
     item of your choice from JojaDash. You can only order from JojaDash(tm) once per
     day, and the subscription expires at the end of the season.
+  * NOTE: If you go the Joja Route, you'll also receive lifetime free JojaDash!
+    Feel free to toss these vouchers in that case, they have no use.
 * Gold Medal (75% of categories):
   * 100,000 gold
   * +0.5 heart with every villager,

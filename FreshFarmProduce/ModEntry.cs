@@ -30,7 +30,7 @@ internal sealed class ModEntry : Mod {
   internal static new IModHelper Helper { get; set; } = null!;
   internal static IMonitor StaticMonitor { get; set; } = null!;
   internal static string UniqueId = null!;
-  internal static StardewUI.IViewEngine viewEngine = null!;
+  internal static StardewUI.Framework.IViewEngine viewEngine = null!;
 
   internal static CompetitionDataAssetHandler competitionDataAssetHandler = null!;
 
@@ -54,6 +54,8 @@ internal sealed class ModEntry : Mod {
 
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
     helper.Events.GameLoop.DayEnding += OnDayEnding;
+    helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
+    helper.Events.Display.MenuChanged += OnMenuChanged;
 //    helper.Events.GameLoop.DayStarted += OnDayStarted;
 
     // Register custom stuff
@@ -147,7 +149,7 @@ internal sealed class ModEntry : Mod {
       StaticMonitor.Log("FATAL ERROR: SpaceCore API not detected! This should not happen.", LogLevel.Error);
       return;
     }
-    viewEngine = Helper.ModRegistry.GetApi<StardewUI.IViewEngine>("focustense.StardewUI")!;
+    viewEngine = Helper.ModRegistry.GetApi<StardewUI.Framework.IViewEngine>("focustense.StardewUI")!;
     if (viewEngine is null) {
       StaticMonitor.Log("FATAL ERROR: StardewUI API not detected! This should not happen.", LogLevel.Error);
       return;
@@ -267,6 +269,25 @@ internal sealed class ModEntry : Mod {
       }
 			Utils.SpoilItem(item);
     }
+  }
+
+  // Draw the item tooltip if we're in the JojaDash(tm) window
+  static void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e) {
+    if (JojaDashTerminalModel.FoodTooltipToDraw is not null && Game1.activeClickableMenu is not null) {
+      ICursorPosition cursorPos = Helper.Input.GetCursorPosition();
+      int x = (int)cursorPos.ScreenPixels.X;
+      int y = (int)cursorPos.ScreenPixels.Y;
+			IClickableMenu.drawToolTip(
+          e.SpriteBatch,
+          JojaDashTerminalModel.FoodTooltipToDraw.getDescription(),
+          JojaDashTerminalModel.FoodTooltipToDraw.DisplayName,
+          JojaDashTerminalModel.FoodTooltipToDraw);
+    }
+  }
+
+  // just in case
+  static void OnMenuChanged(object? sender, MenuChangedEventArgs e) {
+    JojaDashTerminalModel.FoodTooltipToDraw = null;
   }
 
   static void SObject_PopulateContextTags_Postfix(SObject __instance, HashSet<string> tags) {

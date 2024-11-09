@@ -108,6 +108,24 @@
 					"Action": "AddBuff {{ModId}}.PrideOfFerngill",
           "MarkActionApplied": false,
         },
+        "{{ModId}}.JojaDashFree" : {
+					"Id": "{{ModId}}.JojaDashFree",
+					"Trigger": "DayStarted",
+					"Condition": "PLAYER_HAS_SEEN_EVENT Any 502261",
+					"Actions": [
+            "AddMail Current {{ModId}}.JojaDashFree now",
+          ],
+          "MarkActionApplied": true,
+        },
+        "{{ModId}}.TriggerAfterCcDialogue" : {
+					"Id": "{{ModId}}.TriggerAfterCcDialogue",
+					"Trigger": "DayStarted",
+					"Condition": "PLAYER_HAS_SEEN_EVENT Any 191393",
+					"Actions": [
+            "RemoveMail Current selph.FreshFarmProduce.JojaDashFirstTime now",
+          ],
+          "MarkActionApplied": true,
+        },
       },
     },
   ]
