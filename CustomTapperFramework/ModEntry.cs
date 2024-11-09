@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Internal;
 using StardewValley.GameData.Crops;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
@@ -65,6 +66,11 @@ internal sealed class ModEntry : Mod {
 
     GameStateQuery.Register($"{UniqueId}_MACHINE_TILE_HAS_TERRAIN_FEATURE",
         MachineTerrainGameStateQueries.MACHINE_TILE_HAS_TERRAIN_FEATURE);
+
+    ItemQueryResolver.Register($"{UniqueId}_MACHINE_CRAB_POT_OUTPUT",
+        MachineTerrainItemQueries.MACHINE_CRAB_POT_OUTPUT);
+    ItemQueryResolver.Register($"{UniqueId}_MACHINE_FISH_LOCATION",
+        MachineTerrainItemQueries.MACHINE_FISH_LOCATION);
   }
 
   public void OnDayStarted(object sender, DayStartedEventArgs e) {

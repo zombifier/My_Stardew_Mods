@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Collections.Generic;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Delegates;
 using StardewValley.GameData.Machines;
@@ -149,6 +150,11 @@ public class HarmonyPatcher {
           new Type[] { typeof(List<MachineItemOutput>), typeof(bool), typeof(Item),
           typeof(Farmer), typeof(GameLocation) }),
         prefix: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.MachineDataUtility_GetOutputData_Prefix)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(MachineDataUtility),
+          nameof(MachineDataUtility.GetOutputItem)),
+        transpiler: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.MachineDataUtility_GetOutputItem_Transpiler)));
   }
 
 	static void SObject_canBePlacedHere_Postfix(SObject __instance, ref bool __result, GameLocation l, Vector2 tile, CollisionMask collisionMask = CollisionMask.All, bool showError = false) {
@@ -322,7 +328,6 @@ public class HarmonyPatcher {
     }
     return true;
   }
-
   // Patch the draw code to push the tapper draw layer up a tiny amount. ugh...
   public static IEnumerable<CodeInstruction> SObject_draw_Transpiler(IEnumerable<CodeInstruction> instructions) {
     var codes = new List<CodeInstruction>(instructions);
@@ -460,5 +465,31 @@ public class HarmonyPatcher {
       }
     }
     outputs = newOutputs;
+  }
+
+  static void PopulateContext(ItemQueryContext context, SObject machine) {
+    if (context.CustomFields is null) {
+      context.CustomFields = new();
+    }
+    context.CustomFields["Tile"] = machine.TileLocation;
+    context.CustomFields["Machine"] = machine;
+  }
+
+  // Insert "Machine" and "Tile" into the item query context
+  public static IEnumerable<CodeInstruction> MachineDataUtility_GetOutputItem_Transpiler(IEnumerable<CodeInstruction> instructions) {
+    CodeMatcher matcher = new(instructions);
+    // Old: ItemQueryContext context = new ItemQueryContext(machine.Location, who, Game1.random);
+    // New: insert PopulateContext(context, machine) below
+    matcher.MatchEndForward(
+        new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(ItemQueryContext), [typeof(GameLocation), typeof(Farmer), typeof(Random)])),
+        new CodeMatch(OpCodes.Stloc_1))
+      .ThrowIfNotMatch($"Could not find entry point for {nameof(MachineDataUtility_GetOutputItem_Transpiler)}")
+      .Advance(1)
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Ldloc_1),
+        new CodeInstruction(OpCodes.Ldarg_0),
+        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatcher), nameof(HarmonyPatcher.PopulateContext)))
+    );
+    return matcher.InstructionEnumeration();
   }
 }
