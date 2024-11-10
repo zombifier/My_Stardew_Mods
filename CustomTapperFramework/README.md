@@ -17,6 +17,7 @@ content packs. For users, install the mod as usual from the link above.
    + [Machine API](#machine-api)
       - [Extra GSQs](#extra-gsqs)
       - [Extra item queries](#extra-item-queries)
+      - [Get the tapper output in machine rules](#get-the-tapper-output-in-machine-rules)
    + [Tapper API](#tapper-api)
    + [Example](#example)
 * [Aquatic Crops Feature](#aquatic-crops-feature)
