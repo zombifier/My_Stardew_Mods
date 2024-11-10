@@ -37,6 +37,8 @@ KNOWN ISSUE: Machine rules don't support putting the terrain produce as the
 input item query yet. I forgor to implement this feature, so the Tapper API
 isn't quite deprecated yet if you need it.
 
+---
+
 ### Machine API
 First, set the appropriate context tags for your big craftables:
 
@@ -46,16 +48,26 @@ First, set the appropriate context tags for your big craftables:
   * To make this building placeable on fruit trees, add `"custom_fruit_tree_tapper_item"`
   * To make this building placeable on giant crops, add `"custom_giant_crop_tapper_item"`
 * If a crab pot-like water building, add `"custom_crab_pot_item"`
+  * By default, all water machines can be picked up by hand if they're
+    processing an output; this is to prevent machines that automatically
+    produce from being unremovable. To make them unremovable when processing,
+    add `"prevent_remove_when_processing"`. Outside of this case, all water
+    machines can be picked up if they're not processing, or if they don't have
+    ready output.
 
 Then define your machine behavior in
 [`Data/Machines`](https://stardewvalleywiki.com/Modding:Machines) as usual.
+
+---
+
+#### Extra GSQs
 
 For tapper-like machines placed on terrain features, this mod allows defining the following new
 field in the machine output rule's `CustomData` field:
 
 | Field Name |  Description |
 | ---------- |  ----------- |
-| `selph.CustomTapperFramework.TerrainCondition` | Similar to the output rule's `Condition` field, but with the following crucial differences:<br>* The `Target` item will be the terrain feature's primary produce: Seed object for wild trees, first defined fruit for fruit trees, and first defined cut-down drop for giant crops.<br>* The `Input` item will be the machine itself.<br>* The `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE` GSQ is usable in (and *only* in) this field.|
+| `selph.CustomTapperFramework.TerrainCondition` | Similar to the output rule's `Condition` field, but with the following crucial differences:<br><br>* The `Target` item will be the terrain feature's primary produce: Seed object for wild trees, first defined fruit for fruit trees, and first defined cut-down drop for giant crops.<br><br>* The `Input` item will be the machine itself.<br><br>* The `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE` GSQ is usable in (and *only* in) this field.|
 
 The `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE` GSQ takes the following format:
 
@@ -66,6 +78,34 @@ selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE <feature type> [opt
 where feature type can be one of `Tree`, `FruitTree` or `GiantCrop`. A feature
 ID can optionally be specified, to limit the condition to certain types of wild
 trees/fruit trees/giant crops.
+
+#### Extra item queries
+
+NOTE: The latest version uploaded on Nexus doesn't have the
+extra params in `MACHINE_FISH_LOCATION` yet. I'm waiting for a private beta tester to
+get back to me before uploading it. Thanks for your patience.
+
+This mod adds the following item queries, usable only in machine output item
+rules (as well as any mod that pass a `Tile` parameter into the item query
+context's custom fields):
+
+| Item query |  Description |
+| ---------- |  ----------- |
+| `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT <ignoreLocationJunkChance> <usingGoodBait> <isMariner> <baitTargetFish>` | Get a crab pot fish, or a junk item, from the tile the machine is placed on. This GSQ attempts to simulate vanilla crab pot logic as close as humanly possible, including the percentage chance each fish can be caught, and thus accepts four optional parameters to control its behavior:<br><br>`ignoreLocationJunkChance`: if `true`, ignore the location's crab pot junk chance as defined in [`CrabPotJunkChance`](https://stardewvalleywiki.com/Modding:Location_data).<br><br>`usingGoodBait`: Whether to cut the aformentioned junk chance in half (e.g. due to good bait being used).<br><br>`isMariner`: Whether to simulate the farmer having the [Mariner profession](https://stardewvalleywiki.com/Fishing#Fishing_Skill), which does three things: remove junk from crab pots entirely, make crab pots ignore fish-specific bait, and make all crab pot fish equally likely to be picked.<br><br>`baitTargetFish`: The ID of a specific fish to prioritize, to simulate the effect of targeted bait. If your machine rules accept a targeted bait item, you can put `DROP_IN_PRESERVE` into this field.|
+| `selph.CustomTapperFramework_MACHINE_FISH_LOCATION <getAllFish> <alsoCatchBossFish> <usingMagicBait>`| Identical to the [`FISH_LOCATION`](https://stardewvalleywiki.com/Modding:Item_queries#Specialized) GSQ, but with location, bobber tile and bobber depth already populated with the machine's current location. Accepts the following params:<br><br>*`getAllFish`: if `true`, get all possible fish that can be caught from this body of water, ignoring catch chance, player position requirement, bobber/depth requirement, and time requirement. Setting this to `true` will also activate the parameters after this one, settings to `false` will just have the item query call `FISH_LOCATION` directly. Highly recommended this is set to true.<br><br>`alsoCatchBossFish`: If set to `true`, also allow legendary boss fish to be caught.<br><br>`usingMagicBait`: If set to `true`, ignore season requirement, and allows catching fish that is marked to only be catchable with magic bait.|
+
+For the crab pot item query it's recommended you use
+`selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT true true true` by default
+for best results. This gets all crab pot catchable fish from the machine's
+location, without junk, special logic or any bias to any one fish.
+
+Similarly, for the fish location query it's *highly* recommended you use
+`selph.CustomTapperFramework_MACHINE_FISH_LOCATION true false` for best results,
+with similar effects. Use `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT
+true false true` for magic bait effect. If you also want Legendary Fishes (but
+why lol), change the `false` to `true`.
+
+---
 
 ### Tapper API
 First, add `"tapper_item"` context tag to your big craftables.
@@ -78,7 +118,7 @@ being a model with the following fields:
 
 | Field Name | Type | Description |
 | ---------- | ---- | ----------- |
-| `AlsoUseBaseGameRules` | `bool` | Whether this tapper can also be used like the base game tapper (ie. place on a wild tree to get their tap produce). Defaults to false, except for base game tappers, where this value will always be true.<br> This will also be true for tapper item that isn't defined in the mod data.<br>Set this or `TreeOutputRules`, not both.|
+| `AlsoUseBaseGameRules` | `bool` | Whether this tapper can also be used like the base game tapper (ie. place on a wild tree to get their tap produce). Defaults to false, except for base game tappers, where this value will always be true.<br><br> This will also be true for tapper item that isn't defined in the mod data.<br><br>Set this or `TreeOutputRules`, not both.|
 | `TreeOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a wild tree. If null, will not be placeable on trees (unless `AlsoUseBaseGameRules` is true).|
 | `FruitTreeOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a fruit tree. If null, will not be placeable on fruit trees.|
 | `GiantCropOutputRules` | `List<ExtendedTapItemData>` | A list of output rules to apply when this tapper is placed on a giant crop. If null, will not be placeable on giant crops.|
@@ -109,6 +149,8 @@ The output item query supports the following macros:
 | ---------- | ----------- |
 | `DROP_IN_ID` | The qualified item ID of the "input" item as defined above. |
 | `NEARBY_FLOWER_ID` | The qualified item ID of a nearby flower. Only useful for honey rules. |
+
+---
 
 ### Example
 
@@ -188,6 +230,8 @@ If you want to instead add to the base game tapper's outputs, instead do somethi
 
 ```
 </details>
+
+---
 
 ## Aquatic Crops Feature
 
