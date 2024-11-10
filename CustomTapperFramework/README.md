@@ -123,8 +123,8 @@ For machines placed on trees, you can get the vanilla tapper output by setting t
 "OutputMethod": "Selph.StardewMods.MachineTerrainFramework.Utils, CustomTapperFramework: OutputTapper",
 ```
 
-Make sure to also set `"custom_wild_tree_tapper_item"` context tag so the base
-game handling doesn't overwrite it.
+Make sure to also set `"custom_wild_tree_tapper_item"` context tag (alongside
+`tapper_item`) so the base game handling doesn't overwrite it.
 
 This will set the output to be the tree tapper produce, with ready time, stack
 count, and other fields already populated from the wild tree data. IMPORTANT:
