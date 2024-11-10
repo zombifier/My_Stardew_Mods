@@ -75,7 +75,7 @@ public class ShipPointsObjective : ShipObjective {
 
   // For every unique flavors increase the threshold by 0.05
   static int GetThreshold(int threshold, int uniqueFlavors) {
-    return (int)(threshold * (1f + 0.05f * Math.Min(0, uniqueFlavors - 1)));
+    return (int)(threshold * (1f + 0.05f * (float)Math.Max(0, uniqueFlavors - 1)));
   }
 
   public int GetPointsFor(ShippedItemEntry entry) {

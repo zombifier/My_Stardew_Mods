@@ -6,7 +6,6 @@ is a Stardew Valley mod that incentivizes shipping a wide variety of raw, fresh 
 This document is mainly intended for modders. For mod users, install the mod
 from the link above.
 
-
 - [Farm Fresh Produce](#farm-fresh-produce)
    * [Description (THIS SECTION TO BE MOVED TO NEXUS)](#description-this-section-to-be-moved-to-nexus)
       + [Mini-Desc](#mini-desc)

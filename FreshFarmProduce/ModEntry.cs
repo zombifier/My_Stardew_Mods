@@ -509,7 +509,8 @@ internal sealed class ModEntry : Mod {
             int points = value.points.Value;
             int threshold = shipPointsObjective.GetThresholdFor(value);
             int actualPoints = shipPointsObjective.GetPointsFor(value);
-            StaticMonitor.Log($"  {item}: {points}/{threshold} ({actualPoints} actual)", LogLevel.Info);
+            var uniqueFlavors = String.Join(",", value.flavors);
+            StaticMonitor.Log($"  {item}: {points}/{threshold} ({actualPoints} actual, flavors: {uniqueFlavors})", LogLevel.Info);
           }
         }
       }

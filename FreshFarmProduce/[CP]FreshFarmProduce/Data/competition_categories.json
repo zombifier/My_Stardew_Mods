@@ -161,7 +161,7 @@
             {
               "Id": "ArtisanGoods",
               // Exclude honey, aged roe and smoked fish
-              "ContextTags": ["category_artisan_goods", "!id_o_340", "!id_o_447", "!id_o_445", "id_o_smokedfish"],
+              "ContextTags": ["category_artisan_goods", "!id_o_340", "!id_o_447", "!id_o_445", "!id_o_440", "!id_o_smokedfish"],
             },
           ],
         },
