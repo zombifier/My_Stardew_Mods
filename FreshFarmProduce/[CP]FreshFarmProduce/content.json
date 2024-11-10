@@ -1,0 +1,84 @@
+{
+  "Format": "2.3.0",
+  //"ConfigSchema": {
+  //  "EnableAttack": {
+  //    "AllowValues": "true,false",
+  //    "Default": "true",
+  //  },
+  //},
+  "Changes": [
+    {
+      "LogName": "Mail Rules",
+      "Action": "Include",
+      "FromFile": "Data/mails.json",
+    },
+    {
+      "LogName": "Buff Rules",
+      "Action": "Include",
+      "FromFile": "Data/buffs.json",
+    },
+    {
+      "LogName": "Objects Rules",
+      "Action": "Include",
+      "FromFile": "Data/objects.json",
+    },
+    {
+      "LogName": "Trigger Rules",
+      "Action": "Include",
+      "FromFile": "Data/trigger_actions.json",
+    },
+    {
+      "LogName": "Competition Rules",
+      "Action": "Include",
+      "FromFile": "Data/competition_categories.json",
+    },
+    {
+      "LogName": "Special order Rules",
+      "Action": "Include",
+      "FromFile": "Data/special_orders.json",
+    },
+    {
+      "LogName": "String Rules",
+      "Action": "Include",
+      "FromFile": "Data/strings.json",
+    },
+    {
+      "LogName": "Competition Rules - Cornucopia",
+      "Action": "Include",
+      "FromFile": "Data/competition_categories_cornucopia_crops.json",
+      "When": {
+        "HasMod": "Cornucopia.MoreCrops",
+      },
+    },
+    {
+      "LogName": "Competition Rules - Cornucopia Flowers",
+      "Action": "Include",
+      "FromFile": "Data/competition_categories_cornucopia_flowers.json",
+      "When": {
+        "HasMod": "Cornucopia.MoreFlowers",
+      },
+    },
+    {
+      "LogName": "Competition Rules - Wildflour Atelier Goods",
+      "Action": "Include",
+      "FromFile": "Data/competition_categories_wag.json",
+      "When": {
+        "HasMod": "Wildflour.AtelierGoods",
+      },
+    },
+    {
+      "LogName": "Competition Rules - Inflorescence Atelier Goods",
+      "Action": "Include",
+      "FromFile": "Data/competition_categories_inflorescence.json",
+      "When": {
+        "HasMod": "aceynk.inflorescence",
+      },
+    },
+    {
+      "LogName": "Load assets",
+      "Action": "Load",
+      "Target": "{{ModId}}/Objects",
+      "FromFile": "assets/{{TargetWithoutPath}}.png",
+    },
+  ]
+}

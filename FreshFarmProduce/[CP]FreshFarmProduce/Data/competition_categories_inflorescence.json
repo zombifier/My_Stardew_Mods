@@ -1,0 +1,13 @@
+{
+  "Changes": [
+    {
+      "LogName": "Yeet Flowers",
+      "Action": "EditData",
+      "Target": "selph.FreshFarmProduce/CompetitionData",
+      "TargetField": ["Categories", "{{ModId}}.FreshFlowers"],
+      "Entries": {
+        "{{ModId}}.FreshFlowers": null,
+      },
+    },
+  ]
+}

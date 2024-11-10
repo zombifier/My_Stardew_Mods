@@ -1,0 +1,15 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add dialogue",
+      "Action": "EditData",
+      "Target": "Strings/Characters",
+      "Entries": {
+        "{{ModId}}.Morris.firstTime": "{{i18n:Morris.firstTime}}",
+        "{{ModId}}.Morris.notActive": "{{i18n:Morris.notActive}}",
+        "{{ModId}}.Morris.used": "{{i18n:Morris.used}}",
+        "{{ModId}}.Morris.firstTimeAfterCc": "{{i18n:Morris.firstTimeAfterCc}}",
+      },
+    }
+  ],
+}

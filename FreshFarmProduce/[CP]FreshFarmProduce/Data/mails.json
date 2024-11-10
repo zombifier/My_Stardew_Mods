@@ -1,0 +1,22 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add mails",
+      "Action": "EditData",
+      "Target": "Data/Mail",
+      "Entries": {
+        "{{ModId}}.CompetitionStarted_spring" : "{{i18n:CompetitionStarted_spring |FarmName={{FarmName}}}}%item specialOrder selph.FreshFarmProduce.FarmCompetition%%[#]{{i18n:CompetitionStarted.title}}",
+        "{{ModId}}.CompetitionStarted_summer" : "{{i18n:CompetitionStarted_summer |FarmName={{FarmName}}}}%item specialOrder selph.FreshFarmProduce.FarmCompetition%%[#]{{i18n:CompetitionStarted.title}}",
+        "{{ModId}}.CompetitionStarted_fall" : "{{i18n:CompetitionStarted_fall |FarmName={{FarmName}}}}%item specialOrder selph.FreshFarmProduce.FarmCompetition%%[#]{{i18n:CompetitionStarted.title}}",
+        "{{ModId}}.CompetitionStarted_winter" : "{{i18n:CompetitionStarted_winter |FarmName={{FarmName}}}}%item specialOrder selph.FreshFarmProduce.FarmCompetition%%[#]{{i18n:CompetitionStarted.title}}",
+        "{{ModId}}.NoMedal" : "{{i18n:NoMedal |FarmName={{FarmName}}}}[#]{{i18n:NoMedal.title}}",
+        "{{ModId}}.BronzeMedal" : "{{i18n:BronzeMedal |FarmName={{FarmName}}}}%item id (O)GoldCoin 80%%[#]{{i18n:BronzeMedal.title}}",
+        "{{ModId}}.SilverMedal" : "{{i18n:SilverMedal |FarmName={{FarmName}}}}%item id (O)GoldCoin 200%%%item id (O){{ModId}}.JojaDashVoucher%%%action selph.FreshFarmProduce_AddGlobalFriendshipPoints 50%%[#]{{i18n:SilverMedal.title}}",
+        "{{ModId}}.GoldMedal" : "{{i18n:GoldMedal |FarmName={{FarmName}}}}%item id (O)GoldCoin 400%%%item id (O){{ModId}}.JojaDashVoucher%%%item id (O){{ModId}}.SwagBag 3%%%action selph.FreshFarmProduce_AddGlobalFriendshipPoints 125%%[#]{{i18n:GoldMedal.title}}",
+        "{{ModId}}.IridiumMedal" : "{{i18n:IridiumMedal |FarmName={{FarmName}}}}%item id (O)GoldCoin 800%%%action AddBuff {{ModId}}.PrideOfFerngill%%%action AddMail Current {{ModId}}.PrideOfFerngillActive now%%%item id (O){{ModId}}.JojaDashVoucher%%%item id (O){{ModId}}.SwagBag 3%%%action selph.FreshFarmProduce_AddGlobalFriendshipPoints 250%%[#]{{i18n:IridiumMedal.title}}",
+        "{{ModId}}.JojaDash": "{{i18n:JojaDash}}[letterbg 4][#]{{i18n:JojaDash.title}}",
+        "{{ModId}}.JojaDashFree": "{{i18n:JojaDashFree}}[letterbg 4][#]{{i18n:JojaDashFree.title}}"
+      },
+    },
+  ]
+}

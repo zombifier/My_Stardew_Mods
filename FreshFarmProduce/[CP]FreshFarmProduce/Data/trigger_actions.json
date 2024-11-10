@@ -1,0 +1,132 @@
+{
+  "Changes": [
+    {
+      "LogName": "Trigger actions",
+      "Action": "EditData",
+      "Target": "Data/TriggerActions",
+      "Entries": {
+        "{{ModId}}.RemovePreviousRewards" : {
+					"Id": "{{ModId}}.RemovePreviousRewards",
+					"Trigger": "DayStarted",
+					"Condition": "DAY_OF_MONTH 1",
+					"Actions": [
+            "RemoveMail Current {{ModId}}.PrideOfFerngillActive",
+            "RemoveMail Current {{ModId}}.JojaDashActive",
+          ],
+          "MarkActionApplied": false,
+        },
+        "{{ModId}}.RemoveJojaDashUsed" : {
+					"Id": "{{ModId}}.RemoveJojaDashUsed",
+					"Trigger": "DayStarted",
+					"Actions": [
+            "RemoveMail Current {{ModId}}.JojaDashUsed",
+          ],
+          "MarkActionApplied": false,
+        },
+        "{{ModId}}.NoReward" : {
+					"Id": "{{ModId}}.NoReward",
+					"Trigger": "DayStarted",
+					"Condition": "DAY_OF_MONTH 1, PLAYER_HAS_MAIL Current selph.FreshFarmProduce.Finished",
+					"Actions": [
+            "AddMail Current {{ModId}}.NoMedal now",
+          ],
+          "MarkActionApplied": false,
+        },
+        "{{ModId}}.BronzeReward" : {
+					"Id": "{{ModId}}.BronzeReward",
+					"Trigger": "DayStarted",
+					"Condition": "DAY_OF_MONTH 1, PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedBronze",
+					"Actions": [
+            "AddMail Current {{ModId}}.BronzeMedal now",
+          ],
+          "MarkActionApplied": false,
+        },
+        "{{ModId}}.SilverReward" : {
+					"Id": "{{ModId}}.SilverReward",
+					"Trigger": "DayStarted",
+					"Condition": "DAY_OF_MONTH 1, PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedSilver",
+					"Actions": [
+            "AddMail Current {{ModId}}.SilverMedal now",
+          ],
+          "MarkActionApplied": false,
+        },
+        "{{ModId}}.GoldReward" : {
+					"Id": "{{ModId}}.GoldReward",
+					"Trigger": "DayStarted",
+					"Condition": "DAY_OF_MONTH 1, PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedGold",
+					"Actions": [
+            "AddMail Current {{ModId}}.GoldMedal now",
+          ],
+          "MarkActionApplied": false,
+        },
+        "{{ModId}}.IridiumReward" : {
+					"Id": "{{ModId}}.IridiumReward",
+					"Trigger": "DayStarted",
+					"Condition": "DAY_OF_MONTH 1, PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedIridium",
+					"Actions": [
+            "AddMail Current {{ModId}}.IridiumMedal now",
+          ],
+          "MarkActionApplied": false,
+        },
+        "{{ModId}}.JojaDash" : {
+					"Id": "{{ModId}}.JojaDash",
+					"Trigger": "DayStarted",
+					"Condition": "DAY_OF_MONTH 1, ANY \"PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedIridium\" \"PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedGold\" \"PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedSilver\"",
+					"Actions": [
+            "AddMail Current {{ModId}}.JojaDash now",
+          ],
+          "MarkActionApplied": true,
+        },
+        "{{ModId}}.CleanupMailFlags" : {
+					"Id": "{{ModId}}.CleanupMailFlags",
+					"Trigger": "DayStarted",
+					"Condition": "DAY_OF_MONTH 1",
+					"Actions": [
+            // These flags are set by the C# component in the previous season when the competition ends
+            "RemoveMail Current selph.FreshFarmProduce.Finished",
+            "RemoveMail Current selph.FreshFarmProduce.FinishedBronze",
+            "RemoveMail Current selph.FreshFarmProduce.FinishedSilver",
+            "RemoveMail Current selph.FreshFarmProduce.FinishedGold",
+            "RemoveMail Current selph.FreshFarmProduce.FinishedIridium",
+            "MarkActionApplied Current {{ModId}}.StartSpecialOrder false",
+          ],
+          "MarkActionApplied": false,
+        },
+        "{{ModId}}.StartSpecialOrder" : {
+					"Id": "{{ModId}}.StartSpecialOrder",
+					"Trigger": "DayStarted",
+					"Condition": "!DAY_OF_MONTH 1, PLAYER_HAS_MAIL Any newsstory",
+//					"Condition": "!DAY_OF_MONTH 1, PLAYER_HAS_MAIL Any newsstory, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedIridium, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedGold, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedSilver, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedBronze,  !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.Finished",
+					"Action": "AddMail Current {{ModId}}.CompetitionStarted_{{Season}} now",
+          "MarkActionApplied": true,
+        },
+        // The reward mail itself will apply the buff and set the "active" flag
+        "{{ModId}}.ApplyPrideOfFerngillBuff" : {
+					"Id": "{{ModId}}.ApplyPrideOfFerngillBuff",
+					"Trigger": "DayStarted",
+					"Condition": "PLAYER_HAS_MAIL Current {{ModId}}.PrideOfFerngillActive",
+					"Action": "AddBuff {{ModId}}.PrideOfFerngill",
+          "MarkActionApplied": false,
+        },
+        "{{ModId}}.JojaDashFree" : {
+					"Id": "{{ModId}}.JojaDashFree",
+					"Trigger": "DayStarted",
+					"Condition": "PLAYER_HAS_SEEN_EVENT Any 502261",
+					"Actions": [
+            "AddMail Current {{ModId}}.JojaDashFree now",
+          ],
+          "MarkActionApplied": true,
+        },
+        "{{ModId}}.TriggerAfterCcDialogue" : {
+					"Id": "{{ModId}}.TriggerAfterCcDialogue",
+					"Trigger": "DayStarted",
+					"Condition": "PLAYER_HAS_SEEN_EVENT Any 191393",
+					"Actions": [
+            "RemoveMail Current selph.FreshFarmProduce.JojaDashFirstTime now",
+          ],
+          "MarkActionApplied": true,
+        },
+      },
+    },
+  ]
+}

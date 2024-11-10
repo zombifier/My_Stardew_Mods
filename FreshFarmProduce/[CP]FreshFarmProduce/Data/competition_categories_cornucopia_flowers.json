@@ -1,0 +1,32 @@
+{
+  "Changes": [
+    {
+      "LogName": "Lower threshold - veggies",
+      "Action": "EditData",
+      "Target": "selph.FreshFarmProduce/CompetitionData",
+      "TargetField": ["Categories", "{{ModId}}.FreshVegetables"],
+      "Entries": {
+        "TotalPoints": 800,
+      },
+    },
+    {
+      "LogName": "Lower threshold - fruits",
+      "Action": "EditData",
+      "Target": "selph.FreshFarmProduce/CompetitionData",
+      "TargetField": ["Categories", "{{ModId}}.FreshFruits"],
+      "Entries": {
+        "TotalPoints": 800,
+      },
+    },
+    {
+      "LogName": "More Flowers",
+      "Action": "EditData",
+      "Target": "selph.FreshFarmProduce/CompetitionData",
+      "TargetField": ["Categories", "{{ModId}}.FreshFlowers"],
+      "Entries": {
+        "TotalPoints": 800,
+        "MaxIndividualPoints": 100,
+      },
+    },
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "CompetitionName": "Farm of the Season",
+  "CompetitionDescription": "Fill in each category by shipping a wide variety of fresh produce and be crowned the best farm in all of the Ferngill Republic!",
+  "StaleItemName": "{{Name}} (Stale)",
+  "JojaMealItemName": "\"Fresh\" {{Name}}",
+  // Console commands
+  "AddSpecialOrder": "Add the competition special order.",
+  "RemoveSpecialOrder": "Remove the competition special order.",
+  "ResetSpecialOrder": "Reset the competition special order.",
+  "PrintDiagnostics": "Print detailed competition info.",
+  "AddWinningItems": "Add to your inventory stacks of items that should win the competition when shipped.",
+  // JojaDash stuff
+  "JojaDash": "JojaFresh(tm)",
+  "JojaDash.notActive": "You don't have an active JojaFresh(tm) subscription. Win at least a Silver Medal in the Farm of the Season competition to earn one.",
+  "JojaDash.alreadyUsed": "You have already ordered from JojaFresh(tm) today.",
+  "JojaDash.subscriptionActive": "JojaFresh(tm) Daily Meal Kit subscription active!",
+  "JojaDash.subscriptionAlreadyActive": "You already have a JojaFresh(tm) subscription active.",
+  "JojaDash.order": "ORDER!",
+  "JojaDash.lucky": "I'm feeling lucky!",
+  "JojaDash.orderTooltip": "You will order one {{foodName}}.",
+  "JojaDash.orderTooltipNotSelected": "Select a food item first",
+  "JojaDash.luckyTooltip": "Let JojaFresh(tm) pick a random item for you.",
+  // Config
+  "Config.disableFlash.name": "Disable JojaFresh Flashing.",
+  "Config.disableFlash.description": "Disable the flashing after ordering from JojaFresh.",
+}

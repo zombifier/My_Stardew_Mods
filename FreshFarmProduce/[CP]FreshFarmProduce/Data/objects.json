@@ -1,0 +1,63 @@
+{
+  "Changes": [
+    {
+      "LogName": "Make coffee beans eligible for freshness",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["433", "ContextTags"],
+      "Entries": {
+        "spoilable_item": "spoilable_item",
+      },
+    },
+    {
+      "LogName": "Add items",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}.SwagBag": {
+          "Name": "{{ModId}}.SwagBag",
+          "SpriteIndex": 0,
+          "DisplayName": "{{i18n:SwagBag.name}}",
+          "Description": "{{i18n:SwagBag.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 0,
+          "ExcludeFromFishingCollection": true,
+          "ExcludeFromShippingCollection": true,
+          "ExcludeFromRandomSale": true,
+          "ContextTags": [
+            "color_purple",
+          ],
+        },
+        "{{ModId}}.JojaDashVoucher": {
+          "Name": "{{ModId}}.JojaDashVoucher",
+          "SpriteIndex": 1,
+          "DisplayName": "{{i18n:JojaDashVoucher.name}}",
+          "Description": "{{i18n:JojaDashVoucher.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 0,
+          "ExcludeFromFishingCollection": true,
+          "ExcludeFromShippingCollection": true,
+          "ExcludeFromRandomSale": true,
+          "ContextTags": [
+            "color_blue",
+          ],
+        },
+      }
+    },
+    //{
+    //  "LogName": "Add items - SpaceCore VAE",
+    //  "Action": "EditData",
+    //  "Target": "Data/Objects",
+    //  "Entries": {
+    //    "{{ModId}}.JojaDashVoucher": {
+    //      "UseForTriggerAction": true,
+    //    },
+    //    "{{ModId}}.SwagBag": {
+    //      "UseForTriggerAction": true,
+    //    },
+    //  }
+    //},
+  ]
+}
