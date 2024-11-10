@@ -155,6 +155,11 @@ public class HarmonyPatcher {
         original: AccessTools.Method(typeof(MachineDataUtility),
           nameof(MachineDataUtility.GetOutputItem)),
         transpiler: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.MachineDataUtility_GetOutputItem_Transpiler)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(SObject),
+          nameof(SObject.onReadyForHarvest)),
+        postfix: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.SObject_onReadyForHarvest_Postfix)));
   }
 
 	static void SObject_canBePlacedHere_Postfix(SObject __instance, ref bool __result, GameLocation l, Vector2 tile, CollisionMask collisionMask = CollisionMask.All, bool showError = false) {
@@ -491,5 +496,29 @@ public class HarmonyPatcher {
         new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatcher), nameof(HarmonyPatcher.PopulateContext)))
     );
     return matcher.InstructionEnumeration();
+  }
+  static string readyForHarvestModData = $"{ModEntry.UniqueId}.CountForPerfection";
+
+  public static void SObject_onReadyForHarvest_Postfix(SObject __instance) {
+    if (__instance.heldObject.Value?.modData?.ContainsKey(readyForHarvestModData) ?? false) {
+      // mark fish caught for achievements and stats
+      IDictionary<string, string> fishData = DataLoader.Fish(Game1.content);
+      if (fishData.TryGetValue(__instance.heldObject.Value.ItemId, out string? fishRow)) {
+          var item = __instance.heldObject.Value;
+          int size = 0;
+          try {
+            string[] fields = fishRow.Split('/');
+            bool isValid = fields.Length > 5;
+            bool isRegularFish = fields.Length > 10;
+            int lowerSize = isValid ? (isRegularFish ? Convert.ToInt32(fields[3]) : Convert.ToInt32(fields[5])) : 1;
+            int upperSize = isValid ? (isRegularFish ? Convert.ToInt32(fields[4]) : Convert.ToInt32(fields[6])) : 1;
+            size = Game1.random.Next(lowerSize, upperSize + 1);
+          }
+          catch (Exception e) {
+            ModEntry.StaticMonitor.Log($"Error getting fish length: {e.Message}", LogLevel.Warn);
+          }
+          (Game1.GetPlayer(__instance.owner.Value) ?? Game1.player).caughtFish(item.ItemId, size);
+      }
+    }
   }
 }

@@ -14,9 +14,11 @@ content packs. For users, install the mod as usual from the link above.
 
 ## Table of Contents
 * [Terrain-Based Machine Feature](#terrain-based-machine-feature)
-    + [Machine API](#machine-api)
-    + [Tapper API](#tapper-api)
-    + [Example](#example)
+   + [Machine API](#machine-api)
+      - [Extra GSQs](#extra-gsqs)
+      - [Extra item queries](#extra-item-queries)
+   + [Tapper API](#tapper-api)
+   + [Example](#example)
 * [Aquatic Crops Feature](#aquatic-crops-feature)
 
 ## Terrain-Based Machine Feature
@@ -79,10 +81,12 @@ where feature type can be one of `Tree`, `FruitTree` or `GiantCrop`. A feature
 ID can optionally be specified, to limit the condition to certain types of wild
 trees/fruit trees/giant crops.
 
+---
+
 #### Extra item queries
 
 NOTE: The latest version uploaded on Nexus doesn't have the
-extra params in `MACHINE_FISH_LOCATION` yet. I'm waiting for a private beta tester to
+extra params in `MACHINE_FISH_LOCATION` or the 'fish caught' feature yet. I'm waiting for a private beta tester to
 get back to me before uploading it. Thanks for your patience.
 
 This mod adds the following item queries, usable only in machine output item
@@ -94,6 +98,10 @@ context's custom fields):
 | `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT <ignoreLocationJunkChance> <usingGoodBait> <isMariner> <baitTargetFish>` | Get a crab pot fish, or a junk item, from the tile the machine is placed on. This GSQ attempts to simulate vanilla crab pot logic as close as humanly possible, including the percentage chance each fish can be caught, and thus accepts four optional parameters to control its behavior:<br><br>`ignoreLocationJunkChance`: if `true`, ignore the location's crab pot junk chance as defined in [`CrabPotJunkChance`](https://stardewvalleywiki.com/Modding:Location_data).<br><br>`usingGoodBait`: Whether to cut the aformentioned junk chance in half (e.g. due to good bait being used).<br><br>`isMariner`: Whether to simulate the farmer having the [Mariner profession](https://stardewvalleywiki.com/Fishing#Fishing_Skill), which does three things: remove junk from crab pots entirely, make crab pots ignore fish-specific bait, and make all crab pot fish equally likely to be picked.<br><br>`baitTargetFish`: The ID of a specific fish to prioritize, to simulate the effect of targeted bait. If your machine rules accept a targeted bait item, you can put `DROP_IN_PRESERVE` into this field.|
 | `selph.CustomTapperFramework_MACHINE_FISH_LOCATION <getAllFish> <alsoCatchBossFish> <usingMagicBait>`| Identical to the [`FISH_LOCATION`](https://stardewvalleywiki.com/Modding:Item_queries#Specialized) GSQ, but with location, bobber tile and bobber depth already populated with the machine's current location. Accepts the following params:<br><br>*`getAllFish`: if `true`, get all possible fish that can be caught from this body of water, ignoring catch chance, player position requirement, bobber/depth requirement, and time requirement. Setting this to `true` will also activate the parameters after this one, settings to `false` will just have the item query call `FISH_LOCATION` directly. Highly recommended this is set to true.<br><br>`alsoCatchBossFish`: If set to `true`, also allow legendary boss fish to be caught.<br><br>`usingMagicBait`: If set to `true`, ignore season requirement, and allows catching fish that is marked to only be catchable with magic bait.|
 
+If you want the fish caught by these item queries to count for perfection, add
+`"selph.CustomTapperFramework.CountForPerfection": "true"` to the item query's `ModData`
+field. If not, leave it out.
+
 For the crab pot item query it's recommended you use
 `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT true true true` by default
 for best results. This gets all crab pot catchable fish from the machine's
@@ -101,9 +109,10 @@ location, without junk, special logic or any bias to any one fish.
 
 Similarly, for the fish location query it's *highly* recommended you use
 `selph.CustomTapperFramework_MACHINE_FISH_LOCATION true false` for best results,
-with similar effects. Use `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT
+with similar effects. Use `selph.CustomTapperFramework.MACHINE_FISH_LOCATION
 true false true` for magic bait effect. If you also want Legendary Fishes (but
 why lol), change the `false` to `true`.
+
 
 ---
 
