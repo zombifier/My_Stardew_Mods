@@ -506,19 +506,21 @@ public static class CustomCrabPotUtils
 //      spriteBatch.Draw(Game1.mouseCursors, new Vector2(x * 64, y * 64 + (int)yBob - 64) + new Vector2(-32f, -32f), new Microsoft.Xna.Framework.Rectangle(88, 1779, 32, 32), Color.White * 0.75f, 0f, Vector2.Zero, 4f, SpriteEffects.None, Math.Max(0f, (float)((y + 1) * 64 - 20) / 10000f) + (float)x / 1000000f);
     }
 
-    //if (location.waterTiles != null && x < location.waterTiles.waterTiles.GetLength(0) && y < location.waterTiles.waterTiles.GetLength(1) && location.waterTiles.waterTiles[x, y].isWater)
-    //{
-    //  if (location.waterTiles.waterTiles[x, y].isVisible)
-    //  {
-    //    spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, crabPotData.directionOffset + new Vector2(x * 64 + 4, y * 64 + 48)) + crabPotData.shake, new Microsoft.Xna.Framework.Rectangle(location.waterAnimationIndex * 64, 2112 + (((x + y) % 2 != 0) ? ((!location.waterTileFlip) ? 128 : 0) : (location.waterTileFlip ? 128 : 0)), 56, 16 + (int)yBob), location.waterColor.Value, 0f, Vector2.Zero, 1f, SpriteEffects.None, ((float)(y * 64) + crabPotData.directionOffset.Y + (float)(x % 4)) / 9999f);
-    //  }
-    //  else
-    //  {
-    //    Color a = new Color(135, 135, 135, 215);
-    //    a = Utility.MultiplyColor(a, location.waterColor.Value);
-    //    spriteBatch.Draw(Game1.staminaRect, Game1.GlobalToLocal(Game1.viewport, crabPotData.directionOffset + new Vector2(x * 64 + 4, y * 64 + 48)) + crabPotData.shake, null, a, 0f, Vector2.Zero, new Vector2(56f, 16 + (int)yBob), SpriteEffects.None, ((float)(y * 64) + crabPotData.directionOffset.Y + (float)(x % 4)) / 9999f);
-    //  }
-    //}
+    if (obj.HasContextTag("draw_water_overlay")) {
+      if (location.waterTiles != null && x < location.waterTiles.waterTiles.GetLength(0) && y < location.waterTiles.waterTiles.GetLength(1) && location.waterTiles.waterTiles[x, y].isWater)
+      {
+        if (location.waterTiles.waterTiles[x, y].isVisible)
+        {
+          spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, crabPotData.directionOffset + new Vector2(x * 64 + 4, y * 64 + 48)) + crabPotData.shake, new Microsoft.Xna.Framework.Rectangle(location.waterAnimationIndex * 64, 2112 + (((x + y) % 2 != 0) ? ((!location.waterTileFlip) ? 128 : 0) : (location.waterTileFlip ? 128 : 0)), 56, 16 + (int)yBob), location.waterColor.Value, 0f, Vector2.Zero, 1f, SpriteEffects.None, ((float)(y * 64) + crabPotData.directionOffset.Y + (float)(x % 4)) / 9999f);
+        }
+        else
+        {
+          Color a = new Color(135, 135, 135, 215);
+          a = Utility.MultiplyColor(a, location.waterColor.Value);
+          spriteBatch.Draw(Game1.staminaRect, Game1.GlobalToLocal(Game1.viewport, crabPotData.directionOffset + new Vector2(x * 64 + 4, y * 64 + 48)) + crabPotData.shake, null, a, 0f, Vector2.Zero, new Vector2(56f, 16 + (int)yBob), SpriteEffects.None, ((float)(y * 64) + crabPotData.directionOffset.Y + (float)(x % 4)) / 9999f);
+        }
+      }
+    }
     if ((bool)obj.readyForHarvest.Value && obj.heldObject.Value != null)
     {
       float num = 4f * (float)Math.Round(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 250.0), 2);

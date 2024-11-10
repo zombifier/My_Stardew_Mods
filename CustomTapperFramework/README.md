@@ -50,6 +50,8 @@ First, set the appropriate context tags for your big craftables:
   * To make this building placeable on fruit trees, add `"custom_fruit_tree_tapper_item"`
   * To make this building placeable on giant crops, add `"custom_giant_crop_tapper_item"`
 * If a crab pot-like water building, add `"custom_crab_pot_item"`
+  * If you want to draw the "submerged" water overlay like regular crab pots,
+    add `"draw_water_overlay"`.
   * By default, all water machines can be picked up by hand if they're
     processing an output; this is to prevent machines that automatically
     produce from being unremovable. To make them unremovable when processing,
