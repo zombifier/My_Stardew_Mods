@@ -3,7 +3,7 @@
       background-border-thickness="48,0"
       padding="16"
       margin="0,0,0,32"
-      text={HeaderText} />
+      text={:HeaderText} />
   <frame layout="880px 640px"
       margin="0,0,0,0"
       padding="32,24"
@@ -25,7 +25,7 @@
             <image
               layout="64px 64px"
               padding="4,4,4,4"
-              sprite={Sprite}/>
+              sprite={:Sprite}/>
             </frame>
             <lane
               padding="16,0,16,8"
@@ -33,15 +33,15 @@
               orientation="vertical" >
               <lane
                 orientation="horizontal">
-                <banner text={Name} margin="0,4,0,0"/>
+                <banner text={:Name} margin="0,4,0,0"/>
                 <spacer layout="stretch 0px" />
-                <label text={Points}
+                <label text={:Points}
                   font="small"
                   padding="0,24,0,0"
-                  color={TextColor}
+                  color={:TextColor}
                 />
-                <label text="/" font="small" padding="0,24,0,0" color={TextColor}/>
-                <label text={TotalPoints} font="small" padding="0,24,0,0" color={TextColor}/>
+                <label text="/" font="small" padding="0,24,0,0" color={:TextColor}/>
+                <label text={:TotalPoints} font="small" padding="0,24,0,0" color={:TextColor}/>
               </lane>
               <panel
                 layout="stretch content" >
@@ -50,11 +50,11 @@
                   fit="stretch"
                   sprite={@Mods/selph.FreshFarmProduce/Sprites/Progress_Bar:ProgressBar} />
                 <image
-                  layout={BarPercentage}
+                  layout={:BarPercentage}
                   margin="4"
-                  tint={BarColor}
+                  tint={:BarColor}
                   fit="stretch"
-                  sprite={BarTexture} />
+                  sprite={:BarTexture} />
               </panel>
             </lane>
           </lane>
@@ -66,7 +66,7 @@
               margin="0,8,0,16"
               layout="stretch content"
               font="dialogue"
-              text={Description} />
+              text={:Description} />
             <lane
               orientation="horizontal"
               margin="24,0,24,0"
@@ -76,9 +76,9 @@
                 sprite={Data}/>
               <label margin="4,0,0,0" text={ItemName} />
               <spacer layout="stretch 0px" />
-              <label text={Points} font="small"/>
+              <label text={:Points} font="small"/>
               <label text="/" font="small" *if={HasThreshold}/>
-              <label text={TotalPoints} font="small" *if={HasThreshold}/>
+              <label text={:TotalPoints} font="small" *if={HasThreshold}/>
             </lane>
           </lane>
         </expander>

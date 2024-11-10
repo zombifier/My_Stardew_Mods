@@ -20,7 +20,7 @@
             "ForagingLevel": 2.0,
             "MaxStamina": 0.0,
             "MagneticRadius": 0.0,
-            "Speed": 0.5,
+            "Speed": 1.0,
             "Defense": 2.0,
             "Attack": 2.0,
             "AttackMultiplier": 0.0,

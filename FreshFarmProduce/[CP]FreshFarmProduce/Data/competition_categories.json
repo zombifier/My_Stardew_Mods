@@ -124,7 +124,7 @@
             },
             {
               "Id": "Cloth",
-              "ItemIds": ["(O)440"],
+              "ItemIds": ["(O)428"],
             },
           ],
         },
@@ -160,8 +160,8 @@
           "ItemCriterias": [
             {
               "Id": "ArtisanGoods",
-              // Exclude honey, aged roe and smoked fish
-              "ContextTags": ["category_artisan_goods", "!id_o_340", "!id_o_447", "!id_o_445", "!id_o_440", "!id_o_smokedfish"],
+              // Exclude honey, aged roe, smoked fish and cloth
+              "ContextTags": ["category_artisan_goods", "!id_o_340", "!id_o_447", "!id_o_445", "!id_o_428", "!id_o_smokedfish"],
             },
           ],
         },
