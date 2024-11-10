@@ -37,7 +37,7 @@ your machine, not both.
 
 KNOWN ISSUE: Machine rules don't support putting the terrain produce as the
 input item query yet. I forgor to implement this feature, so the Tapper API
-isn't quite deprecated yet if you need it.
+isn't quite deprecated yet if you need it. Let me know if you want this feature.
 
 ---
 
@@ -102,7 +102,7 @@ context's custom fields):
 
 If you want the fish caught by these item queries to count for perfection, add
 `"selph.CustomTapperFramework.CountForPerfection": "true"` to the item query's `ModData`
-field. If not, leave it out.
+field. If not, leave it out. This field currently only works for machine processing.
 
 For the crab pot item query it's recommended you use
 `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT true true true` by default
@@ -115,10 +115,32 @@ with similar effects. Use `selph.CustomTapperFramework.MACHINE_FISH_LOCATION
 true false true` for magic bait effect. If you also want Legendary Fishes (but
 why lol), change the `false` to `true`.
 
+#### Get the tapper output in machine rules
+For machines placed on trees, you can get the vanilla tapper output by setting the following field in the item query:
+
+```
+"OutputMethod": "Selph.StardewMods.MachineTerrainFramework.Utils, CustomTapperFramework: OutputTapper",
+```
+
+Make sure to also set `"custom_wild_tree_tapper_item"` context tag so the base
+game handling doesn't overwrite it.
+
+This will set the output to be the tree tapper produce, with ready time, stack
+count, and other fields already populated from the wild tree data. IMPORTANT:
+If you want to modify ready time, quality and stack size further, use
+`ReadyTimeModifiers`, `QualityModifiers` and `StackModifiers`. For example, to
+have your custom tapper produce 2 days earlier, add a ["minus
+2"](https://stardewvalleywiki.com/Modding:Common_data_field_types#Quantity_modifiers)
+to the `ReadyTimeModifiers` field.
+
 
 ---
 
 ### Tapper API
+
+NOTE: This API is mostly deprecated, and should only be used for when you want
+the "input item is the terrain feature's usual produce" feature.
+
 First, add `"tapper_item"` context tag to your big craftables.
 
 Then, write the mod data to the `selph.CustomTapperFramework/Data` asset, unless

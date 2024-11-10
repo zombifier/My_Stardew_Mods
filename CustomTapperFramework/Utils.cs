@@ -2,11 +2,13 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Internal;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Extensions;
+using StardewValley.GameData.Machines;
 
 
 namespace Selph.StardewMods.MachineTerrainFramework;
@@ -55,7 +57,8 @@ public static class Utils {
           _ => null,
       };
       if (outputRules == null) return null;
-      string sourceId = GetFeatureId(feature);      IEnumerable<ExtendedTapItemData> filteredOutputRules;
+      string sourceId = GetFeatureId(feature);
+      IEnumerable<ExtendedTapItemData> filteredOutputRules;
       if (ruleId != null) {
         filteredOutputRules = from outputRule in outputRules
           where outputRule.Id == ruleId
@@ -245,5 +248,25 @@ public static class Utils {
       default:
         return null;
     }
+  }
+
+	public static Item? OutputTapper(SObject machine, Item inputItem, bool probe, MachineItemOutput outputData, Farmer player, out int? overrideMinutesUntilReady) {
+    if (GetFeatureAt(machine.Location, machine.TileLocation, out var feature, out var _) && feature is Tree tree) {
+      overrideMinutesUntilReady = 0;
+      try {
+        Random r = Utility.CreateRandom(Game1.uniqueIDForThisGame, Game1.stats.DaysPlayed, 73137.0, (double)tree.Tile.X * 9.0, (double)tree.Tile.Y * 13.0);
+        object[] args = [tree.GetData()?.TapItems, machine.lastInputItem.Value?.ItemId, r, (float)1.0, null, null];
+        ModEntry.Helper.Reflection
+          .GetMethod(tree, "TryGetTapperOutput")
+          .Invoke<bool>(args);
+        overrideMinutesUntilReady = Convert.ToInt32(args[5]);
+        return args[4] as Item;
+      } catch (Exception e) { 
+        ModEntry.StaticMonitor.Log($"Error getting tapper output: {e.Message}", LogLevel.Warn);
+      }
+    }
+    overrideMinutesUntilReady = null;
+    return null;
+
   }
 }

@@ -51,7 +51,8 @@ public static class MachineTerrainItemQueries {
 			HashSet<string>? ignoreQueryKeys = (usingMagicBait ? GameStateQuery.MagicBaitIgnoreQueryKeys : null);
 			foreach (SpawnFishData spawn in possibleFish) {
 				if ((spawn.FishAreaId != null && fishAreaId != spawn.FishAreaId) ||
-            (spawn.Season.HasValue && !usingMagicBait && spawn.Season != seasonForLocation)) {
+            (spawn.Season.HasValue && !usingMagicBait && spawn.Season != seasonForLocation) ||
+            (spawn.RequireMagicBait && !usingMagicBait)) {
 					continue;
 				}
 				if (spawn.Condition != null && !GameStateQuery.CheckConditions(spawn.Condition, context.Location, null, null, null, null, ignoreQueryKeys)) {
