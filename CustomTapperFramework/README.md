@@ -46,6 +46,12 @@ First, set the appropriate context tags for your big craftables:
   * To make this building placeable on fruit trees, add `"custom_fruit_tree_tapper_item"`
   * To make this building placeable on giant crops, add `"custom_giant_crop_tapper_item"`
 * If a crab pot-like water building, add `"custom_crab_pot_item"`
+  * By default, all water machines can be picked up by hand if they're
+    processing an output; this is to prevent machines that automatically
+    produce from being unremovable. To make them unremovable when processing,
+    add `"prevent_remove_when_processing"`. Outside of this case, all water
+    machines can be picked up if they're not processing, or if they don't have
+    ready output.
 
 Then define your machine behavior in
 [`Data/Machines`](https://stardewvalleywiki.com/Modding:Machines) as usual.
@@ -71,20 +77,29 @@ trees/fruit trees/giant crops.
 
 #### Extra item queries
 
+NOTE: The latest version uploaded on Nexus doesn't have the
+extra params in `MACHINE_FISH_LOCATION` yet. I'm waiting for a private beta tester to
+get back to me before uploading it. Thanks for your patience.
+
 This mod adds the following item queries, usable only in machine output item
 rules (as well as any mod that pass a `Tile` parameter into the item query
 context's custom fields):
 
 | Item query |  Description |
 | ---------- |  ----------- |
-| `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT <ignoreLocationJunkChance> <usingGoodBait> <isMariner> <baitTargetFish>` | Get a crab pot fish, or a junk item, from the tile the machine is placed on. This GSQ attempts to simulate vanilla crab pot logic as close as humanly possible, including the percentage chance each fish can be caught, and thus accepts four optional parameters to control its behavior:<br>`ignoreLocationJunkChance`: if `true`, ignore the location's crab pot junk chance as defined in [`CrabPotJunkChance`](https://stardewvalleywiki.com/Modding:Location_data).<br>`usingGoodBait`: Whether to cut the aformentioned junk chance in half (e.g. due to good bait being used).<br>`isMariner`Whether to simulate the farmer having the [Mariner profession](https://stardewvalleywiki.com/Fishing#Fishing_Skill), which does three things: remove junk from crab pots entirely, make crab pots ignore fish-specific bait, and make all crab pot fish equally likely to be picked.<br>`baitTargetFish`The ID of a specific fish to prioritize, to simulate the effect of targeted bait. If your machine rules accept a targeted bait item, you can put `DROP_IN_PRESERVE` into this field.|
-| `selph.CustomTapperFramework_MACHINE_FISH_LOCATION` | Identical to the [`FISH_LOCATION`](https://stardewvalleywiki.com/Modding:Item_queries#Specialized) GSQ, but with location, bobber tile and bobber depth already populated with the machine's current location.|
+| `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT <ignoreLocationJunkChance> <usingGoodBait> <isMariner> <baitTargetFish>` | Get a crab pot fish, or a junk item, from the tile the machine is placed on. This GSQ attempts to simulate vanilla crab pot logic as close as humanly possible, including the percentage chance each fish can be caught, and thus accepts four optional parameters to control its behavior:<br>`ignoreLocationJunkChance`: if `true`, ignore the location's crab pot junk chance as defined in [`CrabPotJunkChance`](https://stardewvalleywiki.com/Modding:Location_data).<br>`usingGoodBait`: Whether to cut the aformentioned junk chance in half (e.g. due to good bait being used).<br>`isMariner`: Whether to simulate the farmer having the [Mariner profession](https://stardewvalleywiki.com/Fishing#Fishing_Skill), which does three things: remove junk from crab pots entirely, make crab pots ignore fish-specific bait, and make all crab pot fish equally likely to be picked.<br>`baitTargetFish`: The ID of a specific fish to prioritize, to simulate the effect of targeted bait. If your machine rules accept a targeted bait item, you can put `DROP_IN_PRESERVE` into this field.|
+| `selph.CustomTapperFramework_MACHINE_FISH_LOCATION <getAllFish> <alsoCatchBossFish> <usingMagicBait>| Identical to the [`FISH_LOCATION`](https://stardewvalleywiki.com/Modding:Item_queries#Specialized) GSQ, but with location, bobber tile and bobber depth already populated with the machine's current location. Accepts the following params:<br>*`getAllFish`: if `true`, get all possible fish that can be caught from this body of water, ignoring catch chance, player position requirement, bobber/depth requirement, and time requirement. Setting this to `true` will also activate the parameters after this one, settings to `false` will just have the item query call `FISH_LOCATION` directly. Highly recommended this is set to true.<br>`alsoCatchBossFish`: If set to `true`, also allow legendary boss fish to be caught.<br>`usingMagicBait`: If set to `true`, ignore season requirement, and allows catching fish that is marked to only be catchable with magic bait.|
 
 For the crab pot item query it's recommended you use
 `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT true true true` by default
 for best results. This gets all crab pot catchable fish from the machine's
 location, without junk, special logic or any bias to any one fish.
 
+Similarly, for the fish location query it's *highly* recommended you use
+`selph.CustomTapperFramework_MACHINE_FISH_LOCATION true false` for best results,
+with similar effects. Use `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT
+true false true` for magic bait effect. If you also want Legendary Fishes (but
+why lol), change the `false` to `true`.
 
 ### Tapper API
 First, add `"tapper_item"` context tag to your big craftables.

@@ -276,7 +276,8 @@ public static class CustomCrabPotUtils
   //    return true;
   //  }
     bool machineNotWorking = (obj is not IndoorPot &&
-        (obj.heldObject.Value == null || !obj.readyForHarvest.Value));
+        (obj.heldObject.Value == null ||
+        (!obj.readyForHarvest.Value && !obj.HasContextTag("prevent_remove_when_processing"))));
     bool waterPlanterHasNoCrops = (obj is IndoorPot waterPlanter &&
            waterPlanter.hoeDirt.Value.crop == null &&
            waterPlanter.bush.Value == null);
