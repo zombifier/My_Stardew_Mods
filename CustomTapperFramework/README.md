@@ -75,8 +75,6 @@ The `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE` GSQ takes the
 selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE <feature type> [optional feature ID]
 ```
 
----
-
 where feature type can be one of `Tree`, `FruitTree` or `GiantCrop`. A feature
 ID can optionally be specified, to limit the condition to certain types of wild
 trees/fruit trees/giant crops.
