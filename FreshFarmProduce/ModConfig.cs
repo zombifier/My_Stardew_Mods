@@ -1,5 +1,5 @@
-namespace Selph.StardewMods.SpookyVoidChickens;
+namespace Selph.StardewMods.FreshFarmProduce;
 
 public sealed class ModConfig {
-  public bool EvenMoreImmersiveManure = false;
+  public bool DisableFlash = false;
 }

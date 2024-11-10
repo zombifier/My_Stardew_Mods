@@ -1,6 +1,6 @@
-# Farm Fresh Produce
+# Fresh Farm Produce
 
-[Farm Fresh Produce](https://www.nexusmods.com/stardewvalley/mods/22256)
+[Fresh Farm Produce](https://www.nexusmods.com/stardewvalley/mods/22256)
 is a Stardew Valley mod that incentivizes shipping a wide variety of raw, fresh produce
 
 This document is mainly intended for modders. For mod users, install the mod
@@ -191,27 +191,28 @@ rewards through mail depending on how many categories you managed to achieve:
 * Silver Medal (50% of categories):
   * 50,000 gold
   * +0.2 heart with every villager
-  * A voucher that when used grants a month-long subscription to JojaDash(tm)
-    Daily Delivery, allowing you to use the phone to order one free food
-    item of your choice from JojaDash. You can only order from JojaDash(tm) once per
+  * A voucher that when used grants a month-long subscription to JojaFresh(tm)
+    Daily Meal Kit, allowing you to use the phone to order one free food
+    item of your choice from JojaFresh. You can only order from JojaFresh(tm) once per
     day, and the subscription expires at the end of the season.
-  * NOTE: If you go the Joja Route, you'll also receive lifetime free JojaDash!
+  * NOTE: If you go the Joja Route, you'll also receive lifetime free JojaFresh!
     Feel free to toss these vouchers in that case, they have no use.
 * Gold Medal (75% of categories):
   * 100,000 gold
   * +0.5 heart with every villager,
-  * JojaDash subscription
-  * Iridium Swag Bag: contains a random assortment of items, including a Tea
-    Set, Magic Bait, Qi Seasoning, and 5 random items that you have yet to
+  * JojaFresh subscription
+  * Iridium Swag Bag: contains a random assortment of items, including Magic
+    Bait, Qi Seasoning, rarely a Tea Set, and random items that you have yet to
     ship/donate/cook/fish for Perfection (cooking and fishing will count even
-    if you haven't done the work yourself). Courtesy of Mr Qi, who snuck this
-    in your mailbox as a reward for a job well done.
+    if you haven't done the work yourself). If you already achieved perfection,
+    you'll get extra Magic Rock Candies instead. Courtesy of Mr Qi, who snuck
+    this in your mailbox as a reward for a job well done.
 * Iridium Medal (every category, wow!):
   * 200,000 gold
   * +1 heart with every villager
-  * JojaDash
+  * JojaFresh
   * Iridium Swag Bag
-  * Pride of the Valley: A buff that lasts the entire month. Adds +2 to all skills and attack/defense, +0.5 move speed and +1 Luck
+  * Pride of the Valley: A buff that lasts the entire month. Adds +2 to all skills and attack/defense, +1 move speed and +1 Luck
 
 ### Installation Instruction
 * Download and install SMAPI, Content Patcher, [SpaceCore](https://www.nexusmods.com/stardewvalley/mods/1348) and [StardewUI](https://www.nexusmods.com/stardewvalley/mods/28870).

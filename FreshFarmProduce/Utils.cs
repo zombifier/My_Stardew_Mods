@@ -67,4 +67,8 @@ static class Utils {
       Utility.consolidateStacks(chest.Items);
     }
   }
+
+  public static bool IsJojaMealItem(Item item) {
+    return item.modData.ContainsKey(JojaDashTerminalModel.JojaMealKey);
+  }
 }

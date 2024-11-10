@@ -34,7 +34,7 @@ internal sealed class ModEntry : Mod {
 
   internal static CompetitionDataAssetHandler competitionDataAssetHandler = null!;
 
-  //private ModConfig Config;
+  public static ModConfig Config = null!;
 
   public static string FarmCompetitionSpecialOrderId { get => $"{UniqueId}.FarmCompetition"; }
 
@@ -44,7 +44,7 @@ internal sealed class ModEntry : Mod {
   }
 
   public override void Entry(IModHelper helper) {
-//    this.Config = helper.ReadConfig<ModConfig>();
+    Config = helper.ReadConfig<ModConfig>();
     Helper = helper;
     StaticMonitor = this.Monitor;
     UniqueId = this.ModManifest.UniqueID;
@@ -56,7 +56,6 @@ internal sealed class ModEntry : Mod {
     helper.Events.GameLoop.DayEnding += OnDayEnding;
     helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
     helper.Events.Display.MenuChanged += OnMenuChanged;
-//    helper.Events.GameLoop.DayStarted += OnDayStarted;
 
     // Register custom stuff
     TriggerActionManager.RegisterAction(
@@ -143,7 +142,7 @@ internal sealed class ModEntry : Mod {
           nameof(ModEntry.QuestLog_receiveLeftClick_postfix)));
   }
   
-  static void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
+  void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
     SpaceCore.IApi? scApi = Helper.ModRegistry.GetApi<SpaceCore.IApi>("spacechase0.SpaceCore");
     if (scApi is null) {
       StaticMonitor.Log("FATAL ERROR: SpaceCore API not detected! This should not happen.", LogLevel.Error);
@@ -160,6 +159,28 @@ internal sealed class ModEntry : Mod {
     viewEngine.RegisterViews($"Mods/{UniqueId}/Views", "assets/views");
     viewEngine.RegisterSprites($"Mods/{UniqueId}/Sprites", "assets/sprites");
     viewEngine.EnableHotReloading();
+
+    // get Generic Mod Config Menu's API (if it's installed)
+    var configMenu = Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+    if (configMenu is null)
+      return;
+
+    // register mod
+    configMenu.Register(
+        mod: this.ModManifest,
+        reset: () => Config = new ModConfig(),
+        save: () => {
+          Helper.WriteConfig(Config);
+        });
+
+    // add some config options
+    configMenu.AddBoolOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.disableFlash.name"),
+        tooltip: () => Helper.Translation.Get("Config.disableFlash.description"),
+        getValue: () => Config.DisableFlash,
+        setValue: value => Config.DisableFlash = value
+        );
   }
 
   // Increase price of fresh items
@@ -178,6 +199,9 @@ internal sealed class ModEntry : Mod {
       };
       __result = (int)(__result * modifier);
     }
+    if (Utils.IsJojaMealItem(__instance)) {
+      __result = 5;
+    }
   }
 
   // Prepends "Fresh" to name (this works with other languages right :pufferclueless:)
@@ -186,17 +210,22 @@ internal sealed class ModEntry : Mod {
     if (Utils.IsStaleItem(__instance)) {
       __result = ModEntry.Helper.Translation.Get("StaleItemName", new { Name = __result });
     }
+    if (Utils.IsJojaMealItem(__instance)) {
+      __result = ModEntry.Helper.Translation.Get("JojaMealItemName", new { Name = __result });
+    }
   }
 
   // Makes fresh and non-fresh items non-stackable
   static void Item_canStackWith_Postfix(Item __instance, ref bool __result, ISalable other) {
     if (__result && other is Item otherItem) {
-      __result = Utils.IsFreshItem(__instance) == Utils.IsFreshItem(otherItem);
+      __result =
+        (Utils.IsFreshItem(__instance) == Utils.IsFreshItem(otherItem)) &&
+        (Utils.IsJojaMealItem(__instance) == Utils.IsJojaMealItem(otherItem));
     }
   }
 
   // Spoil all fresh items
-  static void OnDayEnding(object? sender, DayEndingEventArgs e) {
+  void OnDayEnding(object? sender, DayEndingEventArgs e) {
     //Utility.ForEachItemContext((in ForEachItemContext context) => {
     //  var obj = context.Item as SObject;
     //  if (obj is null) {
@@ -272,7 +301,7 @@ internal sealed class ModEntry : Mod {
   }
 
   // Draw the item tooltip if we're in the JojaDash(tm) window
-  static void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e) {
+  void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e) {
     if (JojaDashTerminalModel.FoodTooltipToDraw is not null && Game1.activeClickableMenu is not null) {
       ICursorPosition cursorPos = Helper.Input.GetCursorPosition();
       int x = (int)cursorPos.ScreenPixels.X;
@@ -286,7 +315,7 @@ internal sealed class ModEntry : Mod {
   }
 
   // just in case
-  static void OnMenuChanged(object? sender, MenuChangedEventArgs e) {
+  void OnMenuChanged(object? sender, MenuChangedEventArgs e) {
     JojaDashTerminalModel.FoodTooltipToDraw = null;
   }
 
@@ -349,6 +378,8 @@ internal sealed class ModEntry : Mod {
     }
   }
 
+  const int SwagBagCount = 4;
+
   static bool SObject_performUseAction_prefix(SObject __instance, ref bool __result, GameLocation location) {
     if (__instance.QualifiedItemId != "(O)selph.FreshFarmProduceCP.SwagBag" && __instance.QualifiedItemId != "(O)selph.FreshFarmProduceCP.JojaDashVoucher") {
       return true;
@@ -407,20 +438,22 @@ internal sealed class ModEntry : Mod {
               Game1.player.recipesCooked.Add(itemId, 1);
             }
 			  	}
-          if (missingPerfectionItems.Count() > 5) {
+          if (missingPerfectionItems.Count() > SwagBagCount) {
             break;
           }
 			  }
       }
       var swagBagContent = new List<Item>{
-        ItemRegistry.Create("(O)341", 1),
-        ItemRegistry.Create("(O)908", 40),
-        ItemRegistry.Create("(O)917", 20),
+        ItemRegistry.Create("(O)908", 10),
+        ItemRegistry.Create("(O)917", 5),
       };
+      if (Game1.random.NextBool(0.1)) {
+        swagBagContent.Add(ItemRegistry.Create("(O)341", 1));
+      }
       swagBagContent.AddRange(missingPerfectionItems);
       // Replace unneeded stuff with magic rock candy
-      if (missingPerfectionItems.Count() < 5) {
-        swagBagContent.Add(ItemRegistry.Create("(O)279", 5 - missingPerfectionItems.Count()));
+      if (missingPerfectionItems.Count() < SwagBagCount) {
+        swagBagContent.Add(ItemRegistry.Create("(O)279", SwagBagCount - missingPerfectionItems.Count()));
       }
       Game1.player.addItemsByMenuIfNecessary(swagBagContent);
       Game1.playSound("newRecipe");
@@ -501,7 +534,7 @@ internal sealed class ModEntry : Mod {
     ]);
   }
 
-  public static bool AddGlobalFriendshipPoints(string[] args, TriggerActionContext context, out string error){
+  static bool AddGlobalFriendshipPoints(string[] args, TriggerActionContext context, out string error){
     if (!ArgUtility.TryGetInt(args, 1, out var points, out error, "int points")) {
       return false;
     }

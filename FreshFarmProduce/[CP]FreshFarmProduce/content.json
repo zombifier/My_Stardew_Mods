@@ -74,5 +74,11 @@
         "HasMod": "aceynk.inflorescence",
       },
     },
+    {
+      "LogName": "Load assets",
+      "Action": "Load",
+      "Target": "{{ModId}}/Objects",
+      "FromFile": "assets/{{TargetWithoutPath}}.png",
+    },
   ]
 }

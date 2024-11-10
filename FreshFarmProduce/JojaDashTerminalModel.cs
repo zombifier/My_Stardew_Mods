@@ -95,8 +95,12 @@ partial class JojaDashTerminalModel : INotifyPropertyChanged {
   public void Order() {
     if (selectedItem is null) return;
     Game1.player.playNearbySoundAll("wand");
-    Game1.flashAlpha = 1f;
-    Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create(selectedItem.Data.QualifiedItemId));
+    if (!ModEntry.Config.DisableFlash) {
+      Game1.flashAlpha = 1f;
+    }
+    var food = selectedItem.Item.getOne();
+    food.modData[JojaMealKey] = "true";
+    Game1.player.addItemByMenuIfNecessary(food);
     Game1.player.mailReceived.Add(JojaDashPhoneHandler.JojaDashUsed);
     foodTooltipToDraw = null;
     Game1.activeClickableMenu.exitThisMenu();
@@ -105,8 +109,12 @@ partial class JojaDashTerminalModel : INotifyPropertyChanged {
   public void OrderRandom() {
     var randomItem = Game1.random.ChooseFrom(FoodItems);
     Game1.player.playNearbySoundAll("wand");
-    Game1.flashAlpha = 1f;
-    Game1.player.addItemByMenuIfNecessary(ItemRegistry.Create(randomItem.Data.QualifiedItemId));
+    if (!ModEntry.Config.DisableFlash) {
+      Game1.flashAlpha = 1f;
+    }
+    var food = randomItem.Item.getOne();
+    food.modData[JojaMealKey] = "true";
+    Game1.player.addItemByMenuIfNecessary(food);
     Game1.player.mailReceived.Add(JojaDashPhoneHandler.JojaDashUsed);
     foodTooltipToDraw = null;
     Game1.activeClickableMenu.exitThisMenu();
@@ -118,4 +126,6 @@ partial class JojaDashTerminalModel : INotifyPropertyChanged {
   public void OnUnhover() {
     foodTooltipToDraw = null;
   }
+
+  public static string JojaMealKey = $"{ModEntry.UniqueId}.JojaMeal";
 }

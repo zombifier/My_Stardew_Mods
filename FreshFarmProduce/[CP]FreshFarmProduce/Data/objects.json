@@ -14,24 +14,9 @@
       "Action": "EditData",
       "Target": "Data/Objects",
       "Entries": {
-        "{{ModId}}.JojaDashVoucher": {
-          "Name": "{{ModId}}.JojaDashVoucher",
-          "SpriteIndex": 0,
-          "DisplayName": "{{i18n:JojaDashVoucher.name}}",
-          "Description": "{{i18n:JojaDashVoucher.description}}",
-          "Type": "Basic",
-          "Texture": "{{ModId}}/Objects",
-          "Price": 0,
-          "ExcludeFromFishingCollection": true,
-          "ExcludeFromShippingCollection": true,
-          "ExcludeFromRandomSale": true,
-          "ContextTags": [
-            "color_blue",
-          ],
-        },
         "{{ModId}}.SwagBag": {
           "Name": "{{ModId}}.SwagBag",
-          "SpriteIndex": 1,
+          "SpriteIndex": 0,
           "DisplayName": "{{i18n:SwagBag.name}}",
           "Description": "{{i18n:SwagBag.description}}",
           "Type": "Basic",
@@ -42,6 +27,21 @@
           "ExcludeFromRandomSale": true,
           "ContextTags": [
             "color_purple",
+          ],
+        },
+        "{{ModId}}.JojaDashVoucher": {
+          "Name": "{{ModId}}.JojaDashVoucher",
+          "SpriteIndex": 1,
+          "DisplayName": "{{i18n:JojaDashVoucher.name}}",
+          "Description": "{{i18n:JojaDashVoucher.description}}",
+          "Type": "Basic",
+          "Texture": "{{ModId}}/Objects",
+          "Price": 0,
+          "ExcludeFromFishingCollection": true,
+          "ExcludeFromShippingCollection": true,
+          "ExcludeFromRandomSale": true,
+          "ContextTags": [
+            "color_blue",
           ],
         },
       }
