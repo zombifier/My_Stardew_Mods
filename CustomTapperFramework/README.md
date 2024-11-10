@@ -133,6 +133,48 @@ have your custom tapper produce 2 days earlier, add a ["minus
 2"](https://stardewvalleywiki.com/Modding:Common_data_field_types#Quantity_modifiers)
 to the `ReadyTimeModifiers` field.
 
+The example below adds a tapper that produces 2x slower than regular tappers:
+<details>
+// In Data/BigCraftables
+"SlowTapper": {
+  "Name": "SlowTapper",
+  "DisplayName": "Slow Tapper",
+  "Description": "This tapper is slow!",
+  "CanBePlacedOutdoors": true,
+  "CanBePlacedIndoors": true,
+  "ContextTags": [
+    "tapper_item",
+    "custom_wild_tree_tapper_item",
+  ],
+},
+
+// In Data/Machines
+"(BC)SlowTapper": {
+  "OutputRules": [
+    {
+      "Id": "Default",
+      "Triggers": [
+        {
+          "Id": "Default",
+          "Trigger": "DayUpdate,MachinePutDown,OutputCollected",
+        }
+      ],
+      "OutputItem": [
+        {
+          "OutputMethod": "Selph.StardewMods.MachineTerrainFramework.Utils, CustomTapperFramework: OutputTapper",
+        }
+      ],
+    }
+  ],
+  "ReadyTimeModifiers": [
+    {
+      "Modification": "Multiply",
+      "Amount": 2.0
+    }
+  ],
+  "ReadyTimeModifierMode": "Stack",
+},
+</details>
 
 ---
 
