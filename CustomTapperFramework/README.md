@@ -37,6 +37,8 @@ KNOWN ISSUE: Machine rules don't support putting the terrain produce as the
 input item query yet. I forgor to implement this feature, so the Tapper API
 isn't quite deprecated yet if you need it.
 
+---
+
 ### Machine API
 First, set the appropriate context tags for your big craftables:
 
@@ -56,6 +58,8 @@ First, set the appropriate context tags for your big craftables:
 Then define your machine behavior in
 [`Data/Machines`](https://stardewvalleywiki.com/Modding:Machines) as usual.
 
+---
+
 #### Extra GSQs
 
 For tapper-like machines placed on terrain features, this mod allows defining the following new
@@ -70,6 +74,8 @@ The `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE` GSQ takes the
 ```
 selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE <feature type> [optional feature ID]
 ```
+
+---
 
 where feature type can be one of `Tree`, `FruitTree` or `GiantCrop`. A feature
 ID can optionally be specified, to limit the condition to certain types of wild
@@ -100,6 +106,8 @@ Similarly, for the fish location query it's *highly* recommended you use
 with similar effects. Use `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT
 true false true` for magic bait effect. If you also want Legendary Fishes (but
 why lol), change the `false` to `true`.
+
+---
 
 ### Tapper API
 First, add `"tapper_item"` context tag to your big craftables.
@@ -143,6 +151,8 @@ The output item query supports the following macros:
 | ---------- | ----------- |
 | `DROP_IN_ID` | The qualified item ID of the "input" item as defined above. |
 | `NEARBY_FLOWER_ID` | The qualified item ID of a nearby flower. Only useful for honey rules. |
+
+---
 
 ### Example
 
@@ -222,6 +232,8 @@ If you want to instead add to the base game tapper's outputs, instead do somethi
 
 ```
 </details>
+
+---
 
 ## Aquatic Crops Feature
 
