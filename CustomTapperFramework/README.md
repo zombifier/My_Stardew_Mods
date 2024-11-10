@@ -136,6 +136,8 @@ to the `ReadyTimeModifiers` field.
 
 The example below adds a tapper that produces 2x slower than regular tappers:
 <details>
+
+```json
 // In Data/BigCraftables
 "SlowTapper": {
   "Name": "SlowTapper",
@@ -175,7 +177,9 @@ The example below adds a tapper that produces 2x slower than regular tappers:
   ],
   "ReadyTimeModifierMode": "Stack",
 },
+```
 </details>
+
 
 ---
 
