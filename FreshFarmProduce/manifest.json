@@ -10,5 +10,5 @@
     {"UniqueID": "focustense.StardewUI", "IsRequired": true},
   ],
   "MinimumApiVersion": "4.0.8",
-//  "UpdateKeys": ["Nexus:28906"],
+  "UpdateKeys": ["Nexus:29229"],
 }
