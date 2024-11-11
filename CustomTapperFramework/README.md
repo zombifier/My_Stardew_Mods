@@ -59,6 +59,10 @@ First, set the appropriate context tags for your big craftables:
     add `"prevent_remove_when_processing"`. Outside of this case, all water
     machines can be picked up if they're not processing, or if they don't have
     ready output.
+  * NOTE: Currently there's a bug where the machine hand removal logic triggers
+    a bit too judiciously. Until I can track this down it's recommended
+    `"prevent_remove_when_processing"` be set for all your water machines,
+    *especially* if it accepts input.
 
 Then define your machine behavior in
 [`Data/Machines`](https://stardewvalleywiki.com/Modding:Machines) as usual.
