@@ -90,7 +90,7 @@ public interface IViewEngine
     /// </remarks>
     /// <param name="sourceDirectory">Optional source directory to watch and sync changes from. If not specified, or not
     /// a valid source directory, then hot reload will only pick up changes from within the live mod directory.</param>
-    void EnableHotReloading(string? sourceDirectory = null);
+    /// void EnableHotReloading(string? sourceDirectory = null);
 
     /// <summary>
     /// Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.

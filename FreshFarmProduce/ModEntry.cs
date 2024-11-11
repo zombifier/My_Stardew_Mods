@@ -158,7 +158,6 @@ internal sealed class ModEntry : Mod {
 
     viewEngine.RegisterViews($"Mods/{UniqueId}/Views", "assets/views");
     viewEngine.RegisterSprites($"Mods/{UniqueId}/Sprites", "assets/sprites");
-    viewEngine.EnableHotReloading();
 
     // get Generic Mod Config Menu's API (if it's installed)
     var configMenu = Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");

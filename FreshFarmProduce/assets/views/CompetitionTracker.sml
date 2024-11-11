@@ -73,8 +73,8 @@
               *repeat={Entries}>
               <image
                 layout="32px 32px"
-                sprite={Data}/>
-              <label margin="4,0,0,0" text={ItemName} />
+                sprite={:Data}/>
+              <label margin="4,0,0,0" text={:ItemName} />
               <spacer layout="stretch 0px" />
               <label text={:Points} font="small"/>
               <label text="/" font="small" *if={HasThreshold}/>
