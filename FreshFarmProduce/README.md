@@ -1,6 +1,6 @@
 # Fresh Farm Produce
 
-[Fresh Farm Produce](https://www.nexusmods.com/stardewvalley/mods/22256)
+[Fresh Farm Produce](https://www.nexusmods.com/stardewvalley/mods/29229)
 is a Stardew Valley mod that incentivizes shipping a wide variety of raw, fresh produce
 
 This document is mainly intended for modders. For mod users, install the mod
