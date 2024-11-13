@@ -21,6 +21,7 @@ content packs. For users, install the mod as usual from the link above.
    + [Tapper API](#tapper-api)
    + [Example](#example)
 * [Aquatic Crops Feature](#aquatic-crops-feature)
+   + [Retexture the water planters](#retexture-the-water-planters)
 
 ## Terrain-Based Machine Feature
 
@@ -344,3 +345,9 @@ for obvious reasons.
 Bushes (specifically [Custom Bushes](https://www.nexusmods.com/stardewvalley/mods/20619)) currently are not supported.
 
 For an example content pack, see the optional file on [this page](https://www.nexusmods.com/stardewvalley/mods/22975?tab=files).
+
+### Retexture the water planters
+
+You can patch the `Mods/selph.CustomTapperFramework/WaterPlanterTexture` asset
+to change the texture of the water planters and water pots. The files
+themselves should be in the mod's `assets` folder for easy reference.
