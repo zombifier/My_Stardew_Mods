@@ -59,7 +59,7 @@ to edit it.
 | ---------------------------------- | ---------------- | ------------------------ |
 | Id          | `string`            | The unique Id for this model within the current list.|
 | AnimalId    | `string`            | The animal to spawn.<br>KNOWN ISSUE: The overnight pop up (X has given birth to a Y) will still show the parent species in Y. This is very hardcoded and difficult to untangle, so don't expect this to be fixed soon unfortunately.|
-| Condition   | `string`            | A [game state query](https://stardewvalleywiki.com/Modding:Game_state_queries) determining whether this animal should be spawned. |
+| Condition   | `string`            | A [game state query](https://stardewvalleywiki.com/Modding:Game_state_queries) determining whether this animal should be spawned. The `Target` location will refer to the animal house that belongs to the animal/incubator being checked.|
 
 `AnimalProduceExtensionData` is a model with the following fields:
 
