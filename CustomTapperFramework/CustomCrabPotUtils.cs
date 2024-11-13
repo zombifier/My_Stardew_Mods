@@ -222,8 +222,7 @@ public static class CustomCrabPotUtils
 
   /// <inheritdoc />
   /// Returns true if the original function should be skipped
-  public static bool checkForAction(SObject obj, Farmer who, bool justCheckingForActivity = false)
-  {
+  public static bool checkForAction(SObject obj, Farmer who, bool justCheckingForActivity = false) {
     GameLocation location = obj.Location;
     Vector2 tileLocation = obj.TileLocation;
     CrabPotData crabPotData = getCrabPotData(obj);
@@ -308,8 +307,7 @@ public static class CustomCrabPotUtils
     return false;
   }
 
-  public static void performRemoveAction(GameLocation location, Vector2 tileLocation)
-  {
+  public static void performRemoveAction(GameLocation location, Vector2 tileLocation) {
     removeOverlayTiles(location, tileLocation);
   }
 

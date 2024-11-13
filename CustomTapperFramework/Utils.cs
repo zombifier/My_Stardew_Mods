@@ -129,7 +129,7 @@ public static class Utils {
           continue;
         }
 
-        Item item = ItemQueryResolver.TryResolveRandomItem(tapItem, new ItemQueryContext(tapper.Location, farmer, null),
+        Item item = ItemQueryResolver.TryResolveRandomItem(tapItem, new ItemQueryContext(tapper.Location, farmer, null, "MachineTerrainFramework custom tapper '" + tapper.QualifiedItemId + "' > output rules"),
             avoidRepeat: false, null, (string id) =>
             id.Replace("DROP_IN_ID", inputItem?.QualifiedItemId ?? "0")
             .Replace("NEARBY_FLOWER_ID", MachineDataUtility.GetNearbyFlowerItemId(tapper) ?? "-1"));
@@ -239,12 +239,12 @@ public static class Utils {
         if (fruitTree.GetData().Fruit.Count == 0) {
           return null;
         }
-        return ItemQueryResolver.TryResolveRandomItem(fruitTree.GetData().Fruit[0], new ItemQueryContext(feature.Location, player, null));
+        return ItemQueryResolver.TryResolveRandomItem(fruitTree.GetData().Fruit[0], new ItemQueryContext(feature.Location, player, null, "MachineTerrainFramework terrain feature output"));
       case GiantCrop giantCrop:
         if (giantCrop.GetData().HarvestItems.Count == 0) {
           return null;
         }
-        return ItemQueryResolver.TryResolveRandomItem(giantCrop.GetData().HarvestItems[0], new ItemQueryContext(feature.Location, player, null));
+        return ItemQueryResolver.TryResolveRandomItem(giantCrop.GetData().HarvestItems[0], new ItemQueryContext(feature.Location, player, null, "MachineTerrainFramework terrain feature output"));
       default:
         return null;
     }

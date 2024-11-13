@@ -160,6 +160,11 @@ public class HarmonyPatcher {
         original: AccessTools.Method(typeof(SObject),
           nameof(SObject.onReadyForHarvest)),
         postfix: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.SObject_onReadyForHarvest_Postfix)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(SObject),
+          nameof(SObject.PlaceInMachine)),
+        postfix: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.SObject_PlaceInMachine_postfix)));
   }
 
 	static void SObject_canBePlacedHere_Postfix(SObject __instance, ref bool __result, GameLocation l, Vector2 tile, CollisionMask collisionMask = CollisionMask.All, bool showError = false) {
@@ -302,14 +307,15 @@ public class HarmonyPatcher {
         __result = true;
         return false;
       }
-      CustomCrabPotUtils.resetRemovalTimer(__instance);
+      if (!justCheckingForActivity)
+        CustomCrabPotUtils.resetRemovalTimer(__instance);
     }
     // Common code
     if (!__instance.IsTapper() || justCheckingForActivity || !__instance.readyForHarvest.Value) return true;
     __state = __instance.heldObject.Value;
     var rules = Utils.GetOutputRulesForPlacedTapper(__instance, out var unused, __instance.lastOutputRuleId.Value);
     if (rules != null && rules.Count > 0 && rules[0].RecalculateOnCollect) {
-      Item newItem = ItemQueryResolver.TryResolveRandomItem(rules[0], new ItemQueryContext(__instance.Location, who, null),
+      Item newItem = ItemQueryResolver.TryResolveRandomItem(rules[0], new ItemQueryContext(__instance.Location, who, null, "MachineTerrainFramework custom tapper '" + __instance.QualifiedItemId + "' > output rules"),
           avoidRepeat: false, null, (string id) =>
           id.Replace("DROP_IN_ID", /*inputItem?.QualifiedItemId ??*/ "0")
           .Replace("NEARBY_FLOWER_ID", MachineDataUtility.GetNearbyFlowerItemId(__instance) ?? "-1"));
@@ -519,6 +525,11 @@ public class HarmonyPatcher {
           }
           (Game1.GetPlayer(__instance.owner.Value) ?? Game1.player).caughtFish(item.ItemId, size);
       }
+    }
+  }
+	static void SObject_PlaceInMachine_postfix(SObject __instance, bool __result, MachineData machineData, Item inputItem, bool probe, Farmer who, bool showMessages = true, bool playSounds = true) {
+    if (Utils.IsCrabPot(__instance) && __result && !probe) {
+      CustomCrabPotUtils.resetRemovalTimer(__instance);
     }
   }
 }

@@ -369,7 +369,7 @@ public static class ExtraProduceUtils {
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData) &&
         animalProduceExtensionData.ItemQuery != null) {
-      var context = new ItemQueryContext(animal.home?.GetIndoors(), Game1.GetPlayer(animal.ownerID.Value), Game1.random);
+      var context = new ItemQueryContext(animal.home?.GetIndoors(), Game1.GetPlayer(animal.ownerID.Value), Game1.random, "ExtraAnimalConfig animal " + animal.type.Value + " producing");
       var item = ItemQueryResolver.TryResolveRandomItem(animalProduceExtensionData.ItemQuery, context);
       if (item is SObject obj) {
         return obj;

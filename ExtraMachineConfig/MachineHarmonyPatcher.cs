@@ -178,7 +178,12 @@ sealed class MachineHarmonyPatcher {
         ItemRegistry.QualifyItemId(MachineDataUtility.GetNearbyFlowerItemId(machine) ?? null) :
         overrideInput;
       if (overrideInputId != null) {
-        ItemQueryContext context = new ItemQueryContext(machine.Location, who, Game1.random);
+        ItemQueryContext context = new ItemQueryContext(machine.Location, who, Game1.random, "machine '" + machine.QualifiedItemId + "' > output rules - input item replaced with ExtraMachineConfig");
+        if (context.CustomFields is null) {
+          context.CustomFields = new();
+        }
+        context.CustomFields["Tile"] = machine.TileLocation;
+        context.CustomFields["Machine"] = machine;
   			inputItem = ItemQueryResolver.TryResolveRandomItem(overrideInputId, context);
       } else {
         inputItem = null;
@@ -217,7 +222,7 @@ sealed class MachineHarmonyPatcher {
       var chest = new Chest(false);
       resultObject.heldObject.Value = chest;
       GameStateQueryContext context = new GameStateQueryContext(machine.Location, who, resultObject, inputItem, Game1.random);
-      ItemQueryContext itemContext = new ItemQueryContext(machine.Location, who, Game1.random);
+      ItemQueryContext itemContext = new ItemQueryContext(machine.Location, who, Game1.random, "machine '" + machine.QualifiedItemId + "' > output rules - extra output items from with ExtraMachineConfig");
       foreach (var extraOutputData in extraOutputs) {
         if (!GameStateQuery.CheckConditions(extraOutputData.Condition, context)) {
           continue;
