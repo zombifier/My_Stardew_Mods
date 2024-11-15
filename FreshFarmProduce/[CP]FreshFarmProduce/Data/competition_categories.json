@@ -23,6 +23,18 @@
               "ItemIds": ["(O)433"],
               "ContextTags": ["fresh_item"],
             },
+            {
+              "Id": "FreshSpices",
+              "ContextTags": ["spice_item", "fresh_item", "!category_greens"],
+            },
+            {
+              "Id": "FreshRawSpices",
+              "ContextTags": ["raw_spice_item", "fresh_item", "!category_greens"],
+            },
+            {
+              "Id": "FreshBean",
+              "ContextTags": ["bean_item", "fresh_item"],
+            },
           ],
         },
         "{{ModId}}.FreshFruits": {
@@ -72,6 +84,10 @@
             {
               "Id": "FreshForage",
               "ContextTags": ["fresh_item", "category_greens"],
+            },
+            {
+              "Id": "Syrup",
+              "ContextTags": ["category_syrup"],
             },
             {
               "Id": "Truffles",
@@ -199,6 +215,14 @@
               "Id": "Metals",
               "ContextTags": ["category_metal_resources"],
             },
+            {
+              "Id": "Artifacts",
+              "ContextTags": ["item_type_arch"],
+            },
+            {
+              "Id": "ArtifactDisplayCase",
+              "ContextTags": ["moonslime_artifact"],
+            },
           ],
         },
         "{{ModId}}.Money": {
@@ -225,6 +249,14 @@
               "Id": "FreshCoffeeBeans",
               "ItemIds": ["(O)433"],
               "ContextTags": ["fresh_item"],
+            },
+            {
+              "Id": "FreshSpices",
+              "ContextTags": ["spice_item", "fresh_item"],
+            },
+            {
+              "Id": "FreshRawSpices",
+              "ContextTags": ["raw_spice_item", "fresh_item"],
             },
             {
               "Id": "FreshFruits",

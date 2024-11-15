@@ -18,6 +18,8 @@ from the link above.
   mod does this to Coffee Beans.
 * Conversely, add the `non_spoilable_item` tag to make an item *not* eligible
   for freshness.
+* Want to blanket add a context tag to spoilable or non-spoilable categories?
+  See below in the "Modify the Competition" section.
 * In-game, items marked Fresh will have the "fresh_item" context tags.
 * Item queries (shops, machines, etc.) will spawn Fresh items. To make them not fresh, add
   `"selph.FreshFarmProduce.NotFresh": "true"` to the item query's ModData field.
@@ -33,6 +35,8 @@ The mod reads competition data from the asset `selph.FreshFarmProduce/Competitio
 | ---------------------------------- | ---------------- | ------------------------ |
 | `ActiveCategoryIds`         | `List<string>`            | A list of category IDs that should be active. Categories are defined below. Note that changing this will not change an active competition.|
 | `Categories`              | `Dictionary<string, CategoryData>`           | A map of unique category IDs to their data. It is highly recommended that you don't delete the base mod's categories, but add your own and use the above field to control which category is active.|
+| `SpoilableContextTags`              | `List<string>`           | A list of context tags. If an item has any of these tags it can be affected by freshness/staleness regardless of its category.|
+| `NonSpoilableContextTags`              | `List<string>`           | A list of context tags. If an item has any of these tags it cannot be affected by freshness/staleness regardless of its category.|
 
 `CategoryData` is a model with the following fields:
 

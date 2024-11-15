@@ -103,6 +103,12 @@ internal sealed class ModEntry : Mod {
           nameof(ModEntry.SObject_DisplayName_Postfix)));
 
     harmony.Patch(
+        original: AccessTools.Method(typeof(SObject),
+          nameof(SObject.getDescription)),
+        postfix: new HarmonyMethod(typeof(ModEntry),
+          nameof(ModEntry.SObject_getDescription_Postfix)));
+
+    harmony.Patch(
         original: AccessTools.Method(typeof(Item),
           nameof(Item.canStackWith)),
         postfix: new HarmonyMethod(typeof(ModEntry),
@@ -127,7 +133,7 @@ internal sealed class ModEntry : Mod {
         postfix: new HarmonyMethod(typeof(ModEntry),
           nameof(ModEntry.SpecialOrder_HostHandleQuestEnd_Postfix)));
     
-    // objects
+    // usable objects
     harmony.Patch(
         original: AccessTools.Method(typeof(SObject),
           nameof(SObject.performUseAction)),
@@ -159,9 +165,39 @@ internal sealed class ModEntry : Mod {
     viewEngine.RegisterViews($"Mods/{UniqueId}/Views", "assets/views");
     viewEngine.RegisterSprites($"Mods/{UniqueId}/Sprites", "assets/sprites");
 
+    // Get Informant API (if it's installed)
+    //var informant = Helper.ModRegistry.GetApi<Slothsoft.Informant.Api.IInformant>("Slothsoft.Informant");
+    //if (informant is not null) {
+    //  informant.AddItemDecorator(
+    //      $"{UniqueId}.InformantDecorator",
+    //      () => Helper.Translation.Get("Informant.name"),
+    //      () => Helper.Translation.Get("Informant.description"),
+    //      (SObject obj) => {
+    //        var specialOrder = Game1.player.team.specialOrders
+    //          .First((SpecialOrder order) => order.questKey.Value == FarmCompetitionSpecialOrderId);
+    //        if (specialOrder is null) return null;
+    //        List<string> categoryStrings = new();
+    //        foreach (var objective in specialOrder.objectives) {
+    //          if (objective is ShipPointsObjective shipPointsObjective &&
+    //              ModEntry.competitionDataAssetHandler.data.Categories.TryGetValue(shipPointsObjective.Id.Value, out var categoryData) &&
+    //              shipPointsObjective.CanAcceptThisItem(obj, Game1.player)) {
+    //            categoryStrings.Add(shipPointsObjective.useShipmentValue.Value ?
+    //                Helper.Translation.Get("Informant.tooltipNoPoints", new { categoryName = categoryData.Name }) :
+    //                Helper.Translation.Get("Informant.tooltip", new { categoryName = categoryData.Name, points = shipPointsObjective.CalculatePoints(obj) })
+    //                );
+    //          }
+    //        }
+    //        if (categoryStrings.Count > 0) {
+    //          return Helper.Translation.Get("Informant.header") + string.Join(Helper.Translation.Get("Informant.tooltipSeparator"), categoryStrings);
+    //        } else {
+    //          return null;
+    //        }
+    //      });
+    //}
+
     // get Generic Mod Config Menu's API (if it's installed)
     var configMenu = Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-    if (configMenu is null)
+    if (configMenu is null) 
       return;
 
     // register mod
@@ -180,11 +216,47 @@ internal sealed class ModEntry : Mod {
         getValue: () => Config.DisableFlash,
         setValue: value => Config.DisableFlash = value
         );
+    configMenu.AddBoolOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.disableStaleness.name"),
+        tooltip: () => Helper.Translation.Get("Config.disableStaleness.description"),
+        getValue: () => Config.DisableStaleness,
+        setValue: value => {
+          Config.DisableStaleness = value;
+          if (Context.IsWorldReady) {
+            Utility.ForEachItem((Item item) => {
+              item.MarkContextTagsDirty();
+              item.modData.Remove(Utils.CachedDescriptionKey);
+              return true;
+            });
+          }
+        });
+    configMenu.AddBoolOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.freshDisplayName.name"),
+        tooltip: () => Helper.Translation.Get("Config.freshDisplayName.description"),
+        getValue: () => Config.FreshDisplayName,
+        setValue: value => Config.FreshDisplayName = value
+        );
+    configMenu.AddBoolOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.showCategoriesInDescription.name"),
+        tooltip: () => Helper.Translation.Get("Config.showCategoriesInDescription.description"),
+        getValue: () => Config.ShowCategoriesInDescription,
+        setValue: value => Config.ShowCategoriesInDescription = value
+        );
+    configMenu.AddBoolOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.disableFreshPriceIncrease.name"),
+        tooltip: () => Helper.Translation.Get("Config.disableFreshPriceIncrease.description"),
+        getValue: () => Config.DisableFreshPriceIncrease,
+        setValue: value => Config.DisableFreshPriceIncrease = value
+        );
   }
 
   // Increase price of fresh items
   static void SObject_sellToStorePrice_Postfix(SObject __instance, ref int __result, long specificPlayerID) {
-    if (Utils.IsFreshItem(__instance)) {
+    if (!Config.DisableFreshPriceIncrease && Utils.IsFreshItem(__instance)) {
       float modifier =  __instance.Quality switch {
         // 1 -> 1.25 (25% more)
         SObject.lowQuality => 1.25f,
@@ -206,8 +278,10 @@ internal sealed class ModEntry : Mod {
   // Prepends "Fresh" to name (this works with other languages right :pufferclueless:)
   static void SObject_DisplayName_Postfix(SObject __instance, ref string __result) {
     //      __result = Game1.content.LoadString("Strings\\StringsFromCSFiles:Fresh_Prefix", __result);
-    if (Utils.IsStaleItem(__instance)) {
+    if (!Config.FreshDisplayName && Utils.IsStaleItem(__instance)) {
       __result = ModEntry.Helper.Translation.Get("StaleItemName", new { Name = __result });
+    } else if (Config.FreshDisplayName && Utils.IsFreshItem(__instance)) {
+      __result = ModEntry.Helper.Translation.Get("FreshItemName", new { Name = __result });
     }
     if (Utils.IsJojaMealItem(__instance)) {
       __result = ModEntry.Helper.Translation.Get("JojaMealItemName", new { Name = __result });
@@ -543,5 +617,11 @@ internal sealed class ModEntry : Mod {
       return true;
     });
     return true;
+  }
+
+
+  static void SObject_getDescription_Postfix(SObject __instance, ref string __result) {
+    if (!Config.ShowCategoriesInDescription || !__instance.canBeShipped()) return;
+    Utils.ApplyDescription(__instance, ref __result);
   }
 }

@@ -1,6 +1,17 @@
 {
   "Changes": [
     {
+      "LogName": "Add some base tags to spoilable context tags",
+      "Action": "EditData",
+      "Target": "selph.FreshFarmProduce/CompetitionData",
+      "TargetField": ["SpoilableContextTags"],
+      "Entries": {
+        "spoilable_item": "spoilable_item",
+        "spice_item": "spice_item",
+        "raw_spice_item": "raw_spice_item",
+      },
+    },
+    {
       "LogName": "Make coffee beans eligible for freshness",
       "Action": "EditData",
       "Target": "Data/Objects",

@@ -2,6 +2,7 @@
   "CompetitionName": "Farm of the Season",
   "CompetitionDescription": "Fill in each category by shipping a wide variety of fresh produce and be crowned the best farm in all of the Ferngill Republic!",
   "StaleItemName": "{{Name}} (Stale)",
+  "FreshItemName": "{{Name}} (Fresh)",
   "JojaMealItemName": "\"Fresh\" {{Name}}",
   // Console commands
   "AddSpecialOrder": "Add the competition special order.",
@@ -23,4 +24,18 @@
   // Config
   "Config.disableFlash.name": "Disable JojaFresh Flashing.",
   "Config.disableFlash.description": "Disable the flashing after ordering from JojaFresh.",
+  "Config.disableStaleness.name": "Disable Staleness.",
+  "Config.disableStaleness.description": "Disable the stale mechanic. All items will be considered fresh regardless of their age.",
+  "Config.freshDisplayName.name": "Show Freshness in Display Name.",
+  "Config.freshDisplayName.description": "Instead of showing stale crops as \"(Stale)\", show fresh crops as \"(Fresh)\".",
+  "Config.showCategoriesInDescription.name": "Show Eligible Categories in Item Description",
+  "Config.showCategoriesInDescription.description": "Show competition categories this item is eligible for and the amount of points it can contribute in the item description.",
+  "Config.disableFreshPriceIncrease.name": "Disable Fresh Price Increase.",
+  "Config.disableFreshPriceIncrease.description": "Disable the price increase from fresh items.",
+  // Basically: header: tooltip tooltipSeparator tooltip
+  // In English: Eligible categories: Vegetable Farm (10 points), Bountiful Farm
+  "CategoryDescription.header": "Eligible categories: ",
+  "CategoryDescription.tooltip": "{{categoryName}} ({{points}} points)",
+  "CategoryDescription.tooltipNoPoints": "{{categoryName}}",
+  "CategoryDescription.tooltipSeparator": ", ",
 }

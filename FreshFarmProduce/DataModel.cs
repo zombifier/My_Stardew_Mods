@@ -31,4 +31,6 @@ class CategoryData {
 class CompetitionData {
   public List<string> ActiveCategoryIds = [];
   public Dictionary<string, CategoryData> Categories = new();
+  public List<string> SpoilableContextTags = [];
+  public List<string> NonSpoilableContextTags = [];
 }

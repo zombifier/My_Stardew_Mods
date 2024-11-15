@@ -90,7 +90,7 @@ public class ShipPointsObjective : ShipObjective {
   }
 
   // Duplicating fair logic here
-  int CalculatePoints(Item shippedItem) {
+  public int CalculatePoints(Item shippedItem) {
     int points = shippedItem.Quality + 1;
     int stack = shippedItem.Stack;
     var item = shippedItem.getOne();
@@ -120,10 +120,10 @@ public class ShipPointsObjective : ShipObjective {
           this.shippedItems.Values.Sum(item => GetPointsFor(item)));
     }
   }
-
-  public override void OnItemShipped(StardewValley.Farmer farmer, StardewValley.Item shippedItem, int shipped_price) {
+  
+  public bool CanAcceptThisItem(Item shippedItem, Farmer farmer) {
     if (ModEntry.competitionDataAssetHandler.data.Categories.TryGetValue(this.Id.Value, out var categoryData)) {
-      bool valid = (categoryData.ItemCriterias is null) ||
+      return (categoryData.ItemCriterias is null) ||
         (categoryData.ItemCriterias.Any((ItemCriteria criteria) => {
           if (criteria.ItemIds is not null && !criteria.ItemIds.Contains(shippedItem.QualifiedItemId)) {
             return false;
@@ -136,7 +136,13 @@ public class ShipPointsObjective : ShipObjective {
           }
           return true;
         }));
-      if (!valid) {
+    }
+    return false;
+  }
+
+  public override void OnItemShipped(StardewValley.Farmer farmer, StardewValley.Item shippedItem, int shipped_price) {
+    if (ModEntry.competitionDataAssetHandler.data.Categories.TryGetValue(this.Id.Value, out var categoryData)) {
+      if (!CanAcceptThisItem(shippedItem, farmer)) {
         return;
       }
       var addedPoints = this.useShipmentValue.Value ? shipped_price : CalculatePoints(shippedItem);

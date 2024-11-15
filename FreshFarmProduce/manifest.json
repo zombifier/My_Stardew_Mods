@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Fresh Farm Produce",
   "Author": "selph",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Increase sell price of high quality fresh produce, and adds a month-long competition that encourages selling diverse produce.",
   "UniqueID": "selph.FreshFarmProduce",
   "EntryDll": "FreshFarmProduce.dll",
@@ -10,5 +10,5 @@
     {"UniqueID": "focustense.StardewUI", "IsRequired": true},
   ],
   "MinimumApiVersion": "4.0.9",
-  "UpdateKeys": ["Nexus:29229"],
+  "UpdateKeys": ["Nexus:29299"],
 }
