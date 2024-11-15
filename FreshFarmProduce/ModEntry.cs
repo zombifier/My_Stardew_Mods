@@ -277,14 +277,13 @@ internal sealed class ModEntry : Mod {
 
   // Prepends "Fresh" to name (this works with other languages right :pufferclueless:)
   static void SObject_DisplayName_Postfix(SObject __instance, ref string __result) {
-    //      __result = Game1.content.LoadString("Strings\\StringsFromCSFiles:Fresh_Prefix", __result);
+    if (Utils.IsJojaMealItem(__instance)) {
+      __result = ModEntry.Helper.Translation.Get("JojaMealItemName", new { Name = __result });
+    }
     if (!Config.FreshDisplayName && Utils.IsStaleItem(__instance)) {
       __result = ModEntry.Helper.Translation.Get("StaleItemName", new { Name = __result });
     } else if (Config.FreshDisplayName && Utils.IsFreshItem(__instance)) {
       __result = ModEntry.Helper.Translation.Get("FreshItemName", new { Name = __result });
-    }
-    if (Utils.IsJojaMealItem(__instance)) {
-      __result = ModEntry.Helper.Translation.Get("JojaMealItemName", new { Name = __result });
     }
   }
 

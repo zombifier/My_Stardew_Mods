@@ -27,7 +27,7 @@
   "Config.disableStaleness.name": "Disable Staleness.",
   "Config.disableStaleness.description": "Disable the stale mechanic. All items will be considered fresh regardless of their age.",
   "Config.freshDisplayName.name": "Show Freshness in Display Name.",
-  "Config.freshDisplayName.description": "Instead of showing stale crops as \"(Stale)\", show fresh crops as \"(Fresh)\".",
+  "Config.freshDisplayName.description": "Instead of showing stale crops as \"(Stale)\", show fresh crops as \"(Fresh)\". Recommend disabling this if staleness is disabled.",
   "Config.showCategoriesInDescription.name": "Show Eligible Categories in Item Description",
   "Config.showCategoriesInDescription.description": "Show competition categories this item is eligible for and the amount of points it can contribute in the item description.",
   "Config.disableFreshPriceIncrease.name": "Disable Fresh Price Increase.",

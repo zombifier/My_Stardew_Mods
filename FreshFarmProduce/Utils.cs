@@ -45,14 +45,12 @@ static class Utils {
 
   public static bool IsFreshItem(Item? item) {
     if (item is null) return false;
-    if (ModEntry.Config.DisableStaleness) return true;
-    return !item.modData.ContainsKey(NotFreshKey) && IsSpoilable(item);
+    return (!item.modData.ContainsKey(NotFreshKey) || ModEntry.Config.DisableStaleness) && IsSpoilable(item);
   }
 
   public static bool IsStaleItem(Item? item) {
     if (item is null) return true;
-    if (ModEntry.Config.DisableStaleness) return false;
-    return item.modData.ContainsKey(NotFreshKey) && IsSpoilable(item);
+    return (item.modData.ContainsKey(NotFreshKey) && !ModEntry.Config.DisableStaleness) && IsSpoilable(item);
   }
 
   // Returns true if an item is spoiled
