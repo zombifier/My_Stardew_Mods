@@ -33,14 +33,18 @@ sealed class MachineHarmonyPatcher {
   internal static string InheritPreserveIdKey = $"{ModEntry.UniqueId}.InheritPreserveId";
   internal static string CopyColorKey = $"{ModEntry.UniqueId}.CopyColor";
   internal static string RequiredCountMaxKey = $"{ModEntry.UniqueId}.RequiredCountMax";
+  internal static string RequiredCountDivisibleByKey = $"{ModEntry.UniqueId}.RequiredCountDivisibleBy";
   internal static string ExtraOutputIdsKey = $"{ModEntry.UniqueId}.ExtraOutputIds";
   internal static string OverrideInputItemIdKey = $"{ModEntry.UniqueId}.OverrideInputItemId";
   internal static string UnflavoredDisplayNameOverrideKey = $"{ModEntry.UniqueId}.UnflavoredDisplayNameOverride";
+  internal static string AutomaticProduceCountKey = $"{ModEntry.UniqueId}.AutomaticProduceCount";
 
   // ModData keys
   internal static string ExtraContextTagsKey = $"{ModEntry.UniqueId}.ExtraContextTags";
   internal static string ExtraPreserveIdKeyPrefix = $"{ModEntry.UniqueId}.ExtraPreserveId";
   internal static string ExtraColorKeyPrefix = $"{ModEntry.UniqueId}.ExtraColor";
+  // on machines
+  internal static string AutomaticProduceCountRemainingKey = $"{ModEntry.UniqueId}.AutomaticProduceCountRemaining";
 
   // ModData value regexes
   internal static Regex DropInIdRegex = new Regex(@"DROP_IN_ID_(\d+)");
@@ -60,19 +64,21 @@ sealed class MachineHarmonyPatcher {
   internal static string HolderQualifiedId = $"(O){HolderId}";
 
   internal static bool enableGetOutputItemSideEffect = false;
+  internal static bool enableOutputMachineSideEffect = false;
 
   public static void ApplyPatches(Harmony harmony) {
+    // Machine logic patches
     harmony.Patch(
         original: AccessTools.Method(
-          typeof(StardewValley.MachineDataUtility),
-          nameof(StardewValley.MachineDataUtility.GetOutputData),
+          typeof(MachineDataUtility),
+          nameof(MachineDataUtility.GetOutputData),
           new Type[] { typeof(List<MachineItemOutput>), typeof(bool), typeof(Item),
           typeof(Farmer), typeof(GameLocation) }),
         prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.MachineDataUtility_GetOutputData_prefix)));
 
     harmony.Patch(
-        original: AccessTools.Method(typeof(StardewValley.MachineDataUtility),
-          nameof(StardewValley.MachineDataUtility.GetOutputItem)),
+        original: AccessTools.Method(typeof(MachineDataUtility),
+          nameof(MachineDataUtility.GetOutputItem)),
         prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.MachineDataUtility_GetOutputItem_prefix)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.MachineDataUtility_GetOutputItem_postfix)));
 
@@ -82,6 +88,18 @@ sealed class MachineHarmonyPatcher {
         prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_PlaceInMachine_Prefix)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_PlaceInMachine_Postfix)));
 
+    harmony.Patch(
+        original: AccessTools.Method(typeof(MachineDataUtility),
+          nameof(MachineDataUtility.CanApplyOutput)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.MachineDataUtility_CanApplyOutput_Postfix)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(SObject),
+          nameof(SObject.OutputMachine)),
+        prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_OutputMachine_Prefix)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_OutputMachine_Postfix)));
+
+    // other patches 
     harmony.Patch(
         original: AccessTools.Method(typeof(Item),
           "_PopulateContextTags"),
@@ -206,6 +224,7 @@ sealed class MachineHarmonyPatcher {
   // * Produces extra outputs and put them in a chest saved in the output item's heldObject
   // * Applies the display name override if the output is unflavored
   // * Saves extra flavor and color info if specified
+  // * Set the automatic produce count, if this comes from `PlaceInMachine` and it's not set.
   private static void MachineDataUtility_GetOutputItem_postfix(ref Item __result, SObject machine,
       MachineItemOutput outputData, Item inputItem,
       Farmer who, bool probe,
@@ -256,10 +275,27 @@ sealed class MachineHarmonyPatcher {
       resultObject.displayNameFormat = unflavoredDislayNameOverride;
     }
 
-    if (inputItem is null) return;
     if (outputData.CustomData == null) {
       return;
     }
+
+    // Set the machine automatic production count
+    // If a PlaceInMachine-called output rule, always refresh the count
+    // otherwise only set it if it doesn't exist (to help migrate existing machines)
+    // (but only if this function is called inside OutputMachine)
+    if (enableOutputMachineSideEffect) {
+      if (outputData.CustomData.TryGetValue(AutomaticProduceCountKey, out var str) &&
+          Int32.TryParse(str, out int automaticProduceCount) &&
+          (enableGetOutputItemSideEffect || !machine.modData.ContainsKey(AutomaticProduceCountRemainingKey))) {
+        machine.modData[AutomaticProduceCountRemainingKey] = str;
+      }
+      if (!outputData.CustomData.ContainsKey(AutomaticProduceCountKey)) {
+        machine.modData.Remove(AutomaticProduceCountRemainingKey);
+      }
+    }
+
+    // PlaceInMachine-exclusive rules below
+    if (inputItem is null) return;
 
     // Remove extra fuel (and add their prices if specified)
     IDictionary<string, Item> usedFuels = new Dictionary<string, Item>();
@@ -385,6 +421,11 @@ sealed class MachineHarmonyPatcher {
           ModEntry.StaticMonitor.Log($"Warning: RequiredCountMax value ({requiredCountMax}) smaller than TriggerCount ({requiredCountMin}) for rule {outputData.Id}, ignoring.", LogLevel.Warn);
         } else {
           int baseOutputStack = Math.Min(inputItem.Stack, requiredCountMax);
+          if (outputData.CustomData.ContainsKey(RequiredCountDivisibleByKey) &&
+              Int32.TryParse(outputData.CustomData[RequiredCountDivisibleByKey], out int requiredCountDivisor)) {
+            baseOutputStack -= baseOutputStack % requiredCountDivisor;
+            baseOutputStack = Math.Max(triggerRule.RequiredCount, baseOutputStack);
+          }
           __result.Stack = (int)Utility.ApplyQuantityModifiers(baseOutputStack, outputData.StackModifiers, outputData.StackModifierMode, machine.Location, who, __result, inputItem);
           SObject.ConsumeInventoryItem(who, inputItem, baseOutputStack - requiredCountMin);
         }
@@ -440,11 +481,33 @@ sealed class MachineHarmonyPatcher {
   // inventory for additional fuels) if it's called within the context of PlaceInMachine,
   // allowing GetOutputItem to be callable anywhere without ill effects.
   public static void SObject_PlaceInMachine_Prefix(MachineData machineData, Item inputItem, bool probe, Farmer who, bool showMessages = true, bool playSounds = true) {
-    enableGetOutputItemSideEffect = true;
+    if (!probe) enableGetOutputItemSideEffect = true;
   }
 
 	public static void SObject_PlaceInMachine_Postfix(MachineData machineData, Item inputItem, bool probe, Farmer who, bool showMessages = true, bool playSounds = true) {
     enableGetOutputItemSideEffect = false;
+  }
+
+  // If a machine ran out of automatic producing count, return false.
+  public static void MachineDataUtility_CanApplyOutput_Postfix(ref bool __result, SObject machine, MachineOutputRule rule, MachineOutputTrigger trigger, Item inputItem, Farmer who, GameLocation location, ref MachineOutputTriggerRule triggerRule, ref bool matchesExceptCount) {
+    if (trigger == MachineOutputTrigger.OutputCollected &&
+        machine.modData.TryGetValue(AutomaticProduceCountRemainingKey, out var str) &&
+        Int32.TryParse(str, out var automaticProduceCountRemaining) &&
+        automaticProduceCountRemaining <= 0) {
+        __result = false;
+      }
+  }
+
+  public static void SObject_OutputMachine_Prefix(SObject __instance, MachineData machine, MachineOutputRule outputRule, Item inputItem, Farmer who, GameLocation location, bool probe, bool heldObjectOnly = false) {
+    if (!probe) enableOutputMachineSideEffect = true;
+  }
+  public static void SObject_OutputMachine_Postfix(bool __result, SObject __instance, MachineData machine, MachineOutputRule outputRule, Item inputItem, Farmer who, GameLocation location, bool probe, bool heldObjectOnly = false) {
+    enableOutputMachineSideEffect = false;
+    if (!probe && __result &&
+        __instance.modData.TryGetValue(AutomaticProduceCountRemainingKey, out var str) &&
+        Int32.TryParse(str, out var automaticProduceCountRemaining)) {
+      __instance.modData[AutomaticProduceCountRemainingKey] = (automaticProduceCountRemaining - 1).ToString();
+    }
   }
 
   public static void SObject_loadDisplayName_postfix(ref string __result, SObject __instance) {

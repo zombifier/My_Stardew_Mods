@@ -32,6 +32,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Generate nearby flower-flavored modded items (or, generate flavored items outside of machines)](#generate-nearby-flower-flavored-modded-items-or-generate-flavored-items-outside-of-machines)
       + [Override display name if the output item is unflavored](#override-display-name-if-the-output-item-is-unflavored)
       + [Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query](#generate-an-input-item-for-recipes-that-dont-have-any-and-use-nearby-flower-as-a-possible-query)
+      + [Automatic machines that stop producing after X times](#automatic-machines-that-stop-producing-after-X-times)
    * [Crafting/Cooking Features](#craftingcooking-features)
       + [Use some machine-like features in crafting and cooking (namely copy flavor and color)](#use-some-machine-like-features-in-crafting-and-cooking-namely-copy-flavor-and-color)
 
@@ -564,7 +565,8 @@ be of the base color, even with `CopyColor` set.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `selph.ExtraMachineConfig.RequiredCountMax` | When set to an int (as a string), the primary input item's count can be between the min value of the trigger rule's `RequiredCount`, or the max value as specified by this field.<br>The output item's stack count will be set to equal the amount of input item consumed, and `MinStack` and `MaxStack` will be ignored. To modify or the stack count, use `StackModifiers` and `StackModifiersMode`.<br>The required fuels (either via `AdditionalConsumedItems` or this mod's per-recipe fuels) will remain the same regardless of how many input items are consumed. For the fuel added by this mod, if you want the amount consumed to depend on the amount of input items consumed, make multiple output rules conditioned on the input item's stack size.|
+| `selph.ExtraMachineConfig.RequiredCountMax` | When set to an int (as a string), the primary input item's count can be between the min value of the trigger rule's `RequiredCount`, or the max value as specified by this field.<br>The output item's stack count will be set to equal the amount of input item consumed, and `MinStack` and `MaxStack` will be ignored. To modify the stack count, use `StackModifiers` and `StackModifiersMode`.<br>The required fuels (either via `AdditionalConsumedItems` or this mod's per-recipe fuels) will remain the same regardless of how many input items are consumed. For the fuel added by this mod, if you want the amount consumed to depend on the amount of input items consumed, make multiple output rules conditioned on the input item's stack size.|
+| `selph.ExtraMachineConfig.RequiredCountDivisibleBy` | When set to an int (as a string), the input count will be rounded down to the nearest multiple of this number. For example, specify 5 to make the machine take 5, 10, 15, etc.|
 
 Note that this functionality is completely achievable with vanilla machine
 rules, using `RequiredCount` and output rules condition. This macro simply
@@ -796,8 +798,9 @@ Note that this item query technically can be used outside of machine rules.
 
 ### Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query
 
-NOTE: This functionality is currently incomplete. It is also *very* specialized
-and should not be used unless you know what you're doing. I'll also likely remove this in a future update tbh.
+NOTE: This functionality is rather specialized and should not be used unless
+you know what you're doing. I'll likely tweak this further; please give
+feedback/feature requests if you're interested.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
@@ -850,6 +853,64 @@ the default mead sprite doesn't have a mask).
           "selph.ExtraMachineConfig.CopyColor": "true",
           "selph.ExtraMachineConfig.OverrideInputItemId": "NEARBY_FLOWER_QUALIFIED_ID",
         },
+      },
+    },
+  ]
+}
+```
+
+</details>
+
+----
+
+### Automatic machines that stop producing after X times
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.AutomaticProduceCount` | For machines that use `OutputCollected` and `ItemPlacedInMachine` (ie a Crystalarium clone), the number of times this output rule can automatically produce (including from `OutputCollected` reloading) before it must be reloaded with another input item via `ItemPlacedInMachine`. The count is global and will apply to every recipe by this machine, but each output item is free to specify its own count.<br>Will ignore `DayUpdate` and `MachinePutDown`, since it doesn't make sense to apply to these rules.|
+
+NOTE: During testing, if you add this rule to an existing machines, existing instances will not be updated.
+
+#### Example
+
+This example changes the coffee maker to require reloading with 5 coffee beans every 5 coffees collected.
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "Changes": [
+    {
+      "LogName": "Coffee Maker must be reloaded every 5 coffees",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)246", "OutputRules", "Default"],
+      "Entries": {
+        "Triggers": [
+          {
+            "Id": "OutputCollected",
+            "Trigger": "OutputCollected",
+          },
+          {
+            "Id": "ItemPlacedInMachine",
+            "Trigger": "ItemPlacedInMachine",
+            "RequiredItemId": "(O)433",
+            "RequiredCount": 5,
+          },
+        ],
+        "OutputItem": [
+          {
+            "Id": "(O)395",
+            "ItemId": "(O)395",
+            "CustomData": {
+              "selph.ExtraMachineConfig.AutomaticProduceCount": "5",
+            },
+          }
+        ],
+        "MinutesUntilReady": -1,
+        "DaysUntilReady": 1,
       },
     },
   ]

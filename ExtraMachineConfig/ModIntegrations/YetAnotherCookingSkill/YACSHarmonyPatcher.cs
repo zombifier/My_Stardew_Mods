@@ -12,7 +12,7 @@ using SObject = StardewValley.Object;
 
 public class YACSPatcher {
   public static void ApplyPatches(Harmony harmony) {
-    var eventsType = AccessTools.TypeByName("CookingSkill.Core.Events");
+    var eventsType = AccessTools.TypeByName("CookingSkillRedux.Core.Events");
 
     harmony.Patch(
         original: AccessTools.Method(eventsType, "PostCook"),
