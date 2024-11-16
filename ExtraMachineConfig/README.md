@@ -867,9 +867,7 @@ the default mead sprite doesn't have a mask).
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `selph.ExtraMachineConfig.AutomaticProduceCount` | For machines that use `OutputCollected` and `ItemPlacedInMachine` (ie a Crystalarium clone), the number of times this output rule can automatically produce (including from `OutputCollected` reloading) before it must be reloaded with another input item via `ItemPlacedInMachine`. The count is global and will apply to every recipe by this machine, but each output item is free to specify its own count.<br>Will ignore `DayUpdate` and `MachinePutDown`, since it doesn't make sense to apply to these rules.|
-
-NOTE: During testing, if you add this rule to an existing machines, existing instances will not be updated.
+| `selph.ExtraMachineConfig.AutomaticProduceCount` | For machines that use `OutputCollected` and `ItemPlacedInMachine` (ie a Crystalarium clone), the number of times this output rule can automatically produce (including from `OutputCollected` reloading) before it must be reloaded with another input item via `ItemPlacedInMachine`. The count is global and will apply to every recipe by this machine, and each output item can (and must!) specify its own count.<br>Will ignore `DayUpdate` and `MachinePutDown`, since it doesn't make sense to apply to these rules.|
 
 #### Example
 
