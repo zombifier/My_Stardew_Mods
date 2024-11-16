@@ -99,7 +99,7 @@ static class Utils {
       extraDescription = cachedDescription;
     } else {
       var specialOrder = Game1.player.team.specialOrders
-        .First((SpecialOrder order) => order.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId);
+        .FirstOrDefault((SpecialOrder order) => order.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId, null);
       if (specialOrder is null) return;
       List<string> categoryStrings = new();
       foreach (var objective in specialOrder.objectives) {

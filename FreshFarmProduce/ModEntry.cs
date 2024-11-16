@@ -165,36 +165,6 @@ internal sealed class ModEntry : Mod {
     viewEngine.RegisterViews($"Mods/{UniqueId}/Views", "assets/views");
     viewEngine.RegisterSprites($"Mods/{UniqueId}/Sprites", "assets/sprites");
 
-    // Get Informant API (if it's installed)
-    //var informant = Helper.ModRegistry.GetApi<Slothsoft.Informant.Api.IInformant>("Slothsoft.Informant");
-    //if (informant is not null) {
-    //  informant.AddItemDecorator(
-    //      $"{UniqueId}.InformantDecorator",
-    //      () => Helper.Translation.Get("Informant.name"),
-    //      () => Helper.Translation.Get("Informant.description"),
-    //      (SObject obj) => {
-    //        var specialOrder = Game1.player.team.specialOrders
-    //          .First((SpecialOrder order) => order.questKey.Value == FarmCompetitionSpecialOrderId);
-    //        if (specialOrder is null) return null;
-    //        List<string> categoryStrings = new();
-    //        foreach (var objective in specialOrder.objectives) {
-    //          if (objective is ShipPointsObjective shipPointsObjective &&
-    //              ModEntry.competitionDataAssetHandler.data.Categories.TryGetValue(shipPointsObjective.Id.Value, out var categoryData) &&
-    //              shipPointsObjective.CanAcceptThisItem(obj, Game1.player)) {
-    //            categoryStrings.Add(shipPointsObjective.useShipmentValue.Value ?
-    //                Helper.Translation.Get("Informant.tooltipNoPoints", new { categoryName = categoryData.Name }) :
-    //                Helper.Translation.Get("Informant.tooltip", new { categoryName = categoryData.Name, points = shipPointsObjective.CalculatePoints(obj) })
-    //                );
-    //          }
-    //        }
-    //        if (categoryStrings.Count > 0) {
-    //          return Helper.Translation.Get("Informant.header") + string.Join(Helper.Translation.Get("Informant.tooltipSeparator"), categoryStrings);
-    //        } else {
-    //          return null;
-    //        }
-    //      });
-    //}
-
     // get Generic Mod Config Menu's API (if it's installed)
     var configMenu = Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
     if (configMenu is null) 
@@ -569,7 +539,7 @@ internal sealed class ModEntry : Mod {
 
   private void PrintDiagnostics(string command, string[] args) {
     var specialOrder = Game1.player.team.specialOrders
-      .First((SpecialOrder order) => order.questKey.Value == FarmCompetitionSpecialOrderId);
+      .FirstOrDefault((SpecialOrder order) => order.questKey.Value == FarmCompetitionSpecialOrderId, null);
     if (specialOrder is not null) {
       foreach (var objective in specialOrder.objectives) {
         if (objective is ShipPointsObjective shipPointsObjective &&

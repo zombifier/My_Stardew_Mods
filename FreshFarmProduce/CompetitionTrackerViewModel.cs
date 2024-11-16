@@ -82,7 +82,7 @@ internal record CompetitionTrackerViewModel(
     string HeaderText,
     ObjectiveModel[] Objectives) {
     public static CompetitionTrackerViewModel Load() {
-        var specialOrder = Game1.player.team.specialOrders.First((SpecialOrder so) => so.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId);
+        var specialOrder = Game1.player.team.specialOrders.FirstOrDefault((SpecialOrder so) => so.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId, null);
         if (specialOrder is not null) {
           return new(ModEntry.Helper.Translation.Get("CompetitionName"),
                 specialOrder.objectives
