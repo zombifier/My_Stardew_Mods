@@ -686,7 +686,12 @@ non-`Object` output. The holder item's only purpose is to wrap the secondary
 output in a way that the machine can hold it, and it will immediately disappear
 if it enters the player's inventory or a chest.
 
-IMPORTANT NOTE: Also set `CopyColor` on the holder item output. This makes zero mechanical difference, but it makes the game properly draw the holder item as its content properly (colored objects force the game to use the full draw function instead of directly grabbing the item sprite from data).
+IMPORTANT NOTE: Also set `CopyColor` on the holder item output. This makes zero
+mechanical difference, but it makes the game properly draw the holder item as
+its content properly (colored objects force the game to use the full draw
+function instead of directly grabbing the item sprite from data). This
+workaround doesn't work if the input item doesn't have a color tag, so you
+would have to define one for all your input items.
 
 #### Example
 
