@@ -1,7 +1,7 @@
 {
   "Name": "[CP]Fresh Farm Produce",
   "Author": "selph",
-  "Version": "1.1.1",
+  "Version": "1.1.2",
   "Description": "Increase sell price of high quality fresh produce, and adds a month-long competition that encourages selling diverse produce.",
   "UniqueID": "selph.FreshFarmProduceCP",
   "MinimumApiVersion": "4.0.0",
