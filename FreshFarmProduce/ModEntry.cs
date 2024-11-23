@@ -470,7 +470,7 @@ internal sealed class ModEntry : Mod {
             !(new List<string>{"217", "772", "773", "279", "873"}).Contains(itemId);
           var isUnshippedItem =
             SObject.isPotentialBasicShipped(itemId, allDatum.Category, allDatum.ObjectType) &&
-            Game1.player.basicShipped.ContainsKey(itemId);
+            !Game1.player.basicShipped.ContainsKey(itemId);
           var isUndonatedMuseumItem = LibraryMuseum.IsItemSuitableForDonation(qualifiedItemId);
 			  	if (isUncookedDish || isUncaughtFish || isUndonatedMuseumItem || isUnshippedItem) {
             missingPerfectionItems.Add(ItemRegistry.Create(qualifiedItemId));
