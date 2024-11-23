@@ -2,7 +2,7 @@
   "Name": "Animal Multiproduce",
   "Author": "selph",
   "Version": "1.0.0",
-  "Description": "Make certain animals drop both of their produce at the same time. Affects ducks in vanilla, and a variety of feather-dropping modded poultry.",
+  "Description": "Make certain animals drop both of their produce at the same time. Affects ducks and rabbits in vanilla, and a small number of feather-dropping modded poultry and milkable sheep.",
   "UniqueID": "selph.AnimalMultiproduce",
   "MinimumApiVersion": "4.0.0",
   "Dependencies": [

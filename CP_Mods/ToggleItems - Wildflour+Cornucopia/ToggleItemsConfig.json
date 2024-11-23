@@ -4,105 +4,133 @@
     [
       "(O)wildflour.ateliercrops_lemon",
       "(O)Cornucopia_Lemon",
+      "(O)Wildflour.AtelierGoods_Lemon",
     ],
     [
       "(O)wildflour.ateliercrops_lime",
       "(O)Cornucopia_Lime",
+      "(O)Wildflour.AtelierGoods_Lime",
     ],
     [
       "(O)wildflour.ateliercrops_olive",
       "(O)Cornucopia_Olive",
       "(O)Lumisteria.MtVapius_Olive",
+      "(O)Wildflour.AtelierGoods_Olive",
     ],
     [
       "(O)wildflour.ateliercrops_cacaopod",
       "(O)Cornucopia_CocoaPod",
+      "(O)Wildflour.AtelierGoods_Cacao_Pod",
     ],
     [
       "(O)wildflour.ateliercrops_raspberry",
       "(O)Cornucopia_Raspberry",
+      "(O)Wildflour.AtelierGoods_Wild_Raspberry",
     ],
     [
       "(O)wildflour.ateliercrops_elderberries",
       "(O)Cornucopia_Elderberries",
+      "(O)Wildflour.AtelierGoods_Elderberries",
     ],
     [
       "(O)wildflour.ateliercrops_vanilla",
       "(O)Cornucopia_Vanilla",
+      "(O)Wildflour.AtelierGoods_Vanilla",
     ],
     [
       "(O)wildflour.ateliercrops_chamomile",
       "(O)Cornucopia_Chamomile",
+      "(O)slimerrain.uncleirohapprovedteacp_Chamomile",
+      "(O)Wildflour.AtelierGoods_Chamomile",
     ],
     [
       "(O)wildflour.ateliercrops_lavender",
       "(O)Cornucopia_Lavender",
       "(O)QL_Lavender",
+      "(O)Lumisteria.SereneMeadow_ButterflyLavender",
+      "(O)slimerrain.uncleirohapprovedteacp_Lavender",
+      "(O)Wildflour.AtelierGoods_Lavender",
     ],
     [
       "(O)wildflour.ateliercrops_jasmine",
       "(O)Cornucopia_Jasmine",
       "(O)QL_Jasmine",
+      "(O)slimerrain.uncleirohapprovedteacp_Jasmine",
+      "(O)Wildflour.AtelierGoods_Jasmine",
     ],
     [
       "(O)wildflour.ateliercrops_pistachio",
       "(O)Cornucopia_Pistachio",
       "(O)BFV.CombinedCrops_PistachioNut",
+      "(O)Wildflour.AtelierGoods_Pistachio",
     ],
     [
       "(O)wildflour.ateliercrops_cinnamon",
       "(O)Cornucopia_CinnamonSticks",
+      "(O)Wildflour.AtelierGoods_Cinnamon",
     ],
     [
       "(O)wildflour.ateliercrops_cashew",
       "(O)Cornucopia_Cashew",
+      "(O)Wildflour.AtelierGoods_Cashew",
     ],
     [
       "(O)wildflour.ateliercrops_walnut",
       "(O)Cornucopia_Walnut",
       "(O)BFV.CombinedCrops_RedWalnut",
+      "(O)Wildflour.AtelierGoods_Walnut",
     ],
     [
       "(O)wildflour.ateliercrops_almond",
       "(O)Cornucopia_Almond",
+      "(O)Wildflour.AtelierGoods_Almond",
     ],
     [
       "(O)wildflour.ateliercrops_cilantro",
       "(O)Cornucopia_Cilantro",
+      "(O)Wildflour.AtelierGoods_Cilantro",
     ],
     [
       "(O)wildflour.ateliercrops_sage",
       "(O)Cornucopia_Sage",
+      "(O)Wildflour.AtelierGoods_Sage",
     ],
     [
       "(O)wildflour.ateliercrops_rosemary",
       "(O)Cornucopia_Rosemary",
+      "(O)Wildflour.AtelierGoods_Rosemary",
     ],
     [
       "(O)wildflour.ateliercrops_thyme",
       "(O)Cornucopia_Thyme",
+      "(O)Wildflour.AtelierGoods_Thyme",
     ],
     [
       "(O)wildflour.ateliercrops_mint",
       "(O)Cornucopia_Mint",
+      "(O)Wildflour.AtelierGoods_Mint",
     ],
     [
       "(O)wildflour.ateliercrops_basil",
       "(O)Cornucopia_Basil",
       "(O)Lumisteria.MtVapius_Basil",
       "(O)BFV.CombinedCrops_SweetBasil",
+      "(O)Wildflour.AtelierGoods_Basil",
     ],
     [
       "(O)wildflour.ateliercrops_wormwood",
       "(O)Cornucopia_Wormwood",
+      "(O)Wildflour.AtelierGoods_Wormwood",
     ],
     [
       "(O)wildflour.ateliercrops_redonion",
       "(O)Cornucopia_RedOnion",
+      "(O)Wildflour.AtelierGoods_Red_Onion",
     ],
     [
       "(O)wildflour.ateliercrops_chickenwoods",
       "(O)Cornucopia_ChickenoftheWoods",
+      "(O)Wildflour.AtelierGoods_Chicken_Woods",
     ],
     // Artisan Goods
     [
@@ -110,35 +138,43 @@
       "(O)Cornucopia_Butter",
       "(O)Lumisteria.MtVapius_Butter",
       "(O)FlashShifter.StardewValleyExpandedCP_Butter",
+      "(O)Wildflour.AtelierGoods_Butter",
     ],
     [
       "(O)wildflour.gourmetpantry_cream",
       "(O)Lumisteria.MtVapius_Cream",
+      "(O)Wildflour.AtelierGoods_Cream",
     ],
     [
       "(O)wildflour.gourmetpantry_olive_oil",
       "(O)Cornucopia_OliveOil",
       "(O)Lumisteria.MtVapius_ArtisanGoods_OliveOil",
+      "(O)Wildflour.AtelierGoods_Olive_Oil",
     ],
     [
       "(O)wildflour.gourmetpantry_coconut_milk",
       "(O)Cornucopia_CoconutMilk",
+      "(O)Wildflour.AtelierGoods_Coconut_Milk",
     ],
     [
       "(O)wildflour.gourmetpantry_honey_butter",
       "(O)Cornucopia_HoneyButter",
+      "(O)Wildflour.AtelierGoods_Honey_Butter",
     ],
     [
       "(O)wildflour.gourmetpantry_maple_butter",
       "(O)Cornucopia_MapleButter",
+      "(O)Wildflour.AtelierGoods_Maple_Butter",
     ],
     [
       "(O)wildflour.honeybees_honeycomb",
       "(O)Cornucopia_Beeswax",
+      "(O)Wildflour.AtelierGoods_Honeycomb",
     ],
     [
       "(O)wildflour.gourmetpantry_corn_flour",
       "(O)Cornucopia_CornFlour",
+      "(O)Wildflour.AtelierGoods_Corn_Flour",
     ],
     // Grains Overhull
     [
@@ -166,6 +202,7 @@
     [
       "(O)Cornucopia_Dahlia",
       "(O)QL_Dahlia",
+      "(O)Lumisteria.SereneMeadow_Dahlia"
     ],
     [
       "(O)Cornucopia_Freesia",
@@ -174,10 +211,12 @@
     [
       "(O)Cornucopia_Iris",
       "(O)QL_Iris",
+      "(O)Lumisteria.SereneMeadow_Iris"
     ],
     [
       "(O)Cornucopia_Lily",
       "(O)QL_Lily",
+      "(O)slimerrain.uncleirohapprovedteacp_Lily",
     ],
     [
       "(O)Cornucopia_Orchid",
@@ -203,6 +242,7 @@
     [
       "(O)Cornucopia_Lilac",
       "(O)QL_Lilac",
+      "(O)Lumisteria.SereneMeadow_Lilac"
     ],
     // Bonsters
     [
@@ -224,6 +264,7 @@
     [
       "(O)Cornucopia_Lotus",
       "(O)BFV.CombinedCrops_SacredWaterLotus",
+      "(O)slimerrain.uncleirohapprovedteacp_Lotus",
     ],
     [
       "(O)Cornucopia_Onion",
@@ -312,6 +353,20 @@
     [
       "(O)Lumisteria.MtVapius_GooseMayonnaise",
       "(O)FlashShifter.StardewValleyExpandedCP_Goose_Mayonnaise",
+    ],
+    // Lumisteria Serene Meadows
+    [
+      "(O)Lumisteria.SereneMeadow_Clematis",
+      "(O)Cornucopia_Clematis",
+    ],
+    // Uncle Iroh Approved Tea
+    [
+      "(O)Cornucopia_Chrysanthemum",
+      "(O)slimerrain.uncleirohapprovedteacp_Chrysanthemum",
+    ],
+    [
+      "(O)Cornucopia_Sugarcane",
+      "(O)slimerrain.uncleirohapprovedteacp_Sugarcane",
     ],
   ]
 }

@@ -19,17 +19,6 @@
       },
     },
     {
-      "LogName": "Initialize asset with empty objects for compat",
-      "Action": "EditData",
-      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
-      "Priority": "Early",
-      "Entries": {
-        "Duck": {},
-        "Sheep": {},
-        "Rabbit": {},
-      },
-    },
-    {
       "LogName": "Make rabbit drop feet as additional item",
       "Action": "EditData",
       "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
@@ -104,7 +93,7 @@
       },
       "When": {
         "HasMod |contains=radm.milkdasheep": "true",
-        "Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR 'SheepMilkToUse' = 'MilkableSheep'": true,
+        "Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR '{{SheepMilkToUse}}' = 'MilkableSheep'": true,
       }
     },
     {
@@ -117,8 +106,9 @@
       },
       "When": {
         "HasMod |contains=radm.milkdasheep": "true",
-        "Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR 'SheepMilkToUse' = 'MilkableSheep'": true,
-      }
+        //"Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR '{{SheepMilkToUse}}' = 'MilkableSheep'": true,
+      },
+      "Priority": "Late + 10",
     },
     {
       "LogName": "Remove large milk from sheep",
@@ -130,8 +120,9 @@
       },
       "When": {
         "HasMod |contains=radm.milkdasheep": "true",
-        "Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR 'SheepMilkToUse' = 'MilkableSheep'": true,
-      }
+        //"Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR '{{SheepMilkToUse}}' = 'MilkableSheep'": true,
+      },
+      "Priority": "Late + 10",
     },
     {
       "LogName": "Make sheep milk additional item",
@@ -141,7 +132,7 @@
       "TargetField": ["Sheep", "ExtraProduceSpawnList"],
       "When": {
         "HasMod |contains=radm.milkdasheep": "true",
-        "Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR 'SheepMilkToUse' = 'MilkableSheep'": true,
+        "Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR '{{SheepMilkToUse}}' = 'MilkableSheep'": true,
       },
       "Entries": {
         "{{ModId}}.SheepMilk": {
@@ -234,7 +225,7 @@
       "TargetField": ["Sheep", "ExtraProduceSpawnList"],
       "When": {
         "HasMod |contains=Lumisteria.MtVapius": "true",
-        "Query: NOT {{HasMod |contains=radm.milkdasheep}} OR 'SheepMilkToUse' = 'MtVapius'": true,
+        "Query: NOT {{HasMod |contains=radm.milkdasheep}} OR '{{SheepMilkToUse}}' = 'MtVapius'": true,
       },
       "Entries": {
         "{{ModId}}.SheepMilk": {
@@ -260,18 +251,6 @@
             },
           ]
         }
-      },
-    },
-    {
-      "LogName": "Initialize asset with empty objects for compat - Vapius animals",
-      "Action": "EditData",
-      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
-      "Priority": "Early",
-      "Entries": {
-        "Lumisteria.MtVapius_Goose": {},
-        "Lumisteria.MtVapius_StellarGoose": {},
-        "Lumisteria.MtVapius_SpeckledFowl": {},
-        "Lumisteria.MtVapius_SpeckledFowlVoid": {},
       },
     },
     {
@@ -408,20 +387,6 @@
       "TargetField": ["Mizu.Turkey_GrayTurkey", "DeluxeProduceItemIds"],
       "Entries": {
         "Default": null,
-      },
-      "When": {
-        "HasMod |contains=Mizu.Turkey": "true",
-      },
-    },
-    {
-      "LogName": "Initialize asset with empty objects for compat",
-      "Action": "EditData",
-      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
-      "Priority": "Early",
-      "Entries": {
-        "Mizu.Turkey_BrownTurkey": {},
-        "Mizu.Turkey_WhiteTurkey": {},
-        "Mizu.Turkey_GrayTurkey": {},
       },
       "When": {
         "HasMod |contains=Mizu.Turkey": "true",
