@@ -699,6 +699,7 @@ This example allows mystery boxes to be crushable by the Geode crusher;
 previously this was impossible because mystery boxes may contain weapons or
 hats, which cannot be outputted by a machine.
 
+(TODO: This example isn't perfect - needs limiting the trigger to only geodes/mystery boxes. Vanilla relies on the C# output method to filter the input, which doesn't happen here since we moved it to the byproduce)
 
 <details>
 
