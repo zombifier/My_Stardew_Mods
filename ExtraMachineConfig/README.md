@@ -686,8 +686,7 @@ non-`Object` output. The holder item's only purpose is to wrap the secondary
 output in a way that the machine can hold it, and it will immediately disappear
 if it enters the player's inventory or a chest.
 
-IMPORTANT NOTE: Also set either `Color`, `CopyColor` (only works if the input
-has a color tag), or if you're using a custom output method, output a
+IMPORTANT NOTE: Also set either `ObjectColor`, or if you're using a custom output method, output a
 `ColoredObject` on the holder item's output entry. This makes zero mechanical
 difference, but it makes the game properly draw the holder item as its content
 properly (colored objects force the game to use the full draw function instead
@@ -699,6 +698,7 @@ This example allows mystery boxes to be crushable by the Geode crusher;
 previously this was impossible because mystery boxes may contain weapons or
 hats, which cannot be outputted by a machine.
 
+(TODO: This example isn't perfect - needs limiting the trigger to only geodes/mystery boxes. Vanilla relies on the C# output method to filter the input, which doesn't happen here since we moved it to the byproduce)
 
 <details>
 
