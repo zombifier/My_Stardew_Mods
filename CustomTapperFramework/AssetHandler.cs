@@ -62,9 +62,9 @@ public class AssetHandler {
       e.Edit(asset => {
           var craftingRecipes = asset.AsDictionary<string, string>();
           craftingRecipes.Data[WaterIndoorPotUtils.WaterPlanterItemId] =
-          $"388 20/Home/{WaterIndoorPotUtils.WaterPlanterItemId}/true/none";
+          $"388 20/Home/{WaterIndoorPotUtils.WaterPlanterItemId}/true/default";
           craftingRecipes.Data[WaterIndoorPotUtils.WaterPotItemId] = 
-          $"(BC)62 1/Home/{WaterIndoorPotUtils.WaterPotItemId}/true/none";
+          $"(BC)62 1/Home/{WaterIndoorPotUtils.WaterPotItemId}/true/default";
           });
     }
   }

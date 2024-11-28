@@ -89,23 +89,24 @@ internal sealed class ModEntry : Mod {
     }
 
     // Learn the water crop recipes
-    bool hasAquaticCrops = false;
-		foreach (KeyValuePair<string, CropData> cropData in Game1.cropData) {
-      if ((cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsWaterCustomFieldsKey) ?? false)
-          || (cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsAmphibiousCustomFieldsKey) ?? false)) {
-        hasAquaticCrops = true;
-      }
-    }
-    if (hasAquaticCrops) {
-      Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPlanterItemId, 0);
+    // TODO: Currently disabled until I find a way to add recipes that don't count for perfection
+    //bool hasAquaticCrops = false;
+		//foreach (KeyValuePair<string, CropData> cropData in Game1.cropData) {
+    //  if ((cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsWaterCustomFieldsKey) ?? false)
+    //      || (cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsAmphibiousCustomFieldsKey) ?? false)) {
+    //    hasAquaticCrops = true;
+    //  }
+    //}
+    //if (hasAquaticCrops) {
+    //  Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPlanterItemId, 0);
 
-      if (Game1.player.craftingRecipes.ContainsKey("Garden Pot")) {
-        Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPotItemId, 0);
-      }
-    } else {
-      Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPlanterItemId);
-      Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPotItemId);
-    }
+    //  if (Game1.player.craftingRecipes.ContainsKey("Garden Pot")) {
+    //    Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPotItemId, 0);
+    //  }
+    //} else {
+    //  Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPlanterItemId);
+    //  Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPotItemId);
+    //}
     
   }
 
