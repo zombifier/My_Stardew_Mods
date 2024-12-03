@@ -57,7 +57,7 @@ public class ShipPointsObjective : ShipObjective {
   public ShipPointsObjective(string id, bool useSalePrice = false) : base() {
     if (ModEntry.competitionDataAssetHandler.data.Categories.TryGetValue(id, out var categoryData)) {
       this.Id.Value = id;
-      this.maxCount.Value = categoryData.TotalPoints;
+      this.maxCount.Value = (int)(categoryData.TotalPoints * Utils.GetFameDifficultyModifier() * Utils.GetRandomDifficultyModifier());
       this.description.Value = categoryData.Name;
     } else {
       ModEntry.StaticMonitor.Log($"WARNING: Unknown objective ID found: {id}. This may have weird effects.", LogLevel.Warn);

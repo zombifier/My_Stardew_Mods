@@ -80,5 +80,15 @@
       "Target": "{{ModId}}/Objects",
       "FromFile": "assets/{{TargetWithoutPath}}.png",
     },
+    {
+      "LogName": "Power Rules",
+      "Action": "Include",
+      "FromFile": "Data/powers.json",
+    },
+    {
+      "LogName": "Shop Rules",
+      "Action": "Include",
+      "FromFile": "Data/shops.json",
+    },
   ]
 }

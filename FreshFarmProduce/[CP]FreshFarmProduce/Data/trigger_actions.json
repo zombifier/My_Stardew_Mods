@@ -29,6 +29,7 @@
 					"Condition": "DAY_OF_MONTH 1, PLAYER_HAS_MAIL Current selph.FreshFarmProduce.Finished",
 					"Actions": [
             "AddMail Current {{ModId}}.NoMedal now",
+            "selph.FreshFarmProduce_AddFame -2",
           ],
           "MarkActionApplied": false,
         },
@@ -56,6 +57,7 @@
 					"Condition": "DAY_OF_MONTH 1, PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedGold",
 					"Actions": [
             "AddMail Current {{ModId}}.GoldMedal now",
+            "selph.FreshFarmProduce_AddFame 2",
           ],
           "MarkActionApplied": false,
         },
@@ -65,6 +67,7 @@
 					"Condition": "DAY_OF_MONTH 1, PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedIridium",
 					"Actions": [
             "AddMail Current {{ModId}}.IridiumMedal now",
+            "selph.FreshFarmProduce_AddFame 5",
           ],
           "MarkActionApplied": false,
         },
@@ -95,7 +98,7 @@
         "{{ModId}}.StartSpecialOrder" : {
 					"Id": "{{ModId}}.StartSpecialOrder",
 					"Trigger": "DayStarted",
-					"Condition": "!DAY_OF_MONTH 1, PLAYER_HAS_MAIL Any newsstory",
+					"Condition": "!DAY_OF_MONTH 1, PLAYER_HAS_MAIL Any newsstory, selph.FreshFarmProduce_COMPETITION_ENABLED",
 //					"Condition": "!DAY_OF_MONTH 1, PLAYER_HAS_MAIL Any newsstory, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedIridium, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedGold, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedSilver, !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.FinishedBronze,  !PLAYER_HAS_MAIL Current selph.FreshFarmProduce.Finished",
 					"Action": "AddMail Current {{ModId}}.CompetitionStarted_{{Season}} now",
           "MarkActionApplied": true,

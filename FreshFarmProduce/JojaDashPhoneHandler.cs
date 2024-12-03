@@ -92,8 +92,5 @@ class JojaDashPhoneHandler : IPhoneHandler {
     Game1.activeClickableMenu = ModEntry.viewEngine.CreateMenuFromAsset(
         $"Mods/{ModEntry.UniqueId}/Views/JojaDashTerminal",
       new JojaDashTerminalModel());
-    Game1.activeClickableMenu.behaviorBeforeCleanup = (IClickableMenu menu) => {
-      JojaDashTerminalModel.FoodTooltipToDraw = null;
-    };
   }
 }

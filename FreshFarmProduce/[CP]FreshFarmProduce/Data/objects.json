@@ -13,12 +13,30 @@
       },
     },
     {
+      "LogName": "Add some base tags to non-spoilable context tags",
+      "Action": "EditData",
+      "Target": "selph.FreshFarmProduce/CompetitionData",
+      "TargetField": ["NonSpoilableContextTags"],
+      "Entries": {
+        "non_spoilable_item": "non_spoilable_item",
+      },
+    },
+    {
       "LogName": "Make coffee beans eligible for freshness",
       "Action": "EditData",
       "Target": "Data/Objects",
       "TargetField": ["433", "ContextTags"],
       "Entries": {
         "spoilable_item": "spoilable_item",
+      },
+    },
+    {
+      "LogName": "Make sap ineligible for freshness",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["92", "ContextTags"],
+      "Entries": {
+        "non_spoilable_item": "non_spoilable_item",
       },
     },
     {
@@ -54,6 +72,23 @@
           "ExcludeFromRandomSale": true,
           "ContextTags": [
             "color_blue",
+          ],
+        },
+        "{{ModId}}.FreshBook": {
+          "Name": "{{ModId}}.FreshBook",
+          "SpriteIndex": 2,
+          "DisplayName": "{{i18n:FreshBook.name}}",
+          "Description": "{{i18n:FreshBook.description}}",
+          "Type": "asdf",
+          "Texture": "{{ModId}}/Objects",
+          "Category": -102,
+          "Price": 0,
+          "ExcludeFromFishingCollection": true,
+          "ExcludeFromShippingCollection": true,
+          "ExcludeFromRandomSale": true,
+          "ContextTags": [
+            "book_item",
+            "color_cyan",
           ],
         },
       }

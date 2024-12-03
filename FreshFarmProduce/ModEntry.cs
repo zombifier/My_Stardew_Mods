@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.TokenizableStrings;
 using StardewValley.Quests;
 using StardewValley.Extensions;
 using StardewValley.Locations;
@@ -54,14 +55,25 @@ internal sealed class ModEntry : Mod {
 
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
     helper.Events.GameLoop.DayEnding += OnDayEnding;
-    helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
-    helper.Events.Display.MenuChanged += OnMenuChanged;
 
     // Register custom stuff
     TriggerActionManager.RegisterAction(
         $"{UniqueId}_AddGlobalFriendshipPoints",
         AddGlobalFriendshipPoints);
+    TriggerActionManager.RegisterAction(
+        $"{UniqueId}_AddFame",
+        AddFame);
+
+    GameStateQuery.Register(
+        $"{UniqueId}_COMPETITION_ENABLED",
+        CompetitionEnabled);
+
+    GameStateQuery.Register(
+        $"{UniqueId}_HAS_FAME",
+        HasFame);
+
     Phone.PhoneHandlers.Add(new JojaDashPhoneHandler());
+    Phone.PhoneHandlers.Add(new AdSpotPhoneHandler());
 
     helper.ConsoleCommands.Add(
         $"{UniqueId}_AddSpecialOrder",
@@ -87,6 +99,13 @@ internal sealed class ModEntry : Mod {
         $"{UniqueId}_AddWinningItems",
         Helper.Translation.Get("AddWinningItems"),
         AddWinningItems);
+
+    TokenParser.RegisterParser(
+        $"{UniqueId}_FameDescription",
+        FameDescriptionToken);
+    TokenParser.RegisterParser(
+        $"{UniqueId}_FameName",
+        FameNameToken);
 
     // Harmony!
     var harmony = new Harmony(this.ModManifest.UniqueID);
@@ -164,6 +183,7 @@ internal sealed class ModEntry : Mod {
 
     viewEngine.RegisterViews($"Mods/{UniqueId}/Views", "assets/views");
     viewEngine.RegisterSprites($"Mods/{UniqueId}/Sprites", "assets/sprites");
+    //viewEngine.EnableHotReloading();
 
     // get Generic Mod Config Menu's API (if it's installed)
     var configMenu = Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
@@ -178,14 +198,11 @@ internal sealed class ModEntry : Mod {
           Helper.WriteConfig(Config);
         });
 
-    // add some config options
-    configMenu.AddBoolOption(
+    configMenu.AddSectionTitle(
         mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.disableFlash.name"),
-        tooltip: () => Helper.Translation.Get("Config.disableFlash.description"),
-        getValue: () => Config.DisableFlash,
-        setValue: value => Config.DisableFlash = value
-        );
+        text: () => Helper.Translation.Get("Config.freshSection.name")
+    );
+
     configMenu.AddBoolOption(
         mod: this.ModManifest,
         name: () => Helper.Translation.Get("Config.disableStaleness.name"),
@@ -222,20 +239,160 @@ internal sealed class ModEntry : Mod {
         getValue: () => Config.DisableFreshPriceIncrease,
         setValue: value => Config.DisableFreshPriceIncrease = value
         );
+    configMenu.AddPageLink(
+        mod: this.ModManifest,
+        pageId: $"{UniqueId}.FreshPriceModifiers",
+        text: () => Helper.Translation.Get("Config.freshPriceModifiers.name")
+        );
+
+    configMenu.AddSectionTitle(
+        mod: this.ModManifest,
+        text: () => Helper.Translation.Get("Config.competitionSection.name")
+    );
+    configMenu.AddBoolOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.enableCompetition.name"),
+        tooltip: () => Helper.Translation.Get("Config.enableCompetition.description"),
+        getValue: () => Config.EnableCompetition,
+        setValue: value => Config.EnableCompetition = value
+        );
+    configMenu.AddBoolOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.enableFamePriceIncrease.name"),
+        tooltip: () => Helper.Translation.Get("Config.enableFamePriceIncrease.description"),
+        getValue: () => Config.EnableFamePriceIncrease,
+        setValue: value => Config.EnableFamePriceIncrease = value
+        );
+    configMenu.AddBoolOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.enableFameDifficultyIncrease.name"),
+        tooltip: () => Helper.Translation.Get("Config.enableFameDifficultyIncrease.description"),
+        getValue: () => Config.EnableFameDifficultyIncrease,
+        setValue: value => Config.EnableFameDifficultyIncrease = value
+        );
+    configMenu.AddBoolOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.enableDifficultyRandomization.name"),
+        tooltip: () => Helper.Translation.Get("Config.enableDifficultyRandomization.description"),
+        getValue: () => Config.EnableDifficultyRandomization,
+        setValue: value => Config.EnableDifficultyRandomization = value
+        );
+
+    configMenu.AddSectionTitle(
+        mod: this.ModManifest,
+        text: () => Helper.Translation.Get("Config.otherSection.name")
+    );
+    configMenu.AddBoolOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.disableFlash.name"),
+        tooltip: () => Helper.Translation.Get("Config.disableFlash.description"),
+        getValue: () => Config.DisableFlash,
+        setValue: value => Config.DisableFlash = value
+        );
+
+    // Fresh page begins
+    configMenu.AddPage(
+        mod: this.ModManifest,
+        pageId: $"{UniqueId}.FreshPriceModifiers",
+        pageTitle: () => Helper.Translation.Get("Config.freshPriceModifiers.name")
+        );
+    configMenu.AddParagraph(
+        mod: this.ModManifest,
+        text: () => Helper.Translation.Get("Config.freshPriceModifiers.description")
+        );
+    configMenu.AddSectionTitle(
+        mod: this.ModManifest,
+        text: () => Helper.Translation.Get("Config.freshPriceModifiersEarly.name")
+    );
+    configMenu.AddNumberOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.regularQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierRegular }),
+        getValue: () => Config.EarlyFreshModifierRegular,
+        setValue: value => Config.EarlyFreshModifierRegular = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.silverQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierSilver }),
+        getValue: () => Config.EarlyFreshModifierSilver,
+        setValue: value => Config.EarlyFreshModifierSilver = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.goldQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierGold }),
+        getValue: () => Config.EarlyFreshModifierGold,
+        setValue: value => Config.EarlyFreshModifierGold = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.iridiumQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierIridium }),
+        getValue: () => Config.EarlyFreshModifierIridium,
+        setValue: value => Config.EarlyFreshModifierIridium = value,
+        min: 1
+        );
+    configMenu.AddSectionTitle(
+        mod: this.ModManifest,
+        text: () => Helper.Translation.Get("Config.freshPriceModifiersLate.name")
+    );
+    configMenu.AddNumberOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.regularQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierRegular }),
+        getValue: () => Config.LateFreshModifierRegular,
+        setValue: value => Config.LateFreshModifierRegular = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.silverQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierSilver }),
+        getValue: () => Config.LateFreshModifierSilver,
+        setValue: value => Config.LateFreshModifierSilver = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.goldQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierGold }),
+        getValue: () => Config.LateFreshModifierGold,
+        setValue: value => Config.LateFreshModifierGold = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("Config.iridiumQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierIridium }),
+        getValue: () => Config.LateFreshModifierIridium,
+        setValue: value => Config.LateFreshModifierIridium = value,
+        min: 1
+        );
   }
 
   // Increase price of fresh items
   static void SObject_sellToStorePrice_Postfix(SObject __instance, ref int __result, long specificPlayerID) {
     if (!Config.DisableFreshPriceIncrease && Utils.IsFreshItem(__instance)) {
+      bool notHasBook =
+        (Game1.GetPlayer(specificPlayerID) ?? Game1.player).stats.Get("selph.FreshFarmProduceCP.FreshBook") == 0;
       float modifier =  __instance.Quality switch {
+        // Default settings in comments
+        // 1 -> 1.05 (5% more)
         // 1 -> 1.25 (25% more)
-        SObject.lowQuality => 1.25f,
+        SObject.lowQuality => notHasBook ? Config.EarlyFreshModifierRegular : Config.LateFreshModifierRegular,
+        // 1.25 -> 1.375 (10% more)
         // 1.25 -> 1.75 (40% more)
-        SObject.medQuality => 1.4f,
+        SObject.medQuality => notHasBook ? Config.EarlyFreshModifierSilver : Config.LateFreshModifierSilver,
+        // 1.5 -> 1.725 (15% more)
         // 1.5 -> 2.5 (66% more)
-        SObject.highQuality => 1.6666f,
+        SObject.highQuality => notHasBook ? Config.EarlyFreshModifierGold : Config.LateFreshModifierGold,
+        // 2 -> 2.4 (20% more)
         // 2 -> 4 (100% more)
-        SObject.bestQuality => 2f,
+        SObject.bestQuality => notHasBook ? Config.EarlyFreshModifierIridium : Config.LateFreshModifierIridium,
         _ => 1f,
       };
       __result = (int)(__result * modifier);
@@ -243,9 +400,10 @@ internal sealed class ModEntry : Mod {
     if (Utils.IsJojaMealItem(__instance)) {
       __result = 5;
     }
+    float fameModifier = Utils.GetFameSellPriceModifier();
+    __result = (int)(__result * fameModifier);
   }
 
-  // Prepends "Fresh" to name (this works with other languages right :pufferclueless:)
   static void SObject_DisplayName_Postfix(SObject __instance, ref string __result) {
     if (Utils.IsJojaMealItem(__instance)) {
       __result = ModEntry.Helper.Translation.Get("JojaMealItemName", new { Name = __result });
@@ -268,6 +426,7 @@ internal sealed class ModEntry : Mod {
 
   // Spoil all fresh items
   void OnDayEnding(object? sender, DayEndingEventArgs e) {
+    SpawnedItems.Clear();
     //Utility.ForEachItemContext((in ForEachItemContext context) => {
     //  var obj = context.Item as SObject;
     //  if (obj is null) {
@@ -342,25 +501,6 @@ internal sealed class ModEntry : Mod {
     }
   }
 
-  // Draw the item tooltip if we're in the JojaDash(tm) window
-  void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e) {
-    if (JojaDashTerminalModel.FoodTooltipToDraw is not null && Game1.activeClickableMenu is not null) {
-      ICursorPosition cursorPos = Helper.Input.GetCursorPosition();
-      int x = (int)cursorPos.ScreenPixels.X;
-      int y = (int)cursorPos.ScreenPixels.Y;
-			IClickableMenu.drawToolTip(
-          e.SpriteBatch,
-          JojaDashTerminalModel.FoodTooltipToDraw.getDescription(),
-          JojaDashTerminalModel.FoodTooltipToDraw.DisplayName,
-          JojaDashTerminalModel.FoodTooltipToDraw);
-    }
-  }
-
-  // just in case
-  void OnMenuChanged(object? sender, MenuChangedEventArgs e) {
-    JojaDashTerminalModel.FoodTooltipToDraw = null;
-  }
-
   static void SObject_PopulateContextTags_Postfix(SObject __instance, HashSet<string> tags) {
     if (Utils.IsFreshItem(__instance)) {
       tags.Add(Utils.FreshContextTag);
@@ -422,6 +562,8 @@ internal sealed class ModEntry : Mod {
 
   const int SwagBagCount = 4;
 
+  static List<string> SpawnedItems = new();
+
   static bool SObject_performUseAction_prefix(SObject __instance, ref bool __result, GameLocation location) {
     if (__instance.QualifiedItemId != "(O)selph.FreshFarmProduceCP.SwagBag" && __instance.QualifiedItemId != "(O)selph.FreshFarmProduceCP.JojaDashVoucher") {
       return true;
@@ -456,6 +598,9 @@ internal sealed class ModEntry : Mod {
             select p) {
 			  	string itemId = allDatum.ItemId;
 			  	string qualifiedItemId = allDatum.QualifiedItemId;
+          if (SpawnedItems.Contains(qualifiedItemId)) {
+            continue;
+          }
           ObjectData? objectData = allDatum.RawData as ObjectData;
 			  	var isUncaughtFish = 
             allDatum.ObjectType == "Fish" &&
@@ -474,6 +619,7 @@ internal sealed class ModEntry : Mod {
           var isUndonatedMuseumItem = LibraryMuseum.IsItemSuitableForDonation(qualifiedItemId);
 			  	if (isUncookedDish || isUncaughtFish || isUndonatedMuseumItem || isUnshippedItem) {
             missingPerfectionItems.Add(ItemRegistry.Create(qualifiedItemId));
+            SpawnedItems.Add(qualifiedItemId);
             if (isUncaughtFish) {
               Game1.player.fishCaught.Add(qualifiedItemId, new int[3]);
             } else if (isUncookedDish) {
@@ -513,10 +659,9 @@ internal sealed class ModEntry : Mod {
       var questPage = Helper.Reflection.GetField<int>(__instance, "questPage").GetValue();
       if (questPage != -1 && specialOrder?.questKey.Value == FarmCompetitionSpecialOrderId) {
         __instance.exitQuestPage();
-        var context = CompetitionTrackerViewModel.Load();
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
             $"Mods/{UniqueId}/Views/CompetitionTracker",
-            context);
+            new CompetitionTrackerViewModel());
         Game1.nextClickableMenu.Add(__instance);
       }
     } catch (Exception e) {
@@ -588,9 +733,42 @@ internal sealed class ModEntry : Mod {
     return true;
   }
 
+  static bool AddFame(string[] args, TriggerActionContext context, out string error) {
+    if (!ArgUtility.TryGetInt(args, 1, out var points, out error, "int points")) {
+      return false;
+    }
+    Utils.AddFame(points);
+    return true;
+  }
+
+  static bool CompetitionEnabled(string[] query, GameStateQueryContext context) {
+    return Config.EnableCompetition;
+  }
+
+  static bool HasFame(string[] query, GameStateQueryContext context) {
+		if (!ArgUtility.TryGetInt(query, 1, out var minFame, out var error, "int minFame") || !ArgUtility.TryGetOptionalInt(query, 2, out var maxFame, out error, int.MaxValue, "int maxFame")) {
+			return GameStateQuery.Helpers.ErrorResult(query, error);
+		}
+    int fame = Utils.GetFame();
+    return fame >= minFame && fame <= maxFame;
+  }
 
   static void SObject_getDescription_Postfix(SObject __instance, ref string __result) {
     if (!Config.ShowCategoriesInDescription || !__instance.canBeShipped()) return;
     Utils.ApplyDescription(__instance, ref __result);
+  }
+
+  static bool FameDescriptionToken(string[] query, out string replacement, Random random, Farmer player) {
+    replacement = Helper.Translation.Get("FameBanner.tooltip",
+        new {
+      sellPriceIncrease = Math.Round(Utils.GetFameSellPriceModifier() * 100 - 100, 1),
+      difficultyIncrease = Math.Round(Utils.GetFameDifficultyModifier() * 100 - 100, 1)}
+      );
+    return true;
+  }
+
+  static bool FameNameToken(string[] query, out string replacement, Random random, Farmer player) {
+    replacement = Helper.Translation.Get("FameBanner", new { fame = Utils.GetFame() });
+    return true;
   }
 }

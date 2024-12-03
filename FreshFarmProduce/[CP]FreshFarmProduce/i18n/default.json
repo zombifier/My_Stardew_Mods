@@ -51,6 +51,8 @@
   "SwagBag.description": "Use in your inventory to immediately receive an assortment of useful items, including items that provide free progress towards Perfection.",
   "JojaDashVoucher.name": "JojaFresh(tm) Monthly Subscription Voucher",
   "JojaDashVoucher.description": "Use in your inventory to gain a subscription to JojaFresh(tm) Daily Meal Kit that lasts until the end of the month.",
+  "FreshBook.name": "Stay Fresh! A Farmer's Guide to Skincare",
+  "FreshBook.description": "Greatly increase the sell price of fresh items.",
   //"JojaDashTerminal.name": "JojaDash(tm) Terminal",
   //"JojaDashTerminal.description": "Use to order free food from JojaDash(tm). Usable once per day, and only with an active Daily Delivery subscription.",
   // Misc

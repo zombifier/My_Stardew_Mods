@@ -48,7 +48,7 @@
                 <image
                   layout="stretch stretch"
                   fit="stretch"
-                  sprite={@Mods/selph.FreshFarmProduce/Sprites/Progress_Bar:ProgressBar} />
+                  sprite={@Mods/selph.FreshFarmProduce/Sprites/progress_bar:ProgressBar} />
                 <image
                   layout={:BarPercentage}
                   margin="4"
@@ -85,5 +85,15 @@
       </lane>
     </scrollable>
   </frame>
+  <lane
+    vertical-content-alignment="end"
+    layout="940px content">
+    <spacer layout = "stretch 0px"/>
+    <frame
+      padding="16"
+      background={@Mods/StardewUI/Sprites/ControlBorder}>
+        <label text={:FameBanner} tooltip={:FameBannerTooltip} focusable="true"/>
+    </frame>
+  </lane>
 </lane>
 

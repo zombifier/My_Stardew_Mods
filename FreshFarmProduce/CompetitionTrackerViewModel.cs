@@ -78,19 +78,24 @@ class ObjectiveModel {
   }
 }
 
-internal record CompetitionTrackerViewModel(
-    string HeaderText,
-    ObjectiveModel[] Objectives) {
-    public static CompetitionTrackerViewModel Load() {
-        var specialOrder = Game1.player.team.specialOrders.FirstOrDefault((SpecialOrder so) => so.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId, null);
-        if (specialOrder is not null) {
-          return new(ModEntry.Helper.Translation.Get("CompetitionName"),
-                specialOrder.objectives
-                .Where((OrderObjective oo) => oo is ShipPointsObjective)
-                .Select((OrderObjective oo) => new ObjectiveModel((oo as ShipPointsObjective)!))
-                .ToArray());
-        } else {
-          return new(ModEntry.Helper.Translation.Get("CompetitionName"), []);
-        }
+class CompetitionTrackerViewModel {
+  public string FameBanner { get => ModEntry.Helper.Translation.Get("FameBanner", new { fame = Utils.GetFame() }); }
+  public string FameBannerTooltip { get => ModEntry.Helper.Translation.Get("FameBanner.tooltip",
+      new {
+      sellPriceIncrease = Math.Round(Utils.GetFameSellPriceModifier() * 100 - 100, 1),
+      difficultyIncrease = Math.Round(Utils.GetFameDifficultyModifier() * 100 - 100, 1)}); }
+  public string HeaderText = ModEntry.Helper.Translation.Get("CompetitionName");
+  public ObjectiveModel[] Objectives;
+
+  public CompetitionTrackerViewModel() {
+    var specialOrder = Game1.player.team.specialOrders.FirstOrDefault((SpecialOrder so) => so.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId, null);
+    if (specialOrder is not null) {
+      Objectives = specialOrder.objectives
+          .Where((OrderObjective oo) => oo is ShipPointsObjective)
+          .Select((OrderObjective oo) => new ObjectiveModel((oo as ShipPointsObjective)!))
+          .ToArray();
+    } else {
+      Objectives = [];
     }
+  }
 }

@@ -9,6 +9,7 @@ from the link above.
 - [Farm Fresh Produce](#farm-fresh-produce)
   + [Freshness Features](#freshness-features)
   + [Modify the Competition](#modify-the-competition)
+  + [Game State Queries and Trigger Actions](#game-state-queries-and-trigger-actions)
   + [Console Commands](#console-commands)
 
 ## Freshness Features
@@ -74,7 +75,17 @@ mail flags to every player when the player finishes the competition or when it e
 | `selph.FreshFarmProduce.FinishedGold` | The contest is finished, and the farmer will win a Gold medal.|
 | `selph.FreshFarmProduce.FinishedIridium` | The contest is finished, and the farmer will win an Iridium medal.|
 
-The global friendship increase are handled via a custom trigger action `selph.FreshFarmProduce_AddGlobalFriendshipPoints <value>`.
+## Game State Queries and Trigger Actions
+
+| GSQ                         | Description              |
+| ---------------------------------- |  ------------------------ |
+| `selph.FreshFarmProduce_COMPETITION_ENABLED` | Whether the user has enabled the competition in the config. To check if a competition is *active*, use `PLAYER_SPECIAL_ORDER_ACTIVE Current selph.FreshFarmProduce.FarmCompetition`|
+| `selph.FreshFarmProduce_HAS_FAME <min fame> [max fame]` | Whether the user's fame is at least `min fame` and (if specified) below `max fame`.|
+
+| Trigger Actions                         | Description              |
+| ---------------------------------- |  ------------------------ |
+| `selph.FreshFarmProduce_AddGlobalFriendshipPoints <friendship points>` | Add friendship points to every villager. Points can be negative.|
+| `selph.FreshFarmProduce_AddFame <fame>` | Add specified points of fame. Number can be negative.|
 
 ## Console Commands
 

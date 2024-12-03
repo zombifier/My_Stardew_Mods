@@ -6,7 +6,6 @@
   <frame layout="880px 640px"
       margin="0,16,0,0"
       padding="32,24"
-      pointer-leave=|OnUnhover()|
       background={@Mods/StardewUI/Sprites/ControlBorder}>
     <lane orientation="vertical" horizontal-content-alignment="middle">
       <textinput
@@ -22,7 +21,6 @@
       <scrollable peeking="128">
         <grid layout="stretch content"
            item-layout="length: 96"
-           pointer-leave=|OnUnhover()|
            horizontal-item-alignment="middle">
           <panel
             horizontal-content-alignment="middle"
@@ -31,8 +29,7 @@
             *repeat={FoodItems}
             *if={Visible}
             click=|^ToggleSelect(this)|
-            pointer-enter=|^OnHover(this)|
-            pointer-leave=|^OnUnhover()|
+            tooltip={Item}
             focusable="true">
             <image
               layout="96px"

@@ -38,18 +38,6 @@ partial class FoodItemModel : INotifyPropertyChanged {
 }
 
 partial class JojaDashTerminalModel : INotifyPropertyChanged {
-  // this item's tooltip will be drawn in the draw events
-  // kinda ugly, but this will have to do for a quick and dirty tooltip impl
-  private static Item? foodTooltipToDraw;
-  public static Item? FoodTooltipToDraw {
-    get {
-      if (Game1.activeClickableMenu is null) {
-        foodTooltipToDraw = null;
-      }
-      return foodTooltipToDraw;
-    }
-    set { }
-  }
   public string HeaderText = ModEntry.Helper.Translation.Get("JojaDash");
   public string OrderText = ModEntry.Helper.Translation.Get("JojaDash.order");
   public string LuckyText = ModEntry.Helper.Translation.Get("JojaDash.lucky");
@@ -102,7 +90,6 @@ partial class JojaDashTerminalModel : INotifyPropertyChanged {
     food.modData[JojaMealKey] = "true";
     Game1.player.addItemByMenuIfNecessary(food);
     Game1.player.mailReceived.Add(JojaDashPhoneHandler.JojaDashUsed);
-    foodTooltipToDraw = null;
     Game1.activeClickableMenu.exitThisMenu();
   }
 
@@ -116,15 +103,7 @@ partial class JojaDashTerminalModel : INotifyPropertyChanged {
     food.modData[JojaMealKey] = "true";
     Game1.player.addItemByMenuIfNecessary(food);
     Game1.player.mailReceived.Add(JojaDashPhoneHandler.JojaDashUsed);
-    foodTooltipToDraw = null;
     Game1.activeClickableMenu.exitThisMenu();
-  }
-
-  public void OnHover(FoodItemModel item) {
-    foodTooltipToDraw = item.Item;
-  }
-  public void OnUnhover() {
-    foodTooltipToDraw = null;
   }
 
   public static string JojaMealKey = $"{ModEntry.UniqueId}.JojaMeal";

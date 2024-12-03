@@ -1,0 +1,31 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add powers",
+      "Action": "EditData",
+      "Target": "Data/Powers",
+      "Entries": {
+        "{{ModId}}.FreshBook": {
+          "DisplayName": "{{i18n:FreshBook.name}}",
+          "Description": "{{i18n:FreshBook.description}}",
+          "TexturePath": "{{ModId}}/Objects",
+          "TexturePosition": {
+            "X": 32,
+            "Y": 0,
+          },
+          "UnlockedCondition": "PLAYER_STAT Current {{ModId}}.FreshBook 1",
+        },
+        "{{ModId}}.Fame": {
+          "DisplayName": "[selph.FreshFarmProduce_FameName]",
+          "Description": "[selph.FreshFarmProduce_FameDescription]",
+          "TexturePath": "Maps/springobjects",
+          "TexturePosition": {
+            "X": 288,
+            "Y": 608,
+          },
+          "UnlockedCondition": "selph.FreshFarmProduce_HAS_FAME 1",
+        },
+      },
+    },
+  ]
+}

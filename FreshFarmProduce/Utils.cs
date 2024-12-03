@@ -122,4 +122,39 @@ static class Utils {
     obj.modData[CachedDescriptionKey] = extraDescription;
     result += "\n\n" + Game1.parseText(extraDescription, Game1.smallFont, width);
   }
+
+  public static string FameModData = $"{ModEntry.UniqueId}.Fame";
+
+  public static float GetFameSellPriceModifier() {
+    return ModEntry.Config.EnableFamePriceIncrease ? Utility.Clamp(1f + GetFame() * 0.002f, 1f, 1.2f) : 1f;
+  }
+
+  public static float GetFameDifficultyModifier() {
+    return ModEntry.Config.EnableFameDifficultyIncrease ? Utility.Clamp(1f + GetFame() * 0.01f, 1f, 1.5f) : 1f;
+  }
+
+  public static float GetRandomDifficultyModifier() {
+    return ModEntry.Config.EnableDifficultyRandomization ? 0.5f + (float)Game1.random.NextDouble() : 1f;
+  }
+
+  public static int GetFame() {
+    if (Game1.MasterPlayer.modData.TryGetValue(FameModData, out var str) &&
+        Int32.TryParse(str, out int fame)) {
+      return Math.Max(0, fame);
+    }
+    return 0;
+  }
+
+  public static void AddFame(int fameToAdd) {
+    int fame = 0;
+    if (Game1.MasterPlayer.modData.TryGetValue(FameModData, out var str) &&
+        Int32.TryParse(str, out int parsedFame)) {
+      fame = parsedFame;
+    }
+    fame += fameToAdd;
+    if (fame < 0) {
+      fame = 0;
+    }
+    Game1.MasterPlayer.modData[FameModData] = fame.ToString();
+  }
 }

@@ -1,0 +1,62 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add fresh book to bookseller",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["Bookseller", "Items"],
+      "Entries": {
+        "{{ModId}}.FreshBook": {
+          "Id": "{{ModId}}.FreshBook",
+          "ItemId": "{{ModId}}.FreshBook",
+          "Price": 50000,
+        },
+      },
+    },
+    {
+      "LogName": "Add swag bags to qi shop",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["QiGemShop", "Items"],
+      "Entries": {
+        "{{ModId}}.SwagBag": {
+          "Id": "{{ModId}}.SwagBag",
+          "ItemId": "{{ModId}}.SwagBag",
+          "TradeItemId": "(O)858",
+          "TradeItemAmount": 1,
+          "Condition": "selph.FreshFarmProduce_HAS_FAME 50",
+        },
+      },
+    },
+    {
+      "LogName": "Add JojaFresh vouchers to Pierre",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["SeedShop", "Items"],
+      "Entries": {
+        "{{ModId}}.JojaDashVoucher": {
+          "Id": "{{ModId}}.JojaDashVoucher",
+          "ItemId": "{{ModId}}.JojaDashVoucher",
+          "Condition": "selph.FreshFarmProduce_HAS_FAME 15, !PLAYER_HAS_MAIL Current selph.FreshFarmProduceCP.JojaDashActive",
+          "Price": 10000,
+          "AvailableStock": 1,
+        },
+      },
+    },
+    {
+      "LogName": "Add JojaFresh vouchers to Joja",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["Joja", "Items"],
+      "Entries": {
+        "{{ModId}}.JojaDashVoucher": {
+          "Id": "{{ModId}}.JojaDashVoucher",
+          "ItemId": "{{ModId}}.JojaDashVoucher",
+          "Condition": "selph.FreshFarmProduce_HAS_FAME 15, !PLAYER_HAS_MAIL Current selph.FreshFarmProduceCP.JojaDashActive",
+          "Price": 10000,
+          "AvailableStock": 1,
+        },
+      },
+    },
+  ]
+}
