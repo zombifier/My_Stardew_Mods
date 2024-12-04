@@ -260,10 +260,14 @@ public static class Utils {
           .GetMethod(tree, "TryGetTapperOutput")
           .Invoke<bool>(args);
         overrideMinutesUntilReady = Convert.ToInt32(args[5]);
+        ModEntry.StaticMonitor.Log($"Found tapper output: {(args[4] as Item)?.QualifiedItemId ?? "null"} ready in {Convert.ToInt32(args[5])}");
         return args[4] as Item;
       } catch (Exception e) { 
         ModEntry.StaticMonitor.Log($"Error getting tapper output: {e.Message}", LogLevel.Warn);
       }
+    }
+    else {
+      ModEntry.StaticMonitor.Log($"Error getting tapper output: can't find tree underneath machine at {machine.Location.DisplayName} coords {machine.TileLocation.X} {machine.TileLocation.Y}", LogLevel.Warn);
     }
     overrideMinutesUntilReady = null;
     return null;

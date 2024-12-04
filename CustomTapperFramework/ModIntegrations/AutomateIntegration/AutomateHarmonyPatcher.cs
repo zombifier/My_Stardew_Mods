@@ -1,5 +1,6 @@
 using System;
 using StardewValley;
+using StardewValley.GameData.Machines;
 using StardewValley.TerrainFeatures;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -15,15 +16,23 @@ public class AutomatePatcher {
     var dataBasedMachineType = AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.Machines.DataBasedObjectMachine");
     var tapperMachineType = AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.Machines.Objects.TapperMachine");
 
-    harmony.Patch(
-        original: AccessTools.Method(dataBasedMachineType, "OnOutputCollected"),
-        postfix: new HarmonyMethod(typeof(AutomatePatcher),
-          nameof(AutomatePatcher.DataBasedMachine_OnOutputCollected_Postfix)));
+    if (dataBasedMachineType is not null) {
+      harmony.Patch(
+          original: AccessTools.Method(dataBasedMachineType, "OnOutputCollected"),
+          postfix: new HarmonyMethod(typeof(AutomatePatcher),
+            nameof(AutomatePatcher.DataBasedMachine_OnOutputCollected_Postfix)));
+    } else {
+      ModEntry.StaticMonitor.Log("Cannot find Automate's machine type to patch.", LogLevel.Info);
+    }
 
-    harmony.Patch(
-        original: AccessTools.Method(tapperMachineType, "Reset"),
-        postfix: new HarmonyMethod(typeof(AutomatePatcher),
-          nameof(AutomatePatcher.TapperMachine_Reset_Postfix)));
+    if (tapperMachineType is not null) {
+      harmony.Patch(
+          original: AccessTools.Method(tapperMachineType, "Reset"),
+          postfix: new HarmonyMethod(typeof(AutomatePatcher),
+            nameof(AutomatePatcher.TapperMachine_Reset_Postfix)));
+    } else {
+      ModEntry.StaticMonitor.Log("Cannot find Automate's tapper type to patch. This is harmless.", LogLevel.Info);
+    }
   }
 
 	static void DataBasedMachine_OnOutputCollected_Postfix(object __instance, Item item) {
@@ -44,6 +53,10 @@ public class AutomatePatcher {
       if (machine.IsTapper()) {
         Utils.UpdateTapperProduct(machine);
       }
+      // apply OutputCollected rule
+      MachineData? machineData = machine.GetMachineData();
+      if (MachineDataUtility.TryGetMachineOutputRule(machine, machineData, MachineOutputTrigger.OutputCollected, item.getOne(), null, machine.Location, out MachineOutputRule outputCollectedRule, out _, out _, out _))
+        machine.OutputMachine(machineData, outputCollectedRule, machine.lastInputItem.Value, null, machine.Location, false);
     } catch (Exception e) {
       ModEntry.StaticMonitor.Log(e.Message, LogLevel.Error);
     }
