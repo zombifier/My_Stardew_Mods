@@ -14,5 +14,5 @@
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"
   },
-  //"UpdateKeys": [ "Nexus:" ],
+  "UpdateKeys": [ "Nexus:27434" ],
 }

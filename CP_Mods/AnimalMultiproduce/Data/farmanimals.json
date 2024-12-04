@@ -33,7 +33,7 @@
             {
               "Id": "{{ModId}}.RabbitsFoot",
               "ItemId": "446",
-              "MinimumFriendship": 250,
+              "MinimumFriendship": 600,
               "Condition": "RANDOM 0.33 @addDailyLuck",
             }
           ]
