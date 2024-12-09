@@ -203,7 +203,7 @@ internal sealed class ModEntry : Mod {
   const string contextTag = "furniture_machine";
 
   // Call Object.performObjectDropInAction instead of the furniture version (handles item input)
-	static bool Furniture_performObjectDropInAction_Prefix(Furniture __instance, ref bool __result, Item dropInItem, bool probe, Farmer who, bool returnFalseIfItemConsumed = false) {
+  static bool Furniture_performObjectDropInAction_Prefix(Furniture __instance, ref bool __result, Item dropInItem, bool probe, Farmer who, bool returnFalseIfItemConsumed = false) {
     if (__instance.HasContextTag(contextTag)) {
       __result = SObject_performObjectDropInAction_Call(__instance, dropInItem, probe, who, returnFalseIfItemConsumed);
       return false;
@@ -212,7 +212,7 @@ internal sealed class ModEntry : Mod {
   }
 
   // Call Object.checkForAction instead of the furniture version (handles item collection)
-	static bool Furniture_checkForAction_Prefix(Furniture __instance, ref bool __result, Farmer who, bool justCheckingForActivity = false) {
+  static bool Furniture_checkForAction_Prefix(Furniture __instance, ref bool __result, Farmer who, bool justCheckingForActivity = false) {
     if (__instance.HasContextTag(contextTag)) {
       __result = SObject_checkForAction_Call(__instance, who, justCheckingForActivity);
       return false;
@@ -294,9 +294,9 @@ internal sealed class ModEntry : Mod {
 
   // Allows tool to interact with machine furniture
   static bool GameLocation_LowPriorityLeftClick_Prefix(GameLocation __instance, ref bool __result, int x, int y, Farmer who) {
-		if (Game1.activeClickableMenu != null) {
-			return true;
-		}
+    if (Game1.activeClickableMenu != null) {
+      return true;
+    }
     foreach (var furniture in __instance.furniture) {
       if (furniture.boundingBox.Value.Contains(x, y) && IsMachineFurniture(furniture) && furniture.heldObject.Value is not null && !furniture.readyForHarvest.Value) {
         __result = false;
@@ -311,13 +311,13 @@ internal sealed class ModEntry : Mod {
       foreach (var furniture in location.furniture) {
         if (IsMachineFurnitureWithOutput(furniture)) {
           if (furniture.readyForHarvest.Value) {
-						location.debris.Add(new Debris(furniture.heldObject.Value, who.Position));
+            location.debris.Add(new Debris(furniture.heldObject.Value, who.Position));
           }
           furniture.heldObject.Value = null;
           furniture.performRemoveAction();
           location.furniture.Remove(furniture);
           location.debris.Add(new Debris(furniture, who.Position));
-					location.playSound("hammer", who.Tile);
+          location.playSound("hammer", who.Tile);
           return;
         }
       }
@@ -347,23 +347,23 @@ internal sealed class ModEntry : Mod {
     width /= 2;
     float layer = (float)((y + 1) * 64) / 10000f + __instance.TileLocation.X / 50000f + 0.021f;
     float yOffset = 4f * (float)Math.Round(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 250.0), 2);
-		spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + width * 32 - 8, (float)(y * 64 - 96 - 16) + yOffset)), new Microsoft.Xna.Framework.Rectangle(141, 465, 20, 24), Color.White * 0.75f, 0f, Vector2.Zero, 4f, SpriteEffects.None, layer + 1E-06f);
-		if (__instance.heldObject.Value == null) {
-			return;
-		}
-		ParsedItemData heldItemData = ItemRegistry.GetDataOrErrorItem(__instance.heldObject.Value.QualifiedItemId);
-		Texture2D texture3 = heldItemData.GetTexture();
-		if (__instance.heldObject.Value is ColoredObject coloredObject) {
-			coloredObject.drawInMenu(spriteBatch, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + width * 32, (float)(y * 64) - 96f - 8f + yOffset)), 1f, 0.75f, layer + 1.1E-05f);
-			return;
-		}
-		spriteBatch.Draw(texture3, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + width * 32 + 32, (float)(y * 64 - 64 - 8) + yOffset)), heldItemData.GetSourceRect(), Color.White * 0.75f, 0f, new Vector2(8f, 8f), 4f, SpriteEffects.None, layer + 1E-05f);
-		if (__instance.heldObject.Value.Stack > 1) {
-			__instance.heldObject.Value.DrawMenuIcons(spriteBatch, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + width * 32, (float)(y * 64 - 64 - 32) + yOffset - 4f)), 1f, 1f, layer + 1.2E-05f, StackDrawType.Draw, Color.White);
-		}
-		else if (__instance.heldObject.Value.Quality > 0) {
-			__instance.heldObject.Value.DrawMenuIcons(spriteBatch, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + width * 32, (float)(y * 64 - 64 - 32) + yOffset - 4f)), 1f, 1f, layer + 1.2E-05f, StackDrawType.HideButShowQuality, Color.White);
-		}
+    spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + width * 32 - 8, (float)(y * 64 - 96 - 16) + yOffset)), new Microsoft.Xna.Framework.Rectangle(141, 465, 20, 24), Color.White * 0.75f, 0f, Vector2.Zero, 4f, SpriteEffects.None, layer + 1E-06f);
+    if (__instance.heldObject.Value == null) {
+      return;
+    }
+    ParsedItemData heldItemData = ItemRegistry.GetDataOrErrorItem(__instance.heldObject.Value.QualifiedItemId);
+    Texture2D texture3 = heldItemData.GetTexture();
+    if (__instance.heldObject.Value is ColoredObject coloredObject) {
+      coloredObject.drawInMenu(spriteBatch, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + width * 32, (float)(y * 64) - 96f - 8f + yOffset)), 1f, 0.75f, layer + 1.1E-05f);
+      return;
+    }
+    spriteBatch.Draw(texture3, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + width * 32 + 32, (float)(y * 64 - 64 - 8) + yOffset)), heldItemData.GetSourceRect(), Color.White * 0.75f, 0f, new Vector2(8f, 8f), 4f, SpriteEffects.None, layer + 1E-05f);
+    if (__instance.heldObject.Value.Stack > 1) {
+      __instance.heldObject.Value.DrawMenuIcons(spriteBatch, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + width * 32, (float)(y * 64 - 64 - 32) + yOffset - 4f)), 1f, 1f, layer + 1.2E-05f, StackDrawType.Draw, Color.White);
+    }
+    else if (__instance.heldObject.Value.Quality > 0) {
+      __instance.heldObject.Value.DrawMenuIcons(spriteBatch, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + width * 32, (float)(y * 64 - 64 - 32) + yOffset - 4f)), 1f, 1f, layer + 1.2E-05f, StackDrawType.HideButShowQuality, Color.White);
+    }
   }
 
   // Don't draw the held object under certain conditions
@@ -455,17 +455,17 @@ internal sealed class ModEntry : Mod {
 
   // If stackable machine furniture, don't put them into a new inventory slot when removed
   static bool GameLocation_removeQueuedFurniture_Prefix(GameLocation __instance, Guid guid) {
-			if (!__instance.furniture.TryGetValue(guid, out var furniture) || !IsMachineFurniture(furniture)) {
+      if (!__instance.furniture.TryGetValue(guid, out var furniture) || !IsMachineFurniture(furniture)) {
         return true;
       }
-			Farmer player = Game1.player;
+      Farmer player = Game1.player;
       if (!player.couldInventoryAcceptThisItem(furniture)) {
-				return false;
-			}
-			furniture.performRemoveAction();
-			__instance.furniture.Remove(guid);
-				player.addItemToInventory(furniture);
-			__instance.localSound("coin");
+        return false;
+      }
+      furniture.performRemoveAction();
+      __instance.furniture.Remove(guid);
+        player.addItemToInventory(furniture);
+      __instance.localSound("coin");
       return false;
   }
 
