@@ -29,17 +29,16 @@ There are two APIs available:
 
 * The Machine API using context tags and machine rules, which is more powerful
   and supports water placement.
-* The (deprecated) Tapper API using a custom asset to define automatic produce
-  overtime. This API doesn't support water-placeable buildings, but if you want
-  to modify the output of the base game Tapper and Heavy Tapper items this API
-  should still be used.
+* The Tapper API using a custom asset to define automatic produce
+  overtime. This API doesn't support water-placeable buildings.
 
 Both APIs will continue to work into the future, but for now use only one for
-your machine, not both.
+your machine, not both. It's recommended to use the Machine API in most cases,
+and use only the Tapper API if:
 
-KNOWN ISSUE: Machine rules don't support putting the terrain produce as the
-input item query yet. I forgor to implement this feature, so the Tapper API
-isn't quite deprecated yet if you need it. Let me know if you want this feature.
+* You are modifying the output of the base game's tappers and heavy tappers.
+* You want the "terrain feature produce as the input item" feature (e.g. output
+  based on what crop a giant crop will produce when chopped down).
 
 ---
 
@@ -91,10 +90,6 @@ trees/fruit trees/giant crops.
 
 #### Extra item queries
 
-NOTE: The latest version uploaded on Nexus doesn't have the
-extra params in `MACHINE_FISH_LOCATION` or the 'fish caught' feature yet. I'm waiting for a private beta tester to
-get back to me before uploading it. Thanks for your patience.
-
 This mod adds the following item queries, usable only in machine output item
 rules (as well as any mod that pass a `Tile` parameter into the item query
 context's custom fields):
@@ -102,7 +97,7 @@ context's custom fields):
 | Item query |  Description |
 | ---------- |  ----------- |
 | `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT <ignoreLocationJunkChance> <usingGoodBait> <isMariner> <baitTargetFish>` | Get a crab pot fish, or a junk item, from the tile the machine is placed on. This GSQ attempts to simulate vanilla crab pot logic as close as humanly possible, including the percentage chance each fish can be caught, and thus accepts four optional parameters to control its behavior:<br><br>`ignoreLocationJunkChance`: if `true`, ignore the location's crab pot junk chance as defined in [`CrabPotJunkChance`](https://stardewvalleywiki.com/Modding:Location_data).<br><br>`usingGoodBait`: Whether to cut the aformentioned junk chance in half (e.g. due to good bait being used).<br><br>`isMariner`: Whether to simulate the farmer having the [Mariner profession](https://stardewvalleywiki.com/Fishing#Fishing_Skill), which does three things: remove junk from crab pots entirely, make crab pots ignore fish-specific bait, and make all crab pot fish equally likely to be picked.<br><br>`baitTargetFish`: The ID of a specific fish to prioritize, to simulate the effect of targeted bait. If your machine rules accept a targeted bait item, you can put `DROP_IN_PRESERVE` into this field.|
-| `selph.CustomTapperFramework_MACHINE_FISH_LOCATION <getAllFish> <alsoCatchBossFish> <usingMagicBait>`| Identical to the [`FISH_LOCATION`](https://stardewvalleywiki.com/Modding:Item_queries#Specialized) GSQ, but with location, bobber tile and bobber depth already populated with the machine's current location. Accepts the following params:<br><br>*`getAllFish`: if `true`, get all possible fish that can be caught from this body of water, ignoring catch chance, player position requirement, bobber/depth requirement, and time requirement. Setting this to `true` will also activate the parameters after this one, settings to `false` will just have the item query call `FISH_LOCATION` directly. Highly recommended this is set to true.<br><br>`alsoCatchBossFish`: If set to `true`, also allow legendary boss fish to be caught.<br><br>`usingMagicBait`: If set to `true`, ignore season requirement, and allows catching fish that is marked to only be catchable with magic bait.|
+| `selph.CustomTapperFramework_MACHINE_FISH_LOCATION <getAllFish> <alsoCatchBossFish> <usingMagicBait> <allowNonObject>`| Identical to the [`FISH_LOCATION`](https://stardewvalleywiki.com/Modding:Item_queries#Specialized) GSQ, but with location, bobber tile and bobber depth already populated with the machine's current location. Accepts the following params:<br><br>*`getAllFish`: if `true`, get all possible fish that can be caught from this body of water, ignoring catch chance, player position requirement, bobber/depth requirement, and time requirement. Setting this to `true` will also activate the parameters after this one, settings to `false` will just have the item query call `FISH_LOCATION` directly. Highly recommended this is set to true.<br><br>`alsoCatchBossFish`: If set to `true`, also allow legendary boss fish to be caught.<br><br>`usingMagicBait`: If set to `true`, ignore season requirement, and allows catching fish that is marked to only be catchable with magic bait.<br><br>`allowNonObject` If set to `true`, also allow non-objects to be selected (ie. the Iridium Krobus statue). Keep this false/unset for machine rules to avoid machines blowing up, unless you're using Extra Machine Config's "non-object output" feature.|
 
 If you want the fish caught by these item queries to count for perfection, add
 `"selph.CustomTapperFramework.CountForPerfection": "true"` to the item query's `ModData`
@@ -189,7 +184,8 @@ The example below adds a tapper that produces 2x slower than regular tappers:
 ### Tapper API
 
 NOTE: This API is mostly deprecated, and should only be used for when you want
-the "input item is the terrain feature's usual produce" feature.
+the "input item is the terrain feature's usual produce" feature, or if you're
+modifying the base game tappers' output.
 
 First, add `"tapper_item"` context tag to your big craftables.
 
