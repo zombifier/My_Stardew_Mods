@@ -200,6 +200,10 @@ internal sealed class ModEntry : Mod {
           nameof(ModEntry.Furniture_maximumStackSize_Postfix)));
   }
 
+  public override object GetApi() {
+    return new FurnitureMachineApi();
+  }
+
   const string contextTag = "furniture_machine";
 
   // Call Object.performObjectDropInAction instead of the furniture version (handles item input)
@@ -252,7 +256,6 @@ internal sealed class ModEntry : Mod {
     if (__instance.HasContextTag(contextTag)) {
       __result = SObject_performDropDownAction_Call(__instance, who);
     }
-
   }
 
   // Set the furniture's source rect if it load/working effect is active
@@ -309,7 +312,7 @@ internal sealed class ModEntry : Mod {
   static void Tool_DoFunction_Postfix(Tool __instance, GameLocation location, int x, int y, int power, Farmer who) {
     if (__instance.isHeavyHitter() && __instance is not MeleeWeapon) {
       foreach (var furniture in location.furniture) {
-        if (IsMachineFurnitureWithOutput(furniture)) {
+        if (IsMachineFurnitureWithOutput(furniture) && furniture.GetBoundingBox().Contains(x, y)) {
           if (furniture.readyForHarvest.Value) {
             location.debris.Add(new Debris(furniture.heldObject.Value, who.Position));
           }
@@ -337,7 +340,7 @@ internal sealed class ModEntry : Mod {
 
   // Draw the ready bubble
   static void Furniture_draw_Postfix(Furniture __instance, NetVector2 ___drawPosition, SpriteBatch spriteBatch, int x, int y, float alpha = 1f) {
-    if (!__instance.HasContextTag(contextTag) || !__instance.readyForHarvest.Value) {
+    if (!__instance.HasContextTag(contextTag) || !__instance.readyForHarvest.Value || __instance.HasContextTag("dont_draw_ready_bubble")) {
       return;
     }
     Vector2 position = ___drawPosition.Value + ((__instance.shakeTimer > 0) ? new Vector2(Game1.random.Next(-1, 2), Game1.random.Next(-1, 2)) : Vector2.Zero);
@@ -490,7 +493,7 @@ internal sealed class ModEntry : Mod {
         furniture.GetContextTags());
   }
 
-  static bool IsMachineFurniture(SObject furniture) {
+  public static bool IsMachineFurniture(SObject furniture) {
     return furniture.HasContextTag(contextTag);
   }
 
@@ -499,6 +502,10 @@ internal sealed class ModEntry : Mod {
   }
 
   static Furniture GetOneIfMachineFurniture(Furniture furniture) {
-    return furniture.HasContextTag(contextTag) ? (Furniture)furniture.getOne() : furniture;
+    if (furniture.HasContextTag(contextTag)) {
+      var ret = (Furniture)furniture.getOne();
+      ret.performDropDownAction(Game1.player);
+      return ret;
+    } else return furniture;
   }
 }

@@ -25,6 +25,7 @@ First, add your [furniture item](https://stardewvalleywiki.com/Modding:Items#Fur
 * Optionally add `dont_draw_held_object_while_processing` to not draw the
   currently processed item on its surface (like items placed on tables).
 * Optionally add `dont_draw_held_object_when_ready` to not draw a ready item.
+* Optionally add `dont_draw_ready_bubble` to not draw the ready item bubble.
 
 Next, define your [machine rules](https://stardewvalleywiki.com/Modding:Machines) as usual:
 * The key would be the qualified item ID, so something like `(F)YourFurnitureIdDefinedAbove`.
