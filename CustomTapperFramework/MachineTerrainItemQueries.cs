@@ -45,9 +45,10 @@ public static class MachineTerrainItemQueries {
       List<ItemQueryResult> fishList = new();
 			bool alsoCatchBossFish = ArgUtility.GetBool(args, 1);
 			bool usingMagicBait = ArgUtility.GetBool(args, 2);
-			int waterDepth = ArgUtility.GetInt(args, 3, FishingRod.distanceToLand((int)tile.X, (int)tile.Y, context.Location));
-			int tileX = ArgUtility.GetInt(args, 4, (int)tile.X);
-			int tileY = ArgUtility.GetInt(args, 5, (int)tile.Y);
+			bool allowNonObjects = ArgUtility.GetBool(args, 3);
+			int waterDepth = ArgUtility.GetInt(args, 4, FishingRod.distanceToLand((int)tile.X, (int)tile.Y, context.Location));
+			int tileX = ArgUtility.GetInt(args, 5, (int)tile.X);
+			int tileY = ArgUtility.GetInt(args, 6, (int)tile.Y);
 			HashSet<string>? ignoreQueryKeys = (usingMagicBait ? GameStateQuery.MagicBaitIgnoreQueryKeys : null);
 			foreach (SpawnFishData spawn in possibleFish) {
 				if ((spawn.FishAreaId != null && fishAreaId != spawn.FishAreaId) ||
@@ -62,6 +63,9 @@ public static class MachineTerrainItemQueries {
           continue;
         }
         fishList.AddRange(ItemQueryResolver.TryResolve(spawn, context, avoidRepeat: false, formatItemId: (string query) => query.Replace("BOBBER_X", (tileX).ToString()).Replace("BOBBER_Y", (tileY).ToString()).Replace("WATER_DEPTH", waterDepth.ToString())));
+      }
+      if (!allowNonObjects) {
+        fishList = fishList.Where(itemQueryResult => itemQueryResult.Item is SObject).ToList();
       }
       return fishList;
       // Hallowed grounds below, abandon all hope ye who enter here

@@ -55,15 +55,6 @@ internal sealed class ModEntry : Mod {
       Monitor.Log("Failed patching Junimatic. Detail: " + e.Message, LogLevel.Error);
     }
 
-    try {
-      if (Helper.ModRegistry.IsLoaded("furyx639.CustomBush")) {
-        this.Monitor.Log("This mod patches Custom Bush. If you notice issues with Custom Bush, make sure it happens without this mod before reporting it to the Custom Bush page.", LogLevel.Debug);
-        CustomBushPatcher.ApplyPatches(harmony);
-      }
-    } catch (Exception e) {
-      Monitor.Log("Failed patching Custom Bush. Detail: " + e.Message, LogLevel.Error);
-    }
-
     GameStateQuery.Register($"{UniqueId}_MACHINE_TILE_HAS_TERRAIN_FEATURE",
         MachineTerrainGameStateQueries.MACHINE_TILE_HAS_TERRAIN_FEATURE);
 
