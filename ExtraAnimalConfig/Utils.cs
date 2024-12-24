@@ -513,7 +513,7 @@ public static class ExtraProduceUtils {
         item = produce
       };
       debris.Chunks[0].bounces = 3;
-      animal.currentLocation.debris.Add(debris);
+      animal.homeInterior?.debris.Add(debris);
       if (animal.hasEatenAnimalCracker.Value) {
         SObject o = (SObject)produce.getOne();
         o.Quality = animal.produceQuality.Value;
@@ -521,7 +521,7 @@ public static class ExtraProduceUtils {
           item = o
         };
         debris2.Chunks[0].bounces = 3;
-        animal.currentLocation.debris.Add(debris2);
+        animal.homeInterior?.debris.Add(debris2);
       }
     }
   }
