@@ -1,4 +1,6 @@
 {
   "config.EvenMoreImmersiveManure.name": "Even More Immersive Manure",
   "config.EvenMoreImmersiveManure.description": "Whether to turn manure from debris into actual physical objects that you have to collect by hand (like eggs) and that will not disappear overnight if not collected by the farmer or an auto-grabber. As a side effect, this will make collecting manure grant farming experience.",
+  "config.DropChance.name": "Manure Drop Chance",
+  "config.DropChance.description": "Chance an animal drops manure every day. Defaults to 0.5 (50%, or roughly once every 2 days).",
 }

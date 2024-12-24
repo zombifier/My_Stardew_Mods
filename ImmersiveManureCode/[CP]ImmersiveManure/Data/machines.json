@@ -270,6 +270,26 @@
             {
               "Id": "Coal",
               "ItemId": "(O)382",
+              "StackModifiers": [
+                {
+                  "Id": "IridiumQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 1,
+                  "Condition": "ITEM_QUALITY Input 4",
+                },
+                {
+                  "Id": "GoldQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.5, ITEM_QUALITY Input 2 2",
+                },
+                {
+                  "Id": "SilverQualityBonus",
+                  "Modification": "Add",
+                  "Amount": 1,
+                  "Condition": "RANDOM 0.25, ITEM_QUALITY Input 1 1",
+                },
+              ],
             },
           ],
           "MinutesUntilReady": 30,

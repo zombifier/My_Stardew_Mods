@@ -1,7 +1,7 @@
 {
   "Name": "Immersive Manure",
   "Author": "selph",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Farm animals drop manure, which can be processed into fertilizer.",
   "UniqueID": "selph.ImmersiveManure",
   "MinimumApiVersion": "4.0.8",

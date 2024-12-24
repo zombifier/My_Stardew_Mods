@@ -55,7 +55,7 @@ internal sealed class ModEntry : Mod {
                   new ExtraAnimalConfig.ProduceData() {
                     Id = $"{ModEntry.UniqueId}.Manure",
                     ItemId = "selph.ImmersiveManure.PoultryManure",
-                    Condition = "RANDOM 0.5",
+                    Condition = $"RANDOM {Config.DropChance}",
                   }
                 },
               });
@@ -81,7 +81,7 @@ internal sealed class ModEntry : Mod {
                   new ExtraAnimalConfig.ProduceData() {
                     Id = $"{ModEntry.UniqueId}.Manure",
                     ItemId = "selph.ImmersiveManure.LivestockManure",
-                    Condition = "RANDOM 0.5",
+                    Condition = $"RANDOM {Config.DropChance}",
                   }
                 },
               });
@@ -126,6 +126,14 @@ internal sealed class ModEntry : Mod {
         tooltip: () => Helper.Translation.Get("config.EvenMoreImmersiveManure.description"),
         getValue: () => this.Config.EvenMoreImmersiveManure,
         setValue: value => this.Config.EvenMoreImmersiveManure = value
+        );
+
+    configMenu.AddNumberOption(
+        mod: this.ModManifest,
+        name: () => Helper.Translation.Get("config.DropChance.name"),
+        tooltip: () => Helper.Translation.Get("config.DropChance.description"),
+        getValue: () => this.Config.DropChance,
+        setValue: value => this.Config.DropChance = value
         );
   }
 }
