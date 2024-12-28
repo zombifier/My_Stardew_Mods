@@ -22,6 +22,8 @@ content packs. For users, install the mod as usual from the link above.
    + [Example](#example)
 * [Aquatic Crops Feature](#aquatic-crops-feature)
    + [Retexture the water planters](#retexture-the-water-planters)
+* [Custom Planting Pots](#custom-planting-pots)
+* [Custom Lightning Rods](#custom-lightning-rods)
 
 ## Terrain-Based Machine Feature
 
@@ -347,3 +349,62 @@ For an example content pack, see the optional file on [this page](https://www.ne
 You can patch the `Mods/selph.CustomTapperFramework/WaterPlanterTexture` asset
 to change the texture of the water planters and water pots. The files
 themselves should be in the mod's `assets` folder for easy reference.
+
+## Custom Planting Pots
+
+Additionally, you can add custom planting pots, and specify crops that can be
+planted in them. To specify custom pots, add the following fields to the
+`CustomFields` dictionary in the
+[`Data/BigCraftables`](https://stardewvalleywiki.com/Modding:Big_craftables)
+entry:
+
+* `selph.CustomTapperFramework.IsCustomPot`: if set, this BC will act like a
+  garden pot when placed down.
+* `selph.CustomTapperFramework.AcceptsRegularCrops`: if set, this garden pot
+  can accept any crop that regular garden pots can accept; otherwise it will
+  only accept a crop specifically set to be plantable in it (see below).
+* `selph.CustomTapperFramework.CropYOffset`: Optional, the y pixel offset to
+  draw the crop at relative to the garden pot's usual crop draw position.
+  Negative values push the crop upward, while positive values push them down.
+  Use this for pots that are visibly taller/shorter than vanilla garden pots.
+* `selph.CustomTapperFramework.CropTintColor`: Optional, the color to tint the
+  drawn crop with. This can be used to achieve a "behind glass" effect for
+  example. Note that this may look weird if the crop is taller than the big craftable bounds.
+
+To define crops that can be planted in these pots, add the following keys to
+the crop definition's `CustomFields` dict in
+[`Data/Crops`](https://stardewvalleywiki.com/Modding:Crop_data):
+
+* `selph.CustomTapperFramework.CustomPots`: A list of *qualified* item IDs of
+  pot items that this crop can grow in, as a comma-separated string. If set,
+  this crop will not be plantable in vanilla garden pots (unless that's also in
+  the list)
+
+Note that these fields cannot override `PlantableLocationRules` if it
+determined that a crop cannot be planted in the first place.
+
+Water planter-like floating pots are currently not implemented (because I'm
+lazy, and because I'm not sure what use cases there would be for custom water
+planters). Let me know if you have ideas for custom water pots, and I can get
+to implementing them.
+
+## Custom Lightning Rods
+
+You can define custom lightning rods, each with their own produce upon getting
+hit with lightning. Follow the below instructions:
+* First, add the `custom_lightning_rod` context tag to your big craftable. This
+  makes your custom lightning rods able to get hit by lightning during
+  thunderstorms.
+* Without further changes, they will produce battery packs after 1 day like
+  vanilla lightning rods. To define custom produce, add a new machine rule to
+  `Data/Machines` for the machine with the following properties:
+  + Trigger rule set to `None`. This makes this rule never triggers
+    regularly.
+  + A field `"selph.CustomTapperFramework.LightningRodOutput"` in the output
+    item's `CustomData` field. This will cause this rule to be checked by the
+    custom lightning rod handler. Set it for every entry in an output rule.
+  + Don't forget to set processing time! This does mean you can have lightning
+    rods that process faster or slower than vanilla.
+* You're free to use any other machine features (e.g. conditions, stack count,
+  ExtraMachineConfig byproduce, make it floating, or even mix in regular
+  machine rules with the lightning rule).

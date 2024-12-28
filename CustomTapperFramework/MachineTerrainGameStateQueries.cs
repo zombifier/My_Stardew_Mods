@@ -22,7 +22,7 @@ public static class MachineTerrainGameStateQueries {
       return Helpers.ErrorResult(query, error);
     }
     if (context.CustomFields == null ||
-        !context.CustomFields.TryGetValue("Tile", out object tileObj) ||
+        !context.CustomFields.TryGetValue("Tile", out object? tileObj) ||
         tileObj is not Vector2 tile) {
       return Helpers.ErrorResult(query, "No tile found - called outside TerrainCondition?");
     }
@@ -37,7 +37,7 @@ public static class MachineTerrainGameStateQueries {
         return false;
       }
       if (featureIdCondition != null) {
-        string featureId = Utils.GetFeatureId(feature);
+        string? featureId = Utils.GetFeatureId(feature);
         return featureIdCondition == featureId;
       }
       return true;

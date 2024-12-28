@@ -120,7 +120,7 @@ public static class CustomCrabPotUtils
     addOverlayTiles(location, tileLocation);
   }
 
-  public static bool placementAction(SObject obj, GameLocation location, int x, int y, Farmer who = null)
+  public static bool placementAction(SObject obj, GameLocation location, int x, int y, Farmer? who = null)
   {
     Vector2 vector = new Vector2(x / 64, y / 64);
     if (who != null)

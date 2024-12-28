@@ -165,6 +165,13 @@ public class HarmonyPatcher {
         original: AccessTools.Method(typeof(SObject),
           nameof(SObject.PlaceInMachine)),
         postfix: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.SObject_PlaceInMachine_postfix)));
+    
+    // Custom lightning rod patch
+    harmony.Patch(
+        original: AccessTools.Method(typeof(Utility),
+          nameof(Utility.performLightningUpdate)),
+        transpiler: new HarmonyMethod(typeof(HarmonyPatcher),
+          nameof(HarmonyPatcher.Utility_performLightningUpdate_Transpiler)));
   }
 
 	static void SObject_canBePlacedHere_Postfix(SObject __instance, ref bool __result, GameLocation l, Vector2 tile, CollisionMask collisionMask = CollisionMask.All, bool showError = false) {
@@ -189,7 +196,7 @@ public class HarmonyPatcher {
     }
   }
 
-  static bool SObject_placementAction_Prefix(SObject __instance, ref bool __result, GameLocation location, int x, int y, Farmer who = null) {
+  static bool SObject_placementAction_Prefix(SObject __instance, ref bool __result, GameLocation location, int x, int y, Farmer? who = null) {
     Vector2 vector = new Vector2(x / 64, y / 64);
     //if (__instance.IsTapper() &&
     //    Utils.GetFeatureAt(location, vector, out var feature, out var centerPos) &&
@@ -225,11 +232,15 @@ public class HarmonyPatcher {
       }
       return false;
     }
-    if (__instance.QualifiedItemId == WaterIndoorPotUtils.WaterPotQualifiedItemId) {
+    if (__instance.QualifiedItemId == WaterIndoorPotUtils.WaterPotQualifiedItemId ||
+        WaterIndoorPotUtils.IsCustomPot(__instance)) {
         IndoorPot @object = new IndoorPot(vector);
-        WaterIndoorPotUtils.transformIndoorPotToItem(@object, WaterIndoorPotUtils.WaterPotItemId);
-        @object.hoeDirt.Value.state.Value = 1;
-        @object.hoeDirt.Value.modData[WaterIndoorPotUtils.HoeDirtIsWaterModDataKey] = "true";
+        WaterIndoorPotUtils.transformIndoorPotToItem(@object, __instance.ItemId);
+        // water the pot if water pot
+        if (__instance.QualifiedItemId == WaterIndoorPotUtils.WaterPotQualifiedItemId) {
+          @object.hoeDirt.Value.modData[WaterIndoorPotUtils.HoeDirtIsWaterModDataKey] = "true";
+          @object.hoeDirt.Value.state.Value = 1;
+        }
         location.objects.Add(vector, @object);
   			location.playSound("woodyStep");
         __result = true;
@@ -299,7 +310,7 @@ public class HarmonyPatcher {
   }
 
   // For tappers: Save the currently held item so the PreviousItemId rule can work, and regenerate the output if that is enabled
-  static bool SObject_checkForAction_Prefix(SObject __instance, out Item __state, ref bool __result, Farmer who, bool justCheckingForActivity) {
+  static bool SObject_checkForAction_Prefix(SObject __instance, out Item? __state, ref bool __result, Farmer who, bool justCheckingForActivity) {
     __state = null;
     // Crab pot code
     if (Utils.IsCrabPot(__instance)) {
@@ -326,7 +337,7 @@ public class HarmonyPatcher {
   }
 
   // Update the tapper product after collection
-  static void SObject_checkForAction_Postfix(SObject __instance, Item __state, bool __result, Farmer who, bool justCheckingForActivity) {
+  static void SObject_checkForAction_Postfix(SObject __instance, Item? __state, bool __result, Farmer who, bool justCheckingForActivity) {
     if (__state == null || !__result) return;
     Utils.UpdateTapperProduct(__instance);
   }
@@ -380,14 +391,19 @@ public class HarmonyPatcher {
       WaterIndoorPotUtils.draw(__instance, spriteBatch, x, y, alpha);
       return false;
     }
+    if (WaterIndoorPotUtils.GetDrawOverridesForPot(__instance, out var cropYOffset, out var cropTintColor)) {
+      WaterIndoorPotUtils.drawPotOverride(__instance, spriteBatch, x, y, alpha, cropYOffset, cropTintColor);
+      return false;
+    }
     return true;
   }
 
-  // Disallow tea bushes in water planters
+  // Disallow tea bushes in water planters and custom pots
 	static bool IndoorPot_performObjectDropInAction_Prefix(IndoorPot __instance, ref bool __result, Item dropInItem, bool probe, Farmer who, bool returnFalseIfItemConsumed = false) {
     if (!probe &&
         (__instance.QualifiedItemId == WaterIndoorPotUtils.WaterPlanterQualifiedItemId ||
-         __instance.QualifiedItemId == WaterIndoorPotUtils.WaterPotQualifiedItemId) &&
+         __instance.QualifiedItemId == WaterIndoorPotUtils.WaterPotQualifiedItemId ||
+         (WaterIndoorPotUtils.IsCustomPot(__instance) && !WaterIndoorPotUtils.AcceptsRegularCrops(__instance))) &&
         dropInItem.QualifiedItemId == "(O)251") {
       __result = false;
       return false;
@@ -441,7 +457,7 @@ public class HarmonyPatcher {
   }
 
   internal static string TerrainConditionKey = $"{ModEntry.UniqueId}.TerrainCondition";
-  private static SObject machineBeingChecked = null;
+  private static SObject? machineBeingChecked = null;
 
   // This is a super hacky way of essentially passing in the machine object as an extra parameter to (the second) GetOutputData,
   // but it's the only way that guarantees maximum compatibility and not outright replace the entire function, so...
@@ -466,7 +482,7 @@ public class HarmonyPatcher {
         continue;
       }
       Utils.GetFeatureAt(machineBeingChecked.Location, machineBeingChecked.TileLocation, out var feature, out var unused);
-      Item produceItem = Utils.GetFeatureItem(feature, who);
+      Item? produceItem = Utils.GetFeatureItem(feature, who);
       var customFields = new Dictionary<string, object>() {
         {"Tile", machineBeingChecked.TileLocation}
       };
@@ -531,5 +547,53 @@ public class HarmonyPatcher {
     if (Utils.IsCrabPot(__instance) && __result && !probe) {
       CustomCrabPotUtils.resetRemovalTimer(__instance);
     }
+  }
+
+  public static IEnumerable<CodeInstruction> Utility_performLightningUpdate_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+    CodeMatcher matcher = new(instructions, generator);
+    // Old: if (pair.Value.QualifiedItemId == "(BC)9")
+    // New: if (Utils.IsCustomLightningRod(pair.Value.QualifiedItemId) || ...
+    matcher.MatchEndForward(
+        new CodeMatch(OpCodes.Ldloca_S),
+        new CodeMatch(OpCodes.Call),
+        new CodeMatch(OpCodes.Callvirt),
+        new CodeMatch(OpCodes.Ldstr, "(BC)9"),
+        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(String), "op_Equality")),
+        new CodeMatch(OpCodes.Brfalse_S)
+        )
+      .ThrowIfNotMatch($"Could not find lightning rod check point for {nameof(Utility_performLightningUpdate_Transpiler)}")
+      .CreateLabelWithOffsets(1, out var labelToJumpTo)
+      .Advance(-5)
+      // This is the "pair.Value.QualifiedItemId" block
+      .InsertAndAdvance(matcher.Instructions(3))
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Utils), nameof(Utils.IsCustomLightningRod))),
+        new CodeInstruction(OpCodes.Brtrue_S, labelToJumpTo)
+      );
+
+    // Old: if (farm.objects[vector].heldObject.Value == null)
+    // New: put this line below:
+    // if (Utils.UpdateCustomLightningRod(farm.objects[vector].heldObject.Value)) { return; }
+    matcher.MatchStartForward(
+        new CodeMatch((CodeInstruction instruction) => instruction.IsLdloc()),
+        new CodeMatch(OpCodes.Ldfld, AccessTools.Property(typeof(GameLocation), nameof(GameLocation.objects))),
+        new CodeMatch(OpCodes.Ldloc_S),
+        new CodeMatch(OpCodes.Callvirt),
+        new CodeMatch(OpCodes.Ldfld, AccessTools.Property(typeof(SObject), nameof(SObject.heldObject))),
+        new CodeMatch(OpCodes.Callvirt),
+        new CodeMatch(OpCodes.Brtrue)
+        )
+      .ThrowIfNotMatch($"Could not find lightning rod handler point for {nameof(Utility_performLightningUpdate_Transpiler)}");
+    var getMachineBlock = matcher.Instructions(4);
+    matcher
+      .Advance(7)
+      .CreateLabel(out Label regularLightningRodHandler)
+      .InsertAndAdvance(getMachineBlock)
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Utils), nameof(Utils.UpdateCustomLightningRod))),
+        new CodeInstruction(OpCodes.Brfalse_S, regularLightningRodHandler),
+        new CodeInstruction(OpCodes.Ret)
+          );
+    return matcher.InstructionEnumeration();
   }
 }

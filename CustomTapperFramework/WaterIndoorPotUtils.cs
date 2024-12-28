@@ -7,6 +7,7 @@ using StardewValley.ItemTypeDefinitions;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -26,8 +27,17 @@ public static class WaterIndoorPotUtils {
   public static readonly string HoeDirtIsWaterModDataKey = $"{ModEntry.UniqueId}.IsWater";
   public static readonly string HoeDirtIsWaterPlanterModDataKey = $"{ModEntry.UniqueId}.IsWaterPlanter";
 
+  // Crop custom fields
   public static readonly string CropIsWaterCustomFieldsKey = $"{ModEntry.UniqueId}.IsAquaticCrop";
   public static readonly string CropIsAmphibiousCustomFieldsKey = $"{ModEntry.UniqueId}.IsSemiAquaticCrop";
+  public static readonly string CropCustomPotItemKey = $"{ModEntry.UniqueId}.CustomPots";
+  //public static readonly string CropCanUseRegularDirtKey = $"{ModEntry.UniqueId}.CanUseRegularDirt";
+
+  // Pot custom fields
+  public static readonly string IsCustomPotKey = $"{ModEntry.UniqueId}.IsCustomPot";
+  public static readonly string AcceptsRegularCropsKey = $"{ModEntry.UniqueId}.AcceptsRegularCrops";
+  public static readonly string CropYOffsetKey = $"{ModEntry.UniqueId}.CropYOffset";
+  public static readonly string CropTintColorKey = $"{ModEntry.UniqueId}.CropTintColor";
 
   public static void transformIndoorPotToItem(IndoorPot indoorPot, string itemId) {
     indoorPot.ItemId = itemId;
@@ -117,6 +127,70 @@ public static class WaterIndoorPotUtils {
           (data.CustomFields?.ContainsKey(CropIsWaterCustomFieldsKey) ?? false)) {
         result = false;
       }
+      // Is regular dirt (not needed, keeping for reference)
+      //if ((data.CustomFields?.ContainsKey(CropCustomPotItemKey) ?? false) &&
+      //    (!data.CustomFields?.ContainsKey(CropCanUseRegularDirtKey) ?? true) &&
+      //    (hoeDirt.Pot is null/* || hoeDirt.Pot.QualifiedItemId == "(BC)62"*/)) {
+      //  result = false;
+      //}
+      // Is modded pot
+      if (!isWater && hoeDirt.Pot is not null &&
+//          (!data.CustomFields?.ContainsKey(CropCanUseRegularDirtKey) ?? false) &&
+         (
+           ((!data.CustomFields?.ContainsKey(CropCustomPotItemKey) ?? true) && !AcceptsRegularCrops(hoeDirt.Pot)) ||
+           ((data.CustomFields?.TryGetValue(CropCustomPotItemKey, out var customPotStr) ?? false) && !customPotStr.Split(' ', ',').Contains(hoeDirt.Pot.QualifiedItemId)))
+         ){
+        result = false;
+      }
     }
+  }
+
+  // Doesn't contain the water planters/pots for now, those use the old hardcoded API
+  public static bool AcceptsRegularCrops(SObject obj) {
+    return obj.QualifiedItemId == "(BC)62" ||
+      (Game1.bigCraftableData.TryGetValue(obj.ItemId, out var data) &&
+       (data.CustomFields?.ContainsKey(AcceptsRegularCropsKey) ?? false));
+  }
+
+  public static bool IsCustomPot(SObject obj) {
+    return Game1.bigCraftableData.TryGetValue(obj.ItemId, out var data) &&
+     (data.CustomFields?.ContainsKey(IsCustomPotKey) ?? false);
+  }
+
+  public static bool GetDrawOverridesForPot(IndoorPot pot, out int? cropYOffset, out Color? cropTintColor) {
+    cropYOffset = null;
+    cropTintColor = null;
+    bool shouldOverrideDraw = false;
+    if (Game1.bigCraftableData.TryGetValue(pot.ItemId, out var data) && data.CustomFields is not null) {
+      if (data.CustomFields.TryGetValue(CropYOffsetKey, out string? cropYOffsetStr) &&
+          Int32.TryParse(cropYOffsetStr, out int parsed)) {
+        cropYOffset = parsed;
+        shouldOverrideDraw = true;
+      }
+      if (data.CustomFields.TryGetValue(CropTintColorKey, out string? cropTintColorStr)) {
+        cropTintColor = Utility.StringToColor(cropTintColorStr);
+        shouldOverrideDraw = true;
+      }
+    }
+    return shouldOverrideDraw;
+  }
+
+	public static void drawPotOverride(IndoorPot pot, SpriteBatch spriteBatch, int x, int y, float alpha = 1f, int? cropYOffset = 0, Color? cropTintColor = null) {
+    var yOffset = cropYOffset ?? 0;
+		Vector2 vector = pot.getScale();
+		vector *= 4f;
+		Vector2 vector2 = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+		Microsoft.Xna.Framework.Rectangle destinationRectangle = new Microsoft.Xna.Framework.Rectangle((int)(vector2.X - vector.X / 2f) + ((pot.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(vector2.Y - vector.Y / 2f) + ((pot.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(64f + vector.X), (int)(128f + vector.Y / 2f));
+		ParsedItemData dataOrErrorItem = ItemRegistry.GetDataOrErrorItem(pot.QualifiedItemId);
+		spriteBatch.Draw(dataOrErrorItem.GetTexture(), destinationRectangle, dataOrErrorItem.GetSourceRect(pot.showNextIndex.Value ? 1 : 0), Color.White * alpha, 0f, Vector2.Zero, SpriteEffects.None, Math.Max(0f, (float)((y + 1) * 64 - 24) / 10000f) + (float)x * 1E-05f);
+		if (pot.hoeDirt.Value.HasFertilizer()) {
+			Microsoft.Xna.Framework.Rectangle fertilizerSourceRect = pot.hoeDirt.Value.GetFertilizerSourceRect();
+			fertilizerSourceRect.Width = 13;
+			fertilizerSourceRect.Height = 13;
+			spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(pot.TileLocation.X * 64f + 4f, pot.TileLocation.Y * 64f - 12f + yOffset)), fertilizerSourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (pot.TileLocation.Y + 0.65f) * 64f / 10000f + (float)x * 1E-05f);
+		}
+		pot.hoeDirt.Value.crop?.drawWithOffset(spriteBatch, pot.TileLocation, cropTintColor ?? ((pot.hoeDirt.Value.isWatered() && pot.hoeDirt.Value.crop.currentPhase.Value == 0 && !pot.hoeDirt.Value.crop.raisedSeeds.Value) ? (new Color(180, 100, 200) * 1f) : Color.White), pot.hoeDirt.Value.getShakeRotation(), new Vector2(32f, 8f + yOffset));
+		pot.heldObject.Value?.draw(spriteBatch, x * 64, y * 64 - 48 + yOffset, (pot.TileLocation.Y + 0.66f) * 64f / 10000f + (float)x * 1E-05f, 1f);
+		pot.bush.Value?.draw(spriteBatch, -24f + yOffset);
   }
 }

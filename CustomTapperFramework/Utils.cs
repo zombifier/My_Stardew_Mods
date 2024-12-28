@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Delegates;
 using StardewValley.Internal;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
@@ -33,7 +34,7 @@ public static class Utils {
     return false;
   }
 
-  public static IList<ExtendedTapItemData> GetOutputRulesForPlacedTapper(SObject tapper, out TerrainFeature feature, string ruleId = null) {
+  public static IList<ExtendedTapItemData>? GetOutputRulesForPlacedTapper(SObject tapper, out TerrainFeature feature, string? ruleId = null) {
     if (GetFeatureAt(tapper.Location, tapper.TileLocation, out feature, out var centerPos)) {
       return GetOutputRules(tapper, feature, out var _unused, ruleId);
     }
@@ -44,11 +45,11 @@ public static class Utils {
   // Get the modded output rules for this tapper.
   // NOTE: If this function returns null, its consumers should not update the tapper.
   // If a list, then touch it.
-  public static IList<ExtendedTapItemData> GetOutputRules(SObject tapper, TerrainFeature feature, out bool disallowBaseTapperRules, string ruleId = null) {
+  public static IList<ExtendedTapItemData>? GetOutputRules(SObject tapper, TerrainFeature feature, out bool disallowBaseTapperRules, string? ruleId = null) {
     disallowBaseTapperRules = false;
     if (ModEntry.assetHandler.data.TryGetValue(tapper.QualifiedItemId, out var data)) {
       disallowBaseTapperRules = !data.AlsoUseBaseGameRules;
-      IList<ExtendedTapItemData> outputRules = feature switch {
+      IList<ExtendedTapItemData>? outputRules = feature switch {
         Tree tree => tree.growthStage.Value >= 5 && !tree.stump.Value ?
           data.TreeOutputRules : null,
         FruitTree fruitTree => fruitTree.growthStage.Value >= 4 && !fruitTree.stump.Value ?
@@ -57,7 +58,7 @@ public static class Utils {
           _ => null,
       };
       if (outputRules == null) return null;
-      string sourceId = GetFeatureId(feature);
+      string? sourceId = GetFeatureId(feature);
       IEnumerable<ExtendedTapItemData> filteredOutputRules;
       if (ruleId != null) {
         filteredOutputRules = from outputRule in outputRules
@@ -93,7 +94,7 @@ public static class Utils {
           break;
         }
       }
-      string previousItemId = ((tapper.lastInputItem?.Value?.QualifiedItemId != null) ? ItemRegistry.QualifyItemId(tapper.lastInputItem.Value.QualifiedItemId) : null);
+      string? previousItemId = ((tapper.lastInputItem?.Value?.QualifiedItemId != null) ? ItemRegistry.QualifyItemId(tapper.lastInputItem.Value.QualifiedItemId) : null);
       foreach (ExtendedTapItemData tapItem in data) {
 
         Random a = new Random();
@@ -105,7 +106,7 @@ public static class Utils {
         // Allow game state and item queries to use an input item.
         // For trees, this will be their seeds.
         // For fruit trees and giant crops, this will be their first produce defined in the list.
-        Item inputItem = GetFeatureItem(feature, farmer);
+        Item? inputItem = GetFeatureItem(feature, farmer);
         if (!GameStateQuery.CheckConditions(tapItem.Condition, tapper.Location, farmer, targetItem: null, inputItem: inputItem)) {
           continue;
         }
@@ -231,7 +232,7 @@ public static class Utils {
     };
   }
 
-  public static Item? GetFeatureItem(TerrainFeature feature, Farmer player) {
+  public static Item? GetFeatureItem(TerrainFeature feature, Farmer? player) {
     switch (feature) {
       case Tree tree:
         return ItemRegistry.Create(tree.GetData().SeedItemId);
@@ -272,5 +273,56 @@ public static class Utils {
     overrideMinutesUntilReady = null;
     return null;
 
+  }
+
+  public static bool IsCustomLightningRod(string qualifiedItemId) {
+    return ItemContextTagManager.HasBaseTag(qualifiedItemId, "custom_lightning_rod");
+  }
+
+  // If a custom lightning rod, do its own thing and return true
+  // otherwise return false
+  public static bool UpdateCustomLightningRod(SObject obj) {
+    if (obj.QualifiedItemId == "(BC)9" || obj.GetMachineData()?.OutputRules is null) return false;
+    var customFields = new Dictionary<string, object>();
+    customFields["Tile"] = obj.TileLocation;
+    customFields["Machine"] = obj;
+    var player = Game1.GetPlayer(obj.owner.Value) ?? Game1.player;
+    var farm = Game1.getFarm();
+    var gsqContext = new GameStateQueryContext(
+        obj.Location,
+        Game1.GetPlayer(obj.owner.Value) ?? Game1.player,
+        null,
+        null,
+        Game1.random,
+        customFields: customFields);
+    foreach (var outputRule in obj.GetMachineData().OutputRules) {
+      List<MachineItemOutput> outputRules = new();
+      foreach (var rule in outputRule.OutputItem) {
+        if (rule.CustomData.ContainsKey($"{ModEntry.UniqueId}.LightningRodOutput") &&
+            GameStateQuery.CheckConditions(rule.Condition, gsqContext)) {
+          outputRules.Add(rule);
+        }
+      }
+      if (outputRules.Count == 0) continue;
+      var outputItemRule = outputRule.UseFirstValidOutput ? outputRules[0] : Game1.random.ChooseFrom(outputRules);
+      var outputItem = MachineDataUtility.GetOutputItem(obj, outputItemRule, null, player, false, out int? overrideMinutesUntilReady);
+      if (outputItem is not SObject outputObject) continue;
+      int minutesUntilReady = 0;
+			if (overrideMinutesUntilReady >= 0) {
+				minutesUntilReady = overrideMinutesUntilReady.Value;
+			} else if (outputRule.MinutesUntilReady >= 0 || outputRule.DaysUntilReady >= 0) {
+				minutesUntilReady = ((outputRule.DaysUntilReady >= 0) ? Utility.CalculateMinutesUntilMorning(Game1.timeOfDay, outputRule.DaysUntilReady) : outputRule.MinutesUntilReady);
+			}
+      obj.heldObject.Value = outputObject;
+			obj.MinutesUntilReady = minutesUntilReady;
+			obj.shakeTimer = 1000;
+			Farm.LightningStrikeEvent lightningStrikeEvent = new Farm.LightningStrikeEvent();
+			lightningStrikeEvent.bigFlash = true;
+			lightningStrikeEvent.createBolt = true;
+			lightningStrikeEvent.boltPosition = obj.TileLocation * 64f + new Vector2(32f, 0f);
+			farm.lightningStrikeEvent.Fire(lightningStrikeEvent);
+      return true;
+    }
+    return false;
   }
 }

@@ -64,7 +64,7 @@ internal sealed class ModEntry : Mod {
         MachineTerrainItemQueries.MACHINE_FISH_LOCATION);
   }
 
-  public void OnDayStarted(object sender, DayStartedEventArgs e) {
+  public void OnDayStarted(object? sender, DayStartedEventArgs e) {
     foreach (var location in Game1.locations) {
       foreach (var obj in location.objects.Values) {
         if (obj.IsTapper() && obj.heldObject.Value == null) {
@@ -111,7 +111,7 @@ internal sealed class ModEntry : Mod {
       && !Game1.IsFading();
   }
 
-  public void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
+  public void OnButtonPressed(object? sender, ButtonPressedEventArgs e) {
     if (!IsNormalGameplay()) return;
     if ((e.Button.IsUseToolButton() || e.Button.IsActionButton()) &&
         Game1.player.ActiveObject is SObject obj) {
