@@ -352,6 +352,8 @@ themselves should be in the mod's `assets` folder for easy reference.
 
 ## Custom Planting Pots
 
+NOTE: This feature is beta only.
+
 Additionally, you can add custom planting pots, and specify crops that can be
 planted in them. To specify custom pots, add the following fields to the
 `CustomFields` dictionary in the
@@ -389,6 +391,8 @@ planters). Let me know if you have ideas for custom water pots, and I can get
 to implementing them.
 
 ## Custom Lightning Rods
+
+NOTE: This feature is beta only.
 
 You can define custom lightning rods, each with their own produce upon getting
 hit with lightning. Follow the below instructions:
