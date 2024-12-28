@@ -573,7 +573,7 @@ public class HarmonyPatcher {
 
     // Old: if (farm.objects[vector].heldObject.Value == null)
     // New: put this line below:
-    // if (Utils.UpdateCustomLightningRod(farm.objects[vector].heldObject.Value)) { return; }
+    // if (Utils.UpdateCustomLightningRod(farm.objects[vector])) { return; }
     matcher.MatchStartForward(
         new CodeMatch((CodeInstruction instruction) => instruction.IsLdloc()),
         new CodeMatch(OpCodes.Ldfld, AccessTools.Property(typeof(GameLocation), nameof(GameLocation.objects))),
