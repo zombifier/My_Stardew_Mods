@@ -395,7 +395,7 @@ internal sealed class ModEntry : Mod {
         SObject.bestQuality => notHasBook ? Config.EarlyFreshModifierIridium : Config.LateFreshModifierIridium,
         _ => 1f,
       };
-      __result = Math.Max((int)(__result * modifier), __result + 2);
+      __result = Math.Max((int)(__result * modifier), __result + (Game1.MasterPlayer.difficultyModifier <= 0.5 ? 1 : 2));
     }
     if (Utils.IsJojaMealItem(__instance)) {
       __result = 5;
