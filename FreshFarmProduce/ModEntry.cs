@@ -395,7 +395,7 @@ internal sealed class ModEntry : Mod {
         SObject.bestQuality => notHasBook ? Config.EarlyFreshModifierIridium : Config.LateFreshModifierIridium,
         _ => 1f,
       };
-      __result = (int)(__result * modifier);
+      __result = Math.Max((int)(__result * modifier), __result + 2);
     }
     if (Utils.IsJojaMealItem(__instance)) {
       __result = 5;
@@ -445,59 +445,62 @@ internal sealed class ModEntry : Mod {
     //});
 
     Utility.ForEachLocation((GameLocation location) => {
-			Chest? fridge = location.GetFridge(onlyUnlocked: false);
+      Chest? fridge = location.GetFridge(onlyUnlocked: false);
       if (fridge is not null) {
         Utils.SpoilItemInChest(fridge);
       }
-			foreach (SObject obj in location.objects.Values) {
-				if (obj != fridge) {
-					if (obj is Chest chest && chest.specialChestType.Value != Chest.SpecialChestTypes.MiniShippingBin) {
+      foreach (SObject obj in location.objects.Values) {
+        if (obj != fridge) {
+          if (obj is Chest chest && chest.specialChestType.Value != Chest.SpecialChestTypes.MiniShippingBin) {
             Utils.SpoilItemInChest(chest);
-					}
-					else if (obj.heldObject.Value is Chest chest2) {
+          }
+          else if (obj.heldObject.Value is Chest chest2) {
             Utils.SpoilItemInChest(chest2);
-					}
-				}
-			}
-			foreach (Furniture furniture in location.furniture) {
-				furniture.ForEachItem((in ForEachItemContext context) => {
-          Utils.SpoilItem(context.Item);
-          return true;
-        }, null);
-			}
-			foreach (Building building in location.buildings) {
-				foreach (Chest buildingChest in building.buildingChests) {
+          }
+        }
+      }
+      foreach (Furniture furniture in location.furniture) {
+      // Don't spoil fish inside fish tanks lmaooooo
+        if (furniture is not FishTankFurniture) {
+          furniture.ForEachItem((in ForEachItemContext context) => {
+            Utils.SpoilItem(context.Item);
+            return true;
+          }, null);
+        }
+      }
+      foreach (Building building in location.buildings) {
+        foreach (Chest buildingChest in building.buildingChests) {
           Utils.SpoilItemInChest(buildingChest);
-				}
-			}
-			return true;
-		});
-		foreach (Item returnedDonation in Game1.player.team.returnedDonations) {
-			if (returnedDonation != null) {
-				Utils.SpoilItem(returnedDonation);
-			}
-		}
+        }
+      }
+      return true;
+    });
+    foreach (Item returnedDonation in Game1.player.team.returnedDonations) {
+      if (returnedDonation != null) {
+        Utils.SpoilItem(returnedDonation);
+      }
+    }
     // Ignore Junimo Chests and Special Order Bins
-		//foreach (Inventory globalInventory in Game1.player.team.globalInventories.Values) {
-		//	foreach (Item item in globalInventory) {
-		//		if (item != null) {
-		//			Utils.SpoilItem(item);
-		//		}
-		//	}
-		//}
-		//foreach (SpecialOrder specialOrder in Game1.player.team.specialOrders) {
-		//	foreach (Item donatedItem in specialOrder.donatedItems) {
-		//		if (donatedItem != null) {
-		//			Utils.SpoilItem(donatedItem);
-		//		}
-		//	}
-		//}
+    //foreach (Inventory globalInventory in Game1.player.team.globalInventories.Values) {
+    //  foreach (Item item in globalInventory) {
+    //    if (item != null) {
+    //      Utils.SpoilItem(item);
+    //    }
+    //  }
+    //}
+    //foreach (SpecialOrder specialOrder in Game1.player.team.specialOrders) {
+    //  foreach (Item donatedItem in specialOrder.donatedItems) {
+    //    if (donatedItem != null) {
+    //      Utils.SpoilItem(donatedItem);
+    //    }
+    //  }
+    //}
     foreach (var item in Game1.player.Items) {
       // Handle better chests? Idk
       if (item is Chest chest) {
         Utils.SpoilItemInChest(chest);
       }
-			Utils.SpoilItem(item);
+      Utils.SpoilItem(item);
     }
   }
 
@@ -507,7 +510,7 @@ internal sealed class ModEntry : Mod {
     }
   }
 
-	static bool SpecialOrder_GetSpecialOrder_Prefix(ref SpecialOrder __result, string key, int? generation_seed) {
+  static bool SpecialOrder_GetSpecialOrder_Prefix(ref SpecialOrder __result, string key, int? generation_seed) {
     if (key == FarmCompetitionSpecialOrderId) {
       ModEntry.StaticMonitor.Log("Spawning custom order", LogLevel.Info);
       generation_seed = generation_seed ?? Game1.random.Next();
@@ -569,7 +572,7 @@ internal sealed class ModEntry : Mod {
       return true;
     }
     bool normalGameplay = !Game1.eventUp && !Game1.isFestival() && !Game1.fadeToBlack && !Game1.player.swimming.Value && !Game1.player.bathingClothes.Value && !Game1.player.onBridge.Value;
-  	if (!Game1.player.canMove || __instance.isTemporarilyInvisible || !normalGameplay) {
+    if (!Game1.player.canMove || __instance.isTemporarilyInvisible || !normalGameplay) {
       __result = false;
       return false;
     }
@@ -592,17 +595,17 @@ internal sealed class ModEntry : Mod {
     if (__instance.QualifiedItemId == "(O)selph.FreshFarmProduceCP.SwagBag") {
       List<Item> missingPerfectionItems = new();
       if (!Game1.player.team.farmPerfect.Value) {
-			  foreach (ParsedItemData allDatum in
+        foreach (ParsedItemData allDatum in
             from p in ItemRegistry.GetObjectTypeDefinition().GetAllData()
             orderby Game1.random.Next()
             select p) {
-			  	string itemId = allDatum.ItemId;
-			  	string qualifiedItemId = allDatum.QualifiedItemId;
+          string itemId = allDatum.ItemId;
+          string qualifiedItemId = allDatum.QualifiedItemId;
           if (SpawnedItems.Contains(qualifiedItemId)) {
             continue;
           }
           ObjectData? objectData = allDatum.RawData as ObjectData;
-			  	var isUncaughtFish = 
+          var isUncaughtFish = 
             allDatum.ObjectType == "Fish" &&
             !(objectData?.ExcludeFromFishingCollection ?? false) &&
             !Game1.player.fishCaught.ContainsKey(qualifiedItemId) &&
@@ -617,7 +620,7 @@ internal sealed class ModEntry : Mod {
             SObject.isPotentialBasicShipped(itemId, allDatum.Category, allDatum.ObjectType) &&
             !Game1.player.basicShipped.ContainsKey(itemId);
           var isUndonatedMuseumItem = LibraryMuseum.IsItemSuitableForDonation(qualifiedItemId);
-			  	if (isUncookedDish || isUncaughtFish || isUndonatedMuseumItem || isUnshippedItem) {
+          if (isUncookedDish || isUncaughtFish || isUndonatedMuseumItem || isUnshippedItem) {
             missingPerfectionItems.Add(ItemRegistry.Create(qualifiedItemId));
             SpawnedItems.Add(qualifiedItemId);
             if (isUncaughtFish) {
@@ -625,11 +628,11 @@ internal sealed class ModEntry : Mod {
             } else if (isUncookedDish) {
               Game1.player.recipesCooked.Add(itemId, 1);
             }
-			  	}
+          }
           if (missingPerfectionItems.Count() > SwagBagCount) {
             break;
           }
-			  }
+        }
       }
       var swagBagContent = new List<Item>{
         ItemRegistry.Create("(O)908", 10),
@@ -746,9 +749,9 @@ internal sealed class ModEntry : Mod {
   }
 
   static bool HasFame(string[] query, GameStateQueryContext context) {
-		if (!ArgUtility.TryGetInt(query, 1, out var minFame, out var error, "int minFame") || !ArgUtility.TryGetOptionalInt(query, 2, out var maxFame, out error, int.MaxValue, "int maxFame")) {
-			return GameStateQuery.Helpers.ErrorResult(query, error);
-		}
+    if (!ArgUtility.TryGetInt(query, 1, out var minFame, out var error, "int minFame") || !ArgUtility.TryGetOptionalInt(query, 2, out var maxFame, out error, int.MaxValue, "int maxFame")) {
+      return GameStateQuery.Helpers.ErrorResult(query, error);
+    }
     int fame = Utils.GetFame();
     return fame >= minFame && fame <= maxFame;
   }
