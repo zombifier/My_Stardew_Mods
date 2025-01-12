@@ -1,0 +1,4 @@
+{
+  "config.SheepMilkToUse.name": "Quel lait de brebis utiliser ?",
+  "config.SheepMilkToUse.description": "Si à la fois Milkable Sheep et Mount Vapius sont installés, choisissez quel objet pour le lait de brebis sera produit.",
+}
