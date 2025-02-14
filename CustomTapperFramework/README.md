@@ -76,17 +76,14 @@ field in the machine output rule's `CustomData` field:
 
 | Field Name |  Description |
 | ---------- |  ----------- |
-| `selph.CustomTapperFramework.TerrainCondition` | Similar to the output rule's `Condition` field, but with the following crucial differences:<br><br>* The `Target` item will be the terrain feature's primary produce: Seed object for wild trees, first defined fruit for fruit trees, and first defined cut-down drop for giant crops.<br><br>* The `Input` item will be the machine itself.<br><br>* The `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE` GSQ is usable in (and *only* in) this field.|
+| `selph.CustomTapperFramework.TerrainCondition` | Similar to the output rule's `Condition` field, but with the following crucial differences:<br><br>* The `Target` item will be the terrain feature's primary produce: Seed object for wild trees, first defined fruit for fruit trees, and first defined cut-down drop for giant crops.<br><br>* The `Input` item will be the machine itself.<br><br>* The GSQs below are usable in (and *only* in) this field (as well as any GSQ context that passes a tile, ie. SpaceCore crops).|
 
 The `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE` GSQ takes the following format:
 
-```
-selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE <feature type> [optional feature ID]
-```
-
-where feature type can be one of `Tree`, `FruitTree` or `GiantCrop`. A feature
-ID can optionally be specified, to limit the condition to certain types of wild
-trees/fruit trees/giant crops.
+| Game State Queries |  Description |
+| ---------- |  ----------- |
+| `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE <feature type> [optional feature ID]` | Whether machine tile has a terrain feature where feature type can be one of `Tree`, `FruitTree` or `GiantCrop`. A feature ID can optionally be specified, to limit the condition to certain types of wild trees/fruit trees/giant crops. |
+| `selph.CustomTapperFramework_MACHINE_TILE_HAS_FRUIT_TREE_IN_SEASON | Whether machine tile has a fruit tree that is in season.|
 
 ---
 

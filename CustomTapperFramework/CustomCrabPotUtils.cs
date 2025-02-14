@@ -478,7 +478,9 @@ public static class CustomCrabPotUtils
     }
 
     ParsedItemData dataOrErrorItem = ItemRegistry.GetDataOrErrorItem(obj.QualifiedItemId);
-    Texture2D texture2D = dataOrErrorItem.GetTexture();
+    Rectangle sourceRectFromAT = new();
+    Texture2D? texture2DFromAT = ModEntry.atApi?.GetTextureForObject(obj, out sourceRectFromAT);
+    Texture2D texture2D = texture2DFromAT ?? dataOrErrorItem.GetTexture();
     //int spriteIndex = dataOrErrorItem.SpriteIndex;
     int offset = 0;
     if (obj.showNextIndex.Value) {
@@ -496,7 +498,7 @@ public static class CustomCrabPotUtils
         texture2D,
         Game1.GlobalToLocal(Game1.viewport,
           crabPotData.directionOffset + new Vector2(x * 64, y * 64 + (int)yBob - 64)) + crabPotData.shake,
-        SObject.getSourceRectForBigCraftable(texture2D, spriteIndex + offset),
+        texture2DFromAT is not null ? sourceRectFromAT : SObject.getSourceRectForBigCraftable(texture2D, spriteIndex + offset),
         Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64) + crabPotData.directionOffset.Y + (float)(x % 4)) / 10000f);
 
     if (obj.isLamp.Value && Game1.isDarkOut(location))

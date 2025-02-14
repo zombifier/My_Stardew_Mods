@@ -8,6 +8,7 @@ public class AnimalProduceExtensionData {
   public string? HarvestTool;
   public string? ProduceTexture;
   public Dictionary<string, string> SkinProduceTexture = new Dictionary<string, string>();
+  public bool IgnoreAnimalQuality = false;
 }
 
 public class AnimalExtensionData {
@@ -23,6 +24,7 @@ public class AnimalExtensionData {
   public string? GlowColor = null;
   public float GlowRadius = 10f;
   public int? SpeedOverride = null;
+  public List<AppearanceData> TextureOverrides = [];
   // LMAO
   public bool IsAttackAnimal = false;
   public int AttackDamage = 1;
@@ -58,4 +60,19 @@ public class ProduceData {
 public class GrassDropExtensionData {
   public float BaseChance = 0;
   public bool EnterInventoryIfSilosFull = false;
+}
+
+public enum DefaultTextureEnum {
+  Texture,
+  HarvestedTexture,
+  BabyTexture
+}
+
+public class AppearanceData {
+  public string? Id;
+  public string? Produce = null;
+  public string? Skin;
+  public string? Condition;
+  public string? TextureToUse;
+  public DefaultTextureEnum? DefaultTextureToUse;
 }

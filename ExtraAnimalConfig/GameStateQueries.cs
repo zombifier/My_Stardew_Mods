@@ -68,4 +68,26 @@ sealed class AnimalGameStateQueries {
     });
     return count >= minCount && count <= maxCount;
   }
+
+  public static bool ANIMAL_AGE(string[] query, GameStateQueryContext context) {
+    if (!ArgUtility.TryGetInt(query, 1, out var minAge, out var error) ||
+        !ArgUtility.TryGetOptionalInt(query, 2, out var maxAge, out error, int.MaxValue)) {
+      return GameStateQuery.Helpers.ErrorResult(query, error);
+    }
+    return
+      (context.InputItem?.modData.TryGetValue(AnimalUtils.AnimalAge, out var ageStr) ?? false) &&
+      Int32.TryParse(ageStr, out var age) &&
+      age >= minAge && age <= maxAge;
+  }
+
+  public static bool ANIMAL_FRIENDSHIP(string[] query, GameStateQueryContext context) {
+    if (!ArgUtility.TryGetInt(query, 1, out var minFriendship, out var error) ||
+        !ArgUtility.TryGetOptionalInt(query, 2, out var maxFriendship, out error, int.MaxValue)) {
+      return GameStateQuery.Helpers.ErrorResult(query, error);
+    }
+    return
+      (context.InputItem?.modData.TryGetValue(AnimalUtils.AnimalFriendship, out var ageStr) ?? false) &&
+      Int32.TryParse(ageStr, out var age) &&
+      age >= minFriendship && age <= maxFriendship;
+  }
 }

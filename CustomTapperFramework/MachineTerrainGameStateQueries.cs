@@ -44,4 +44,16 @@ public static class MachineTerrainGameStateQueries {
     }
     return false;
   }
+
+  public static bool MACHINE_TILE_HAS_FRUIT_TREE_IN_SEASON(string[] query, GameStateQueryContext context) {
+    if (context.CustomFields == null ||
+        !context.CustomFields.TryGetValue("Tile", out object? tileObj) ||
+        tileObj is not Vector2 tile) {
+      return Helpers.ErrorResult(query, "No tile found - called outside TerrainCondition?");
+    }
+    if (Utils.GetFeatureAt(context.Location, tile, out var feature, out var unused) && feature is FruitTree fruitTree &&
+        fruitTree.IsInSeasonHere()) {
+    }
+    return false;
+  }
 }

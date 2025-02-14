@@ -11,9 +11,11 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Inventories;
 using StardewValley.GameData.Machines;
+using StardewValley.GameData;
 using StardewValley.Projectiles;
 using HarmonyLib;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 
 namespace Selph.StardewMods.ExtraMachineConfig; 
 
@@ -151,6 +153,24 @@ sealed class MachineHarmonyPatcher {
         original: AccessTools.DeclaredMethod(typeof(Farmer),
           nameof(Farmer.GetItemReceiveBehavior)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Farmer_GetItemReceiveBehavior_postfix)));
+
+    // Le color
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ItemQueryResolver),
+          nameof(ItemQueryResolver.ApplyItemFields),
+          new Type[] {typeof(ISalable), typeof(int), typeof(int), typeof(int), typeof(string), typeof(string), typeof(string), typeof(int), typeof(bool), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(Dictionary<string, string>), typeof(ItemQueryContext), typeof(Item)}),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.ItemQueryResolver_ApplyItemFields_postfix)));
+
+    // Transpilers go here
+    // Allow non-Object input (by turning them into weeds if necessary to satisfy the non-machine code branches)
+    try {
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(SObject),
+          nameof(SObject.performObjectDropInAction)),
+        transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_performObjectDropInAction_transpiler)));
+    } catch (Exception e) {
+      ModEntry.StaticMonitor.Log("Error when patching performObjectDropInAction: " + e.Message, LogLevel.Error);
+    }
 
   }
 
@@ -587,5 +607,39 @@ sealed class MachineHarmonyPatcher {
         needsInventorySpace = false;
       }
     }
+  }
+  public static void ItemQueryResolver_ApplyItemFields_postfix(ref ISalable __result, ISalable item, int minStackSize, int maxStackSize, int toolUpgradeLevel, string objectInternalName, string objectDisplayName, string objectColor, int quality, bool isRecipe, List<QuantityModifier> stackSizeModifiers, QuantityModifier.QuantityModifierMode stackSizeModifierMode, List<QuantityModifier> qualityModifiers, QuantityModifier.QuantityModifierMode qualityModifierMode, Dictionary<string, string> modData, ItemQueryContext context, Item inputItem = null) {
+    if (__result is Clothing clothing && !string.IsNullOrWhiteSpace(objectColor)) {
+			Color? color = Utility.StringToColor(objectColor);
+			if (color is not null) {
+        clothing.Dye((Color)color);
+      }
+    }
+  }
+
+  static Item MakeWeeds(SObject? obj) {
+    return obj ?? ItemRegistry.Create("(O)0");
+  }
+
+  public static IEnumerable<CodeInstruction> SObject_performObjectDropInAction_transpiler(IEnumerable<CodeInstruction> instructions) {
+    CodeMatcher matcher = new(instructions);
+    // Old: if (!(dropInItem is Object @object)) return false;
+    // New: if (!(dropInItem is Object @object)) @object = MakeWeeds();
+    matcher.MatchEndForward(
+        new CodeMatch(OpCodes.Ldarg_1),
+        new CodeMatch(OpCodes.Isinst, typeof(SObject)),
+        new CodeMatch(OpCodes.Stloc_0))
+//        new CodeMatch(OpCodes.Ldloc_0),
+//        new CodeMatch(OpCodes.Brtrue_S),
+//        new CodeMatch(OpCodes.Ldc_I4_0),
+//        new CodeMatch(OpCodes.Ret))
+      .ThrowIfNotMatch($"Could not find entry point for {nameof(SObject_performObjectDropInAction_transpiler)}")
+      .Advance(1)
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Ldloc_0),
+        new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.MakeWeeds))),
+        new CodeInstruction(OpCodes.Stloc_0)
+          );
+    return matcher.InstructionEnumeration();
   }
 }

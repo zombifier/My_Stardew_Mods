@@ -23,6 +23,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Items that can be used as slingshot ammo](#items-that-can-be-used-as-slingshot-ammo)
       + [Use item queries in add item trigger action](#use-item-queries-in-add-item-trigger-action)
    * [Machine Features](#machine-features)
+      + [Passive features/fixes](#passive-features-fixes)
       + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
       + [Output inherit the flavor of input items](#output-inherit-the-flavor-of-input-items)
       + [Output inherit the dye color of input items](#output-inherit-the-dye-color-of-input-items)
@@ -139,6 +140,13 @@ field in
 which is a map of arbitrary string keys to string values intended for mod use.
 Since `CustomData` is per-output, it's possible to specify different settings
 for each recipe, or even each output in the case of multiple possible outputs.
+
+### Passive features/fixes
+* Non-objects (eg hats, rings, clothing) can now be used as machine input.
+* Item queries `ObjectColor` and machine rules' `CopyColor` now works to dye shirts.
+* For C# mods: The item query in machine rules now have the input item in the CustomFields object, namely Input field
+
+----
 
 ### Adding additional fuel for a specific recipe
 

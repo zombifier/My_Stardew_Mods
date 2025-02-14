@@ -66,6 +66,18 @@ static class Utils {
 
   public static void SpoilItemInChest(Chest chest) {
     bool itemSpoiled = false;
+    if (chest.GlobalInventoryId is not null) {
+      var items = Game1.player.team.GetOrCreateGlobalInventory(chest.GlobalInventoryId);
+      foreach (Item item in items) {
+        if (item != null && Utils.SpoilItem(item)) {
+          itemSpoiled = true;
+        }
+      }
+      if (itemSpoiled) {
+        Utility.consolidateStacks(items);
+      }
+      return;
+    }
     chest.ForEachItem((in ForEachItemContext context) => {
       if (Utils.SpoilItem(context.Item)) {
         itemSpoiled = true;
@@ -99,7 +111,7 @@ static class Utils {
       extraDescription = cachedDescription;
     } else {
       var specialOrder = Game1.player.team.specialOrders
-        .FirstOrDefault((SpecialOrder order) => order.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId, null);
+        .FirstOrDefault((SpecialOrder? order) => order?.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId, null);
       if (specialOrder is null) return;
       List<string> categoryStrings = new();
       foreach (var objective in specialOrder.objectives) {

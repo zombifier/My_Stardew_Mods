@@ -169,35 +169,37 @@ internal sealed class ModEntry : Mod {
     harmony.Patch(
         original: AccessTools.DeclaredMethod(typeof(Furniture),
           nameof(Furniture.draw)),
+        prefix: new HarmonyMethod(typeof(ModEntry),
+          nameof(ModEntry.Furniture_draw_Prefix)),
         postfix: new HarmonyMethod(typeof(ModEntry),
-          nameof(ModEntry.Furniture_draw_Postfix)),
-        transpiler: new HarmonyMethod(typeof(ModEntry),
-          nameof(ModEntry.Furniture_draw_Transpiler)));
+          nameof(ModEntry.Furniture_draw_Postfix)));
+        //transpiler: new HarmonyMethod(typeof(ModEntry),
+        //  nameof(ModEntry.Furniture_draw_Transpiler)));
 
     // Transpilers to fix the "999 furniture instantly used for 1 object" bug
-    harmony.Patch(
-        original: AccessTools.DeclaredMethod(typeof(SObject),
-          nameof(SObject.placementAction)),
-        transpiler: new HarmonyMethod(typeof(ModEntry),
-          nameof(ModEntry.SObject_placementAction_Transpiler)));
+    //harmony.Patch(
+    //    original: AccessTools.DeclaredMethod(typeof(SObject),
+    //      nameof(SObject.placementAction)),
+    //    transpiler: new HarmonyMethod(typeof(ModEntry),
+    //      nameof(ModEntry.SObject_placementAction_Transpiler)));
 
-    harmony.Patch(
-        original: AccessTools.DeclaredMethod(typeof(Utility),
-          nameof(Utility.tryToPlaceItem)),
-        transpiler: new HarmonyMethod(typeof(ModEntry),
-          nameof(ModEntry.Utility_tryToPlaceItem_Transpiler)));
+    //harmony.Patch(
+    //    original: AccessTools.DeclaredMethod(typeof(Utility),
+    //      nameof(Utility.tryToPlaceItem)),
+    //    transpiler: new HarmonyMethod(typeof(ModEntry),
+    //      nameof(ModEntry.Utility_tryToPlaceItem_Transpiler)));
 
-    harmony.Patch(
-        original: AccessTools.DeclaredMethod(typeof(GameLocation),
-          "removeQueuedFurniture"),
-        prefix: new HarmonyMethod(typeof(ModEntry),
-          nameof(ModEntry.GameLocation_removeQueuedFurniture_Prefix)));
+    //harmony.Patch(
+    //    original: AccessTools.DeclaredMethod(typeof(GameLocation),
+    //      "removeQueuedFurniture"),
+    //    prefix: new HarmonyMethod(typeof(ModEntry),
+    //      nameof(ModEntry.GameLocation_removeQueuedFurniture_Prefix)));
 
-    harmony.Patch(
-        original: AccessTools.DeclaredMethod(typeof(Furniture),
-          nameof(Furniture.maximumStackSize)),
-        postfix: new HarmonyMethod(typeof(ModEntry),
-          nameof(ModEntry.Furniture_maximumStackSize_Postfix)));
+    //harmony.Patch(
+    //    original: AccessTools.DeclaredMethod(typeof(Furniture),
+    //      nameof(Furniture.maximumStackSize)),
+    //    postfix: new HarmonyMethod(typeof(ModEntry),
+    //      nameof(ModEntry.Furniture_maximumStackSize_Postfix)));
   }
 
   public override object GetApi() {
@@ -224,11 +226,11 @@ internal sealed class ModEntry : Mod {
     return true;
   }
 
-  static void Furniture_maximumStackSize_Postfix(Furniture __instance, ref int __result) {
-    if (__instance.HasContextTag(contextTag)) {
-      __result = 999;
-    }
-  }
+  //static void Furniture_maximumStackSize_Postfix(Furniture __instance, ref int __result) {
+  //  if (__instance.HasContextTag(contextTag)) {
+  //    __result = 999;
+  //  }
+  //}
 
   // Prevents one click moving when processing, and allows left clicking to deposit item
   static bool Furniture_clicked_Prefix(Furniture __instance, ref bool __result, Farmer who) {
@@ -301,7 +303,10 @@ internal sealed class ModEntry : Mod {
       return true;
     }
     foreach (var furniture in __instance.furniture) {
-      if (furniture.boundingBox.Value.Contains(x, y) && IsMachineFurniture(furniture) && furniture.heldObject.Value is not null && !furniture.readyForHarvest.Value) {
+      if (IsMachineFurniture(furniture) &&
+          furniture.GetBoundingBox().Contains(x, y) &&
+          furniture.heldObject.Value is not null &&
+          !furniture.readyForHarvest.Value) {
         __result = false;
         return false;
       }
@@ -317,6 +322,9 @@ internal sealed class ModEntry : Mod {
             location.debris.Add(new Debris(furniture.heldObject.Value, who.Position));
           }
           furniture.heldObject.Value = null;
+          furniture.ResetParentSheetIndex();
+          furniture.readyForHarvest.Value = false;
+          furniture.MinutesUntilReady = 0;
           furniture.performRemoveAction();
           location.furniture.Remove(furniture);
           location.debris.Add(new Debris(furniture, who.Position));
@@ -339,7 +347,20 @@ internal sealed class ModEntry : Mod {
   }
 
   // Draw the ready bubble
-  static void Furniture_draw_Postfix(Furniture __instance, NetVector2 ___drawPosition, SpriteBatch spriteBatch, int x, int y, float alpha = 1f) {
+  static void Furniture_draw_Prefix(ref SObject? __state, Furniture __instance, NetVector2 ___drawPosition, SpriteBatch spriteBatch, int x, int y, float alpha = 1f) {
+    if (!__instance.HasContextTag(contextTag)) {
+      return;
+    }
+    __state = __instance.heldObject.Value;
+    if (DontDrawHeldObject(__instance)) {
+      __instance.heldObject.Value = null;
+    }
+  }
+
+  static void Furniture_draw_Postfix(SObject? __state, Furniture __instance, NetVector2 ___drawPosition, SpriteBatch spriteBatch, int x, int y, float alpha = 1f) {
+    if (__state is not null) {
+      __instance.heldObject.Value = __state;
+    }
     if (!__instance.HasContextTag(contextTag) || !__instance.readyForHarvest.Value || __instance.HasContextTag("dont_draw_ready_bubble")) {
       return;
     }
@@ -370,107 +391,107 @@ internal sealed class ModEntry : Mod {
   }
 
   // Don't draw the held object under certain conditions
-  static IEnumerable<CodeInstruction> Furniture_draw_Transpiler(IEnumerable<CodeInstruction> instructions) {
-    CodeMatcher matcher = new(instructions);
-    // Old: if (base.heldObject.Value != null)
-    // New: ... && !DontDrawHeldObject(this)
-    matcher.MatchEndForward(
-        new CodeMatch(OpCodes.Ldarg_0),
-        new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(SObject), nameof(SObject.heldObject))),
-        new CodeMatch(OpCodes.Callvirt),
-        new CodeMatch(OpCodes.Brfalse)
-      )
-    .ThrowIfNotMatch($"Could not find entry point for {nameof(Furniture_draw_Transpiler)}");
-    var labelToJumpTo = matcher.Operand;
-    matcher.Advance(1)
-      .InsertAndAdvance(
-          new CodeInstruction(OpCodes.Ldarg_0),
-          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.DontDrawHeldObject))),
-          new CodeInstruction(OpCodes.Brtrue, labelToJumpTo)
-          );
-    return matcher.InstructionEnumeration();
-  }
+  //static IEnumerable<CodeInstruction> Furniture_draw_Transpiler(IEnumerable<CodeInstruction> instructions) {
+  //  CodeMatcher matcher = new(instructions);
+  //  // Old: if (base.heldObject.Value != null)
+  //  // New: ... && !DontDrawHeldObject(this)
+  //  matcher.MatchEndForward(
+  //      new CodeMatch(OpCodes.Ldarg_0),
+  //      new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(SObject), nameof(SObject.heldObject))),
+  //      new CodeMatch(OpCodes.Callvirt),
+  //      new CodeMatch(OpCodes.Brfalse)
+  //    )
+  //  .ThrowIfNotMatch($"Could not find entry point for {nameof(Furniture_draw_Transpiler)}");
+  //  var labelToJumpTo = matcher.Operand;
+  //  matcher.Advance(1)
+  //    .InsertAndAdvance(
+  //        new CodeInstruction(OpCodes.Ldarg_0),
+  //        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.DontDrawHeldObject))),
+  //        new CodeInstruction(OpCodes.Brtrue, labelToJumpTo)
+  //        );
+  //  return matcher.InstructionEnumeration();
+  //}
 
   // Don't add the item, but a copy of it
   // This is to avoid adding all 999 stacks of a stacked object
-  static IEnumerable<CodeInstruction> SObject_placementAction_Transpiler(IEnumerable<CodeInstruction> instructions) {
-    // Old: location.furniture.Add(this as Furniture)
-    // New: location.furniture.Add((this as Furniture).getOne())
-    CodeMatcher matcher = new(instructions);
-    matcher.MatchStartForward(
-        new CodeMatch(OpCodes.Isinst, typeof(Furniture)),
-        new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(NetCollection<Furniture>), nameof(NetCollection<Furniture>.Add)))
-      )
-    .ThrowIfNotMatch($"Could not find entry point for {nameof(SObject_placementAction_Transpiler)}")
-    .Advance(1)
-    .InsertAndAdvance(
-        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.GetOneIfMachineFurniture)))
-        );
-    return matcher.InstructionEnumeration();
-  }
+  //static IEnumerable<CodeInstruction> SObject_placementAction_Transpiler(IEnumerable<CodeInstruction> instructions) {
+  //  // Old: location.furniture.Add(this as Furniture)
+  //  // New: location.furniture.Add((this as Furniture).getOne())
+  //  CodeMatcher matcher = new(instructions);
+  //  matcher.MatchStartForward(
+  //      new CodeMatch(OpCodes.Isinst, typeof(Furniture)),
+  //      new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(NetCollection<Furniture>), nameof(NetCollection<Furniture>.Add)))
+  //    )
+  //  .ThrowIfNotMatch($"Could not find entry point for {nameof(SObject_placementAction_Transpiler)}")
+  //  .Advance(1)
+  //  .InsertAndAdvance(
+  //      new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.GetOneIfMachineFurniture)))
+  //      );
+  //  return matcher.InstructionEnumeration();
+  //}
 
-  // Don't remove the item, but just one
-  // This is to avoid *removing* all 999 stacks of a stacked object
-  static IEnumerable<CodeInstruction> Utility_tryToPlaceItem_Transpiler(IEnumerable<CodeInstruction> instructions) {
-    // Old: if (item is Furniture)
-    // New: if (item is Furniture && !IsMachineFurniture(item))
-    CodeMatcher matcher = new(instructions);
-    matcher.MatchStartForward(
-        new CodeMatch(OpCodes.Ldarg_1),
-        new CodeMatch(OpCodes.Isinst, typeof(Furniture)),
-        new CodeMatch(OpCodes.Brfalse_S),
-        new CodeMatch(OpCodes.Call, AccessTools.DeclaredPropertyGetter(typeof(Game1), nameof(Game1.player))),
-        new CodeMatch(OpCodes.Ldnull),
-        new CodeMatch(OpCodes.Callvirt, AccessTools.DeclaredPropertySetter(typeof(Farmer), nameof(Farmer.ActiveObject)))
-      )
-    .ThrowIfNotMatch($"Could not find entry point for ActiveObject clearing portion of {nameof(Utility_tryToPlaceItem_Transpiler)}")
-    .Advance(2);
-    var labelToJumpTo = matcher.Operand;
-    matcher.Advance(1)
-    .InsertAndAdvance(
-        new CodeInstruction(OpCodes.Ldarg_1),
-        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.IsMachineFurniture))),
-        new CodeInstruction(OpCodes.Brtrue_S, labelToJumpTo)
-      );
+  //// Don't remove the item, but just one
+  //// This is to avoid *removing* all 999 stacks of a stacked object
+  //static IEnumerable<CodeInstruction> Utility_tryToPlaceItem_Transpiler(IEnumerable<CodeInstruction> instructions) {
+  //  // Old: if (item is Furniture)
+  //  // New: if (item is Furniture && !IsMachineFurniture(item))
+  //  CodeMatcher matcher = new(instructions);
+  //  matcher.MatchStartForward(
+  //      new CodeMatch(OpCodes.Ldarg_1),
+  //      new CodeMatch(OpCodes.Isinst, typeof(Furniture)),
+  //      new CodeMatch(OpCodes.Brfalse_S),
+  //      new CodeMatch(OpCodes.Call, AccessTools.DeclaredPropertyGetter(typeof(Game1), nameof(Game1.player))),
+  //      new CodeMatch(OpCodes.Ldnull),
+  //      new CodeMatch(OpCodes.Callvirt, AccessTools.DeclaredPropertySetter(typeof(Farmer), nameof(Farmer.ActiveObject)))
+  //    )
+  //  .ThrowIfNotMatch($"Could not find entry point for ActiveObject clearing portion of {nameof(Utility_tryToPlaceItem_Transpiler)}")
+  //  .Advance(2);
+  //  var labelToJumpTo = matcher.Operand;
+  //  matcher.Advance(1)
+  //  .InsertAndAdvance(
+  //      new CodeInstruction(OpCodes.Ldarg_1),
+  //      new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.IsMachineFurniture))),
+  //      new CodeInstruction(OpCodes.Brtrue_S, labelToJumpTo)
+  //    );
 
-    matcher.MatchStartForward(
-        new CodeMatch(OpCodes.Ldarg_1),
-        new CodeMatch(OpCodes.Isinst, typeof(Furniture)),
-        new CodeMatch(OpCodes.Stloc_1),
-        new CodeMatch(OpCodes.Ldloc_1),
-        new CodeMatch(OpCodes.Brfalse_S),
-        new CodeMatch(OpCodes.Call, AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.player))),
-        new CodeMatch(OpCodes.Ldloc_1),
-        new CodeMatch(OpCodes.Callvirt, AccessTools.PropertySetter(typeof(Farmer), nameof(Farmer.ActiveObject)))
-      )
-    .ThrowIfNotMatch($"Could not find entry point for ActiveObject setting portion of {nameof(Utility_tryToPlaceItem_Transpiler)}")
-    .Advance(4);
-    labelToJumpTo = matcher.Operand;
-    matcher.Advance(1)
-    .InsertAndAdvance(
-        new CodeInstruction(OpCodes.Ldarg_1),
-        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.IsMachineFurniture))),
-        new CodeInstruction(OpCodes.Brtrue, labelToJumpTo)
-      );
+  //  matcher.MatchStartForward(
+  //      new CodeMatch(OpCodes.Ldarg_1),
+  //      new CodeMatch(OpCodes.Isinst, typeof(Furniture)),
+  //      new CodeMatch(OpCodes.Stloc_1),
+  //      new CodeMatch(OpCodes.Ldloc_1),
+  //      new CodeMatch(OpCodes.Brfalse_S),
+  //      new CodeMatch(OpCodes.Call, AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.player))),
+  //      new CodeMatch(OpCodes.Ldloc_1),
+  //      new CodeMatch(OpCodes.Callvirt, AccessTools.PropertySetter(typeof(Farmer), nameof(Farmer.ActiveObject)))
+  //    )
+  //  .ThrowIfNotMatch($"Could not find entry point for ActiveObject setting portion of {nameof(Utility_tryToPlaceItem_Transpiler)}")
+  //  .Advance(4);
+  //  labelToJumpTo = matcher.Operand;
+  //  matcher.Advance(1)
+  //  .InsertAndAdvance(
+  //      new CodeInstruction(OpCodes.Ldarg_1),
+  //      new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.IsMachineFurniture))),
+  //      new CodeInstruction(OpCodes.Brtrue, labelToJumpTo)
+  //    );
 
-    return matcher.InstructionEnumeration();
-  }
+  //  return matcher.InstructionEnumeration();
+  //}
 
-  // If stackable machine furniture, don't put them into a new inventory slot when removed
-  static bool GameLocation_removeQueuedFurniture_Prefix(GameLocation __instance, Guid guid) {
-      if (!__instance.furniture.TryGetValue(guid, out var furniture) || !IsMachineFurniture(furniture)) {
-        return true;
-      }
-      Farmer player = Game1.player;
-      if (!player.couldInventoryAcceptThisItem(furniture)) {
-        return false;
-      }
-      furniture.performRemoveAction();
-      __instance.furniture.Remove(guid);
-        player.addItemToInventory(furniture);
-      __instance.localSound("coin");
-      return false;
-  }
+  //// If stackable machine furniture, don't put them into a new inventory slot when removed
+  //static bool GameLocation_removeQueuedFurniture_Prefix(GameLocation __instance, Guid guid) {
+  //    if (!__instance.furniture.TryGetValue(guid, out var furniture) || !IsMachineFurniture(furniture)) {
+  //      return true;
+  //    }
+  //    Farmer player = Game1.player;
+  //    if (!player.couldInventoryAcceptThisItem(furniture)) {
+  //      return false;
+  //    }
+  //    furniture.performRemoveAction();
+  //    __instance.furniture.Remove(guid);
+  //      player.addItemToInventory(furniture);
+  //    __instance.localSound("coin");
+  //    return false;
+  //}
 
   static (int, int) GetSpriteWidthAndHeight(Furniture furniture) {
     string[]? furnitureData = null;

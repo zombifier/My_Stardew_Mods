@@ -55,6 +55,7 @@ internal sealed class ModEntry : Mod {
 
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
     helper.Events.GameLoop.DayEnding += OnDayEnding;
+    //helper.Events.Display.MenuChanged += OnMenuChanged;
 
     // Register custom stuff
     TriggerActionManager.RegisterAction(
@@ -451,9 +452,12 @@ internal sealed class ModEntry : Mod {
       }
       foreach (SObject obj in location.objects.Values) {
         if (obj != fridge) {
-          if (obj is Chest chest && chest.specialChestType.Value != Chest.SpecialChestTypes.MiniShippingBin) {
+          if (obj is Chest chest &&
+              chest.specialChestType.Value != Chest.SpecialChestTypes.MiniShippingBin &&
+              chest.specialChestType.Value != Chest.SpecialChestTypes.JunimoChest) {
             Utils.SpoilItemInChest(chest);
           }
+          // Auto grabbers
           else if (obj.heldObject.Value is Chest chest2) {
             Utils.SpoilItemInChest(chest2);
           }
@@ -480,7 +484,7 @@ internal sealed class ModEntry : Mod {
         Utils.SpoilItem(returnedDonation);
       }
     }
-    // Ignore Junimo Chests and Special Order Bins
+    // Ignore other global inventory and Special Order Bins
     //foreach (Inventory globalInventory in Game1.player.team.globalInventories.Values) {
     //  foreach (Item item in globalInventory) {
     //    if (item != null) {
@@ -503,6 +507,32 @@ internal sealed class ModEntry : Mod {
       Utils.SpoilItem(item);
     }
   }
+
+  public static string AlreadySoldToShopKey { get => $"{UniqueId}.AlreadySold"; }
+
+  // If a shop menu add a on sell handler
+  //void OnMenuChanged(object? sender, MenuChangedEventArgs e) {
+  //  if (e.NewMenu is ShopMenu shopMenu) {
+  //    var specialOrder = Game1.player.team.specialOrders.FirstOrDefault((SpecialOrder? so) => so?.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId, null);
+  //    if (specialOrder is null) return;
+  //    Func<ISalable, bool> sellItemHandler = (item) => {
+  //      foreach (var objective in specialOrder.objectives) {
+  //        if (objective is ShipObjective shipObjective && item is Item obj && !obj.modData.ContainsKey(AlreadySoldToShopKey)) {
+  //          shipObjective.OnItemShipped(Game1.player, obj, item.sellToStorePrice() * item.Stack);
+  //          obj.modData[AlreadySoldToShopKey] = "";
+  //        }
+  //      }
+  //      return true;
+  //    };
+  //    shopMenu.onSell = shopMenu.onSell is null ?
+  //      sellItemHandler :
+  //      (item) => {
+  //        var ret = shopMenu.onSell(item);
+  //        var ret2 = sellItemHandler(item);
+  //        return ret && ret2;
+  //      };
+  //  }
+  //}
 
   static void SObject_PopulateContextTags_Postfix(SObject __instance, HashSet<string> tags) {
     if (Utils.IsFreshItem(__instance)) {
@@ -687,7 +717,7 @@ internal sealed class ModEntry : Mod {
 
   private void PrintDiagnostics(string command, string[] args) {
     var specialOrder = Game1.player.team.specialOrders
-      .FirstOrDefault((SpecialOrder order) => order.questKey.Value == FarmCompetitionSpecialOrderId, null);
+      .FirstOrDefault((SpecialOrder? order) => order?.questKey.Value == FarmCompetitionSpecialOrderId, null);
     if (specialOrder is not null) {
       foreach (var objective in specialOrder.objectives) {
         if (objective is ShipPointsObjective shipPointsObjective &&

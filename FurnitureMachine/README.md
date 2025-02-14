@@ -20,12 +20,12 @@ First, add your [furniture item](https://stardewvalleywiki.com/Modding:Items#Fur
 * Set rotations to 1. The mod currently does not work with rotateable furniture.
 * Add `furniture_machine` to the furniture's context tags. This enables machine
   interactions with the furniture item; namely item input, automatic produce if
-  defined, breakable with a tool if processing, increasing stack count to 999,
-  and more.
-* Optionally add `dont_draw_held_object_while_processing` to not draw the
-  currently processed item on its surface (like items placed on tables).
-* Optionally add `dont_draw_held_object_when_ready` to not draw a ready item.
-* Optionally add `dont_draw_ready_bubble` to not draw the ready item bubble.
+  defined, breakable with a tool if processing, and more.
+* Optional context tags to add:
+  * `dont_draw_held_object_while_processing`: don't draw the currently
+    processing item on its surface (like items placed on tables).
+  * `dont_draw_held_object_when_ready`: don't draw a ready item.
+  * `dont_draw_ready_bubble`: don't draw the ready item bubble.
 
 Next, define your [machine rules](https://stardewvalleywiki.com/Modding:Machines) as usual:
 * The key would be the qualified item ID, so something like `(F)YourFurnitureIdDefinedAbove`.

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using StardewValley;
 using Microsoft.Xna.Framework;
 using xTile.Dimensions;
+using VanillaPlusProfessions.Compatibility;
 
 namespace Selph.StardewMods.ExtraAnimalConfig;
 
@@ -18,6 +19,8 @@ internal sealed class ModEntry : Mod {
   internal static EggExtensionDataAssetHandler eggExtensionDataAssetHandler;
   internal static GrassDropExtensionDataAssetHandler grassDropExtensionDataAssetHandler;
   internal static string UniqueId;
+
+  internal static IVanillaPlusProfessions? vppApi;
 
   public override void Entry(IModHelper helper) {
     Helper = helper;
@@ -41,12 +44,18 @@ internal sealed class ModEntry : Mod {
 
     GameStateQuery.Register($"{UniqueId}_ANIMAL_HOUSE_COUNT", AnimalGameStateQueries.ANIMAL_HOUSE_COUNT);
     GameStateQuery.Register($"{UniqueId}_ANIMAL_COUNT", AnimalGameStateQueries.ANIMAL_COUNT);
+    GameStateQuery.Register($"{UniqueId}_ANIMAL_AGE", AnimalGameStateQueries.ANIMAL_AGE);
+    GameStateQuery.Register($"{UniqueId}_ANIMAL_FRIENDSHIP", AnimalGameStateQueries.ANIMAL_FRIENDSHIP);
 
     helper.Events.GameLoop.DayStarted += OnDayStarted;
     helper.Events.GameLoop.DayEnding += OnDayEnding;
     helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
     helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
     helper.Events.World.LocationListChanged += OnLocationListChanged;
+  }
+
+  void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
+    vppApi = Helper.ModRegistry.GetApi<IVanillaPlusProfessions>("KediDili.VanillaPlusProfessions");
   }
 
   // Set animal override speed, and clear the attack dictionaries

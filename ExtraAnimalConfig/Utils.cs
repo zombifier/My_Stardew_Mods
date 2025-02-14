@@ -175,8 +175,16 @@ public static class AnimalUtils {
     return GetBuildingFeedOverride(animalHouse, out var _);
   }
 
+  public static string AnimalAge = $"{ModEntry.UniqueId}.Age";
+  public static string AnimalFriendship = $"{ModEntry.UniqueId}.Friendship";
+
   public static Item? GetGoldenAnimalCracker(FarmAnimal animal) {
-    return animal.hasEatenAnimalCracker.Value ? ItemRegistry.Create("(O)GoldenAnimalCracker") : null;
+    var item = animal.hasEatenAnimalCracker.Value ?
+      ItemRegistry.Create("(O)GoldenAnimalCracker") :
+      ItemRegistry.Create("(O)Weeds");
+    item.modData[AnimalAge] = animal.age.Value.ToString();
+    item.modData[AnimalFriendship] = animal.friendshipTowardFarmer.Value.ToString();
+    return item;
   }
 
   static Dictionary<long, double> BeginAttackTimeDict = new();
@@ -365,13 +373,25 @@ public static class ExtraProduceUtils {
     return false;
   }
 
+  public static string CachedProduceQualityKey = $"${ModEntry.UniqueId}.CachedProduceQuality";
+
   public static SObject CreateProduce(string produceId, FarmAnimal animal) {
+    // Restore cached quality if set
+    if (animal.modData.TryGetValue(CachedProduceQualityKey, out var cachedProduceQualityStr) &&
+        Int32.TryParse(cachedProduceQualityStr, out var cachedProduceQuality)) {
+      animal.produceQuality.Value = cachedProduceQuality;
+      animal.modData.Remove(CachedProduceQualityKey);
+    }
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData) &&
         animalProduceExtensionData.ItemQuery != null) {
       var context = new ItemQueryContext(animal.home?.GetIndoors(), Game1.GetPlayer(animal.ownerID.Value), Game1.random, "ExtraAnimalConfig animal " + animal.type.Value + " producing");
       var item = ItemQueryResolver.TryResolveRandomItem(animalProduceExtensionData.ItemQuery, context);
       if (item is SObject obj) {
+        if (animalProduceExtensionData.IgnoreAnimalQuality) {
+          animal.modData[CachedProduceQualityKey] = animal.produceQuality.ToString();
+          animal.produceQuality.Value = obj.Quality;
+        }
         return obj;
       }
     }

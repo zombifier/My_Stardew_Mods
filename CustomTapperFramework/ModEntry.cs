@@ -31,6 +31,7 @@ internal sealed class ModEntry : Mod {
     helper.Events.Content.AssetReady += assetHandler.OnAssetReady;
     helper.Events.Content.AssetsInvalidated += assetHandler.OnAssetsInvalidated;
     helper.Events.GameLoop.GameLaunched += assetHandler.OnGameLaunched;
+    helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
     helper.Events.GameLoop.DayStarted += OnDayStarted;
     helper.Events.Input.ButtonPressed += OnButtonPressed;
@@ -57,11 +58,19 @@ internal sealed class ModEntry : Mod {
 
     GameStateQuery.Register($"{UniqueId}_MACHINE_TILE_HAS_TERRAIN_FEATURE",
         MachineTerrainGameStateQueries.MACHINE_TILE_HAS_TERRAIN_FEATURE);
+    GameStateQuery.Register($"{UniqueId}_MACHINE_TILE_HAS_FRUIT_TREE_IN_SEASON",
+        MachineTerrainGameStateQueries.MACHINE_TILE_HAS_FRUIT_TREE_IN_SEASON);
 
     ItemQueryResolver.Register($"{UniqueId}_MACHINE_CRAB_POT_OUTPUT",
         MachineTerrainItemQueries.MACHINE_CRAB_POT_OUTPUT);
     ItemQueryResolver.Register($"{UniqueId}_MACHINE_FISH_LOCATION",
         MachineTerrainItemQueries.MACHINE_FISH_LOCATION);
+  }
+
+  static public IATApi? atApi;
+
+  public void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
+    atApi = Helper.ModRegistry.GetApi<IATApi>("PeacefulEnd.AlternativeTextures");
   }
 
   public void OnDayStarted(object? sender, DayStartedEventArgs e) {

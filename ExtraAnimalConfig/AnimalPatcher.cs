@@ -236,22 +236,42 @@ sealed class AnimalDataPatcher {
   static void FarmAnimal_GetTexturePath_Postfix(FarmAnimal __instance, ref string __result, FarmAnimalData data) {
     if (__instance.currentProduce.Value != null &&
         Game1.farmAnimalData.TryGetValue(__instance.type.Value, out var animalData) &&
-        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value) ?? __instance.currentProduce.Value, out var animalProduceExtensionData)) {
-      if (animalProduceExtensionData.ProduceTexture != null) {
-        __result = animalProduceExtensionData.ProduceTexture;
+        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData)) {
+      // old deprecated method, via produce texture override
+      if (animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value) ?? __instance.currentProduce.Value, out var animalProduceExtensionData)) {
+        if (animalProduceExtensionData.ProduceTexture != null) {
+          __result = animalProduceExtensionData.ProduceTexture;
+        }
+        if (__instance.skinID.Value is not null) {
+          if (animalProduceExtensionData.ProduceTexture is not null &&
+              ModEntry.Helper.GameContent.ParseAssetName(animalProduceExtensionData.ProduceTexture ?? "").IsEquivalentTo(animalData.HarvestedTexture)) {
+            __result = animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.HarvestedTexture ?? __result;
+          }
+          //if (animalProduceExtensionData.ProduceTexture == animalData.Texture) {
+          //  __result = animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.Texture ?? __result;
+          //}
+          if (animalProduceExtensionData.SkinProduceTexture.TryGetValue(__instance.skinID.Value, out var skinTexture)) {
+            __result = skinTexture;
+          }
+        }
       }
-      if (__instance.skinID.Value is not null) {
-        if (animalProduceExtensionData.ProduceTexture is not null &&
-            ModEntry.Helper.GameContent.ParseAssetName(animalProduceExtensionData.ProduceTexture ?? "").IsEquivalentTo(animalData.HarvestedTexture)) {
-          __result = animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.HarvestedTexture ?? __result;
+      // new method, via dedicated field
+      foreach (var appearanceData in animalExtensionData.TextureOverrides) {
+        if ((appearanceData.Produce is not null && __instance.currentProduce.Value != appearanceData.Produce) ||
+            (appearanceData.Skin is not null && __instance.skinID.Value != appearanceData.Skin) ||
+            (appearanceData.Condition is not null && !GameStateQuery.CheckConditions(appearanceData.Condition, __instance.currentLocation, null, null, AnimalUtils.GetGoldenAnimalCracker(__instance)))) {
+          continue;
         }
-        //if (animalProduceExtensionData.ProduceTexture == animalData.Texture) {
-        //  __result = animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.Texture ?? __result;
-        //}
-        if (animalProduceExtensionData.SkinProduceTexture.TryGetValue(__instance.skinID.Value, out var skinTexture)) {
-          __result = skinTexture;
-        }
+        __result = appearanceData.DefaultTextureToUse switch {
+          DefaultTextureEnum.HarvestedTexture => 
+            animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.HarvestedTexture ?? animalData.HarvestedTexture,
+          DefaultTextureEnum.Texture => 
+            animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.Texture ?? animalData.Texture,
+          DefaultTextureEnum.BabyTexture => 
+            animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.BabyTexture ?? animalData.BabyTexture,
+          _ => appearanceData.TextureToUse ?? __result,
+        };
+        break;
       }
     }
   }
@@ -287,7 +307,9 @@ sealed class AnimalDataPatcher {
   // If there are custom non-hay feed for this animal inside the building, feed the animal
   static void FarmAnimal_dayUpdate_Prefix(FarmAnimal __instance, GameLocation environment) {
     bool notOutsideEater = AnimalUtils.AnimalOnlyEatsModdedFood(__instance) && !AnimalUtils.AnimalIsOutsideForager(__instance);
-    if (notOutsideEater) {
+    // Outside eaters are already handled by VPP's day start
+    if (notOutsideEater &&
+        ((!ModEntry.vppApi?.GetProfessionsForPlayer(Game1.GetPlayer(__instance.ownerID.Value)).Contains("Caretaker") ?? true) || Game1.random.NextBool(.65))) {
       __instance.fullness.Value = 0;
     }
     string? feedItemId = AnimalUtils.GetCustomFeedThisAnimalCanEat(__instance, environment);
@@ -305,6 +327,8 @@ sealed class AnimalDataPatcher {
         }
       }
     }
+    // Clear cached quality
+    __instance.modData.Remove(ExtraProduceUtils.CachedProduceQualityKey);
   }
 
   // Set up produce and hunger state for a new day

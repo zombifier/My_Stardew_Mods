@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Furniture Machine",
   "Author": "selph",
-  "Version": "0.0.2",
+  "Version": "1.0.0",
   "Description": "Allow furniture to be used as machines.",
   "UniqueID": "selph.FurnitureMachine",
   "EntryDll": "FurnitureMachine.dll",
   "MinimumApiVersion": "4.1.0",
-  //"UpdateKeys": ["Nexus:"],
+  "UpdateKeys": ["Nexus:31678"],
 }

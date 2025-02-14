@@ -107,7 +107,18 @@ public static class Utils {
         // For trees, this will be their seeds.
         // For fruit trees and giant crops, this will be their first produce defined in the list.
         Item? inputItem = GetFeatureItem(feature, farmer);
-        if (!GameStateQuery.CheckConditions(tapItem.Condition, tapper.Location, farmer, targetItem: null, inputItem: inputItem)) {
+        var customFields = new Dictionary<string, object>();
+        customFields["Tile"] = tapper.TileLocation;
+        customFields["Machine"] = tapper;
+        var farm = Game1.getFarm();
+        var gsqContext = new GameStateQueryContext(
+            tapper.Location,
+            farmer,
+            null,
+            inputItem,
+            Game1.random,
+            customFields: customFields);
+        if (!GameStateQuery.CheckConditions(tapItem.Condition, gsqContext)) {
           continue;
         }
 

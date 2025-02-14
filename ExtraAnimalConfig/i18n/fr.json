@@ -1,5 +1,0 @@
-{
-  "selph.ExtraAnimalConfig.AddedToSiloMsg": "Vous avez ajouté {{count}} {{displayName}} au silo.",
-  "selph.ExtraAnimalConfig.SiloCountMsg": "Nombre de {{displayName}} : {{count}}/{{maxCount}}",
-  "selph.ExtraAnimalConfig.HopperEmpty": "Le trémie est vide. Construisez un silo pour avoir plus de foin et remplissez-le.",
-}
