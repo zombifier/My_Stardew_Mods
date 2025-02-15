@@ -6,7 +6,7 @@ vanilla game only `"DayUpdate"` rules work, and it is clearly an unintended
 interaction). It is essentially a reimagining of Bigger Craftables, albeit with
 easier usage instructions, compat for 1.6's new machine features.
 
-[Download Link](https://github.com/zombifier/My_Stardew_Mods/releases)
+[Download Link](https://www.nexusmods.com/stardewvalley/mods/31678)
 
 This document is for modders looking to incorporate this mod into their own
 content packs. For users, install the mod as usual from the link above.
