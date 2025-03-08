@@ -939,11 +939,11 @@ This example changes the coffee maker to require reloading with 5 coffee beans e
 
 NOTE: Currently in testing.
 
-NOTE: This can also be added to the machine entry ini `Data/Machines`'s `CustomFields` dictionary to make it run for every rule.
+NOTE: This can also be added to the machine entry in `Data/Machines`'s `CustomFields` dictionary to make it run for every rule.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `selph.ExtraMachineConfig.TriggerActionToRunWhenReady` | Run this trigger action string when this machine is ready for harvest.|
+| `selph.ExtraMachineConfig.TriggerActionToRunWhenReady` | Run this trigger action string when this machine rule is ready for harvest.|
 
 ----
 
