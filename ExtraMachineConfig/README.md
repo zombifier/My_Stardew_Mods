@@ -34,6 +34,8 @@ content packs. For users, install the mod as usual from the link above.
       + [Override display name if the output item is unflavored](#override-display-name-if-the-output-item-is-unflavored)
       + [Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query](#generate-an-input-item-for-recipes-that-dont-have-any-and-use-nearby-flower-as-a-possible-query)
       + [Automatic machines that stop producing after X times](#automatic-machines-that-stop-producing-after-X-times)
+      + [Run trigger action on machine ready](#run-trigger-action-on-machine-ready)
+      + [Custom casks](#custom-casks)
    * [Crafting/Cooking Features](#craftingcooking-features)
       + [Use some machine-like features in crafting and cooking (namely copy flavor and color)](#use-some-machine-like-features-in-crafting-and-cooking-namely-copy-flavor-and-color)
 
@@ -930,9 +932,33 @@ This example changes the coffee maker to require reloading with 5 coffee beans e
 
 </details>
 
-## Crafting/Cooking Features
 
-**NOTE**: This is in alpha. Please report any issues you find.
+---
+
+### Run trigger action on machine ready
+
+NOTE: Currently in testing.
+
+NOTE: Add this to the entry in `Data/Machines`'s `CustomFields` dictionary.
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.TriggerActionToRunWhenReady` | Run this trigger action string when this machine is ready for harvest. Currently applies to all its output rules; let me know if you want this to be more granular (ie. per output rule).|
+
+----
+
+### Custom casks
+
+NOTE: Currently in testing.
+
+NOTE: Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.IsCustomCask` | Whether this machine is a cask, and should subject to cask-like behavior (ie. can use cask rules, drop item when smacked, has quality star, only usable in a cellar unless specified below)|
+| `selph.ExtraMachineConfig.CaskWorksAnywhere` | If set, this cask can be placed anywhere.|
+
+## Crafting/Cooking Features
 
 ### Use some machine-like features in crafting and cooking (namely copy flavor and color)
 
@@ -968,7 +994,7 @@ Known issues:
 * With Better Crafting, bulk crafting recipes modified by this mod does not
   currently work, and you need to craft one at a time.
 * Partially compatible with Yet Another Cooking Skill (requires Better Crafting).
-* Not currently compatible with Love of Cooking.
+* Not currently compatible with Love of Cooking, unless you use Better Crafting.
 
 #### Example
 

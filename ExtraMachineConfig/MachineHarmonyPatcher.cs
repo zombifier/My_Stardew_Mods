@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Triggers;
 using StardewValley.GameData.Objects;
 using StardewValley.Tools;
 using StardewValley.Delegates;
@@ -40,6 +41,11 @@ sealed class MachineHarmonyPatcher {
   internal static string OverrideInputItemIdKey = $"{ModEntry.UniqueId}.OverrideInputItemId";
   internal static string UnflavoredDisplayNameOverrideKey = $"{ModEntry.UniqueId}.UnflavoredDisplayNameOverride";
   internal static string AutomaticProduceCountKey = $"{ModEntry.UniqueId}.AutomaticProduceCount";
+
+  // Keys for machine CustomFields
+  internal static string TriggerActionToRunWhenReady = $"{ModEntry.UniqueId}.TriggerActionToRunWhenReady";
+  internal static string IsCustomCask = $"{ModEntry.UniqueId}.IsCustomCask";
+  internal static string CaskWorksAnywhere = $"{ModEntry.UniqueId}.CaskWorksAnywhere";
 
   // ModData keys
   internal static string ExtraContextTagsKey = $"{ModEntry.UniqueId}.ExtraContextTags";
@@ -160,6 +166,22 @@ sealed class MachineHarmonyPatcher {
           nameof(ItemQueryResolver.ApplyItemFields),
           new Type[] {typeof(ISalable), typeof(int), typeof(int), typeof(int), typeof(string), typeof(string), typeof(string), typeof(int), typeof(bool), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(Dictionary<string, string>), typeof(ItemQueryContext), typeof(Item)}),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.ItemQueryResolver_ApplyItemFields_postfix)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(SObject),
+          nameof(SObject.onReadyForHarvest)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_onReadyForHarvest_Postfix)));
+
+    // Cask stuff
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Cask),
+          nameof(Cask.IsValidCaskLocation)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Cask_IsValidCaskLocation_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(SObject),
+          nameof(SObject.placementAction)),
+        prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_placementAction_Prefix)));
+
 
     // Transpilers go here
     // Allow non-Object input (by turning them into weeds if necessary to satisfy the non-machine code branches)
@@ -641,5 +663,45 @@ sealed class MachineHarmonyPatcher {
         new CodeInstruction(OpCodes.Stloc_0)
           );
     return matcher.InstructionEnumeration();
+  }
+
+  static void SObject_onReadyForHarvest_Postfix(SObject __instance) {
+    if (__instance.GetMachineData()?.CustomFields?.TryGetValue(TriggerActionToRunWhenReady, out var action) ?? false) {
+      if (!TriggerActionManager.TryRunAction(action, out string error, out Exception ex)) {
+        ModEntry.StaticMonitor.Log($"Failed running action '{action}' after machine is ready: {error} (exception: {ex})",
+            LogLevel.Warn);
+      }
+    }
+  }
+
+  static void Cask_IsValidCaskLocation_Postfix(Cask __instance, ref bool __result) {
+    if (__instance.GetMachineData()?.CustomFields?.ContainsKey(CaskWorksAnywhere) ?? false) {
+      __result = true;
+    }
+  }
+
+  static bool SObject_placementAction_Prefix(SObject __instance, ref bool __result, GameLocation location, int x, int y, Farmer? who = null) {
+    if (__instance.GetMachineData()?.CustomFields?.ContainsKey(IsCustomCask) ?? false) {
+			Vector2 vector = new Vector2(x / 64, y / 64);
+      var itemId = __instance.ItemId;
+      var cask = new Cask(vector);
+      cask.ItemId = itemId;
+      if (Game1.bigCraftableData.TryGetValue(itemId, out var value)) {
+        cask.name = value.Name ?? ItemRegistry.GetDataOrErrorItem($"(BC){itemId}").InternalName;
+        cask.Price = value.Price;
+        cask.Type = "Crafting";
+        cask.Category = -9;
+        cask.setOutdoors.Value = value.CanBePlacedOutdoors;
+        cask.setIndoors.Value = value.CanBePlacedIndoors;
+        cask.Fragility = value.Fragility;
+        cask.isLamp.Value = value.IsLamp;
+      }
+      cask.ResetParentSheetIndex();
+      location.objects.Add(vector, cask);
+      location.playSound("hammer");
+      __result = true;
+      return false;
+    }
+    return true;
   }
 }
