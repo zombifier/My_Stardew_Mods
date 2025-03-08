@@ -53,6 +53,7 @@ sealed class MachineHarmonyPatcher {
   internal static string ExtraColorKeyPrefix = $"{ModEntry.UniqueId}.ExtraColor";
   // on machines
   internal static string AutomaticProduceCountRemainingKey = $"{ModEntry.UniqueId}.AutomaticProduceCountRemaining";
+  //internal static string TriggerActionToRunWhenReady = $"{ModEntry.UniqueId}.TriggerActionToRunWhenReady";
 
   // ModData value regexes
   internal static Regex DropInIdRegex = new Regex(@"DROP_IN_ID_(\d+)");
@@ -334,7 +335,11 @@ sealed class MachineHarmonyPatcher {
       if (!outputData.CustomData.ContainsKey(AutomaticProduceCountKey)) {
         machine.modData.Remove(AutomaticProduceCountRemainingKey);
       }
+      if (outputData.CustomData.TryGetValue(TriggerActionToRunWhenReady, out var action)) {
+        machine.modData[TriggerActionToRunWhenReady] = action;
+      }
     }
+
 
     // PlaceInMachine-exclusive rules below
     if (inputItem is null) return;
@@ -671,6 +676,13 @@ sealed class MachineHarmonyPatcher {
         ModEntry.StaticMonitor.Log($"Failed running action '{action}' after machine is ready: {error} (exception: {ex})",
             LogLevel.Warn);
       }
+    }
+    if (__instance.modData.TryGetValue(TriggerActionToRunWhenReady, out var action2)) {
+      if (!TriggerActionManager.TryRunAction(action2, out string error, out Exception ex)) {
+        ModEntry.StaticMonitor.Log($"Failed running action '{action2}' after machine is ready: {error} (exception: {ex})",
+            LogLevel.Warn);
+      }
+      __instance.modData.Remove(TriggerActionToRunWhenReady);
     }
   }
 
