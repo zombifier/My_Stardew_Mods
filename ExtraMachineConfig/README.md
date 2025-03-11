@@ -937,8 +937,6 @@ This example changes the coffee maker to require reloading with 5 coffee beans e
 
 ### Run trigger action on machine ready
 
-NOTE: Currently in testing.
-
 NOTE: This can also be added to the machine entry in `Data/Machines`'s `CustomFields` dictionary to make it run for every rule.
 
 | Field Name                         | Description              |
@@ -948,8 +946,6 @@ NOTE: This can also be added to the machine entry in `Data/Machines`'s `CustomFi
 ----
 
 ### Custom casks
-
-NOTE: Currently in testing.
 
 NOTE: Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
 

@@ -87,7 +87,7 @@ sealed class SmokedItemHarmonyPatcher {
           (transparency == 1f && colorOverride.A < byte.MaxValue) ? ((float)(int)colorOverride.A / 255f) : transparency, __state);
   }
 
-	private static void Object_drawWhenHeld_postfix(StardewValley.Object __instance, ParsedItemData __state, SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f) {
+	private static void Object_drawWhenHeld_postfix(StardewValley.Object __instance, ParsedItemData? __state, SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f) {
     float layerDepth = Math.Max(0f, (float)(f.StandingPixel.Y + 4) / 10000f);
     if (isSmokedItem(__instance)) {
       drawSmoke(__instance, spriteBatch, objectPosition, 1f, layerDepth, 1f, __state);
@@ -126,7 +126,8 @@ sealed class SmokedItemHarmonyPatcher {
     return true;
   }
 
-	private static void drawSprite(ParsedItemData parsedItemData, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float layerDepth, float transparency = 1f) {
+	private static void drawSprite(ParsedItemData? parsedItemData, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float layerDepth, float transparency = 1f) {
+    if (parsedItemData is null) return;
     Vector2 vector = new Vector2(8f, 8f);
     float num = 4f * scaleSize;
     string textureName = parsedItemData.TextureName;
