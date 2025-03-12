@@ -137,6 +137,9 @@ internal sealed class ModEntry : Mod {
         Game1.currentLocation.playSound("axe");
         Game1.player.reduceActiveItemByOne();
         Utils.Shake(feature, centerPos);
+        if (feature is Tree tree) {
+          tree.tapped.Value = true;
+        }
       }
       // Place Crab Pot if able
       // NOTE: Handled in placementAction patch
