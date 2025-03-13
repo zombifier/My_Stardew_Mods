@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Furniture Machine",
   "Author": "selph",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Allow furniture to be used as machines.",
   "UniqueID": "selph.FurnitureMachine",
   "EntryDll": "FurnitureMachine.dll",

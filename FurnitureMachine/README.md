@@ -40,6 +40,9 @@ Next, define your [machine rules](https://stardewvalleywiki.com/Modding:Machines
   `CustomFields`, with the value being the absolute sprite index to use for
   those fields. For example, if you add a 2x2 item at sprite index 20, then
   you'd usually want to set that to 22, unless the next sprite is in a new row.
+* Optionally, to set a custom description or category name for your furniture
+  machine item, set the field `"selph.FurnitureMachine.CustomDescription"` and
+  `"selph.FurnitureMachine.CustomCategory"` in its machine data.
 
 Crafting Addendum
 * Stardew Valley 1.6.9 and newer supports

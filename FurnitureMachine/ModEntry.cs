@@ -7,6 +7,7 @@ using StardewValley.Objects;
 using StardewValley.Tools;
 using StardewValley.GameData.Machines;
 using StardewValley.ItemTypeDefinitions;
+using StardewValley.TokenizableStrings;
 using Netcode;
 using System;
 using System.Reflection;
@@ -175,6 +176,24 @@ internal sealed class ModEntry : Mod {
           nameof(ModEntry.Furniture_draw_Postfix)));
         //transpiler: new HarmonyMethod(typeof(ModEntry),
         //  nameof(ModEntry.Furniture_draw_Transpiler)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Furniture),
+          "loadDescription"),
+        postfix: new HarmonyMethod(typeof(ModEntry),
+          nameof(ModEntry.Furniture_loadDescription_Postfix)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(SObject),
+          nameof(SObject.getCategoryName)),
+        postfix: new HarmonyMethod(typeof(ModEntry),
+          nameof(ModEntry.SObject_getCategoryName_Postfix)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredConstructor(typeof(CraftingRecipe),
+          new[] {typeof(string), typeof(bool)}),
+        postfix: new HarmonyMethod(typeof(ModEntry),
+          nameof(ModEntry.CraftingRecipe_Constructor_Postfix)));
 
     // Transpilers to fix the "999 furniture instantly used for 1 object" bug
     //harmony.Patch(
@@ -390,6 +409,24 @@ internal sealed class ModEntry : Mod {
     }
   }
 
+  static void Furniture_loadDescription_Postfix(Furniture __instance, ref string __result) {
+    __result = GetCustomDescriptionFor(__instance) ?? __result;
+  }
+
+  static void SObject_getCategoryName_Postfix(SObject __instance, ref string __result) {
+    if (DataLoader.Machines(Game1.content).GetValueOrDefault(__instance.QualifiedItemId)
+        ?.CustomFields?.TryGetValue($"{UniqueId}.CustomCategory", out var str) ?? false) {
+      __result = TokenParser.ParseText(str);
+    }
+  }
+  
+  static void CraftingRecipe_Constructor_Postfix(CraftingRecipe __instance, string name, bool isCookingRecipe) {
+    if (DataLoader.Machines(Game1.content).GetValueOrDefault(__instance.GetItemData(true)?.QualifiedItemId ?? "0")
+        ?.CustomFields?.TryGetValue($"{UniqueId}.CustomDescription", out var str) ?? false) {
+      __instance.description = str;
+    }
+  }
+
   // Don't draw the held object under certain conditions
   //static IEnumerable<CodeInstruction> Furniture_draw_Transpiler(IEnumerable<CodeInstruction> instructions) {
   //  CodeMatcher matcher = new(instructions);
@@ -528,5 +565,12 @@ internal sealed class ModEntry : Mod {
       ret.performDropDownAction(Game1.player);
       return ret;
     } else return furniture;
+  }
+
+  static string? GetCustomDescriptionFor(Furniture furniture) {
+    if (furniture.GetMachineData()?.CustomFields?.TryGetValue($"{UniqueId}.CustomDescription", out var str) ?? false) {
+      return TokenParser.ParseText(str);
+    }
+    return null;
   }
 }
