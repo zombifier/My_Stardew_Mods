@@ -38,6 +38,14 @@ internal sealed class ModEntry : Mod {
   public static ModConfig Config = null!;
 
   public static string FarmCompetitionSpecialOrderId { get => $"{UniqueId}.FarmCompetition"; }
+  
+  // Api integrations
+  //public static ItemBags.IItemBagsAPI? itemBagsApi;
+
+  // Utils
+  public static SpecialOrder? GetCompetitionSpecialOrder() {
+    return Game1.player.team.specialOrders.FirstOrDefault((SpecialOrder? so) => so?.questKey.Value == FarmCompetitionSpecialOrderId, null);
+  }
 
   // No, Bronze, Silver, Gold or Iridium
   static string GetCompetitionFinishedFlag(string reward) {
@@ -64,6 +72,9 @@ internal sealed class ModEntry : Mod {
     TriggerActionManager.RegisterAction(
         $"{UniqueId}_AddFame",
         AddFame);
+    TriggerActionManager.RegisterAction(
+        $"{UniqueId}_ItemSoldForCompetition",
+        ItemSoldForCompetition);
 
     GameStateQuery.Register(
         $"{UniqueId}_COMPETITION_ENABLED",
@@ -373,6 +384,12 @@ internal sealed class ModEntry : Mod {
         setValue: value => Config.LateFreshModifierIridium = value,
         min: 1
         );
+
+    //try {
+    //  itemBagsApi = Helper.ModRegistry.GetApi<ItemBags.IItemBagsAPI>("SlayerDharok.Item_Bags");
+    //} catch (Exception ex) {
+    //  ModEntry.StaticMonitor.Log($"Error fetching item bags' API.: {ex.ToString()}", LogLevel.Error);
+    //}
   }
 
   // Increase price of fresh items
@@ -716,8 +733,7 @@ internal sealed class ModEntry : Mod {
   }
 
   private void PrintDiagnostics(string command, string[] args) {
-    var specialOrder = Game1.player.team.specialOrders
-      .FirstOrDefault((SpecialOrder? order) => order?.questKey.Value == FarmCompetitionSpecialOrderId, null);
+    var specialOrder = GetCompetitionSpecialOrder();
     if (specialOrder is not null) {
       foreach (var objective in specialOrder.objectives) {
         if (objective is ShipPointsObjective shipPointsObjective &&
@@ -802,6 +818,27 @@ internal sealed class ModEntry : Mod {
 
   static bool FameNameToken(string[] query, out string replacement, Random random, Farmer player) {
     replacement = Helper.Translation.Get("FameBanner", new { fame = Utils.GetFame() });
+    return true;
+  }
+
+  public static bool ItemSoldForCompetition(string[] args, TriggerActionContext context, out string? error) {
+    if (context.TriggerArgs.Count() == 0 ||
+        context.TriggerArgs[0] is not SObject soldObj){
+      error = "ERROR - ItemSoldForCompetition not called in response to BETAS' item sold trigger?";
+      return false;
+    }
+    var specialOrder = GetCompetitionSpecialOrder();
+    if (specialOrder is null) {
+      error = null;
+      return true;
+    }
+    foreach (var objective in specialOrder.objectives) {
+      if (objective is ShipObjective shipObjective && !soldObj.modData.ContainsKey(AlreadySoldToShopKey)) {
+        shipObjective.OnItemShipped(Game1.player, soldObj, soldObj.sellToStorePrice() * soldObj.Stack);
+        soldObj.modData[AlreadySoldToShopKey] = "";
+      }
+    }
+    error = null;
     return true;
   }
 }

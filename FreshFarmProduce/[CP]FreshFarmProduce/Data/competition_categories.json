@@ -223,6 +223,14 @@
               "Id": "ArtifactDisplayCase",
               "ContextTags": ["moonslime_artifact"],
             },
+            {
+              "Id": "VMVPolishedGems",
+              "ContextTags": ["polished_gem"],
+            },
+            {
+              "Id": "VMVEarrings",
+              "ItemIds": ["(O)Lumisteria.MtVapius_Earrings_EmeraldEarrings"],
+            },
           ],
         },
         "{{ModId}}.Money": {

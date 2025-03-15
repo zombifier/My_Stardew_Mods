@@ -61,6 +61,12 @@ static class Utils {
       item.modData.Remove(CachedDescriptionKey);
       return true;
     }
+    //if (item is not null && (ModEntry.itemBagsApi?.IsItemBag(item) ?? false)) {
+    //  foreach (var i in (ModEntry.itemBagsApi?.GetObjectsInsideBag(item, true) ?? new List<SObject>())) {
+    //    Utils.SpoilItem(i);
+    //  }
+    //  return true;
+    //}
     return false;
   }
 

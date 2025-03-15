@@ -131,5 +131,23 @@
         },
       },
     },
+    {
+      "LogName": "Item sold in shop for competition trigger actions",
+      "Action": "EditData",
+      "Target": "Data/TriggerActions",
+      "Entries": {
+        "{{ModId}}.ItemSoldForCompetition" : {
+					"Id": "{{ModId}}.ItemSoldForCompetition",
+					"Trigger": "Spiderbuttons.BETAS_ItemSold",
+					"Actions": [
+            "selph.FreshFarmProduce_ItemSoldForCompetition",
+          ],
+          "MarkActionApplied": false,
+        },
+      },
+      "When": {
+        "HasMod |contains=Spiderbuttons.BETAS": "true",
+      }
+    },
   ]
 }

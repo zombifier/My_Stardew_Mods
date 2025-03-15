@@ -141,6 +141,7 @@ public class ShipPointsObjective : ShipObjective {
   }
 
   public override void OnItemShipped(StardewValley.Farmer farmer, StardewValley.Item shippedItem, int shipped_price) {
+    if (shippedItem is null) return;
     if (ModEntry.competitionDataAssetHandler.data.Categories.TryGetValue(this.Id.Value, out var categoryData)) {
       if (!CanAcceptThisItem(shippedItem, farmer)) {
         return;

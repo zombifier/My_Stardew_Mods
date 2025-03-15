@@ -88,7 +88,7 @@ class CompetitionTrackerViewModel {
   public ObjectiveModel[] Objectives;
 
   public CompetitionTrackerViewModel() {
-    var specialOrder = Game1.player.team.specialOrders.FirstOrDefault((SpecialOrder so) => so.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId, null);
+    var specialOrder = ModEntry.GetCompetitionSpecialOrder();
     if (specialOrder is not null) {
       Objectives = specialOrder.objectives
           .Where((OrderObjective oo) => oo is ShipPointsObjective)
