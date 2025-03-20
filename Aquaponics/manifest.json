@@ -1,0 +1,12 @@
+﻿{
+  "Name": "Fish Pond Aquaponics",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Adds a fish pond upgrade that allows crop growing, with mutual benefits for both crops and fish produce.",
+  "UniqueID": "selph.Aquaponics",
+  "EntryDll": "Aquaponics.dll",
+  //"Dependencies": [
+  //],
+  "MinimumApiVersion": "4.0.9",
+  "UpdateKeys": ["Nexus:???"],
+}

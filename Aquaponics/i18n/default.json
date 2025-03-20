@@ -1,0 +1,18 @@
+{
+  "AquaponicsFishPond.name": "Aquaponics Pond",
+  "AquaponicsFishPond.description": "Installs a hydroponics tank in which crops can be grown.",
+  "Plant.notEnoughSeeds": "Need {{num}} seeds of the same type.",
+  "Plant.noWildSeeds": "Cannot plant mixed seeds - they may cause problems for the carefully controlled aquaponics environment.",
+  "Plant.alreadyPlanted": "The hydroponics tank is already growing crops.",
+  "PondQueryMenu.removeCrops": "Remove Planted Crops",
+  "PondQueryMenu.removeCropsConfirmation": "Are you sure you want to remove all planted crops?",
+  // Custom bush support is not implemented yet, but we'll use the string below once it is
+  "PondQueryMenu.removeBushesConfirmation": "Are you sure you want to remove all planted bushes? You'll get the bush saplings back.",
+  // Configs
+  "Config.seedCount.name": "Hydroponics Seed Count",
+  "Config.seedCount.description": "The number of seeds you can plant in an aquaponics pond. NOTE: Existing ponds will not be updated. It's highly recommended you clear all ponds before changing this settings.",
+  // Console commands
+  "Command.openCropsChest": "Open the chest containing the indoor pots of the nearest fish pond. WARNING: For debugging only. Only run this command if you know what you're doing.",
+  "Command.downgradePond": "Downgrade the pond with a pond menu open to the base version.",
+  "Command.downgradeAllAquaponicsPonds": "Downgrade all aquaponics pond to regular fish ponds. Only run this command if you want to uninstall this mod cleanly."
+}
