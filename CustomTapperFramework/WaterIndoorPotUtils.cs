@@ -25,6 +25,7 @@ public static class WaterIndoorPotUtils {
   public static readonly string WaterPotQualifiedItemId = $"(BC){WaterPotItemId}";
   
   public static readonly string HoeDirtIsWaterModDataKey = $"{ModEntry.UniqueId}.IsWater";
+  public static readonly string HoeDirtIsAmphibiousModDataKey = $"{ModEntry.UniqueId}.IsAmphibious";
   public static readonly string HoeDirtIsWaterPlanterModDataKey = $"{ModEntry.UniqueId}.IsWaterPlanter";
 
   // Crop custom fields
@@ -120,12 +121,13 @@ public static class WaterIndoorPotUtils {
     itemId = Crop.ResolveSeedId(itemId, hoeDirt.Location);
     if (Crop.TryGetData(itemId, out var data)) {
       bool isWater = hoeDirt.modData.ContainsKey(HoeDirtIsWaterModDataKey);
-      if (isWater &&
+      bool isAmphibious = hoeDirt.modData.ContainsKey(HoeDirtIsAmphibiousModDataKey);
+      if ((isWater) &&
           (!data.CustomFields?.ContainsKey(CropIsAmphibiousCustomFieldsKey) ?? true) &&
           (!data.CustomFields?.ContainsKey(CropIsWaterCustomFieldsKey) ?? true)) {
         result = false;
       }
-      if (!isWater &&
+      if (!isWater && !isAmphibious &&
           (data.CustomFields?.ContainsKey(CropIsWaterCustomFieldsKey) ?? false)) {
         result = false;
       }

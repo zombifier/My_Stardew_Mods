@@ -347,6 +347,13 @@ You can patch the `Mods/selph.CustomTapperFramework/WaterPlanterTexture` asset
 to change the texture of the water planters and water pots. The files
 themselves should be in the mod's `assets` folder for easy reference.
 
+### For C# mods
+
+You can set a `HoeDirt` to only aquatic/amphibious crops by adding
+`selph.CustomTapperFramework.IsWater` key to its `modData` dictionary. Add
+`selph.CustomTapperFramework.IsAmphibious` to allow both aquatic and regular
+crops to grow in it.
+
 ## Custom Planting Pots
 
 NOTE: This feature is beta only.
