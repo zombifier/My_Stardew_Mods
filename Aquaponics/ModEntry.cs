@@ -31,6 +31,7 @@ internal sealed class ModEntry : Mod {
   public static IItemExtensionsApi? ieApi = null;
 
   public static string AquaponicsFishPondBuilding = null!;
+  public static string AlreadyDoubled = null!;
 
   public override object GetApi() {
       return api;
@@ -43,6 +44,7 @@ internal sealed class ModEntry : Mod {
     StaticMonitor = this.Monitor;
     UniqueId = this.ModManifest.UniqueID;
     AquaponicsFishPondBuilding =  $"{UniqueId}_AquaponicsFishPond";
+    AlreadyDoubled =  $"{UniqueId}_AlreadyDoubled";
 
     ImageAssetsManager.RegisterEvents(helper);
     helper.Events.Content.AssetRequested += OnAssetRequested;
@@ -212,8 +214,10 @@ internal sealed class ModEntry : Mod {
           pond.daysSinceSpawn.Value += 1;
         }
         if (pond.output.Value is not null &&
+            !pond.output.Value.modData.ContainsKey(AlreadyDoubled) &&
             Game1.random.NextBool(0.50)) {
           pond.output.Value.Stack = (int)(pond.output.Value.Stack * (pond.goldenAnimalCracker.Value ? 1.5 : 2));
+          pond.output.Value.modData[AlreadyDoubled] = "";
         }
       }
       return true;
