@@ -1,0 +1,18 @@
+{
+  "AquaponicsFishPond.name": "鱼菜共生池塘",
+  "AquaponicsFishPond.description": "安装一个水培罐，可以在其中种植农作物。",
+  "Plant.notEnoughSeeds": "需要 {{num}} 个相同类型的种子。",
+  "Plant.noWildSeeds": "不能种植混合种子 - 它们可能会给精心控制的鱼菜共生环境带来问题。",
+  "Plant.alreadyPlanted": "水培池已经在种植农作物。",
+  "PondQueryMenu.removeCrops": "移除种植的作物",
+  "PondQueryMenu.removeCropsConfirmation": "您确定要移除所有种植的作物吗？",
+  // 自定义衬套支持尚未实现，但一旦实现，我们将使用以下字符串
+  "PondQueryMenu.removeBushesConfirmation": "您确定要移除所有种植的灌木丛吗？你可以获得灌木丛树苗。",
+  // 配置
+  "Config.seedCount.name": "水培种子总数",
+  "Config.seedCount.description": "您可以在鱼菜共生池塘中种植的种子数量。注意：现有池塘不会更新。强烈建议您在更改此设置之前清理所有池塘。",
+  // 控制台命令
+  "Command.openCropsChest": "打开最近的鱼塘水培罐。警告：仅用于调试。仅在您知道自己在做什么时才运行此命令。",
+  "Command.downgradePond": "将池塘降级，并将池塘菜单回退到原版。",
+  "Command.downgradeAllAquaponicsPonds": "将所有鱼菜共生池降级为普通鱼塘。仅当你想干净地卸载这个模组时才运行这个命令。"
+}

@@ -230,7 +230,7 @@ internal sealed class ModEntry : Mod {
   }
 
   // Harvest crops if no output
-	static bool FishPond_doAction_Prefix(FishPond __instance, ref bool __result, out bool __state, Vector2 tileLocation, Farmer who) {
+  static bool FishPond_doAction_Prefix(FishPond __instance, ref bool __result, out bool __state, Vector2 tileLocation, Farmer who) {
     if (!IsAquaponicsPond(__instance, out var _) ||
         who.isRidingHorse() ||
         __instance.daysOfConstructionLeft.Value > 0 ||
@@ -252,7 +252,7 @@ internal sealed class ModEntry : Mod {
   }
 
   // If nothing happened, do our seed thingy
-	static void FishPond_doAction_Postfix(FishPond __instance, ref bool __result, bool __state, Vector2 tileLocation, Farmer who) {
+  static void FishPond_doAction_Postfix(FishPond __instance, ref bool __result, bool __state, Vector2 tileLocation, Farmer who) {
     if (__result || !__state) return;
     if (who.ActiveObject is not null) {
       __result = FishPondCropManager.PlantCrops(__instance, who.ActiveObject, who, true);
@@ -265,7 +265,7 @@ internal sealed class ModEntry : Mod {
 
   static void FishPond_draw_Postfix(FishPond __instance, SpriteBatch b) {
     if (!IsAquaponicsPond(__instance, out var _)) return;
-    var layerDepth = (((float)__instance.tileY.Value + 0.5f) * 64f + 1f + 5f) / 10000f;
+    var layerDepth = (((float)__instance.tileY.Value + 0.5f) * 64f + 1f + 2f) / 10000f;
     var scaleModifier = (__instance.tilesHigh.Value / 5f);
     var scale = Game1.pixelZoom * scaleModifier;
     // Draw crops
@@ -404,8 +404,8 @@ internal sealed class ModEntry : Mod {
     // Water effects! Goodness me
     // The water tank consists of four 15 pixel squares, and water tiles are 16 pixels, so we scale most distances down by 15/16 (eg.64 -> 60)
     var topLeftWater = topLeft + new Vector2(10, 6) * scale;
-		for (int y = 0; y < 2; y++) {
-			for (int x = 0; x < 4; x++) {
+    for (int y = 0; y < 2; y++) {
+      for (int x = 0; x < 4; x++) {
         b.Draw(
             Game1.mouseCursors,
             Game1.GlobalToLocal(Game1.viewport, topLeftWater + new Vector2(x * 60, y * 60) * scaleModifier),
@@ -432,8 +432,8 @@ internal sealed class ModEntry : Mod {
         //    1f * 15f/16 * scaleModifier,
         //    SpriteEffects.None,
         //    layerDepth - 0.4f/10000);
-			  //if (num) {
-			  //	b.Draw(
+        //if (num) {
+        //  b.Draw(
         //      Game1.mouseCursors,
         //      Game1.GlobalToLocal(Game1.viewport, topLeftWater + new Vector2(x * 60, (y + 1) * 60 - (int)Game1.currentLocation.waterPosition * 15f/16) * scaleModifier),
         //      new Microsoft.Xna.Framework.Rectangle(Game1.currentLocation.waterAnimationIndex * 64, 2064 + (((x + (y + 1)) % 2 != 0) ? ((!Game1.currentLocation.waterTileFlip) ? 128 : 0) : (Game1.currentLocation.waterTileFlip ? 128 : 0)), 64, 64 - (int)(64f - Game1.currentLocation.waterPosition) - 1),
@@ -443,9 +443,9 @@ internal sealed class ModEntry : Mod {
         //      1f * 15f/16 * scaleModifier,
         //      SpriteEffects.None,
         //      layerDepth - 0.4f/10000);
-			  //}
-			}
-		}
+        //}
+      }
+    }
     b.Draw(
         ImageAssetsManager.AquaponicsTankWaterHighlights,
         Game1.GlobalToLocal(Game1.viewport, topLeft),
@@ -457,6 +457,58 @@ internal sealed class ModEntry : Mod {
         scale,
         SpriteEffects.None,
         layerDepth - 0.3f/10000);
+    // (Re)draw the sign so it's above the tank
+    // I should probably transpile this in the original function, but meh
+    if (__instance.sign.Value != null) {
+      ParsedItemData dataOrErrorItem = ItemRegistry.GetDataOrErrorItem(__instance.sign.Value.QualifiedItemId);
+      b.Draw(
+          dataOrErrorItem.GetTexture(),
+          Game1.GlobalToLocal(Game1.viewport, new Vector2(__instance.tileX.Value * 64 + 8, __instance.tileY.Value * 64 + __instance.tilesHigh.Value * 64 - 128 - 32)),
+          dataOrErrorItem.GetSourceRect(),
+          __instance.color * __instance.alpha,
+          0f,
+          Vector2.Zero,
+          Game1.pixelZoom,
+          SpriteEffects.None,
+          layerDepth + 1.1f/10000f);
+      if (__instance.fishType.Value != null) {
+        ParsedItemData data2 = ItemRegistry.GetData(__instance.fishType.Value);
+        if (data2 != null) {
+          Texture2D texture2D = data2.GetTexture();
+          Microsoft.Xna.Framework.Rectangle sourceRect = data2.GetSourceRect();
+          float num3 = ((__instance.maxOccupants.Value == 1) ? 6f : 0f);
+          b.Draw(
+              texture2D,
+              Game1.GlobalToLocal(Game1.viewport, new Vector2(__instance.tileX.Value * 64 + 8 + 8 - 4, (float)(__instance.tileY.Value * 64 + __instance.tilesHigh.Value * 64 - 128 - 8 + 4) + num3)),
+              sourceRect,
+              Color.Black * 0.4f * __instance.alpha,
+              0f,
+              Vector2.Zero,
+              3f,
+              SpriteEffects.None,
+              layerDepth + 1.2f/10000f);
+          b.Draw(
+              texture2D,
+              Game1.GlobalToLocal(Game1.viewport, new Vector2(__instance.tileX.Value * 64 + 8 + 8 - 1, (float)(__instance.tileY.Value * 64 + __instance.tilesHigh.Value * 64 - 128 - 8 + 1) + num3)),
+              sourceRect,
+              __instance.color * __instance.alpha,
+              0f,
+              Vector2.Zero,
+              3f,
+              SpriteEffects.None,
+              layerDepth + 1.3f/10000f);
+          if (__instance.maxOccupants.Value > 1) {
+            Utility.drawTinyDigits(
+                __instance.currentOccupants.Value,
+                b,
+                Game1.GlobalToLocal(Game1.viewport, new Vector2(__instance.tileX.Value * 64 + 32 + 8 + ((__instance.currentOccupants.Value < 10) ? 8 : 0), __instance.tileY.Value * 64 + __instance.tilesHigh.Value * 64 - 96)),
+                3f,
+                layerDepth + 1.4f/10000f,
+                Color.LightYellow * __instance.alpha);
+          }
+        }
+      }
+    }
   }
 
   static void FishPond_drawInMenu_Postfix(FishPond __instance, SpriteBatch b, int x, int y) {
@@ -510,8 +562,8 @@ internal sealed class ModEntry : Mod {
 
     // Water effects! Goodness me
     var topLeftWater = topLeft + new Vector2(10, 6) * scale;
-		for (int j = 0; j < 2; j++) {
-			for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 2; j++) {
+      for (int i = 0; i < 4; i++) {
         b.Draw(
             Game1.mouseCursors,
             topLeftWater + new Vector2(i * 60, j * 60) * scaleModifier,
@@ -537,8 +589,8 @@ internal sealed class ModEntry : Mod {
         //    1f * 15f/16 * scaleModifier,
         //    SpriteEffects.None,
         //    layerDepth - 0.4f/10000);
-			  //if (num) {
-			  //	b.Draw(
+        //if (num) {
+        //  b.Draw(
         //      Game1.mouseCursors,
         //      topLeftWater + new Vector2(i * 60, (j + 1) * 60 - (int)Game1.currentLocation.waterPosition * 15f/16) * scaleModifier,
         //      new Microsoft.Xna.Framework.Rectangle(Game1.currentLocation.waterAnimationIndex * 64, 2064 + (((i + (j + 1)) % 2 != 0) ? ((!Game1.currentLocation.waterTileFlip) ? 128 : 0) : (Game1.currentLocation.waterTileFlip ? 128 : 0)), 64, 64 - (int)(64f - Game1.currentLocation.waterPosition) - 1),
@@ -548,9 +600,9 @@ internal sealed class ModEntry : Mod {
         //      1f * 15f/16 * scaleModifier,
         //      SpriteEffects.None,
         //      layerDepth - 0.4f/10000);
-			  //}
-			}
-		}
+        //}
+      }
+    }
     b.Draw(
         ImageAssetsManager.AquaponicsTankWaterHighlights,
         topLeft,
@@ -601,7 +653,7 @@ internal sealed class ModEntry : Mod {
       if (IsAquaponicsPond(building, out var pond)) {
         pond.buildingType.Value = "Fish Pond";
         pond.ReloadBuildingData();
-				pond.daysUntilUpgrade.Value = 0;
+        pond.daysUntilUpgrade.Value = 0;
       }
       return true;
     });
@@ -614,7 +666,7 @@ internal sealed class ModEntry : Mod {
         if (pond.buildingType.Value != "Fish Pond") {
           pond.buildingType.Value = "Fish Pond";
           pond.ReloadBuildingData();
-		  		pond.daysUntilUpgrade.Value = 0;
+          pond.daysUntilUpgrade.Value = 0;
           pond.UpdateMaximumOccupancy();
         }
       }

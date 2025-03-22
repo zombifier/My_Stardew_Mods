@@ -1,0 +1,19 @@
+{
+  "AquaponicsFishPond.name": "Étang aquaponique",
+  "AquaponicsFishPond.description": "Ajoute un bassin hydroponique dans lequel planter des cultures. Les poissons comme les plantes bénéficient de ce système !",
+  "Plant.notEnoughSeeds": "Nécessite {{num}} graines du même type.",
+  "Plant.noWildSeeds": "Impossible de planter des graines mélangées. C'est trop hasardeux dans un système d'aquaponie qui doit être régulé en permanence.",
+  "Plant.alreadyPlanted": "Il y a déjà des plantes dans le bassin hydroponique.",
+  "PondQueryMenu.removeCrops": "Retirer les cultures",
+  "PondQueryMenu.removeCropsConfirmation": "Voulez-vous vraiment retirer les cultures plantées dans le bassin hydroponique ?",
+  // Custom bush support is not implemented yet, but we'll use the string below once it is
+  "PondQueryMenu.removeBushesConfirmation": "Voulez-vous vraiment retirer les buissons plantés dans le bassin hydroponique ? Vous récupérerez les plants des buissons.",
+  // Configs
+  "Config.seedCount.name": "Nombre de plantes en hydroponie",
+  "Config.seedCount.description": "Choisissez le nombre de graines que vous pouvez faire pousser dans un bassin d'hydroponie. NOTE : Les étangs aquaponiques existants ne sont pas concernés par ce changement. Il est recommandé de retirer les plantes des bassins avant de changer ce paramètre.",
+  // Console commands
+  "Command.openCropsChest": "Open the chest containing the indoor pots of the nearest fish pond. WARNING: For debugging only. Only run this command if you know what you're doing.",
+  "Command.downgradePond": "Rétrogade l'étang aquaponique en étang de base en ouvrant un menu.",
+  "Command.downgradeAllAquaponicsPonds": "Rétrogade tous les étangs aquaponiques en étangs de base. Utilisez cette commande uniquement si vous souhaitez désinstaller le mod."
+}
+
