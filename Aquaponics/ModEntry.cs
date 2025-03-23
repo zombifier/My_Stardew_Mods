@@ -58,9 +58,7 @@ internal sealed class ModEntry : Mod {
         original: AccessTools.DeclaredMethod(typeof(FishPond),
           nameof(FishPond.doAction)),
         prefix: new HarmonyMethod(typeof(ModEntry),
-          nameof(ModEntry.FishPond_doAction_Prefix)),
-        postfix: new HarmonyMethod(typeof(ModEntry),
-          nameof(ModEntry.FishPond_doAction_Postfix)));
+          nameof(ModEntry.FishPond_doAction_Prefix)));
 
     harmony.Patch(
         original: AccessTools.DeclaredMethod(typeof(FishPond),
@@ -230,17 +228,15 @@ internal sealed class ModEntry : Mod {
   }
 
   // Harvest crops if no output
-  static bool FishPond_doAction_Prefix(FishPond __instance, ref bool __result, out bool __state, Vector2 tileLocation, Farmer who) {
+  static bool FishPond_doAction_Prefix(FishPond __instance, ref bool __result, Vector2 tileLocation, Farmer who) {
     if (!IsAquaponicsPond(__instance, out var _) ||
         who.isRidingHorse() ||
         __instance.daysOfConstructionLeft.Value > 0 ||
         !__instance.occupiesTile(tileLocation) ||
         __instance.output.Value is not null
         ) {
-      __state = false;
       return true;
     }
-    __state = true;
     if (FishPondCropManager.HarvestCrops(__instance, who, out var farmingExp, out var foragingExp)) {
       Utility.CollectSingleItemOrShowChestMenu(FishPondCropManager.GetFishPondOutputChest(__instance));
       who.gainExperience(Farmer.farmingSkill, farmingExp);
@@ -248,19 +244,16 @@ internal sealed class ModEntry : Mod {
       __result = true;
       return false;
     }
-    return true;
-  }
-
-  // If nothing happened, do our seed thingy
-  static void FishPond_doAction_Postfix(FishPond __instance, ref bool __result, bool __state, Vector2 tileLocation, Farmer who) {
-    if (__result || !__state) return;
-    if (who.ActiveObject is not null) {
-      __result = FishPondCropManager.PlantCrops(__instance, who.ActiveObject, who, true);
-      if (__result && who.ActiveObject.Stack <= 0) {
+    if (who.ActiveObject is not null &&
+        FishPondCropManager.PlantCrops(__instance, who.ActiveObject, who, true)) {
+      __result = true;
+      if (who.ActiveObject.Stack <= 0) {
         who.removeItemFromInventory(who.ActiveObject);
         who.showNotCarrying();
       }
+      return false;
     }
+    return true;
   }
 
   static void FishPond_draw_Postfix(FishPond __instance, SpriteBatch b) {

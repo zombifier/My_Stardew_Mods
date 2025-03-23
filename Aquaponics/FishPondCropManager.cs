@@ -203,8 +203,6 @@ static class FishPondCropManager {
             pot.hoeDirt.Value.destroyCrop(false);
           }
           farmingExp += harvester.farmingExp;
-        } else {
-          return false;
         }
       } else {
         ModEntry.StaticMonitor.Log("IMPOSSIBLE (HARVEST): Non-pots in fish pond input?", LogLevel.Error);
