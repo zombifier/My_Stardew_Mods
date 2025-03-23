@@ -36,6 +36,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Automatic machines that stop producing after X times](#automatic-machines-that-stop-producing-after-X-times)
       + [Run trigger action on machine ready](#run-trigger-action-on-machine-ready)
       + [Custom casks](#custom-casks)
+      + [Machines that spit out the input item when removed](#machines-that-spit-out-the-input-item-when-removed)
    * [Crafting/Cooking Features](#craftingcooking-features)
       + [Use some machine-like features in crafting and cooking (namely copy flavor and color)](#use-some-machine-like-features-in-crafting-and-cooking-namely-copy-flavor-and-color)
 
@@ -953,6 +954,18 @@ NOTE: Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.IsCustomCask` | Whether this machine is a cask, and should subject to cask-like behavior (ie. can use cask rules, drop item when smacked, has quality star, only usable in a cellar unless specified below)|
 | `selph.ExtraMachineConfig.CaskWorksAnywhere` | If set, this cask can be placed anywhere.|
+| `selph.ExtraMachineConfig.AllowMoreThanOneQualityIncrement` | (Currently in private testing) Casks by default can only increment quality by one per day. If set, this limitation is removed.|
+
+-----
+
+### Machines that spit out the input item when removed
+
+NOTE: Currently in private testing.
+Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.ReturnInput` | Whether this machine should return the input item as debris when removed, like the crystalarium. Only works for `ItemPlacedInMachine` and `OutputCollected` rules.|
 
 ## Crafting/Cooking Features
 

@@ -46,6 +46,8 @@ sealed class MachineHarmonyPatcher {
   internal static string TriggerActionToRunWhenReady = $"{ModEntry.UniqueId}.TriggerActionToRunWhenReady";
   internal static string IsCustomCask = $"{ModEntry.UniqueId}.IsCustomCask";
   internal static string CaskWorksAnywhere = $"{ModEntry.UniqueId}.CaskWorksAnywhere";
+  internal static string AllowMoreThanOneQualityIncrement = $"{ModEntry.UniqueId}.AllowMoreThanOneQualityIncrement";
+  internal static string ReturnInput = $"{ModEntry.UniqueId}.ReturnInput";
 
   // ModData keys
   internal static string ExtraContextTagsKey = $"{ModEntry.UniqueId}.ExtraContextTags";
@@ -178,10 +180,23 @@ sealed class MachineHarmonyPatcher {
         original: AccessTools.DeclaredMethod(typeof(Cask),
           nameof(Cask.IsValidCaskLocation)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Cask_IsValidCaskLocation_Postfix)));
+     
     harmony.Patch(
         original: AccessTools.DeclaredMethod(typeof(SObject),
           nameof(SObject.placementAction)),
         prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_placementAction_Prefix)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Cask),
+          nameof(Cask.checkForMaturity)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Cask_checkForMaturity_Postfix)));
+
+    // Return input object
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(SObject),
+          nameof(SObject.performRemoveAction)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_performRemoveAction_Postfix)));
+
 
 
     // Transpilers go here
@@ -326,7 +341,7 @@ sealed class MachineHarmonyPatcher {
     // If a PlaceInMachine-called output rule, always refresh the count
     // otherwise only set it if it doesn't exist (to help migrate existing machines)
     // (but only if this function is called inside OutputMachine)
-    if (enableOutputMachineSideEffect) {
+    if (!probe && enableOutputMachineSideEffect) {
       if (outputData.CustomData.TryGetValue(AutomaticProduceCountKey, out var str) &&
           Int32.TryParse(str, out int automaticProduceCount) &&
           (enableGetOutputItemSideEffect || !machine.modData.ContainsKey(AutomaticProduceCountRemainingKey))) {
@@ -347,7 +362,7 @@ sealed class MachineHarmonyPatcher {
     // Remove extra fuel (and add their prices if specified)
     IDictionary<string, Item> usedFuels = new Dictionary<string, Item>();
     foreach (var (fuelItem, entry) in Utils.GetFuelsForThisRecipe(outputData, inputItem, inventory) ?? []) {
-      if (enableGetOutputItemSideEffect) {
+      if (enableGetOutputItemSideEffect && !probe) {
         fuelItem.Stack -= entry.count;
         if (fuelItem.Stack == 0) {
           inventory.RemoveButKeepEmptySlot(fuelItem);
@@ -459,7 +474,7 @@ sealed class MachineHarmonyPatcher {
       }
     }
     // Consume extra input items and replace output stack count
-    if (enableGetOutputItemSideEffect) {
+    if (enableGetOutputItemSideEffect && !probe) {
       if (outputData.CustomData.ContainsKey(RequiredCountMaxKey) &&
           Int32.TryParse(outputData.CustomData[RequiredCountMaxKey], out int requiredCountMax) &&
           MachineDataUtility.TryGetMachineOutputRule(machine, machine.GetMachineData(), MachineOutputTrigger.ItemPlacedInMachine, inputItem, who, machine.Location, out var _, out var triggerRule, out var _, out var _)) {
@@ -715,5 +730,24 @@ sealed class MachineHarmonyPatcher {
       return false;
     }
     return true;
+  }
+
+  public static void Cask_checkForMaturity_Postfix(Cask __instance) {
+    if (__instance.GetMachineData()?.CustomFields?.ContainsKey(AllowMoreThanOneQualityIncrement) ?? false) {
+      var produce = __instance.heldObject.Value;
+			while (__instance.daysToMature.Value <= __instance.GetDaysForQuality(__instance.GetNextQuality(produce.Quality))) {
+				__instance.heldObject.Value.Quality = __instance.GetNextQuality(produce.Quality);
+				if (produce.Quality == 4) {
+					__instance.MinutesUntilReady = 1;
+				}
+			}
+    }
+  }
+
+  public static void SObject_performRemoveAction_Postfix(SObject __instance) {
+    if (__instance.lastInputItem.Value is not null &&
+        (__instance.GetMachineData()?.CustomFields?.ContainsKey(ReturnInput) ?? false)) {
+      __instance.Location.debris.Add(new Debris(__instance.lastInputItem.Value, __instance.TileLocation * 64f + new Vector2(32f, 32f)));
+    }
   }
 }
