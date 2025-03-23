@@ -147,7 +147,6 @@ for each recipe, or even each output in the case of multiple possible outputs.
 ### Passive features/fixes
 * Non-objects (eg hats, rings, clothing) can now be used as machine input.
 * Item queries `ObjectColor` and machine rules' `CopyColor` now works to dye shirts.
-* For C# mods: The item query in machine rules now have the input item in the CustomFields object, namely Input field
 
 ----
 
