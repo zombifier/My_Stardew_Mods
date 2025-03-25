@@ -21,15 +21,13 @@ namespace Selph.StardewMods.ExtraMachineConfig;
 using SObject = StardewValley.Object;
 
 internal sealed class ModEntry : Mod {
-  internal new static IModHelper Helper { get;
-    set;
-  }
+  internal new static IModHelper Helper { get; set; } = null!;
 
-  internal static IMonitor StaticMonitor { get; set; }
-  internal static IExtraMachineConfigApi ModApi;
-  internal static ExtraOutputAssetHandler extraOutputAssetHandler;
-  internal static ExtraCraftingConfigAssetHandler extraCraftingConfigAssetHandler;
-  internal static string UniqueId;
+  internal static IMonitor StaticMonitor { get; set; } = null!;
+  internal static IExtraMachineConfigApi ModApi = null!;
+  internal static ExtraOutputAssetHandler extraOutputAssetHandler = null!;
+  internal static ExtraCraftingConfigAssetHandler extraCraftingConfigAssetHandler = null!;
+  internal static string UniqueId = null!;
 
   internal static string JunimoLovedItemContextTag = "junimo_loved_item";
 

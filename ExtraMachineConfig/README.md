@@ -36,6 +36,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Automatic machines that stop producing after X times](#automatic-machines-that-stop-producing-after-X-times)
       + [Run trigger action on machine ready](#run-trigger-action-on-machine-ready)
       + [Custom casks](#custom-casks)
+      + [Custom slime incubators](#custom-slime-incubators)
       + [Machines that spit out the input item when removed](#machines-that-spit-out-the-input-item-when-removed)
    * [Crafting/Cooking Features](#craftingcooking-features)
       + [Use some machine-like features in crafting and cooking (namely copy flavor and color)](#use-some-machine-like-features-in-crafting-and-cooking-namely-copy-flavor-and-color)
@@ -954,6 +955,18 @@ NOTE: Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
 | `selph.ExtraMachineConfig.IsCustomCask` | Whether this machine is a cask, and should subject to cask-like behavior (ie. can use cask rules, drop item when smacked, has quality star, only usable in a cellar unless specified below)|
 | `selph.ExtraMachineConfig.CaskWorksAnywhere` | If set, this cask can be placed anywhere.|
 | `selph.ExtraMachineConfig.AllowMoreThanOneQualityIncrement` | (Currently in private testing) Casks by default can only increment quality by one per day. If set, this limitation is removed.|
+
+-----
+
+### Custom slime incubators
+
+NOTE: Currently in private testing.
+
+Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.IsCustomSlimeIncubator` | Whether this machine is a slime incubator and should create slime monsters when the machine is ready. Its machine rules should be the same as vanilla (ie. only accepts the 4 slime eggs), but you can specify any ready time you want.|
 
 -----
 

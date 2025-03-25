@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Monsters;
 using StardewValley.Triggers;
 using StardewValley.GameData.Objects;
 using StardewValley.Tools;
@@ -48,6 +49,7 @@ sealed class MachineHarmonyPatcher {
   internal static string CaskWorksAnywhere = $"{ModEntry.UniqueId}.CaskWorksAnywhere";
   internal static string AllowMoreThanOneQualityIncrement = $"{ModEntry.UniqueId}.AllowMoreThanOneQualityIncrement";
   internal static string ReturnInput = $"{ModEntry.UniqueId}.ReturnInput";
+  internal static string IsCustomSlimeIncubator = $"{ModEntry.UniqueId}.IsCustomSlimeIncubator";
 
   // ModData keys
   internal static string ExtraContextTagsKey = $"{ModEntry.UniqueId}.ExtraContextTags";
@@ -699,6 +701,45 @@ sealed class MachineHarmonyPatcher {
       }
       __instance.modData.Remove(TriggerActionToRunWhenReady);
     }
+    // Slime incubator stuff
+    if (__instance.GetMachineData()?.CustomFields?.ContainsKey(IsCustomSlimeIncubator) ?? false) {
+      var location = __instance.Location;
+      if (location.canSlimeHatchHere()) {
+        GreenSlime? greenSlime = null;
+        Vector2 position = new Vector2((int)__instance.TileLocation.X, (int)__instance.TileLocation.Y + 1) * 64f;
+        switch (__instance.heldObject.Value.QualifiedItemId) {
+          case "(O)680":
+            greenSlime = new GreenSlime(position, 0);
+            break;
+          case "(O)413":
+            greenSlime = new GreenSlime(position, 40);
+            break;
+          case "(O)437":
+            greenSlime = new GreenSlime(position, 80);
+            break;
+          case "(O)439":
+            greenSlime = new GreenSlime(position, 121);
+            break;
+          case "(O)857":
+            greenSlime = new GreenSlime(position, 121);
+            greenSlime.makeTigerSlime();
+            break;
+        }
+        if (greenSlime != null) {
+          Game1.showGlobalMessage(greenSlime.cute.Value ? Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12689") : Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12691"));
+          Vector2 vector = Utility.recursiveFindOpenTileForCharacter(greenSlime, location, __instance.TileLocation + new Vector2(0f, 1f), 10, allowOffMap: false);
+          greenSlime.setTilePosition((int)vector.X, (int)vector.Y);
+          location.characters.Add(greenSlime);
+          __instance.ResetParentSheetIndex();
+          __instance.heldObject.Value = null;
+          __instance.MinutesUntilReady = -1;
+        }
+      }
+      else {
+        __instance.MinutesUntilReady = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay);
+        __instance.readyForHarvest.Value = false;
+      }
+    }
   }
 
   static void Cask_IsValidCaskLocation_Postfix(Cask __instance, ref bool __result) {
@@ -709,7 +750,7 @@ sealed class MachineHarmonyPatcher {
 
   static bool SObject_placementAction_Prefix(SObject __instance, ref bool __result, GameLocation location, int x, int y, Farmer? who = null) {
     if (__instance.GetMachineData()?.CustomFields?.ContainsKey(IsCustomCask) ?? false) {
-			Vector2 vector = new Vector2(x / 64, y / 64);
+      Vector2 vector = new Vector2(x / 64, y / 64);
       var itemId = __instance.ItemId;
       var cask = new Cask(vector);
       cask.ItemId = itemId;
@@ -735,12 +776,13 @@ sealed class MachineHarmonyPatcher {
   public static void Cask_checkForMaturity_Postfix(Cask __instance) {
     if (__instance.GetMachineData()?.CustomFields?.ContainsKey(AllowMoreThanOneQualityIncrement) ?? false) {
       var produce = __instance.heldObject.Value;
-			while (__instance.daysToMature.Value <= __instance.GetDaysForQuality(__instance.GetNextQuality(produce.Quality))) {
-				__instance.heldObject.Value.Quality = __instance.GetNextQuality(produce.Quality);
-				if (produce.Quality == 4) {
-					__instance.MinutesUntilReady = 1;
-				}
-			}
+      while (__instance.daysToMature.Value <= __instance.GetDaysForQuality(__instance.GetNextQuality(produce.Quality))) {
+        __instance.heldObject.Value.Quality = __instance.GetNextQuality(produce.Quality);
+        if (produce.Quality == 4) {
+          __instance.MinutesUntilReady = 1;
+          return;
+        }
+      }
     }
   }
 
