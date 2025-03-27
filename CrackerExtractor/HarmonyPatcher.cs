@@ -45,8 +45,8 @@ public class HarmonyPatcher {
         prefix: new HarmonyMethod(AccessTools.Method(typeof(HarmonyPatcher), nameof(HarmonyPatcher.Game1_drawTool_prefix))));
   }
 
-  static bool isCrackerExtractor(Tool tool) {
-    return tool.QualifiedItemId == "(T)selph.CrackerExtractorCP.CrackerExtractor";
+  static bool isCrackerExtractor(Tool? tool) {
+    return tool?.QualifiedItemId == "(T)selph.CrackerExtractorCP.CrackerExtractor";
   }
 
   static bool Game1_drawTool_prefix(Farmer f, int currentToolIndex) {
@@ -61,7 +61,7 @@ public class HarmonyPatcher {
     if (!isCrackerExtractor(__instance)) {
       return true;  
     }
-    __result = o is null || o.QualifiedItemId == "(O)74";
+    __result = o is null || o.QualifiedItemId == SObject.prismaticShardQID || o.QualifiedItemId == SObject.diamondQID;
     return false;
   }
 
