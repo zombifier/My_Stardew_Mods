@@ -258,7 +258,7 @@ internal sealed class ModEntry : Mod {
 
   static void FishPond_draw_Postfix(FishPond __instance, SpriteBatch b) {
     if (!IsAquaponicsPond(__instance, out var _)) return;
-    var layerDepth = (((float)__instance.tileY.Value + 0.5f) * 64f + 1f + 2f) / 10000f;
+    var layerDepth = (((float)__instance.tileY.Value + 0.5f) * 64f + 1f + 5f) / 10000f;
     var scaleModifier = (__instance.tilesHigh.Value / 5f);
     var scale = Game1.pixelZoom * scaleModifier;
     // Draw crops
