@@ -1,0 +1,7 @@
+namespace Selph.StardewMods.CustomBuilders;
+
+using Selph.StardewMods.Common;
+
+sealed class BuilderDataAssetHandler : DictAssetHandler<BuilderData> {
+  public BuilderDataAssetHandler() : base($"{ModEntry.UniqueId}/BuilderData", ModEntry.StaticMonitor) {}
+}

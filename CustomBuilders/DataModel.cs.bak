@@ -1,0 +1,12 @@
+using System.Collections.Generic;
+using StardewValley.GameData.Buildings;
+
+class BuilderData {
+  public Dictionary<string, BuildingDataOverride>? BuildingDataOverrides;
+}
+
+class BuildingDataOverride {
+	public int? BuildDays;
+	public int? BuildCost;
+	public List<BuildingMaterial>? BuildMaterials;
+}
