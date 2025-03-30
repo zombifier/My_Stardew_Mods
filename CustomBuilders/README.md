@@ -44,8 +44,7 @@ All of the above dialogue lines can have the following strings that will automat
 
 The NPC builders will have the following notes/restrictions:
 
-* They can only build one building at a time. (TODO: Add ability to make them
-  build more?)
+* They can only build one building at a time.
 * If there's a building in progress, they will teleport to your farm and play
   an animation next to/inside it like Robin.
 * They do not work on festival days.
