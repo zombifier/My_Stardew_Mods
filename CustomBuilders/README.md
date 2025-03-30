@@ -1,6 +1,6 @@
 # Custom Builders
 
-[Custom Builders](https://github.com/zombifier/My_Stardew_Mods/releases/tag/custom-builders%2F0.0.1) is a
+[Custom Builders](https://github.com/zombifier/My_Stardew_Mods/releases/tag/custom-builders%2F0.0.2) is a
 Stardew Valley mod that extends the game's building data to allow for more
 carpenter-like NPCs, assign buildings to multiple builders, and more.
 
