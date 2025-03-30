@@ -15,11 +15,13 @@ from the link above.
 
 This mod adds the following new tile action that opens the construction menu associated with a new NPC:
 
-`selph.CustomBuilders_ShowConstruct <NpcName>`
+`selph.CustomBuilders_ShowConstruct <NpcName> [from direction] [open time] [close time] [owner tile area]`
 
 Fill in `<NpcName>` with the name of the NPC that owns the menu. This will add
 any buildings associated with this NPC via the `Builder` field in building
-data, as well as extra buildings detailed in the section below.
+data, as well as extra buildings detailed in the section below. All other
+fields are optional, and act identically to the fields in `OpenShop` (see [wiki
+for reference](https://stardewvalleywiki.com/Modding:Maps#Action)).
 
 Next, edit `Character/<NpcName>/Dialogue` to add the following dialogue keys:
 
