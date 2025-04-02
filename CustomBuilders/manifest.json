@@ -1,13 +1,10 @@
 ﻿{
-  "Name": "Custom Builders",
+  "Name": "Custom Carpenters",
   "Author": "selph",
-  "Version": "0.0.2",
-  "Description": "Allows ability to specify custom builder NPCs, with their own menus and costs.",
+  "Version": "1.0.0",
+  "Description": "Allows ability to specify custom carpenters NPCs, with their own menus and costs.",
   "UniqueID": "selph.CustomBuilders",
   "EntryDll": "CustomBuilders.dll",
-  "Dependencies": [
-    {"UniqueID": "spacechase0.SpaceCore", "IsRequired": true},
-  ],
   "MinimumApiVersion": "4.0.9",
-  "UpdateKeys": ["Nexus:???"],
+  "UpdateKeys": ["Nexus:32864"],
 }

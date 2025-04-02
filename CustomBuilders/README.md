@@ -1,13 +1,14 @@
-# Custom Builders
+# Custom Carpenters
 
-[Custom Builders](https://github.com/zombifier/My_Stardew_Mods/releases/tag/custom-builders%2F0.0.2) is a
-Stardew Valley mod that extends the game's building data to allow for more
-carpenter-like NPCs, assign buildings to multiple builders, and more.
+[Custom Carpenters](https://www.nexusmods.com/stardewvalley/mods/32864) (aka
+Custom Builders) is a Stardew Valley mod that extends the game's building data
+to allow for more carpenter-like NPCs, assign buildings to multiple builders,
+and more.
 
 This document is mainly intended for modders. For mod users, install the mod
 from the link above.
 
-- [Custom Builders](#custom-builders)
+- [Custom Carpenters](#custom-carpenters)
   + [Custom building menu](#custom-building-menu)
   + [Additional eligible builders for a building](#additional-eligible-builders-for-a-building)
 
