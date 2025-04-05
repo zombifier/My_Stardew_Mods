@@ -652,7 +652,7 @@ sealed class MachineHarmonyPatcher {
       }
     }
   }
-  public static void ItemQueryResolver_ApplyItemFields_postfix(ref ISalable __result, ISalable item, int minStackSize, int maxStackSize, int toolUpgradeLevel, string objectInternalName, string objectDisplayName, string objectColor, int quality, bool isRecipe, List<QuantityModifier> stackSizeModifiers, QuantityModifier.QuantityModifierMode stackSizeModifierMode, List<QuantityModifier> qualityModifiers, QuantityModifier.QuantityModifierMode qualityModifierMode, Dictionary<string, string> modData, ItemQueryContext context, Item inputItem = null) {
+  public static void ItemQueryResolver_ApplyItemFields_postfix(ref ISalable __result, ISalable item, int minStackSize, int maxStackSize, int toolUpgradeLevel, string objectInternalName, string objectDisplayName, string objectColor, int quality, bool isRecipe, List<QuantityModifier> stackSizeModifiers, QuantityModifier.QuantityModifierMode stackSizeModifierMode, List<QuantityModifier> qualityModifiers, QuantityModifier.QuantityModifierMode qualityModifierMode, Dictionary<string, string> modData, ItemQueryContext context, Item? inputItem = null) {
     if (__result is Clothing clothing && !string.IsNullOrWhiteSpace(objectColor)) {
 			Color? color = Utility.StringToColor(objectColor);
 			if (color is not null) {
