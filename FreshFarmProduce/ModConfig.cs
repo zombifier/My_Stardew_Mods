@@ -23,7 +23,7 @@ public sealed class ModConfig {
   public bool EnableFamePriceIncrease = true;
   public bool EnableFameDifficultyIncrease = true;
   public bool EnableDifficultyRandomization = false;
-  public bool EnableRandomPresets = false;
+  public bool EnableRandomPresets = true;
   public HashSet<string> DisabledPresets = new();
   public string ForcedPreset = "";
   // Modifier config
