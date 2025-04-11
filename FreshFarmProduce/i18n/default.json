@@ -69,4 +69,21 @@
   // Other stuff
   "FameBanner": "Fame: {{fame}}",
   "FameBanner.tooltip": "Sell price: +{{sellPriceIncrease}}%\nDifficulty: +{{difficultyIncrease}}%",
+  // New in 2.0 Below
+  "PartiallyFreshItemName": "{{Name}} ({{freshPercentage}}% Fresh)",
+  "Config.freshDays.name": "Fresh Days",
+  "Config.freshDays.description": "How many days fresh produce will remain fresh before it stales. Defaults to one day, meaning it becomes stale the next morning.",
+  "Config.fridgeFreshDays.name": "Fresh Days in Fridges",
+  "Config.fridgeFreshDays.description": "How many days fresh produce will remain fresh inside fridges. Defaults to three days.",
+  "Config.enableRandomPresets.name": "Enable Random Competition Presets",
+  "Config.enableRandomPresets.description": "Enable random competition presets. If disabled, only the default 'ship a variety of every item' preset will ever be chosen.",
+  "Config.presetOptions.name": "Preset Options",
+  "Config.choosePresets.name": "Choose Possible Presets",
+  "Config.choosePresets.description": "Choose what presets are eligible to be randomly chosen. Note that some presets may have an extra seasonal condition attached and thus not be randomly chosen. If none is eligible, the default Variety preset will be used.",
+  "Config.forcedPreset.name": "Force Preset",
+  "Config.forcedPreset.description": "If set, force this preset to be chosen for next month's competition. This will ignore the settings above and bypass seasonal condition checks.",
+  "Config.forcedPreset.none": "None",
+  "Config.swagBagItemCount.name": "Swag Bag Cheat Item Count",
+  "Config.swagBagItemCount.description": "How many perfection cheating items each swag bag gives. Set to 0 for none. The other prizes (Qi Seasoning, Magic Bait, Tea Set) are unaffected.",
+  "PresetUI": "Preset:  {{presetName}}",
 }

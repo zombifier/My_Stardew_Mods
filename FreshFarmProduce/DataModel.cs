@@ -26,11 +26,23 @@ class CategoryData {
   public bool UseSalePrice = false;
   // An item must satisfy at least one entry in this list to be eligible
   public List<ItemCriteria>? ItemCriterias = null;
+  // How many points this category counts as; a category with points = 2 means completing it grants twice as much progress towards the medal.
+  public int CompetitionPoints = 1;
 }
 
 class CompetitionData {
-  public List<string> ActiveCategoryIds = [];
+  // Deprecated, use presets instead
+  //public List<string> ActiveCategoryIds = [];
   public Dictionary<string, CategoryData> Categories = new();
+  public Dictionary<string, PresetData> Presets = new();
   public List<string> SpoilableContextTags = [];
   public List<string> NonSpoilableContextTags = [];
+}
+
+class PresetData {
+  public string PresetName = "";
+  public string PresetDescription = "";
+  public List<string> Categories = new();
+  // Whether this competition is eligible to be randomly selected. Manual selection can override it.
+  public string? Condition = null;
 }

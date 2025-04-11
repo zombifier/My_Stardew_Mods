@@ -28,5 +28,15 @@
         "MaxIndividualPoints": 100,
       },
     },
+    {
+      "LogName": "More Flowers",
+      "Action": "EditData",
+      "Target": "selph.FreshFarmProduce/CompetitionData",
+      "TargetField": ["Categories", "{{ModId}}.WildflowerFreshFlowers"],
+      "Entries": {
+        "TotalPoints": 1200,
+        "MaxIndividualPoints": 200,
+      },
+    },
   ]
 }

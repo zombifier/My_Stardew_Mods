@@ -161,4 +161,11 @@ public class ShipPointsObjective : ShipObjective {
       ModEntry.StaticMonitor.Log($"WARNING: Unknown objective ID found: {this.Id}. This may have weird effects.", LogLevel.Warn);
     }
   }
+
+  public int GetCompletionModifier() {
+    if (ModEntry.competitionDataAssetHandler.data.Categories.TryGetValue(this.Id.Value, out var categoryData)) {
+      return categoryData.CompetitionPoints;
+    }
+    return 1;
+  }
 }

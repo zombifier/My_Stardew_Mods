@@ -86,6 +86,8 @@ class CompetitionTrackerViewModel {
       difficultyIncrease = Math.Round(Utils.GetFameDifficultyModifier() * 100 - 100, 1)}); }
   public string HeaderText = ModEntry.Helper.Translation.Get("CompetitionName");
   public ObjectiveModel[] Objectives;
+  public string PresetName;
+  public string PresetDescription;
 
   public CompetitionTrackerViewModel() {
     var specialOrder = ModEntry.GetCompetitionSpecialOrder();
@@ -96,6 +98,14 @@ class CompetitionTrackerViewModel {
           .ToArray();
     } else {
       Objectives = [];
+    }
+    var chosenPreset = Game1.getFarm().modData.GetValueOrDefault(ModEntry.FarmCompetitionSpecialOrderId, "Default");
+    if (ModEntry.competitionDataAssetHandler.data.Presets.TryGetValue(chosenPreset, out var presetData)) {
+      PresetName = ModEntry.Helper.Translation.Get("PresetUI", new { presetName = presetData.PresetName });
+      PresetDescription = presetData.PresetDescription;
+    } else {
+      PresetName = "";
+      PresetDescription = "";
     }
   }
 }

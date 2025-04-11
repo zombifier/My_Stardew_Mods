@@ -1,11 +1,12 @@
 {
   "Changes": [
     {
-      "LogName": "Set entries",
+      "LogName": "Set categories",
       "Action": "EditData",
       "Target": "selph.FreshFarmProduce/CompetitionData",
       "TargetField": ["Categories"],
       "Entries": {
+        // Default
         "{{ModId}}.FreshVegetables": {
           "Name": "{{i18n:FreshVegetables}}",
           "Description": "{{i18n:FreshVegetables.description}}",
@@ -136,7 +137,7 @@
             },
             {
               "Id": "Meat",
-              "ContextTags": ["category_meat"],
+              "ContextTags": ["category_meat", "fresh_item"],
             },
             {
               "Id": "Cloth",
@@ -241,6 +242,7 @@
           "TotalPoints": 1000000,
           "UseSalePrice": true,
         },
+        // Winter-specific for default
         "{{ModId}}.FreshCropsWinter": {
           "Name": "{{i18n:FreshCropsWinter}}",
           "Description": "{{i18n:FreshCropsWinter.description}}",
@@ -280,37 +282,1254 @@
             },
           ],
         },
+        // Staple categories
+        "{{ModId}}.StapleFreshVegetables": {
+          "Name": "{{i18n:StapleFreshVegetables}}",
+          "Description": "{{i18n:StapleFreshVegetables.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 250, // Kale
+          "TotalPoints": 2000,
+          "MaxIndividualPoints": 400,
+          "CompetitionPoints": 2,
+          "ItemCriterias": [
+            {
+              "Id": "FreshVegetables",
+              "ContextTags": ["fresh_item", "category_vegetable"],
+            },
+            {
+              "Id": "FreshSpices",
+              "ContextTags": ["spice_item", "fresh_item", "!category_greens"],
+            },
+            {
+              "Id": "FreshRawSpices",
+              "ContextTags": ["raw_spice_item", "fresh_item", "!category_greens"],
+            },
+            {
+              "Id": "FreshBean",
+              "ContextTags": ["bean_item", "fresh_item"],
+            },
+          ],
+        },
+        "{{ModId}}.StapleFreshFruits": {
+          "Name": "{{i18n:StapleFreshFruits}}",
+          "Description": "{{i18n:StapleFreshFruits.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 613, // Apple
+          "TotalPoints": 800,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshFruits",
+              "ContextTags": ["fresh_item", "category_fruits"],
+            },
+          ],
+        },
+        "{{ModId}}.StapleCookingIngredients": {
+          "Name": "{{i18n:StapleCookingIngredients}}",
+          "Description": "{{i18n:StapleCookingIngredients.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 247, // Oil
+          "TotalPoints": 600,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "VanillaIngredients",
+              "ItemIds": ["(O)245", "(O)246", "(O)247", "(O)419", "(O)423"],
+            },
+            {
+              "Id": "FlourItem",
+              "ContextTags": ["flour_item"],
+            },
+            {
+              "Id": "SugarItem",
+              "ContextTags": ["sugar_item"],
+            },
+            {
+              "Id": "OilItem",
+              "ContextTags": ["oil_item"],
+            },
+            {
+              "Id": "OliveOilItem",
+              "ContextTags": ["olive_oil_item"],
+            },
+            {
+              "Id": "SpiceItem",
+              "ContextTags": ["spice_item"],
+            },
+            {
+              "Id": "RawSpiceItem",
+              "ContextTags": ["raw_spice_item"],
+            },
+            {
+              "Id": "ButterItem",
+              "ContextTags": ["butter_item"],
+            },
+            {
+              "Id": "SVEButter",
+              "ItemIds": ["(O)FlashShifter.StardewValleyExpandedCP_Butter"],
+            },
+          ],
+        },
+        "{{ModId}}.StapleFreshDairyAndEggs": {
+          "Name": "{{i18n:StapleFreshDairyAndEggs}}",
+          "Description": "{{i18n:StapleFreshDairyAndEggs.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 186, // Large Milk
+          "TotalPoints": 500,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshMilk",
+              "ContextTags": ["fresh_item", "category_milk"],
+            },
+            {
+              "Id": "FreshEggs",
+              "ContextTags": ["fresh_item", "category_egg"],
+            },
+          ],
+        },
+        "{{ModId}}.StapleFreshFishAndMeat": {
+          "Name": "{{i18n:StapleFreshFishAndMeat}}",
+          "Description": "{{i18n:StapleFreshFishAndMeat.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 142, // Carp
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 40,
+          "ItemCriterias": [
+            {
+              "Id": "FreshFish",
+              "ContextTags": ["fresh_item", "category_fish"],
+            },
+            {
+              "Id": "Meat",
+              "ContextTags": ["category_meat", "fresh_item"],
+            },
+          ],
+        },
+        "{{ModId}}.StaplePreservedGoods": {
+          "Name": "{{i18n:StaplePreservedGoods}}",
+          "Description": "{{i18n:StaplePreservedGoods.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 342, // Pickles
+          "TotalPoints": 1000,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "ArtisanGoods",
+              "ContextTags": ["category_artisan_goods", "!olive_oil_item", "!butter_item", "!sugar_item", "!oil_item", "!spice_item", "!raw_spice_item"],
+              "Condition": "ITEM_EDIBILITY Target",
+            },
+          ],
+        },
+        // Wildflower categories
+        "{{ModId}}.WildflowerFreshFlowers": {
+          "Name": "{{i18n:WildflowerFreshFlowers}}",
+          "Description": "{{i18n:WildflowerFreshFlowers.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 595, // Fairy Rose
+          "TotalPoints": 600,
+          "MaxIndividualPoints": 300,
+          "ItemCriterias": [
+            {
+              "Id": "FreshFlowers",
+              "ContextTags": ["fresh_item", "category_flowers"],
+            },
+          ],
+        },
+        "{{ModId}}.WildflowerFreshForage": {
+          "Name": "{{i18n:WildflowerFreshForage}}",
+          "Description": "{{i18n:WildflowerFreshForage.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 259, // Fiddlehead Fern 
+          "TotalPoints": 1000,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "FreshForage",
+              "ContextTags": ["fresh_item", "category_greens", "!forage_item_beach"],
+            },
+            {
+              "Id": "FreshForageItem",
+              "ContextTags": ["forage_item", "fresh_item", "!category_flowers"]
+            },
+            {
+              "Id": "NonSpoilableForageItem",
+              "ContextTags": ["forage_item", "non_spoilable_item", "!category_sell_at_fish_shop", "!forage_item_beach"],
+            },
+            {
+              "Id": "Truffles",
+              "ItemIds": ["(O)430"],
+            },
+          ],
+        },
+        "{{ModId}}.WildflowerFreshFish": {
+          "Name": "{{i18n:WildflowerFreshFish}}",
+          "Description": "{{i18n:WildflowerFreshFish.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 393, // Coral
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 40,
+          "ItemCriterias": [
+            {
+              "Id": "FreshFish",
+              "ContextTags": ["fresh_item", "category_fish"],
+            },
+            {
+              "Id": "SellAtFishShop",
+              "ContextTags": ["category_sell_at_fish_shop"],
+            },
+            {
+              "Id": "BeachForage",
+              "ContextTags": ["forage_item_beach"],
+            },
+            {
+              "Id": "SeaweedAlgaeRoeSmokedFish",
+              "ItemIds": ["(O)152", "(O)153", "(O)157", "(O)812", "(O)447", "(O)445"],
+            },
+          ],
+        },
+        "{{ModId}}.WildflowerFreshVegetables": {
+          "Name": "{{i18n:WildflowerFreshVegetables}}",
+          "Description": "{{i18n:WildflowerFreshVegetables.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 250, // Kale
+          "TotalPoints": 800,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshVegetables",
+              "ContextTags": ["fresh_item", "category_vegetable"],
+            },
+            {
+              "Id": "FreshCoffeeBeans",
+              "ItemIds": ["(O)433"],
+              "ContextTags": ["fresh_item"],
+            },
+            {
+              "Id": "FreshSpices",
+              "ContextTags": ["spice_item", "fresh_item", "!category_greens"],
+            },
+            {
+              "Id": "FreshRawSpices",
+              "ContextTags": ["raw_spice_item", "fresh_item", "!category_greens"],
+            },
+            {
+              "Id": "FreshBean",
+              "ContextTags": ["bean_item", "fresh_item"],
+            },
+          ],
+        },
+        "{{ModId}}.WildflowerTapper": {
+          "Name": "{{i18n:WildflowerTapper}}",
+          "Description": "{{i18n:WildflowerTapper.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 724, // Maple Syrup
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "Syrup",
+              "ContextTags": ["category_syrup"],
+            },
+            {
+              "Id": "Sap",
+              "ItemIds": ["(O)92"],
+            },
+          ],
+        },
+        "{{ModId}}.WildflowerApiary": {
+          "Name": "{{i18n:WildflowerApiary}}",
+          "Description": "{{i18n:WildflowerApiary.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 340, // Honey 
+          "TotalPoints": 500,
+          "ItemCriterias": [
+            {
+              "Id": "Items",
+              "ItemIds": [
+                "(O)340", "(O)459",
+                "(O)Cornucopia_RoyalJelly",
+                "(O)bb.beesPlus_BCandle",
+                "(O)bb.beesPlus_BSoap",
+                "(O)bb.beesPlus_BFSoap",
+                "(O)bb.beesPlus_BBalm",
+                "(O)bb.beesPlus_Beeswax",
+              ],
+            },
+            {
+              "Id": "Beeswax",
+              "ContextTags": ["beeswax_item"],
+            },
+            {
+              "Id": "BeeItem",
+              "ContextTags": ["bee_item"],
+            },
+            {
+              "Id": "MeadItem",
+              "ContextTags": ["mead_item"],
+            },
+            {
+              "Id": "SoapItem",
+              "ContextTags": ["soap_item"],
+            },
+            {
+              "Id": "CandleItem",
+              "ContextTags": ["candle_item"],
+            },
+          ],
+        },
+        "{{ModId}}.WildflowerForestry": {
+          "Name": "{{i18n:WildflowerForestry}}",
+          "Description": "{{i18n:WildflowerForestry.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 709, // Hardwood 
+          "TotalPoints": 1500,
+          "MaxIndividualPoints": 1200,
+          "ItemCriterias": [
+            {
+              "Id": "WoodItem",
+              "ContextTags": ["wood_item"],
+            },
+            {
+              "Id": "TreeSeedItem",
+              "ContextTags": ["tree_seed_item"],
+            },
+          ],
+        },
+
+        // Barista categories
+        "{{ModId}}.BaristaFreshCoffee": {
+          "Name": "{{i18n:BaristaFreshCoffee}}",
+          "Description": "{{i18n:BaristaFreshCoffee.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 395, // Coffee
+          "TotalPoints": 800,
+          "MaxIndividualPoints": 600,
+          "ItemCriterias": [
+            {
+              "Id": "BaristaFreshCoffeeBeans",
+              "ItemIds": ["(O)433"],
+              "ContextTags": ["fresh_item"],
+            },
+            {
+              "Id": "CoffeeItem",
+              "ContextTags": ["coffee_item"],
+            },
+          ],
+        },
+        "{{ModId}}.BaristaFreshTea": {
+          "Name": "{{i18n:BaristaFreshTea}}",
+          "Description": "{{i18n:BaristaFreshTea.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 614, // Tea
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 300,
+          "ItemCriterias": [
+            {
+              "Id": "BaristaFreshTeaLeaves",
+              "ItemIds": ["(O)815"],
+              "ContextTags": ["fresh_item"],
+            },
+            {
+              "Id": "Tea",
+              "ItemIds": ["(O)614"],
+            },
+            {
+              "Id": "TeaItems",
+              "ContextTags": ["tea_item"],
+            },
+            {
+              "Id": "BobaTeaItems",
+              "ContextTags": ["bubble_tea_item"],
+            },
+            {
+              "Id": "KombuchaItems",
+              "ContextTags": ["kombucha_item"],
+            },
+          ],
+        },
+        "{{ModId}}.BaristaTeaInfusions": {
+          "Name": "{{i18n:BaristaTeaInfusions}}",
+          "Description": "{{i18n:BaristaTeaInfusions.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 613, // Apple
+          "TotalPoints": 1200,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshFruits",
+              "ContextTags": ["fresh_item", "category_fruits"],
+            },
+            {
+              "Id": "FreshFlowers",
+              "ContextTags": ["fresh_item", "category_flowers"],
+            },
+          ],
+        },
+        "{{ModId}}.BaristaLatteMilk": {
+          "Name": "{{i18n:BaristaLatteMilk}}",
+          "Description": "{{i18n:BaristaLatteMilk.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 186, // Large Milk
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshMilk",
+              "ContextTags": ["fresh_item", "category_milk"],
+            },
+            {
+              "Id": "CreamItem",
+              "ContextTags": ["cream_item"],
+            },
+          ],
+        },
+        "{{ModId}}.BaristaOtherDrinks": {
+          "Name": "{{i18n:BaristaOtherDrinks}}",
+          "Description": "{{i18n:BaristaOtherDrinks.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 350, // Juice
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "BaristaOtherDrinks",
+              "ContextTags": ["drink_item", "!category_milk", "!coffee_item", "!tea_item", "!kombucha_item", "!bubble_tea_item"],
+            },
+            {
+              "Id": "AlcoholItem",
+              "ContextTags": ["alcohol_item"],
+            },
+          ],
+        },
+        "{{ModId}}.BaristaSweeteners": {
+          "Name": "{{i18n:BaristaSweeteners}}",
+          "Description": "{{i18n:BaristaSweeteners.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 245, // Sugar
+          "TotalPoints": 300,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "SugarHoneyMapleSyrup",
+              "ItemIds": ["(O)245", "(O)340", "(O)724"],
+            },
+            {
+              "Id": "SugarItem",
+              "ContextTags": ["sugar_item"],
+            },
+          ],
+        },
+        "{{ModId}}.BaristaBreakfastFood": {
+          "Name": "{{i18n:BaristaBreakfastFood}}",
+          "Description": "{{i18n:BaristaBreakfastFood.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 224, // Spaghetti
+          "TotalPoints": 200,
+          "MaxIndividualPoints": 20,
+          "ItemCriterias": [
+            {
+              "Id": "Cooking",
+              "ContextTags": ["category_cooking"],
+            },
+          ],
+        },
+        // Bakery categories
+        "{{ModId}}.BakeryFreshMilk": {
+          "Name": "{{i18n:BakeryFreshMilk}}",
+          "Description": "{{i18n:BakeryFreshMilk.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 186, // Large Milk
+          "TotalPoints": 600,
+          "MaxIndividualPoints": 300,
+          "ItemCriterias": [
+            {
+              "Id": "FreshMilk",
+              "ContextTags": ["fresh_item", "category_milk"],
+            },
+            {
+              "Id": "ButterItem",
+              "ContextTags": ["butter_item"],
+            },
+            {
+              "Id": "SVEButter",
+              "ItemIds": ["(O)FlashShifter.StardewValleyExpandedCP_Butter"],
+            },
+          ],
+        },
+        "{{ModId}}.BakeryFreshEggs": {
+          "Name": "{{i18n:BakeryFreshEggs}}",
+          "Description": "{{i18n:BakeryFreshEggs.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 182, // Large Egg
+          "TotalPoints": 600,
+          "MaxIndividualPoints": 300,
+          "ItemCriterias": [
+            {
+              "Id": "FreshEggs",
+              "ContextTags": ["fresh_item", "category_egg"],
+            },
+          ],
+        },
+        "{{ModId}}.BakerySweeteners": {
+          "Name": "{{i18n:BakerySweeteners}}",
+          "Description": "{{i18n:BakerySweeteners.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 245, // Sugar
+          "TotalPoints": 300,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "SugarHoneyMapleSyrup",
+              "ItemIds": ["(O)245", "(O)340", "(O)724"],
+            },
+            {
+              "Id": "SugarItem",
+              "ContextTags": ["sugar_item"],
+            },
+          ],
+        },
+        "{{ModId}}.BakeryFlour": {
+          "Name": "{{i18n:BakeryFlour}}",
+          "Description": "{{i18n:BakeryFlour.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 246, // Flour
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "WheatAmaranth",
+              "ContextTags": ["fresh_item"],
+              "ItemIds": ["(O)262", "(O)300"],
+            },
+            {
+              "Id": "Flour",
+              "ItemIds": ["(O)246"],
+            },
+            {
+              "Id": "Grain",
+              "ContextTags": ["fresh_item", "grain_item"],
+            },
+            {
+              "Id": "FlourItem",
+              "ContextTags": ["flour_item"],
+            },
+          ],
+        },
+        "{{ModId}}.BakeryFreshFruits": {
+          "Name": "{{i18n:BakeryFreshFruits}}",
+          "Description": "{{i18n:BakeryFreshFruits.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 638, // Cherry
+          "TotalPoints": 1000,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "FreshFruits",
+              "ContextTags": ["fresh_item", "category_fruits"],
+            },
+            {
+              "Id": "SweetGemBerry",
+              "ItemIds": ["(O)417"],
+            },
+          ],
+        },
+        "{{ModId}}.BakeryFoodBakery": {
+          "Name": "{{i18n:BakeryFoodBakery}}",
+          "Description": "{{i18n:BakeryFoodBakery.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 220, // Chocolate Cake
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "FoodBakery",
+              "ContextTags": ["food_bakery"],
+            },
+          ],
+        },
+        "{{ModId}}.BakeryArtisanGoods": {
+          "Name": "{{i18n:BakeryArtisanGoods}}",
+          "Description": "{{i18n:BakeryArtisanGoods.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 344, // Jelly
+          "TotalPoints": 1000,
+          "MaxIndividualPoints": 200,
+          "ItemCriterias": [
+            {
+              "Id": "ArtisanGoods",
+              "ContextTags": ["category_artisan_goods", "!olive_oil_item", "!sugar_item", "!oil_item", "!food_bakery", "!flour_item", "!id_o_340", "!butter_item", "!item_butter"],
+            },
+          ],
+        },
+        // Textiles categories
+        "{{ModId}}.TextilesClothFeathers": {
+          "Name": "{{i18n:TextilesClothFeathers}}",
+          "Description": "{{i18n:TextilesClothFeathers.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 440, // Wool
+          "TotalPoints": 400,
+          "ItemCriterias": [
+            {
+              "Id": "AnimalProduce",
+              "ContextTags": ["category_sell_at_pierres_and_marnies"],
+            },
+            {
+              "Id": "Feather",
+              "ContextTags": ["feather_item"],
+            },
+            {
+              "Id": "Cloth",
+              "ItemIds": [
+                "(O)428",
+                "(O)appleseed.BCP.RedCloth",
+                "(O)appleseed.BCP.YellowCloth",
+                "(O)appleseed.BCP.BlueCloth",
+                "(O)appleseed.BCP.OrangeCloth",
+                "(O)appleseed.BCP.GreenCloth",
+                "(O)appleseed.BCP.VioletCloth",
+                "(O)appleseed.BCP.BrownCloth",
+                "(O)appleseed.BCP.BlackCloth",
+                "(O)appleseed.BCP.WhiteCloth",
+                "(O)appleseed.BCP.GreyCloth",
+                "(O)appleseed.BCP.PinkCloth",
+              ],
+            },
+          ],
+        },
+        "{{ModId}}.TextilesRedDye": {
+          "Name": "{{i18n:TextilesRedDye}}",
+          "Description": "{{i18n:TextilesRedDye.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 64, // Ruby
+          "TotalPoints": 800,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "color_red",
+              "ContextTags": ["color_red"],
+            },
+            {
+              "Id": "color_salmon",
+              "ContextTags": ["color_salmon"],
+            },
+            {
+              "Id": "color_dark_red",
+              "ContextTags": ["color_dark_red"],
+            },
+            {
+              "Id": "color_pink",
+              "ContextTags": ["color_pink"],
+            },
+            {
+              "Id": "color_prismatic",
+              "ContextTags": ["color_prismatic"],
+            },
+          ],
+        },
+        "{{ModId}}.TextilesOrangeDye": {
+          "Name": "{{i18n:TextilesOrangeDye}}",
+          "Description": "{{i18n:TextilesOrangeDye.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 556, // Orpiment
+          "TotalPoints": 800,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "color_orange",
+              "ContextTags": ["color_orange"],
+            },
+            {
+              "Id": "color_dark_orange",
+              "ContextTags": ["color_dark_orange"],
+            },
+            {
+              "Id": "color_dark_brown",
+              "ContextTags": ["color_dark_brown"],
+            },
+            {
+              "Id": "color_brown",
+              "ContextTags": ["color_brown"],
+            },
+            {
+              "Id": "color_copper",
+              "ContextTags": ["color_copper"],
+            },
+            {
+              "Id": "color_prismatic",
+              "ContextTags": ["color_prismatic"],
+            },
+          ],
+        },
+        "{{ModId}}.TextilesYellowDye": {
+          "Name": "{{i18n:TextilesYellowDye}}",
+          "Description": "{{i18n:TextilesYellowDye.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 68, // Topaz
+          "TotalPoints": 800,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "color_yellow",
+              "ContextTags": ["color_yellow"],
+            },
+            {
+              "Id": "color_dark_yellow",
+              "ContextTags": ["color_dark_yellow"],
+            },
+            {
+              "Id": "color_gold",
+              "ContextTags": ["color_gold"],
+            },
+            {
+              "Id": "color_sand",
+              "ContextTags": ["color_sand"],
+            },
+            {
+              "Id": "color_prismatic",
+              "ContextTags": ["color_prismatic"],
+            },
+          ],
+        },
+        "{{ModId}}.TextilesGreenDye": {
+          "Name": "{{i18n:TextilesGreenDye}}",
+          "Description": "{{i18n:TextilesGreenDye.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 70, // Jade
+          "TotalPoints": 800,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "color_green",
+              "ContextTags": ["color_green"],
+            }, 
+            {
+              "Id": "color_dark_green",
+              "ContextTags": ["color_dark_green"],
+            }, 
+            {
+              "Id": "color_lime",
+              "ContextTags": ["color_lime"],
+            }, 
+            {
+              "Id": "color_yellow_green",
+              "ContextTags": ["color_yellow_green"],
+            }, 
+            {
+              "Id": "color_jade",
+              "ContextTags": ["color_jade"],
+            },
+            {
+              "Id": "color_prismatic",
+              "ContextTags": ["color_prismatic"],
+            },
+          ],
+        },
+        "{{ModId}}.TextilesBlueDye": {
+          "Name": "{{i18n:TextilesBlueDye}}",
+          "Description": "{{i18n:TextilesBlueDye.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 62, // Aquamarine
+          "TotalPoints": 800,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "color_blue",
+              "ContextTags": ["color_blue"],
+            }, 
+            {
+              "Id": "color_dark_blue",
+              "ContextTags": ["color_dark_blue"],
+            }, 
+            {
+              "Id": "color_dark_cyan",
+              "ContextTags": ["color_dark_cyan"],
+            }, 
+            {
+              "Id": "color_light_cyan",
+              "ContextTags": ["color_light_cyan"],
+            }, 
+            {
+              "Id": "color_cyan",
+              "ContextTags": ["color_cyan"],
+            }, 
+            {
+              "Id": "color_aquamarine",
+              "ContextTags": ["color_aquamarine"],
+            }, 
+            {
+              "Id": "color_prismatic",
+              "ContextTags": ["color_prismatic"],
+            },
+          ],
+        },
+        "{{ModId}}.TextilesPurpleDye": {
+          "Name": "{{i18n:TextilesPurpleDye}}",
+          "Description": "{{i18n:TextilesPurpleDye.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 66, // Amethyst
+          "TotalPoints": 800,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "color_purple",
+              "ContextTags": ["color_purple"],
+            }, 
+            {
+              "Id": "color_dark_purple",
+              "ContextTags": ["color_dark_purple"],
+            }, 
+            {
+              "Id": "color_dark_pink",
+              "ContextTags": ["color_dark_pink"],
+            }, 
+            {
+              "Id": "color_pale_violet_red",
+              "ContextTags": ["color_pale_violet_red"],
+            }, 
+            {
+              "Id": "color_poppyseed",
+              "ContextTags": ["color_poppyseed"],
+            }, 
+            {
+              "Id": "color_iridium",
+              "ContextTags": ["color_iridium"],
+            },
+            {
+              "Id": "color_prismatic",
+              "ContextTags": ["color_prismatic"],
+            },
+          ],
+        },
+        // Aquaculture categories
+        "{{ModId}}.AquacultureFreshwaterFish": {
+          "Name": "{{i18n:AquacultureFreshwaterFish}}",
+          "Description": "{{i18n:AquacultureFreshwaterFish.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 142, // Carp
+          "TotalPoints": 300,
+          "MaxIndividualPoints": 60,
+          "ItemCriterias": [
+            {
+              "Id": "FishLake",
+              "ContextTags": ["fresh_item", "fish_lake", "!fish_crab_pot"],
+            },
+            {
+              "Id": "FishRiver",
+              "ContextTags": ["fresh_item", "fish_river", "!fish_crab_pot"],
+            },
+            {
+              "Id": "FishPond",
+              "ContextTags": ["fresh_item", "fish_pond", "!fish_crab_pot"],
+            },
+          ],
+        },
+        "{{ModId}}.AquacultureOceanFish": {
+          "Name": "{{i18n:AquacultureOceanFish}}",
+          "Description": "{{i18n:AquacultureOceanFish.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 130, // Tuna
+          "TotalPoints": 300,
+          "MaxIndividualPoints": 60,
+          "ItemCriterias": [
+            {
+              "Id": "FishOcean",
+              "ContextTags": ["fresh_item", "fish_ocean", "!fish_crab_pot"],
+            },
+          ],
+        },
+        "{{ModId}}.AquacultureFreshwaterCrabpot": {
+          "Name": "{{i18n:AquacultureFreshwaterCrabpot}}",
+          "Description": "{{i18n:AquacultureFreshwaterCrabpot.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 721, // Snail
+          "TotalPoints": 300,
+          "MaxIndividualPoints": 60,
+          "ItemCriterias": [
+            {
+              "Id": "FishLake",
+              "ContextTags": ["fresh_item", "fish_lake", "fish_crab_pot"],
+            },
+            {
+              "Id": "FishRiver",
+              "ContextTags": ["fresh_item", "fish_river", "fish_crab_pot"],
+            },
+            {
+              "Id": "FishPond",
+              "ContextTags": ["fresh_item", "fish_pond", "fish_crab_pot"],
+            },
+          ],
+        },
+        "{{ModId}}.AquacultureOceanCrabpot": {
+          "Name": "{{i18n:AquacultureOceanCrabpot}}",
+          "Description": "{{i18n:AquacultureOceanCrabpot.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 715, // Lobster
+          "TotalPoints": 300,
+          "MaxIndividualPoints": 60,
+          "ItemCriterias": [
+            {
+              "Id": "FishOcean",
+              "ContextTags": ["fresh_item", "fish_ocean", "fish_crab_pot"],
+            },
+          ],
+        },
+        "{{ModId}}.AquacultureSpecialtyFish": {
+          "Name": "{{i18n:AquacultureSpecialtyFish}}",
+          "Description": "{{i18n:AquacultureSpecialtyFish.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 162, // Lava Eel
+          "TotalPoints": 300,
+          "MaxIndividualPoints": 60,
+          "ItemCriterias": [
+            {
+              "Id": "FishSpecialty",
+              "ContextTags": ["fresh_item", "!fish_lake", "!fish_river", "!fish_pond", "!fish_ocean"],
+            },
+          ],
+        },
+        "{{ModId}}.AquacultureFood": {
+          "Name": "{{i18n:AquacultureFood}}",
+          "Description": "{{i18n:AquacultureFood.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 227, // Sashimi
+          "TotalPoints": 200,
+          "MaxIndividualPoints": 50,
+          "ItemCriterias": [
+            {
+              "Id": "Seafood",
+              "ContextTags": ["food_seafood"],
+            },
+          ],
+        },
+        "{{ModId}}.AquacultureArtisan": {
+          "Name": "{{i18n:AquacultureArtisan}}",
+          "Description": "{{i18n:AquacultureArtisan.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 445, // Caviar
+          "TotalPoints": 500,
+          "MaxIndividualPoints": 250,
+          "ItemCriterias": [
+            {
+              "Id": "RoeSmokedFish",
+              "ItemIds": ["(O)812", "(O)447", "(O)445", "(O)SmokedFish"],
+            },
+            {
+              "Id": "CornucopiaGoods",
+              "ContextTags": ["cornucopia_artisangood", "allergen_fish"],
+            },
+          ],
+        },
+        // Subterranean categories
+        "{{ModId}}.SubterraneanMetal": {
+          "Name": "{{i18n:SubterraneanMetal}}",
+          "Description": "{{i18n:SubterraneanMetal.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 335, // Iron Bar
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "Metals",
+              "ContextTags": ["category_metal_resources"],
+            },
+          ],
+        },
+        "{{ModId}}.SubterraneanGemstones": {
+          "Name": "{{i18n:SubterraneanGemstones}}",
+          "Description": "{{i18n:SubterraneanGemstones.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 72, // Diamond
+          "TotalPoints": 500,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "Gems",
+              "ContextTags": ["category_gem"],
+            },
+            {
+              "Id": "Minerals",
+              "ContextTags": ["category_minerals"],
+            },
+            {
+              "Id": "VMVPolishedGems",
+              "ContextTags": ["polished_gem"],
+            },
+            {
+              "Id": "VMVEarrings",
+              "ItemIds": ["(O)Lumisteria.MtVapius_Earrings_EmeraldEarrings"],
+            },
+          ],
+        },
+        "{{ModId}}.SubterraneanMushroom": {
+          "Name": "{{i18n:SubterraneanMushroom}}",
+          "Description": "{{i18n:SubterraneanMushroom.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 422, // Mushroom 
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "Truffles",
+              "ItemIds": ["(O)430"],
+            },
+            {
+              "Id": "RedMushrooms",
+              "ContextTags": ["fresh_item"],
+              "ItemIds": ["(O)420"],
+            },
+            {
+              "Id": "FreshMushrooms",
+              "ContextTags": ["fresh_item", "mushroom_item"],
+            },
+            {
+              "Id": "FreshEdibleMushrooms",
+              "ContextTags": ["fresh_item", "edible_mushroom"],
+            },
+            {
+              "Id": "WildflourPoisonousMushroomItem",
+              "ContextTags": ["fresh_item", "poisonous_mushroom_item"],
+            },
+          ],
+        },
+        "{{ModId}}.SubterraneanStone": {
+          "Name": "{{i18n:SubterraneanStone}}",
+          "Description": "{{i18n:SubterraneanStone.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 390, // Stone
+          "TotalPoints": 1000,
+          "MaxIndividualPoints": 900,
+          "ItemCriterias": [
+            {
+              "Id": "Geode",
+              "ContextTags": ["geode"],
+            },
+            {
+              "Id": "StoneCoal",
+              "ItemIds": ["(O)382", "(O)390"],
+            },
+          ],
+        },
+        "{{ModId}}.SubterraneanLootArtifact": {
+          "Name": "{{i18n:SubterraneanLootArtifact}}",
+          "Description": "{{i18n:SubterraneanLootArtifact.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 109, // Ancient Sword 
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 100,
+          "ItemCriterias": [
+            {
+              "Id": "MonsterLoot",
+              "ContextTags": ["category_monster_loot"],
+            },
+            {
+              "Id": "Artifacts",
+              "ContextTags": ["item_type_arch"],
+            },
+            {
+              "Id": "ArtifactDisplayCase",
+              "ContextTags": ["moonslime_artifact"],
+            },
+          ],
+        },
+        "{{ModId}}.SubterraneanCaveFish": {
+          "Name": "{{i18n:SubterraneanCaveFish}}",
+          "Description": "{{i18n:SubterraneanCaveFish.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 162, // Lava Eel
+          "TotalPoints": 200,
+          "MaxIndividualPoints": 60,
+          "ItemCriterias": [
+            {
+              "Id": "FreshCaveFish",
+              "ContextTags": ["fresh_item", "fish_mines"],
+            },
+          ],
+        },
+        "{{ModId}}.SubterraneanFood": {
+          "Name": "{{i18n:SubterraneanFood}}",
+          "Description": "{{i18n:SubterraneanFood.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 224, // Spaghetti
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 40,
+          "ItemCriterias": [
+            {
+              "Id": "Cooking",
+              "ContextTags": ["category_cooking"],
+            },
+          ],
+        },
+        // Artisanal categorie-categorY
+        "{{ModId}}.ArtisanGoodsArtisan": {
+          "Name": "{{i18n:ArtisanGoodsArtisan}}",
+          "Description": "{{i18n:ArtisanGoodsArtisan.description}}",
+          "Texture": "Maps/springobjects",
+          "SpriteIndex": 342, // Pickles
+          "TotalPoints": 4000,
+          "MaxIndividualPoints": 400,
+          "ItemCriterias": [
+            {
+              "Id": "ArtisanGoods",
+              "ContextTags": ["category_artisan_goods"],
+            },
+            {
+              "Id": "OtherGoods",
+              "ItemIds": ["(O)245", "(O)246", "(O)247", "(O)419", "(O)423"],
+            },
+          ],
+        },
       },
     },
     {
-      "LogName": "Enable default categories",
+      "LogName": "Set presets",
       "Action": "EditData",
       "Target": "selph.FreshFarmProduce/CompetitionData",
+      "TargetField": ["Presets"],
       "Entries": {
-        "ActiveCategoryIds": [
-          "{{ModId}}.FreshVegetables",
-          "{{ModId}}.FreshFruits",
-          "{{ModId}}.FreshFlowers",
-          "{{ModId}}.FreshForage",
-          "{{ModId}}.FreshMilk",
-          "{{ModId}}.FreshEggs",
-          "{{ModId}}.AnimalProduce",
-          "{{ModId}}.FreshFish",
-          "{{ModId}}.ArtisanGoods",
-          "{{ModId}}.Cooking",
-          "{{ModId}}.Jewellers",
-          "{{ModId}}.Money",
-        ],
+        // MUST EXIST! WILL EXPLODE WITHOUT IT
+        "Default": {
+          "PresetName": "{{i18n:Preset.Default.name}}",
+          "PresetDescription": "{{i18n:Preset.Default.description}}",
+          "Categories": [
+            "{{ModId}}.FreshVegetables",
+            "{{ModId}}.FreshFruits",
+            "{{ModId}}.FreshFlowers",
+            "{{ModId}}.FreshForage",
+            "{{ModId}}.FreshMilk",
+            "{{ModId}}.FreshEggs",
+            "{{ModId}}.AnimalProduce",
+            "{{ModId}}.FreshFish",
+            "{{ModId}}.ArtisanGoods",
+            "{{ModId}}.Cooking",
+            "{{ModId}}.Jewellers",
+            "{{ModId}}.Money",
+          ],
+        },
+        // Focus: Vegetables
+        "{{ModId}}.Staple": {
+          "PresetName": "{{i18n:Preset.Staple.name}}",
+          "PresetDescription": "{{i18n:Preset.Staple.description}}",
+          "Categories": [
+            "{{ModId}}.StapleFreshVegetables",
+            "{{ModId}}.StapleFreshFruits",
+            "{{ModId}}.StapleFreshDairyAndEggs",
+            "{{ModId}}.StapleFreshFishAndMeat",
+            "{{ModId}}.StapleCookingIngredients",
+            "{{ModId}}.StaplePreservedGoods",
+            "{{ModId}}.Money",
+          ],
+        },
+        // Focus: Flowers and forage
+        "{{ModId}}.Wildflower": {
+          "PresetName": "{{i18n:Preset.Wildflower.name}}",
+          "PresetDescription": "{{i18n:Preset.Wildflower.description}}",
+          "Categories": [
+            "{{ModId}}.WildflowerFreshFlowers",
+            "{{ModId}}.WildflowerFreshForage",
+            "{{ModId}}.WildflowerFreshFish",
+            "{{ModId}}.WildflowerFreshVegetables",
+            "{{ModId}}.WildflowerTapper",
+            "{{ModId}}.WildflowerApiary",
+            "{{ModId}}.WildflowerForestry",
+            "{{ModId}}.Money",
+          ],
+        },
+        // Focus: Coffee, tea and fruits/flowers
+        "{{ModId}}.Barista": {
+          "PresetName": "{{i18n:Preset.Barista.name}}",
+          "PresetDescription": "{{i18n:Preset.Barista.description}}",
+//          "Condition": "SEASON spring summer",
+          "Categories": [
+            "{{ModId}}.BaristaFreshCoffee",
+            "{{ModId}}.BaristaFreshTea",
+            "{{ModId}}.BaristaTeaInfusions",
+            "{{ModId}}.BaristaLatteMilk",
+            "{{ModId}}.BaristaOtherDrinks",
+            "{{ModId}}.BaristaSweeteners",
+            "{{ModId}}.BaristaBreakfastFood",
+            "{{ModId}}.Money",
+          ],
+        },
+        // Focus: Milk and egg
+        "{{ModId}}.Bakery": {
+          "PresetName": "{{i18n:Preset.Bakery.name}}",
+          "PresetDescription": "{{i18n:Preset.Bakery.description}}",
+          "Categories": [
+            "{{ModId}}.BakeryFreshMilk",
+            "{{ModId}}.BakeryFreshEggs",
+            "{{ModId}}.BakerySweeteners",
+            "{{ModId}}.BakeryFlour",
+            "{{ModId}}.BakeryFreshFruits",
+            "{{ModId}}.BakeryFoodBakery",
+            "{{ModId}}.BakeryArtisanGoods",
+            "{{ModId}}.Money",
+          ],
+        },
+        // Focus: Cloth
+        "{{ModId}}.Textiles": {
+          "PresetName": "{{i18n:Preset.Textiles.name}}",
+          "PresetDescription": "{{i18n:Preset.Textiles.description}}",
+          "Categories": [
+            "{{ModId}}.TextilesClothFeathers",
+            "{{ModId}}.TextilesRedDye",
+            "{{ModId}}.TextilesOrangeDye",
+            "{{ModId}}.TextilesYellowDye",
+            "{{ModId}}.TextilesGreenDye",
+            "{{ModId}}.TextilesBlueDye",
+            "{{ModId}}.TextilesPurpleDye",
+            "{{ModId}}.Money",
+          ],
+        },
+        // Focus: Fish
+        "{{ModId}}.Aquaculture": {
+          "PresetName": "{{i18n:Preset.Aquaculture.name}}",
+          "PresetDescription": "{{i18n:Preset.Aquaculture.description}}",
+          "Categories": [
+            "{{ModId}}.AquacultureFreshwaterFish",
+            "{{ModId}}.AquacultureOceanFish",
+            "{{ModId}}.AquacultureSpecialtyFish",
+            "{{ModId}}.AquacultureFreshwaterCrabpot",
+            "{{ModId}}.AquacultureOceanCrabpot",
+            "{{ModId}}.AquacultureFood",
+            "{{ModId}}.AquacultureArtisan",
+            "{{ModId}}.Money",
+          ],
+        },
+        // Focus: Mining
+        "{{ModId}}.Subterranean": {
+          "PresetName": "{{i18n:Preset.Subterranean.name}}",
+          "PresetDescription": "{{i18n:Preset.Subterranean.description}}",
+          "Categories": [
+            "{{ModId}}.SubterraneanMetal",
+            "{{ModId}}.SubterraneanGemstones",
+            "{{ModId}}.SubterraneanMushroom",
+            "{{ModId}}.SubterraneanStone",
+            "{{ModId}}.SubterraneanLootArtifact",
+            "{{ModId}}.SubterraneanCaveFish",
+            "{{ModId}}.SubterraneanFood",
+            "{{ModId}}.Money",
+          ],
+        },
+        // Focus: Artisan Goods (and only that lmao)
+        "{{ModId}}.ArtisanGoodsArtisan": {
+          "PresetName": "{{i18n:Preset.Artisanal.name}}",
+          "PresetDescription": "{{i18n:Preset.Artisanal.description}}",
+          "Categories": [
+            "{{ModId}}.ArtisanGoodsArtisan",
+            "{{ModId}}.Money",
+          ],
+        },
       },
     },
     {
-      "LogName": "Modify categories for winter",
+      "LogName": "Modify the default category for winter",
       "Action": "EditData",
       "When": {
         "Season": "winter",
       },
       "Target": "selph.FreshFarmProduce/CompetitionData",
-      "TargetField": ["ActiveCategoryIds"],
+      "TargetField": ["Presets", "Default", "Categories"],
       "Entries": {
           "{{ModId}}.FreshVegetables": null,
           "{{ModId}}.FreshFruits": null,

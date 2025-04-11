@@ -64,6 +64,7 @@ internal sealed class ModEntry : Mod {
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
     helper.Events.GameLoop.DayEnding += OnDayEnding;
     //helper.Events.Display.MenuChanged += OnMenuChanged;
+    helper.Events.Content.AssetsInvalidated += OnAssetsInvalidated;
 
     // Register custom stuff
     TriggerActionManager.RegisterAction(
@@ -177,6 +178,14 @@ internal sealed class ModEntry : Mod {
           nameof(QuestLog.receiveLeftClick)),
         postfix: new HarmonyMethod(typeof(ModEntry),
           nameof(ModEntry.QuestLog_receiveLeftClick_postfix)));
+
+    // freshness stacking
+    harmony.Patch(
+        original: AccessTools.Method(typeof(Item),
+          nameof(Item.addToStack)),
+        postfix: new HarmonyMethod(typeof(ModEntry),
+          nameof(ModEntry.Item_addToStack_Postfix)));
+
   }
   
   void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
@@ -197,193 +206,7 @@ internal sealed class ModEntry : Mod {
     viewEngine.RegisterSprites($"Mods/{UniqueId}/Sprites", "assets/sprites");
     //viewEngine.EnableHotReloading();
 
-    // get Generic Mod Config Menu's API (if it's installed)
-    var configMenu = Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-    if (configMenu is null) 
-      return;
-
-    // register mod
-    configMenu.Register(
-        mod: this.ModManifest,
-        reset: () => Config = new ModConfig(),
-        save: () => {
-          Helper.WriteConfig(Config);
-        });
-
-    configMenu.AddSectionTitle(
-        mod: this.ModManifest,
-        text: () => Helper.Translation.Get("Config.freshSection.name")
-    );
-
-    configMenu.AddBoolOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.disableStaleness.name"),
-        tooltip: () => Helper.Translation.Get("Config.disableStaleness.description"),
-        getValue: () => Config.DisableStaleness,
-        setValue: value => {
-          Config.DisableStaleness = value;
-          if (Context.IsWorldReady) {
-            Utility.ForEachItem((Item item) => {
-              item.MarkContextTagsDirty();
-              item.modData.Remove(Utils.CachedDescriptionKey);
-              return true;
-            });
-          }
-        });
-    configMenu.AddBoolOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.freshDisplayName.name"),
-        tooltip: () => Helper.Translation.Get("Config.freshDisplayName.description"),
-        getValue: () => Config.FreshDisplayName,
-        setValue: value => Config.FreshDisplayName = value
-        );
-    configMenu.AddBoolOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.showCategoriesInDescription.name"),
-        tooltip: () => Helper.Translation.Get("Config.showCategoriesInDescription.description"),
-        getValue: () => Config.ShowCategoriesInDescription,
-        setValue: value => Config.ShowCategoriesInDescription = value
-        );
-    configMenu.AddBoolOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.disableFreshPriceIncrease.name"),
-        tooltip: () => Helper.Translation.Get("Config.disableFreshPriceIncrease.description"),
-        getValue: () => Config.DisableFreshPriceIncrease,
-        setValue: value => Config.DisableFreshPriceIncrease = value
-        );
-    configMenu.AddPageLink(
-        mod: this.ModManifest,
-        pageId: $"{UniqueId}.FreshPriceModifiers",
-        text: () => Helper.Translation.Get("Config.freshPriceModifiers.name")
-        );
-
-    configMenu.AddSectionTitle(
-        mod: this.ModManifest,
-        text: () => Helper.Translation.Get("Config.competitionSection.name")
-    );
-    configMenu.AddBoolOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.enableCompetition.name"),
-        tooltip: () => Helper.Translation.Get("Config.enableCompetition.description"),
-        getValue: () => Config.EnableCompetition,
-        setValue: value => Config.EnableCompetition = value
-        );
-    configMenu.AddBoolOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.enableFamePriceIncrease.name"),
-        tooltip: () => Helper.Translation.Get("Config.enableFamePriceIncrease.description"),
-        getValue: () => Config.EnableFamePriceIncrease,
-        setValue: value => Config.EnableFamePriceIncrease = value
-        );
-    configMenu.AddBoolOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.enableFameDifficultyIncrease.name"),
-        tooltip: () => Helper.Translation.Get("Config.enableFameDifficultyIncrease.description"),
-        getValue: () => Config.EnableFameDifficultyIncrease,
-        setValue: value => Config.EnableFameDifficultyIncrease = value
-        );
-    configMenu.AddBoolOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.enableDifficultyRandomization.name"),
-        tooltip: () => Helper.Translation.Get("Config.enableDifficultyRandomization.description"),
-        getValue: () => Config.EnableDifficultyRandomization,
-        setValue: value => Config.EnableDifficultyRandomization = value
-        );
-
-    configMenu.AddSectionTitle(
-        mod: this.ModManifest,
-        text: () => Helper.Translation.Get("Config.otherSection.name")
-    );
-    configMenu.AddBoolOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.disableFlash.name"),
-        tooltip: () => Helper.Translation.Get("Config.disableFlash.description"),
-        getValue: () => Config.DisableFlash,
-        setValue: value => Config.DisableFlash = value
-        );
-
-    // Fresh page begins
-    configMenu.AddPage(
-        mod: this.ModManifest,
-        pageId: $"{UniqueId}.FreshPriceModifiers",
-        pageTitle: () => Helper.Translation.Get("Config.freshPriceModifiers.name")
-        );
-    configMenu.AddParagraph(
-        mod: this.ModManifest,
-        text: () => Helper.Translation.Get("Config.freshPriceModifiers.description")
-        );
-    configMenu.AddSectionTitle(
-        mod: this.ModManifest,
-        text: () => Helper.Translation.Get("Config.freshPriceModifiersEarly.name")
-    );
-    configMenu.AddNumberOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.regularQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierRegular }),
-        getValue: () => Config.EarlyFreshModifierRegular,
-        setValue: value => Config.EarlyFreshModifierRegular = value,
-        min: 1
-        );
-    configMenu.AddNumberOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.silverQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierSilver }),
-        getValue: () => Config.EarlyFreshModifierSilver,
-        setValue: value => Config.EarlyFreshModifierSilver = value,
-        min: 1
-        );
-    configMenu.AddNumberOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.goldQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierGold }),
-        getValue: () => Config.EarlyFreshModifierGold,
-        setValue: value => Config.EarlyFreshModifierGold = value,
-        min: 1
-        );
-    configMenu.AddNumberOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.iridiumQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierIridium }),
-        getValue: () => Config.EarlyFreshModifierIridium,
-        setValue: value => Config.EarlyFreshModifierIridium = value,
-        min: 1
-        );
-    configMenu.AddSectionTitle(
-        mod: this.ModManifest,
-        text: () => Helper.Translation.Get("Config.freshPriceModifiersLate.name")
-    );
-    configMenu.AddNumberOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.regularQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierRegular }),
-        getValue: () => Config.LateFreshModifierRegular,
-        setValue: value => Config.LateFreshModifierRegular = value,
-        min: 1
-        );
-    configMenu.AddNumberOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.silverQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierSilver }),
-        getValue: () => Config.LateFreshModifierSilver,
-        setValue: value => Config.LateFreshModifierSilver = value,
-        min: 1
-        );
-    configMenu.AddNumberOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.goldQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierGold }),
-        getValue: () => Config.LateFreshModifierGold,
-        setValue: value => Config.LateFreshModifierGold = value,
-        min: 1
-        );
-    configMenu.AddNumberOption(
-        mod: this.ModManifest,
-        name: () => Helper.Translation.Get("Config.iridiumQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierIridium }),
-        getValue: () => Config.LateFreshModifierIridium,
-        setValue: value => Config.LateFreshModifierIridium = value,
-        min: 1
-        );
+    RegisterGmcm(this.ModManifest);
 
     //try {
     //  itemBagsApi = Helper.ModRegistry.GetApi<ItemBags.IItemBagsAPI>("SlayerDharok.Item_Bags");
@@ -394,7 +217,7 @@ internal sealed class ModEntry : Mod {
 
   // Increase price of fresh items
   static void SObject_sellToStorePrice_Postfix(SObject __instance, ref int __result, long specificPlayerID) {
-    if (!Config.DisableFreshPriceIncrease && Utils.IsFreshItem(__instance)) {
+    if (!Config.DisableFreshPriceIncrease && Utils.IsFreshItem(__instance, out var _)) {
       bool notHasBook =
         (Game1.GetPlayer(specificPlayerID) ?? Game1.player).stats.Get("selph.FreshFarmProduceCP.FreshBook") == 0;
       float modifier =  __instance.Quality switch {
@@ -410,8 +233,7 @@ internal sealed class ModEntry : Mod {
         SObject.highQuality => notHasBook ? Config.EarlyFreshModifierGold : Config.LateFreshModifierGold,
         // 2 -> 2.4 (20% more)
         // 2 -> 4 (100% more)
-        SObject.bestQuality => notHasBook ? Config.EarlyFreshModifierIridium : Config.LateFreshModifierIridium,
-        _ => 1f,
+        _ => notHasBook ? Config.EarlyFreshModifierIridium : Config.LateFreshModifierIridium,
       };
       __result = Math.Max((int)(__result * modifier), __result + (Game1.MasterPlayer.difficultyModifier <= 0.5 ? 1 : 2));
     }
@@ -428,8 +250,10 @@ internal sealed class ModEntry : Mod {
     }
     if (!Config.FreshDisplayName && Utils.IsStaleItem(__instance)) {
       __result = ModEntry.Helper.Translation.Get("StaleItemName", new { Name = __result });
-    } else if (Config.FreshDisplayName && Utils.IsFreshItem(__instance)) {
-      __result = ModEntry.Helper.Translation.Get("FreshItemName", new { Name = __result });
+    } else if (Config.FreshDisplayName && Utils.IsFreshItem(__instance, out float freshPercentage)) {
+      __result = freshPercentage == 100 ?
+        ModEntry.Helper.Translation.Get("FreshItemName", new { Name = __result }) :
+        ModEntry.Helper.Translation.Get("PartiallyFreshItemName", new { Name = __result, freshPercentage = Math.Round(freshPercentage, 0) });
     }
   }
 
@@ -437,7 +261,7 @@ internal sealed class ModEntry : Mod {
   static void Item_canStackWith_Postfix(Item __instance, ref bool __result, ISalable other) {
     if (__result && other is Item otherItem) {
       __result =
-        (Utils.IsFreshItem(__instance) == Utils.IsFreshItem(otherItem)) &&
+        (Utils.IsFreshItem(__instance, out var _) == Utils.IsFreshItem(otherItem, out var _)) &&
         (Utils.IsJojaMealItem(__instance) == Utils.IsJojaMealItem(otherItem));
     }
   }
@@ -465,14 +289,14 @@ internal sealed class ModEntry : Mod {
     Utility.ForEachLocation((GameLocation location) => {
       Chest? fridge = location.GetFridge(onlyUnlocked: false);
       if (fridge is not null) {
-        Utils.SpoilItemInChest(fridge);
+        Utils.SpoilItemInChest(fridge, true);
       }
       foreach (SObject obj in location.objects.Values) {
         if (obj != fridge) {
           if (obj is Chest chest &&
               chest.specialChestType.Value != Chest.SpecialChestTypes.MiniShippingBin &&
               chest.specialChestType.Value != Chest.SpecialChestTypes.JunimoChest) {
-            Utils.SpoilItemInChest(chest);
+            Utils.SpoilItemInChest(chest, obj.QualifiedItemId ==  "(BC)216");
           }
           // Auto grabbers
           else if (obj.heldObject.Value is Chest chest2) {
@@ -552,14 +376,21 @@ internal sealed class ModEntry : Mod {
   //}
 
   static void SObject_PopulateContextTags_Postfix(SObject __instance, HashSet<string> tags) {
-    if (Utils.IsFreshItem(__instance)) {
+    if (Utils.IsFreshItem(__instance, out var _)) {
       tags.Add(Utils.FreshContextTag);
+    }
+    if (!Utils.IsSpoilable(__instance)) {
+      tags.Add(Utils.NonSpoilableContextTag);
     }
   }
 
   static bool SpecialOrder_GetSpecialOrder_Prefix(ref SpecialOrder __result, string key, int? generation_seed) {
     if (key == FarmCompetitionSpecialOrderId) {
       ModEntry.StaticMonitor.Log("Spawning custom order", LogLevel.Info);
+      if (!competitionDataAssetHandler.data.Presets.TryGetValue("Default", out var defaultPreset)) {
+        ModEntry.StaticMonitor.Log($"ERROR: Default Preset Not Found?", LogLevel.Error);
+        return true;
+      }
       generation_seed = generation_seed ?? Game1.random.Next();
       //Random random = Utility.CreateRandom(generation_seed.Value);
       SpecialOrder specialOrder = new SpecialOrder();
@@ -568,7 +399,34 @@ internal sealed class ModEntry : Mod {
       specialOrder.questName.Value = ModEntry.Helper.Translation.Get("CompetitionName");
       specialOrder.requester.Value = "Lewis";
       specialOrder.SetDuration(QuestDuration.Month);
-      foreach (var categoryId in competitionDataAssetHandler.data.ActiveCategoryIds) {
+      List<string> categoryIds;
+      if (!String.IsNullOrEmpty(Config.ForcedPreset) &&
+          competitionDataAssetHandler.data.Presets.TryGetValue(Config.ForcedPreset, out var presetData)) {
+        categoryIds = presetData.Categories;
+        Game1.getFarm().modData[FarmCompetitionSpecialOrderId] = Config.ForcedPreset;
+      }
+      else if (!Config.EnableRandomPresets) {
+        categoryIds = defaultPreset.Categories;
+        Game1.getFarm().modData[FarmCompetitionSpecialOrderId] = "Default";
+      } else {
+        List<string> possiblePresets = new();
+        foreach (var (presetId, presetData2) in competitionDataAssetHandler.data.Presets) {
+            if (!Config.DisabledPresets.Contains(presetId) &&
+                (presetData2.Condition is null ||
+                GameStateQuery.CheckConditions(presetData2.Condition))) {
+              possiblePresets.Add(presetId);
+            }
+        }
+        if (possiblePresets.Count == 0) {
+          categoryIds = defaultPreset.Categories;
+          Game1.getFarm().modData[FarmCompetitionSpecialOrderId] = "Default";
+        } else {
+          var chosenPreset = Game1.random.ChooseFrom(possiblePresets);
+          categoryIds = competitionDataAssetHandler.data.Presets[chosenPreset].Categories;
+          Game1.getFarm().modData[FarmCompetitionSpecialOrderId] = chosenPreset;
+        }
+      }
+      foreach (var categoryId in categoryIds) {
         if (competitionDataAssetHandler.data.Categories.TryGetValue(categoryId, out var categoryData)) {
           var objective = new ShipPointsObjective(categoryId, categoryData.UseSalePrice);
           specialOrder.AddObjective(objective);
@@ -587,16 +445,18 @@ internal sealed class ModEntry : Mod {
     if (!Game1.IsMasterGame || __instance.questKey.Value != FarmCompetitionSpecialOrderId) {
       return;
     }
-    var completedObjectives = __instance.objectives.Select((OrderObjective objective) => {
+    var completedPoints = __instance.objectives.Select((OrderObjective objective) => {
+      float point = 0f;
       if (objective.IsComplete()) {
-        return 1f;
+        point = 1f;
       } else if (objective.GetCount() >= objective.GetMaxCount() / 2.0) {
-        return 0.5f;
-      } else {
-        return 0f;
+        point = 0.5f;
       }
+      return point * ((objective as ShipPointsObjective)?.GetCompletionModifier() ?? 1);
     }).Sum();
-    var completionRate = completedObjectives / __instance.objectives.Count;
+    var totalPoints = __instance.objectives.Select((OrderObjective objective) => 
+        (objective as ShipPointsObjective)?.GetCompletionModifier() ?? 1).Sum();
+    var completionRate = completedPoints / totalPoints;
     if (completionRate < 0.25) {
       Game1.addMail(GetCompetitionFinishedFlag(""), noLetter: true, sendToEveryone: true);
     } else if (completionRate < 0.5) {
@@ -609,8 +469,6 @@ internal sealed class ModEntry : Mod {
       Game1.addMail(GetCompetitionFinishedFlag("Iridium"), noLetter: true, sendToEveryone: true);
     }
   }
-
-  const int SwagBagCount = 4;
 
   static List<string> SpawnedItems = new();
 
@@ -641,7 +499,7 @@ internal sealed class ModEntry : Mod {
     }
     if (__instance.QualifiedItemId == "(O)selph.FreshFarmProduceCP.SwagBag") {
       List<Item> missingPerfectionItems = new();
-      if (!Game1.player.team.farmPerfect.Value) {
+      if (Config.SwagBagItemCount > 0 && !Game1.player.team.farmPerfect.Value) {
         foreach (ParsedItemData allDatum in
             from p in ItemRegistry.GetObjectTypeDefinition().GetAllData()
             orderby Game1.random.Next()
@@ -676,7 +534,7 @@ internal sealed class ModEntry : Mod {
               Game1.player.recipesCooked.Add(itemId, 1);
             }
           }
-          if (missingPerfectionItems.Count() > SwagBagCount) {
+          if (missingPerfectionItems.Count() > Config.SwagBagItemCount) {
             break;
           }
         }
@@ -690,8 +548,8 @@ internal sealed class ModEntry : Mod {
       }
       swagBagContent.AddRange(missingPerfectionItems);
       // Replace unneeded stuff with magic rock candy
-      if (missingPerfectionItems.Count() < SwagBagCount) {
-        swagBagContent.Add(ItemRegistry.Create("(O)279", SwagBagCount - missingPerfectionItems.Count()));
+      if (missingPerfectionItems.Count() < Config.SwagBagItemCount) {
+        swagBagContent.Add(ItemRegistry.Create("(O)279", Config.SwagBagItemCount - missingPerfectionItems.Count()));
       }
       Game1.player.addItemsByMenuIfNecessary(swagBagContent);
       Game1.playSound("newRecipe");
@@ -807,6 +665,16 @@ internal sealed class ModEntry : Mod {
     Utils.ApplyDescription(__instance, ref __result);
   }
 
+  static void Item_addToStack_Postfix(Item __instance, int __result, Item otherStack) {
+    if (Utils.IsFreshItem(__instance, out var originFreshPercentage) &&
+        Utils.IsFreshItem(otherStack, out var addedFreshPercentage)) {
+      int addedStackSize = otherStack.Stack - __result;
+      int oldStackSize = __instance.Stack - addedStackSize;
+      float newFreshPercentage = (originFreshPercentage * oldStackSize + addedFreshPercentage * addedStackSize) / (__instance.Stack);
+      __instance.modData[Utils.FreshPercentageKey] = newFreshPercentage.ToString();
+    }
+  }
+
   static bool FameDescriptionToken(string[] query, out string replacement, Random random, Farmer player) {
     replacement = Helper.Translation.Get("FameBanner.tooltip",
         new {
@@ -840,5 +708,293 @@ internal sealed class ModEntry : Mod {
     }
     error = null;
     return true;
+  }
+
+  void OnAssetsInvalidated(object? sender, AssetsInvalidatedEventArgs e) {
+    if (e.NamesWithoutLocale.Any(name => name.IsEquivalentTo(competitionDataAssetHandler.dataPath))) {
+      RegisterGmcm(ModManifest);
+    }
+  }
+
+  static void RegisterGmcm(IManifest manifest) {
+    // get Generic Mod Config Menu's API (if it's installed)
+    var configMenu = Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+    if (configMenu is null) 
+      return;
+
+    configMenu.Unregister(manifest);
+
+    // register mod
+    configMenu.Register(
+        mod: manifest,
+        reset: () => Config = new ModConfig(),
+        save: () => {
+          Helper.WriteConfig(Config);
+        });
+
+    configMenu.AddSectionTitle(
+        mod: manifest,
+        text: () => Helper.Translation.Get("Config.freshSection.name")
+    );
+
+    configMenu.AddBoolOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.disableStaleness.name"),
+        tooltip: () => Helper.Translation.Get("Config.disableStaleness.description"),
+        getValue: () => Config.DisableStaleness,
+        setValue: value => {
+          Config.DisableStaleness = value;
+          if (Context.IsWorldReady) {
+            Utility.ForEachItem((Item item) => {
+              item.MarkContextTagsDirty();
+              item.modData.Remove(Utils.CachedDescriptionKey);
+              return true;
+            });
+          }
+        });
+    configMenu.AddBoolOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.freshDisplayName.name"),
+        tooltip: () => Helper.Translation.Get("Config.freshDisplayName.description"),
+        getValue: () => Config.FreshDisplayName,
+        setValue: value => Config.FreshDisplayName = value
+        );
+    configMenu.AddBoolOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.showCategoriesInDescription.name"),
+        tooltip: () => Helper.Translation.Get("Config.showCategoriesInDescription.description"),
+        getValue: () => Config.ShowCategoriesInDescription,
+        setValue: value => Config.ShowCategoriesInDescription = value
+        );
+    configMenu.AddBoolOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.disableFreshPriceIncrease.name"),
+        tooltip: () => Helper.Translation.Get("Config.disableFreshPriceIncrease.description"),
+        getValue: () => Config.DisableFreshPriceIncrease,
+        setValue: value => Config.DisableFreshPriceIncrease = value
+        );
+    configMenu.AddNumberOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.freshDays.name"),
+        tooltip: () => Helper.Translation.Get("Config.freshDays.description"),
+        getValue: () => Config.FreshDays,
+        setValue: value => Config.FreshDays = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.fridgeFreshDays.name"),
+        tooltip: () => Helper.Translation.Get("Config.fridgeFreshDays.description"),
+        getValue: () => Config.FridgeFreshDays,
+        setValue: value => Config.FridgeFreshDays = value,
+        min: 1
+        );
+    configMenu.AddPageLink(
+        mod: manifest,
+        pageId: $"{UniqueId}.FreshPriceModifiers",
+        text: () => Helper.Translation.Get("Config.freshPriceModifiers.name")
+        );
+
+    configMenu.AddSectionTitle(
+        mod: manifest,
+        text: () => Helper.Translation.Get("Config.competitionSection.name")
+    );
+    configMenu.AddBoolOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.enableCompetition.name"),
+        tooltip: () => Helper.Translation.Get("Config.enableCompetition.description"),
+        getValue: () => Config.EnableCompetition,
+        setValue: value => Config.EnableCompetition = value
+        );
+    configMenu.AddBoolOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.enableRandomPresets.name"),
+        tooltip: () => Helper.Translation.Get("Config.enableRandomPresets.description"),
+        getValue: () => Config.EnableRandomPresets,
+        setValue: value => Config.EnableRandomPresets = value
+        );
+    configMenu.AddBoolOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.enableFamePriceIncrease.name"),
+        tooltip: () => Helper.Translation.Get("Config.enableFamePriceIncrease.description"),
+        getValue: () => Config.EnableFamePriceIncrease,
+        setValue: value => Config.EnableFamePriceIncrease = value
+        );
+    configMenu.AddBoolOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.enableFameDifficultyIncrease.name"),
+        tooltip: () => Helper.Translation.Get("Config.enableFameDifficultyIncrease.description"),
+        getValue: () => Config.EnableFameDifficultyIncrease,
+        setValue: value => Config.EnableFameDifficultyIncrease = value
+        );
+    configMenu.AddBoolOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.enableDifficultyRandomization.name"),
+        tooltip: () => Helper.Translation.Get("Config.enableDifficultyRandomization.description"),
+        getValue: () => Config.EnableDifficultyRandomization,
+        setValue: value => Config.EnableDifficultyRandomization = value
+        );
+    configMenu.AddPageLink(
+        mod: manifest,
+        pageId: $"{UniqueId}.PresetOptions",
+        text: () => Helper.Translation.Get("Config.presetOptions.name")
+        );
+
+    configMenu.AddSectionTitle(
+        mod: manifest,
+        text: () => Helper.Translation.Get("Config.otherSection.name")
+    );
+    configMenu.AddBoolOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.disableFlash.name"),
+        tooltip: () => Helper.Translation.Get("Config.disableFlash.description"),
+        getValue: () => Config.DisableFlash,
+        setValue: value => Config.DisableFlash = value
+        );
+    configMenu.AddNumberOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.swagBagItemCount.name"),
+        tooltip: () => Helper.Translation.Get("Config.swagBagItemCount.description"),
+        getValue: () => Config.SwagBagItemCount,
+        setValue: value => Config.SwagBagItemCount = value,
+        min: 0
+        );
+
+    // Fresh page begins
+    configMenu.AddPage(
+        mod: manifest,
+        pageId: $"{UniqueId}.FreshPriceModifiers",
+        pageTitle: () => Helper.Translation.Get("Config.freshPriceModifiers.name")
+        );
+    configMenu.AddParagraph(
+        mod: manifest,
+        text: () => Helper.Translation.Get("Config.freshPriceModifiers.description")
+        );
+    configMenu.AddSectionTitle(
+        mod: manifest,
+        text: () => Helper.Translation.Get("Config.freshPriceModifiersEarly.name")
+    );
+    configMenu.AddNumberOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.regularQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierRegular }),
+        getValue: () => Config.EarlyFreshModifierRegular,
+        setValue: value => Config.EarlyFreshModifierRegular = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.silverQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierSilver }),
+        getValue: () => Config.EarlyFreshModifierSilver,
+        setValue: value => Config.EarlyFreshModifierSilver = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.goldQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierGold }),
+        getValue: () => Config.EarlyFreshModifierGold,
+        setValue: value => Config.EarlyFreshModifierGold = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.iridiumQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierIridium }),
+        getValue: () => Config.EarlyFreshModifierIridium,
+        setValue: value => Config.EarlyFreshModifierIridium = value,
+        min: 1
+        );
+    configMenu.AddSectionTitle(
+        mod: manifest,
+        text: () => Helper.Translation.Get("Config.freshPriceModifiersLate.name")
+    );
+    configMenu.AddNumberOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.regularQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierRegular }),
+        getValue: () => Config.LateFreshModifierRegular,
+        setValue: value => Config.LateFreshModifierRegular = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.silverQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierSilver }),
+        getValue: () => Config.LateFreshModifierSilver,
+        setValue: value => Config.LateFreshModifierSilver = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.goldQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierGold }),
+        getValue: () => Config.LateFreshModifierGold,
+        setValue: value => Config.LateFreshModifierGold = value,
+        min: 1
+        );
+    configMenu.AddNumberOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.iridiumQuality"),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierIridium }),
+        getValue: () => Config.LateFreshModifierIridium,
+        setValue: value => Config.LateFreshModifierIridium = value,
+        min: 1
+        );
+
+    // Preset page begins
+    configMenu.AddPage(
+        mod: manifest,
+        pageId: $"{UniqueId}.PresetOptions",
+        pageTitle: () => Helper.Translation.Get("Config.presetOptions.name")
+        );
+    configMenu.AddSectionTitle(
+        mod: manifest,
+        text: () => Helper.Translation.Get("Config.choosePresets.name")
+    );
+    configMenu.AddParagraph(
+        mod: manifest,
+        text: () => Helper.Translation.Get("Config.choosePresets.description"));
+    foreach (var (presetId, presetData) in competitionDataAssetHandler.data.Presets) {
+      configMenu.AddBoolOption(
+          mod: manifest,
+          name: () => presetData.PresetName,
+          tooltip: () => presetData.PresetDescription,
+          getValue: () => !Config.DisabledPresets.Contains(presetId),
+          setValue: value => {
+            if (value) {
+              Config.DisabledPresets.Remove(presetId);
+            } else {
+              Config.DisabledPresets.Add(presetId);
+            }
+          });
+    }
+    configMenu.AddSectionTitle(
+        mod: manifest,
+        text: () => Helper.Translation.Get("Config.forcedPreset.name")
+    );
+    configMenu.AddParagraph(
+        mod: manifest,
+        text: () => Helper.Translation.Get("Config.forcedPreset.description"));
+
+    var presetList = new List<string>{""};
+    presetList.AddRange(competitionDataAssetHandler.data.Presets.Keys);
+    configMenu.AddTextOption(
+        mod: manifest,
+        name: () => Helper.Translation.Get("Config.forcedPreset.name"),
+        tooltip: () => Helper.Translation.Get("Config.forcedPreset.description"),
+        getValue: () => Config.ForcedPreset,
+        setValue: value => Config.ForcedPreset = value,
+        allowedValues: presetList.ToArray(),
+        formatAllowedValue: value => {
+          if (String.IsNullOrEmpty(value)) {
+            return Helper.Translation.Get("Config.forcedPreset.none");
+          } else if (competitionDataAssetHandler.data.Presets.TryGetValue(value, out var presetData)) {
+            return presetData.PresetName;
+          } else {
+            return "??????";
+          }
+        });
   }
 }

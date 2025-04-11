@@ -15,6 +15,7 @@ namespace Selph.StardewMods.FreshFarmProduce;
 static class Utils {
   // modData key for a non-fresh item
   public static string NotFreshKey { get => $"{ModEntry.UniqueId}.NotFresh"; }
+  public static string FreshPercentageKey { get => $"{ModEntry.UniqueId}.FreshPercentage"; }
   // Fresh categories
   static int[] freshCategories = [
       StardewValley.Object.FishCategory,
@@ -29,8 +30,9 @@ static class Utils {
     ];
 
   public static string FreshContextTag = "fresh_item";
+  public static string NonSpoilableContextTag = "non_spoilable_item";
 
-  static bool IsSpoilable(Item? item) {
+  public static bool IsSpoilable(Item? item) {
     if (item is null) return false;
     bool hasSpoilableTag = 
         ItemContextTagManager.DoAnyTagsMatch(
@@ -43,8 +45,14 @@ static class Utils {
     return (freshCategories.Contains(item.Category) && !hasNonSpoilableTag) || hasSpoilableTag;
   }
 
-  public static bool IsFreshItem(Item? item) {
+  public static bool IsFreshItem(Item? item, out float freshPercentage) {
+    freshPercentage = 100;
     if (item is null) return false;
+    if (!ModEntry.Config.DisableStaleness &&
+        item.modData.TryGetValue(FreshPercentageKey, out var s) &&
+        float.TryParse(s, out var pct)) {
+      freshPercentage = pct;
+    }
     return (!item.modData.ContainsKey(NotFreshKey) || ModEntry.Config.DisableStaleness) && IsSpoilable(item);
   }
 
@@ -53,13 +61,23 @@ static class Utils {
     return (item.modData.ContainsKey(NotFreshKey) && !ModEntry.Config.DisableStaleness) && IsSpoilable(item);
   }
 
-  // Returns true if an item is spoiled
-  public static bool SpoilItem(Item? item) {
-    if (item is not null && IsFreshItem(item)) {
-      item.modData[NotFreshKey] = "true";
-      item.MarkContextTagsDirty();
-      item.modData.Remove(CachedDescriptionKey);
-      return true;
+  // Returns true if an item is spoiled. Returns false if it's unspoilable, or only became partially spoiled.
+  public static bool SpoilItem(Item? item, bool isFridge = false) {
+    if (item is not null && IsFreshItem(item, out var freshPercentage)) {
+      float percentageToDecrement =
+        100f / (isFridge ? ModEntry.Config.FridgeFreshDays : ModEntry.Config.FreshDays);
+      freshPercentage -= percentageToDecrement;
+      // floating point weirdness, stale it just to be sure
+      if (freshPercentage < 1) {
+        item.modData[NotFreshKey] = "true";
+        item.MarkContextTagsDirty();
+        item.modData.Remove(CachedDescriptionKey);
+        item.modData.Remove(FreshPercentageKey);
+        return true;
+      } else {
+        item.modData[FreshPercentageKey] = freshPercentage.ToString();
+        return false;
+      }
     }
     //if (item is not null && (ModEntry.itemBagsApi?.IsItemBag(item) ?? false)) {
     //  foreach (var i in (ModEntry.itemBagsApi?.GetObjectsInsideBag(item, true) ?? new List<SObject>())) {
@@ -70,28 +88,30 @@ static class Utils {
     return false;
   }
 
-  public static void SpoilItemInChest(Chest chest) {
+  public static void SpoilItemInChest(Chest chest, bool isFridge = false) {
     bool itemSpoiled = false;
     if (chest.GlobalInventoryId is not null) {
       var items = Game1.player.team.GetOrCreateGlobalInventory(chest.GlobalInventoryId);
       foreach (Item item in items) {
-        if (item != null && Utils.SpoilItem(item)) {
+        if (item != null && Utils.SpoilItem(item, isFridge)) {
           itemSpoiled = true;
         }
       }
       if (itemSpoiled) {
         Utility.consolidateStacks(items);
+        chest.clearNulls();
       }
       return;
     }
     chest.ForEachItem((in ForEachItemContext context) => {
-      if (Utils.SpoilItem(context.Item)) {
+      if (Utils.SpoilItem(context.Item, isFridge)) {
         itemSpoiled = true;
       }
       return true;
     }, null);
     if (itemSpoiled) {
       Utility.consolidateStacks(chest.Items);
+      chest.clearNulls();
     }
   }
 

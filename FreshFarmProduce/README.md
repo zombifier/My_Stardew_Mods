@@ -22,20 +22,22 @@ from the link above.
 * Want to blanket add a context tag to spoilable or non-spoilable categories?
   See below in the "Modify the Competition" section.
 * In-game, items marked Fresh will have the "fresh_item" context tags.
+  Non-spoilable items will have the "non_spoilable_item" tag. To check for spoilable
+  non-fresh items, use "!fresh_item" and "!non_spoilable_item".
 * Item queries (shops, machines, etc.) will spawn Fresh items. To make them not fresh, add
   `"selph.FreshFarmProduce.NotFresh": "true"` to the item query's ModData field.
 
 ## Modify the Competition
 
-You can specify your own farm competition categories, or even replace this
-mod's own! See the mod's included content pack for an example.
+You can specify your own farm competition categories and presets! See the
+mod's included content pack for an example.
 
 The mod reads competition data from the asset `selph.FreshFarmProduce/CompetitionData`, which has two fields:
 
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
-| `ActiveCategoryIds`         | `List<string>`            | A list of category IDs that should be active. Categories are defined below. Note that changing this will not change an active competition.|
-| `Categories`              | `Dictionary<string, CategoryData>`           | A map of unique category IDs to their data. It is highly recommended that you don't delete the base mod's categories, but add your own and use the above field to control which category is active.|
+| `Categories`              | `Dictionary<string, CategoryData>`           | A map of unique category IDs to their data. These don't do anything on their own, but is part of a competition Preset.|
+| `Presets`              | `Dictionary<string, PresetData>`           | A map of unique preset IDs to their data. Presets control what categories will be enabled for the competition. A category can be part of multiple presets.|
 | `SpoilableContextTags`              | `List<string>`           | A list of context tags. If an item has any of these tags it can be affected by freshness/staleness regardless of its category.|
 | `NonSpoilableContextTags`              | `List<string>`           | A list of context tags. If an item has any of these tags it cannot be affected by freshness/staleness regardless of its category.|
 
@@ -51,6 +53,7 @@ The mod reads competition data from the asset `selph.FreshFarmProduce/Competitio
 | `MaxIndividualPoints`              | `int`           | Optional. The max amount of points one specific item can fully contribute to the category.|
 | `UseSalePrice`              | `bool`           | Optional. If `true`, use the item's sell price instead of its Stardew Valley Fair points.|
 | `ItemCriterias`              | `List<ItemCriteria>`           | Optional. A list of criterias controlling whether a shipped item is eligible for this category. An item matches if any criteria matches.|
+| `CompetitionPoints`              | `int`           | Optional, defaults to 1. How many competition points this category counts as when completed. CompetitionPoints = 2 means it grants twice as much progress towards the medal.|
 
 `ItemCriteria` is a model with the following fields:
 
@@ -60,6 +63,15 @@ The mod reads competition data from the asset `selph.FreshFarmProduce/Competitio
 | `ItemIds`              | `List<string>`           | Optional, if set the item's *qualified* ID must be in this list.|
 | `ContextTags`              | `List<string>`           | Optional, if set the item must match *all* context tags in this list.|
 | `Condition`              | `string`           | Optional, if set the item must match the [Game State Query](https://stardewvalleywiki.com/Modding:Game_state_queries#For_items_only) specified in this field. Use on `Target`.|
+
+`PresetData` is a model with the following fields:
+
+| Field Name                         | Type             | Description              |
+| ---------------------------------- | ---------------- | ------------------------ |
+| `PresetName`              | `string`           | The display name of this preset. Should be a short, flavorful word.|
+| `PresetDescription`              | `string`           | The long description of this preset.|
+| `Categories`              | `List<string>`           | A list of category IDs that will be part of this preset.|
+| `Condition`              | `string`           | Optional, a GSQ to determine whether this preset can be randomly selected.|
 
 ## Mail/Flags/Rewards
 This mod's competition start logic and rewards are almost entirely handled in

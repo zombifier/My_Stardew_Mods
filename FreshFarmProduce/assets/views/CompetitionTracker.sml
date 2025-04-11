@@ -12,7 +12,7 @@
       <lane orientation="vertical"
          vertical-content-alignment="middle">
         <expander
-          *repeat={Objectives} >
+          *repeat={:Objectives} >
           <lane
             *outlet="header"
             focusable="true"
@@ -70,15 +70,15 @@
             <lane
               orientation="horizontal"
               margin="24,0,24,0"
-              *repeat={Entries}>
+              *repeat={:Entries}>
               <image
                 layout="32px 32px"
                 sprite={:Data}/>
               <label margin="4,0,0,0" text={:ItemName} />
               <spacer layout="stretch 0px" />
               <label text={:Points} font="small"/>
-              <label text="/" font="small" *if={HasThreshold}/>
-              <label text={:TotalPoints} font="small" *if={HasThreshold}/>
+              <label text="/" font="small" *if={:HasThreshold}/>
+              <label text={:TotalPoints} font="small" *if={:HasThreshold}/>
             </lane>
           </lane>
         </expander>
@@ -88,6 +88,11 @@
   <lane
     vertical-content-alignment="end"
     layout="940px content">
+    <frame
+      padding="16"
+      background={@Mods/StardewUI/Sprites/ControlBorder}>
+        <label text={:PresetName} tooltip={:PresetDescription} focusable="true"/>
+    </frame>
     <spacer layout = "stretch 0px"/>
     <frame
       padding="16"
