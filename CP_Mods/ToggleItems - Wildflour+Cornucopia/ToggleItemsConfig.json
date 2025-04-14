@@ -180,19 +180,31 @@
     [
       "(O)Cornucopia_Barley",
       "(O)slimerrain.grainsoverhullcp_Barley",
+      "(O)bonghits.cp.BearHoneyMead_Barley"
     ],
     [
       "(O)Cornucopia_Buckwheat",
       "(O)slimerrain.grainsoverhullcp_Buckwheat",
+      "(O)bonghits.cp.BearHoneyMead_Buckwheat"
     ],
     [
       "(O)Cornucopia_Oats",
       "(O)slimerrain.grainsoverhullcp_Oat",
       "(O)BFV.CombinedCrops_Oats",
+      "(O)bonghits.cp.BearHoneyMead_Oat"
     ],
     [
       "(O)Lumisteria.MtVapius_Rye",
       "(O)slimerrain.grainsoverhullcp_Rye",
+      "(O)bonghits.cp.BearHoneyMead_Rye"
+    ],
+    [
+      "(O)slimerrain.grainsoverhullcp_Millet",
+      "(O)bonghits.cp.BearHoneyMead_Millet"
+    ],
+    [
+      "(O)slimerrain.grainsoverhullcp_Sorghum",
+      "(O)bonghits.cp.BearHoneyMead_Sorghum"
     ],
     // Quaint Living
     [
@@ -367,6 +379,11 @@
     [
       "(O)Cornucopia_Sugarcane",
       "(O)slimerrain.uncleirohapprovedteacp_Sugarcane",
+    ],
+    // Soybean Meat
+    [
+      "(O)Cornucopia_Soybeans",
+      "(O)Aimon111.SoyBeanMeats_SoyBean",
     ],
   ]
 }
