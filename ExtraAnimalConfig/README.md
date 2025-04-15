@@ -89,7 +89,7 @@ to edit it.
 | `Condition`          | `string`| If set, the condition for this entry.|
 | `MinimumFriendship`          | `int`| If set, the minimum amount of friendship needed before the animal will start making this produce. |
 
-NOTE: To define the secondary produce's harvest method, set them in `AnimalProduceExtensionData` using their qualified item ID as the key, just like how you'd do it with the primary produce.
+NOTE: To define the secondary produce's harvest method or override it with an item query, set them in `AnimalProduceExtensionData` using their qualified item ID as the key, just like how you'd do it with the primary produce.
 
 `AppearanceData` is a model with the following fields:
 
@@ -101,6 +101,39 @@ NOTE: To define the secondary produce's harvest method, set them in `AnimalProdu
 | `Condition`          | `string`| If set, the Game State Query for this entry. Can accept ANIMAL_AGE and ANIMAL_FRIENDSHIP GSQs to limit skins to a certain age/friendship level.|
 | `TextureToUse`          | `string`| The texture path to use for this animal. Ignored if `DefaultTextureToUse` is set. |
 | `DefaultTextureToUse`          | One of `"Texture"`, `"HarvestedTexture"`, or `"BabyTexture"`| If set, use the equivalent field in vanilla animal data. Will take skins into account.|
+
+----
+
+#### How `AnimalProduceExtensionData` and `ExtraProduceSpawnData` interact
+
+If you're confused by how these fields interact or how extra produce works in
+general, the flow of how animal is decided with Extra Animal Config is below:
+
+1. The animal picks a list of produce it can make in the form of produce
+   "slots" - one vanilla slot, and potentially multiple modded slots from EAC.
+   Each slot will be in the form of an unqualified item ID.
+   * One vanilla slot, decided by taking the `ItemId` field in the
+     `(Deluxe)ProduceItemIds` list.
+   * Extra modded slots, the count of which is equal to the number of entries
+     in its `ExtraProduceSpawnList` field. For example, if this list has 3 entries
+     then the animal will get 3 extra slots.
+   * For every slot in `ExtraProduceSpawnList`, the mod goes through its
+     `ProduceItemIds` list to decide which entry to pick for that slot. One
+     item (in the form of the `ItemId` string) will be chosen for each slot.
+2. Next, when the animal is harvested (such as dropping on day start, being
+   milked/sheared, or digging up), it goes through every slot to determine
+   which item it can make. For example, the pig decides it wants to dig, and
+   takes `430` from the vanilla slot.
+   * EAC then looks at `AnimalProduceExtensionData` to determine whether the
+     item in this slot is harvestable by the current method, or whether it
+     should be replaced with another item using the built in item query
+     feature. Using the example at the bottom of the page, the truffle is
+     replaced with a diamond, causing the pig to dig up the diamond.
+   * Once said slot is exhausted (for digging, this randomly happens after
+     every dig averaging to 3), the animal takes another slot the next time it
+     is harvested. This repeats until the animal runs out of slots.
+
+----
 
 ### Setting up animals that eat alternate feed
 
