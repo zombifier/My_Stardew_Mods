@@ -125,11 +125,18 @@ general, the flow of how animal is decided with Extra Animal Config is below:
    milked/sheared, or digging up), it goes through every slot to determine
    which item it can make. For example, the pig decides it wants to dig, and
    takes `430` from the vanilla slot.
-   * EAC then looks at `AnimalProduceExtensionData` to determine whether the
-     item in this slot is harvestable by the current method, or whether it
-     should be replaced with another item using the built in item query
-     feature. Using the example at the bottom of the page, the truffle is
-     replaced with a diamond, causing the pig to dig up the diamond.
+   * First, EAC takes a look at the animal's vanilla harvest method to see if
+     it's harvestable in the current context. In this case, the pig is set to
+     `DigUp` so it is allowed.
+   * If the vanilla harvest method doesn't match, it then looks at
+     `AnimalProduceExtensionData` to determine whether the item in this slot is
+     set to be have a harvest method override. If the produce still does not
+     have a matching harvest method, it is ignored, and another slot is chosen.
+   * Once an item matching the harvest method is found, it then queries
+     `AnimalProduceExtensionData` to see whether it should be replaced with
+     another item using the built in item query feature. Using the example at
+     the bottom of the page, the truffle is replaced with a diamond, causing
+     the pig to dig up the diamond.
    * Once said slot is exhausted (for digging, this randomly happens after
      every dig averaging to 3), the animal takes another slot the next time it
      is harvested. This repeats until the animal runs out of slots.
