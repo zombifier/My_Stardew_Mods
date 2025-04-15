@@ -67,6 +67,7 @@ to edit it.
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
 | `ItemQuery`          | [`GenericSpawnItemData`](https://stardewvalleywiki.com/Modding:Item_queries)  | The override item query to use to actually generate this produce. Most item query fields will work, aside from quality (which is determined by friendship, unless specified) and stack size (which will always be 1, or 2 for animals that were fed Golden Crackers).|
+| `ItemQueries`          | `List<[GenericSpawnItemDataWithCondition](https://stardewvalleywiki.com/Modding:Item_queries)>` | Similar to the above, but a list of queries with a `Condition` field, where the first eligible entry will be chosen. This list goes from top to bottom, so if you want easy randomness use `RandomItemIds` in the above field instead. Ignored if the above is set.|
 | `HarvestTool`        | `string`  | The harvest tool/method to use for this produce instead of its default method. Supports `DropOvernight`, `Milk Pail`, `Shears`, `DigUp` and a new value `Debris`, which makes the produce drop overnight but as a debris item.<br>**IMPORTANT NOTES**:<br>* Debris produce do not grant experience when collected, and may disappear the next day if not collected (manually or with an autograbber). <br>* During testing, if you change an animal produce's harvest method to `DropOvernight` mid-save, any produce lodged inside it will not drop on its own. The mod includes a fallback for this, allowing the produce to be removed by milk pail or shears. Afterwards, it should not happen again.|
 | `ProduceTexture`     | `string`  | (DEPRECATED - Use `TextureOverrides` instead) The animal's texture asset to override the default texture if it currently has this produce. |
 | `SkinProduceTexture` | `Dictionary<string, string>` | (DEPRECATED - Use `TextureOverrides` instead) Same as the above, but for non-default textures (which is the key, with the asset being the value).|
@@ -125,13 +126,11 @@ general, the flow of how animal is decided with Extra Animal Config is below:
    milked/sheared, or digging up), it goes through every slot to determine
    which item it can make. For example, the pig decides it wants to dig, and
    takes `430` from the vanilla slot.
-   * First, EAC takes a look at the animal's vanilla harvest method to see if
-     it's harvestable in the current context. In this case, the pig is set to
-     `DigUp` so it is allowed.
-   * If the vanilla harvest method doesn't match, it then looks at
-     `AnimalProduceExtensionData` to determine whether the item in this slot is
-     set to be have a harvest method override. If the produce still does not
-     have a matching harvest method, it is ignored, and another slot is chosen.
+   * EAC then looks at `AnimalProduceExtensionData`, if available, to determine
+     whether the item in this slot is set to be have a harvest method override
+     which should be used instead of the vanilla harvest method. If the harvest
+     method does not match the current context, it is ignored, and another slot
+     is chosen.
    * Once an item matching the harvest method is found, it then queries
      `AnimalProduceExtensionData` to see whether it should be replaced with
      another item using the built in item query feature. Using the example at
