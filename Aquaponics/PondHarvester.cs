@@ -2,6 +2,7 @@ using System;
 using StardewValley;
 using StardewValley.Characters;
 using StardewValley.Buildings;
+using StardewModdingAPI;
 
 using SObject = StardewValley.Object;
 
@@ -18,6 +19,7 @@ class PondHarvester : JunimoHarvester {
   }
 
   public override void tryToAddItemToHut(Item i) {
+    ModEntry.StaticMonitor.Log($"Harvesting {i.QualifiedItemId}", LogLevel.Info);
     FishPondCropManager.GetFishPondOutputChest(this.pond)?.Items.Add(i);
     int price = 0;
     if (i is SObject obj) {

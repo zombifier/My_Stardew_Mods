@@ -92,6 +92,10 @@ internal sealed class ModEntry : Mod {
         Helper.Translation.Get("Command.openCropsChest"),
         OpenCropsChest);
     helper.ConsoleCommands.Add(
+        $"{UniqueId}_OpenOutputChest",
+        Helper.Translation.Get("Command.openOutputChest"),
+        OpenOutputChest);
+    helper.ConsoleCommands.Add(
         $"{UniqueId}_DowngradeAllAquaponicsPonds",
         Helper.Translation.Get("Command.downgradeAllAquaponicsPonds"),
         DowngradeAllPonds);
@@ -203,6 +207,7 @@ internal sealed class ModEntry : Mod {
 
   // If there is planted crop, make fish spawn faster and give a small chance to double stack
   void OnDayStarted(object? sender, DayStartedEventArgs e) {
+    if (!Context.IsMainPlayer) return;
     Utility.ForEachBuilding(building => {
       if (IsAquaponicsPond(building, out var pond) &&
           FishPondCropManager.TryGetOnePot(pond, out var pot) &&
@@ -634,7 +639,29 @@ internal sealed class ModEntry : Mod {
       }
     }
     if (pondToReturn is not null) {
+      ModEntry.StaticMonitor.Log($"Opening {FishPondCropManager.CropsChestName}", LogLevel.Info);
       var chest = FishPondCropManager.GetFishPondCropsChest(pondToReturn);
+      if (chest is not null) { 
+        Game1.activeClickableMenu = new ItemGrabMenu(chest.Items);
+      }
+    }
+  }
+
+  private void OpenOutputChest(string command, string[] args) {
+    int distance = Int32.MaxValue;
+    FishPond? pondToReturn = null;
+    foreach (var building in Game1.currentLocation.buildings) {
+      if (IsAquaponicsPond(building, out var pond)) {
+        var pondDistance = (int)Vector2.Distance(Game1.player.Tile, new(pond.tileX.Value, pond.tileY.Value));
+        if (pondDistance < distance) {
+          distance = pondDistance;
+          pondToReturn = pond;
+        }
+      }
+    }
+    if (pondToReturn is not null) {
+      ModEntry.StaticMonitor.Log($"Opening {FishPondCropManager.OutputChestName}", LogLevel.Info);
+      var chest = FishPondCropManager.GetFishPondOutputChest(pondToReturn);
       if (chest is not null) { 
         Game1.activeClickableMenu = new ItemGrabMenu(chest.Items);
       }

@@ -13,6 +13,7 @@
   "Config.seedCount.description": "The number of seeds you can plant in an aquaponics pond. NOTE: Existing ponds will not be updated. It's highly recommended you clear all ponds before changing this settings.",
   // Console commands
   "Command.openCropsChest": "Open the chest containing the indoor pots of the nearest fish pond. WARNING: For debugging only. Only run this command if you know what you're doing.",
+  "Command.openOutputChest": "Open the chest containing the output of the nearest fish pond. WARNING: For debugging only. Only run this command if you know what you're doing.",
   "Command.downgradePond": "Downgrade the pond with a pond menu open to the base version.",
   "Command.downgradeAllAquaponicsPonds": "Downgrade all aquaponics pond to regular fish ponds. Only run this command if you want to uninstall this mod cleanly."
 }

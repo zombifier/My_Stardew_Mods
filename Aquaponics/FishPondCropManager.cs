@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Extensions;
@@ -14,7 +15,7 @@ using SObject = StardewValley.Object;
 namespace Selph.StardewMods.Aquaponics;
 
 static class FishPondCropManager {
-  static Dictionary<Guid, PondHarvester> pondToHarvesterDict = new();
+  static ConditionalWeakTable<FishPond, PondHarvester> pondToHarvesterDict = new();
   
   public static string AquaponicsHoeDirt = $"{ModEntry.UniqueId}_IsAquaponics";
   public static string CropsChestName = $"{ModEntry.UniqueId}_CropsChest";
@@ -177,6 +178,7 @@ static class FishPondCropManager {
     int i = 0;
     foreach (var item in cropsChest.Items) {
       if (item is IndoorPot pot) {
+        MaybeFixPotFields(pot, pond);
         if (pot.heldObject.Value is not null) {
           var forageHarvest = pot.heldObject.Value;
           forageHarvest.Quality = pot.Location.GetHarvestSpawnedObjectQuality(who, true, new(pond.tileX.Value, pond.tileY.Value));
@@ -229,11 +231,13 @@ static class FishPondCropManager {
   }
 
   public static PondHarvester GetHarvesterFor(FishPond pond) {
-    var id = pond.id.Value;
-    if (!pondToHarvesterDict.ContainsKey(id)) {
-      pondToHarvesterDict[id] = new PondHarvester(pond);
+    if (pondToHarvesterDict.TryGetValue(pond, out var harvester)) {
+      return harvester;
+    } else {
+      var newHarvester = new PondHarvester(pond);
+      pondToHarvesterDict.Add(pond, newHarvester);
+      return newHarvester;
     }
-    return pondToHarvesterDict[id];
   }
 
   public static void DayUpdateHoeDirt(FishPond pond) {
@@ -246,6 +250,7 @@ static class FishPondCropManager {
     bool shouldSpeedUpBushes = Game1.random.NextBool(0.25);
     foreach (var item in cropsChest.Items) {
       if (item is IndoorPot pot) {
+        MaybeFixPotFields(pot, pond);
         bool isForageCrop =
           pot.hoeDirt.Value.crop is not null &&
           (pot.hoeDirt.Value.crop.isWildSeedCrop() || pot.hoeDirt.Value.crop.replaceWithObjectOnFullGrown is not null);
@@ -305,5 +310,13 @@ static class FishPondCropManager {
       }
       return true;
     });
+  }
+
+  // In MP games the pot may not have its location and tile set, fix it if it isn't
+  static void MaybeFixPotFields(IndoorPot pot, FishPond pond) {
+    pot.Location ??= pond.GetParentLocation() ?? Game1.getFarm();
+    if (pot.TileLocation == Vector2.Zero) {
+      pot.TileLocation = GetUnoccupiedDummyTile(pot.Location) ?? Vector2.Zero;
+    }
   }
 }
