@@ -10,6 +10,7 @@ content packs. For users, install the mod as usual from the link above.
 ## Table of Contents
 * [Table of Contents](#table-of-contents)
 * [Animal data asset](#animal-data-asset)
+   + [How AnimalProduceExtensionData and ExtraProduceSpawnData interact (aka how extra produce works)](#how-animalproduceextensiondata-and-extraproducespawndata-interact)
    + [Setting up animals that eat alternate feed](#setting-up-animals-that-eat-alternate-feed)
    + [Extra drops from scything grass](#extra-drops-from-scything-grass)
 * [Multiple possible animals from one egg](#multiple-possible-animals-from-one-egg)
