@@ -1122,6 +1122,10 @@
               "Id": "FishPond",
               "ContextTags": ["fresh_item", "fish_pond", "!fish_crab_pot"],
             },
+            {
+              "Id": "FishFreshwater",
+              "ContextTags": ["fresh_item", "fish_freshwater", "!fish_crab_pot"],
+            },
           ],
         },
         "{{ModId}}.AquacultureOceanFish": {
@@ -1158,6 +1162,10 @@
               "Id": "FishPond",
               "ContextTags": ["fresh_item", "fish_pond", "fish_crab_pot"],
             },
+            {
+              "Id": "FishFreshwater",
+              "ContextTags": ["fresh_item", "fish_freshwater", "fish_crab_pot"],
+            },
           ],
         },
         "{{ModId}}.AquacultureOceanCrabpot": {
@@ -1184,7 +1192,7 @@
           "ItemCriterias": [
             {
               "Id": "FishSpecialty",
-              "ContextTags": ["fresh_item", "!fish_lake", "!fish_river", "!fish_pond", "!fish_ocean"],
+              "ContextTags": ["fresh_item", "!fish_lake", "!fish_river", "!fish_pond", "!fish_ocean", "!fish_freshwater"],
             },
           ],
         },
