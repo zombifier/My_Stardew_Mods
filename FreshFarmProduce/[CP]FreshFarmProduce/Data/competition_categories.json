@@ -1192,7 +1192,7 @@
           "ItemCriterias": [
             {
               "Id": "FishSpecialty",
-              "ContextTags": ["fresh_item", "!fish_lake", "!fish_river", "!fish_pond", "!fish_ocean", "!fish_freshwater"],
+              "ContextTags": ["fresh_item", "category_fish", "!fish_lake", "!fish_river", "!fish_pond", "!fish_ocean", "!fish_freshwater"],
             },
           ],
         },
