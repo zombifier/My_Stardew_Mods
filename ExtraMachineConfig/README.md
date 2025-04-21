@@ -38,6 +38,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Custom casks](#custom-casks)
       + [Custom slime incubators](#custom-slime-incubators)
       + [Machines that spit out the input item when removed](#machines-that-spit-out-the-input-item-when-removed)
+      + [On machine ready effects](#on-machine-ready-effects)
    * [Crafting/Cooking Features](#craftingcooking-features)
       + [Use some machine-like features in crafting and cooking (namely copy flavor and color)](#use-some-machine-like-features-in-crafting-and-cooking-namely-copy-flavor-and-color)
 
@@ -974,7 +975,60 @@ Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `selph.ExtraMachineConfig.ReturnInput` | Whether this machine should return the input item as debris when removed, like the crystalarium. Only works for `ItemPlacedInMachine` and `OutputCollected` rules.|
+| `selph.ExtraMachineConfig.ReturnInput` | Whether this machine should return the *output* item (despite the name) as debris when removed, like the crystalarium. Only works for `ItemPlacedInMachine` and `OutputCollected` rules. This should only be used for crystalarium-like machines where the input is the same as the output. Let me know if you want this to also work for machines where the input is different from the output.|
+
+-----
+
+### On machine ready effects
+
+This requires writing to a new asset named
+`selph.ExtraMachineConfig/ExtraMachineData`, where the key is the qualified
+item ID of the machine (like `Data/Machines`), and the value being a model with
+the following field:
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `ReadyEffects` | The effects to play once when this machine is ready for harvest. It is identical to the vanilla `LoadEffects`/`WorkingEffects` fields (including support for GSQs), with the addition of one extra field:<br><br> `IncrementMachineParentSheetIndex`: the amount to increment the machine's sprite sheet index while it is holding this output. This can be used to have your machine's appearance differ depending on what produced.|
+
+#### Example
+
+This example makes the keg play the wood chop sound, a brief funky animation, and turns into a furnace when ready:
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "Changes": [
+    {
+      "LogName": "Add ready effect to keg",
+      "Action": "EditData",
+      "Target": "selph.ExtraMachineConfig/ExtraMachineData",
+      "Entries": {
+        "(BC)12": {
+          "ReadyEffects": [
+            {
+              "Id": "Animation",
+              "Sounds": [
+                {
+                  "Id": "axchop"
+                }
+              ],
+              "ShakeDuration": 1000,
+              "Frames": [0, 1, 2],
+              "Interval": 100,
+              "IncrementMachineParentSheetIndex": 1,
+            }
+          ]
+        }
+      },
+    },
+  ]
+}
+```
+
+</details>
 
 -----
 

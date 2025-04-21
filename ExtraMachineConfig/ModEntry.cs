@@ -27,6 +27,7 @@ internal sealed class ModEntry : Mod {
   internal static IExtraMachineConfigApi ModApi = null!;
   internal static ExtraOutputAssetHandler extraOutputAssetHandler = null!;
   internal static ExtraCraftingConfigAssetHandler extraCraftingConfigAssetHandler = null!;
+  internal static ExtraMachineDataAssetHandler extraMachineDataAssetHandler = null!;
   internal static string UniqueId = null!;
 
   internal static string JunimoLovedItemContextTag = "junimo_loved_item";
@@ -39,6 +40,7 @@ internal sealed class ModEntry : Mod {
 
     extraOutputAssetHandler = new ExtraOutputAssetHandler();
     extraCraftingConfigAssetHandler = new ExtraCraftingConfigAssetHandler();
+    extraMachineDataAssetHandler = new ExtraMachineDataAssetHandler();
 
     var harmony = new Harmony(this.ModManifest.UniqueID);
 
@@ -48,6 +50,8 @@ internal sealed class ModEntry : Mod {
 
     extraOutputAssetHandler.RegisterEvents(Helper);
     extraCraftingConfigAssetHandler.RegisterEvents(Helper);
+    extraMachineDataAssetHandler.RegisterEvents(Helper);
+
     Helper.Events.GameLoop.DayStarted += OnDayStartedJunimoHut;
     Helper.Events.GameLoop.GameLaunched += OnGameLaunchedBetterCrafting;
     Helper.Events.Content.AssetRequested += OnAssetRequested;

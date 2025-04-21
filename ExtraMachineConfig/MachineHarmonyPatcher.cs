@@ -687,7 +687,7 @@ sealed class MachineHarmonyPatcher {
     return matcher.InstructionEnumeration();
   }
 
-  static void SObject_onReadyForHarvest_Postfix(SObject __instance) {
+  static void SObject_onReadyForHarvest_Postfix(SObject __instance, ref MachineEffects ____machineAnimation, ref bool ____machineAnimationLoop, ref int ____machineAnimationIndex, ref int ____machineAnimationFrame, ref int ____machineAnimationInterval) {
     if (__instance.GetMachineData()?.CustomFields?.TryGetValue(TriggerActionToRunWhenReady, out var action) ?? false) {
       if (!TriggerActionManager.TryRunAction(action, out string error, out Exception ex)) {
         ModEntry.StaticMonitor.Log($"Failed running action '{action}' after machine is ready: {error} (exception: {ex})",
@@ -740,6 +740,23 @@ sealed class MachineHarmonyPatcher {
         __instance.readyForHarvest.Value = false;
       }
     }
+    // ready effects stuff
+    if (ModEntry.extraMachineDataAssetHandler.data.TryGetValue(__instance.QualifiedItemId, out var extraMachineData)) {
+      foreach (ReadyEffects readyEffects in extraMachineData.ReadyEffects) {
+        if (__instance.PlayMachineEffect(readyEffects, true)) {
+          ____machineAnimation = readyEffects;
+          ____machineAnimationLoop = false;
+          ____machineAnimationIndex = 0;
+          ____machineAnimationFrame = -1;
+          ____machineAnimationInterval = 0;
+          if (readyEffects.IncrementMachineParentSheetIndex > 0) {
+            __instance.ResetParentSheetIndex();
+            __instance.ParentSheetIndex += readyEffects.IncrementMachineParentSheetIndex;
+          }
+          break;
+        }
+      }
+    }
   }
 
   static void Cask_IsValidCaskLocation_Postfix(Cask __instance, ref bool __result) {
@@ -787,9 +804,10 @@ sealed class MachineHarmonyPatcher {
   }
 
   public static void SObject_performRemoveAction_Postfix(SObject __instance) {
-    if (__instance.lastInputItem.Value is not null &&
+    if (__instance.heldObject.Value is not null &&
+        !__instance.readyForHarvest.Value &&
         (__instance.GetMachineData()?.CustomFields?.ContainsKey(ReturnInput) ?? false)) {
-      __instance.Location.debris.Add(new Debris(__instance.lastInputItem.Value, __instance.TileLocation * 64f + new Vector2(32f, 32f)));
+      __instance.Location.debris.Add(new Debris(__instance.heldObject.Value, __instance.TileLocation * 64f + new Vector2(32f, 32f)));
     }
   }
 }
