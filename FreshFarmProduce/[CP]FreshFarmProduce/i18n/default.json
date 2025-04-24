@@ -84,17 +84,17 @@
   "Preset.Subterranean.description": "Time to get a little adventurous and dive into the local cave system! Mushrooms, metal ores and gemstones will be in high demand, but don't forget to pack some food for the journey as well.",
   // Category descriptions
   // Staple
-  "StapleFreshVegetables": "Staple Vegetables",
+  "StapleFreshVegetables": "Vegetable Aisle",
   "StapleFreshVegetables.description": "Ship fresh vegetables - worth 2x other categories",
-  "StapleFreshFruits": "Fresh Fruits",
+  "StapleFreshFruits": "Fruit Aisle",
   "StapleFreshFruits.description": "Ship fresh fruits",
-  "StapleCookingIngredients": "Cooking Ingredients",
+  "StapleCookingIngredients": "Pantry Aisle",
   "StapleCookingIngredients.description": "Ship cooking ingredients like oil, sugar and flour",
-  "StapleFreshDairyAndEggs": "Dairy and Eggs",
+  "StapleFreshDairyAndEggs": "Dairy Aisle",
   "StapleFreshDairyAndEggs.description": "Ship fresh milk and eggs",
-  "StapleFreshFishAndMeat": "Fish and Meat",
+  "StapleFreshFishAndMeat": "Meat and Seafood Aisle",
   "StapleFreshFishAndMeat.description": "Ship fresh fish and meat (if meat mods are installed)",
-  "StaplePreservedGoods": "Preserved Goods",
+  "StaplePreservedGoods": "Preserved Goods Section",
   "StaplePreservedGoods.description": "Ship edible artisan goods",
   // Wildflower
   "WildflowerFreshFlowers": "Wildflower Fields",

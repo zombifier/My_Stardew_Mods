@@ -365,8 +365,16 @@
               "ContextTags": ["butter_item"],
             },
             {
+              "Id": "BakingItem",
+              "ContextTags": ["baking_item"],
+            },
+            {
               "Id": "SVEButter",
               "ItemIds": ["(O)FlashShifter.StardewValleyExpandedCP_Butter"],
+            },
+            {
+              "Id": "IngredientItem",
+              "ContextTags": ["ingredient_item"],
             },
           ],
         },
@@ -393,8 +401,8 @@
           "Description": "{{i18n:StapleFreshFishAndMeat.description}}",
           "Texture": "Maps/springobjects",
           "SpriteIndex": 142, // Carp
-          "TotalPoints": 400,
-          "MaxIndividualPoints": 40,
+          "TotalPoints": 500,
+          "MaxIndividualPoints": 50,
           "ItemCriterias": [
             {
               "Id": "FreshFish",
@@ -467,8 +475,8 @@
           "Description": "{{i18n:WildflowerFreshFish.description}}",
           "Texture": "Maps/springobjects",
           "SpriteIndex": 393, // Coral
-          "TotalPoints": 400,
-          "MaxIndividualPoints": 40,
+          "TotalPoints": 500,
+          "MaxIndividualPoints": 50,
           "ItemCriterias": [
             {
               "Id": "FreshFish",
@@ -814,6 +822,11 @@
               "Id": "FlourItem",
               "ContextTags": ["flour_item"],
             },
+            // WAG's mixes
+            {
+              "Id": "BakingItem",
+              "ContextTags": ["baking_item"],
+            },
           ],
         },
         "{{ModId}}.BakeryFreshFruits": {
@@ -894,6 +907,14 @@
                 "(O)appleseed.BCP.GreyCloth",
                 "(O)appleseed.BCP.PinkCloth",
               ],
+            },
+            {
+              "Id": "Wool",
+              "ContextTags": ["wool_item"],
+            },
+            {
+              "Id": "Cloth",
+              "ContextTags": ["cloth_item"],
             },
           ],
         },
@@ -1107,8 +1128,8 @@
           "Description": "{{i18n:AquacultureFreshwaterFish.description}}",
           "Texture": "Maps/springobjects",
           "SpriteIndex": 142, // Carp
-          "TotalPoints": 300,
-          "MaxIndividualPoints": 60,
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 80,
           "ItemCriterias": [
             {
               "Id": "FishLake",
@@ -1133,8 +1154,8 @@
           "Description": "{{i18n:AquacultureOceanFish.description}}",
           "Texture": "Maps/springobjects",
           "SpriteIndex": 130, // Tuna
-          "TotalPoints": 300,
-          "MaxIndividualPoints": 60,
+          "TotalPoints": 400,
+          "MaxIndividualPoints": 80,
           "ItemCriterias": [
             {
               "Id": "FishOcean",
@@ -1147,8 +1168,8 @@
           "Description": "{{i18n:AquacultureFreshwaterCrabpot.description}}",
           "Texture": "Maps/springobjects",
           "SpriteIndex": 721, // Snail
-          "TotalPoints": 300,
-          "MaxIndividualPoints": 60,
+          "TotalPoints": 400,
+          //"MaxIndividualPoints": 60,
           "ItemCriterias": [
             {
               "Id": "FishLake",
@@ -1173,8 +1194,8 @@
           "Description": "{{i18n:AquacultureOceanCrabpot.description}}",
           "Texture": "Maps/springobjects",
           "SpriteIndex": 715, // Lobster
-          "TotalPoints": 300,
-          "MaxIndividualPoints": 60,
+          "TotalPoints": 400,
+          //"MaxIndividualPoints": 60,
           "ItemCriterias": [
             {
               "Id": "FishOcean",
@@ -1187,7 +1208,7 @@
           "Description": "{{i18n:AquacultureSpecialtyFish.description}}",
           "Texture": "Maps/springobjects",
           "SpriteIndex": 162, // Lava Eel
-          "TotalPoints": 300,
+          "TotalPoints": 400,
           "MaxIndividualPoints": 60,
           "ItemCriterias": [
             {
@@ -1201,8 +1222,8 @@
           "Description": "{{i18n:AquacultureFood.description}}",
           "Texture": "Maps/springobjects",
           "SpriteIndex": 227, // Sashimi
-          "TotalPoints": 200,
-          "MaxIndividualPoints": 50,
+          "TotalPoints": 300,
+          "MaxIndividualPoints": 60,
           "ItemCriterias": [
             {
               "Id": "Seafood",

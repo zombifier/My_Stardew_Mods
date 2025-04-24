@@ -700,12 +700,17 @@ internal sealed class ModEntry : Mod {
       error = null;
       return true;
     }
+    if (soldObj.modData.ContainsKey(AlreadySoldToShopKey)) {
+      ModEntry.StaticMonitor.Log($"Item {soldObj.QualifiedItemId} also sold to the shop once", LogLevel.Info);
+      error = null;
+      return true;
+    }
     foreach (var objective in specialOrder.objectives) {
-      if (objective is ShipObjective shipObjective && !soldObj.modData.ContainsKey(AlreadySoldToShopKey)) {
+      if (objective is ShipObjective shipObjective) {
         shipObjective.OnItemShipped(Game1.player, soldObj, soldObj.sellToStorePrice() * soldObj.Stack);
-        soldObj.modData[AlreadySoldToShopKey] = "";
       }
     }
+    soldObj.modData[AlreadySoldToShopKey] = "";
     error = null;
     return true;
   }
