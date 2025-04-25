@@ -12,13 +12,14 @@ namespace Selph.StardewMods.ExtraAnimalConfig;
 internal sealed class ModEntry : Mod {
   internal new static IModHelper Helper { get;
     set;
-  }
+  } = null!;
 
-  internal static IMonitor StaticMonitor { get; set; }
-  internal static AnimalExtensionDataAssetHandler animalExtensionDataAssetHandler;
-  internal static EggExtensionDataAssetHandler eggExtensionDataAssetHandler;
-  internal static GrassDropExtensionDataAssetHandler grassDropExtensionDataAssetHandler;
-  internal static string UniqueId;
+  internal static IMonitor StaticMonitor { get; set; } = null!;
+  internal static AnimalExtensionDataAssetHandler animalExtensionDataAssetHandler = null!;
+  internal static EggExtensionDataAssetHandler eggExtensionDataAssetHandler = null!;
+  internal static GrassDropExtensionDataAssetHandler grassDropExtensionDataAssetHandler = null!;
+  internal static string UniqueId = null!;
+  internal static ExtraAnimalConfigApi ModApi = null!;
 
   internal static IVanillaPlusProfessions? vppApi;
 
@@ -26,6 +27,7 @@ internal sealed class ModEntry : Mod {
     Helper = helper;
     StaticMonitor = this.Monitor;
     UniqueId = this.ModManifest.UniqueID;
+    ModApi = new ExtraAnimalConfigApi();
 
     animalExtensionDataAssetHandler = new AnimalExtensionDataAssetHandler();
     eggExtensionDataAssetHandler = new EggExtensionDataAssetHandler();
@@ -52,6 +54,10 @@ internal sealed class ModEntry : Mod {
     helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
     helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
     helper.Events.World.LocationListChanged += OnLocationListChanged;
+  }
+
+  public override object GetApi() {
+    return ModApi;
   }
 
   void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {

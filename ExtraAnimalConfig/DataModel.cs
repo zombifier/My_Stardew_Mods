@@ -4,7 +4,8 @@ using System.Collections.Generic;
 namespace Selph.StardewMods.ExtraAnimalConfig;
 
 public class AnimalProduceExtensionData {
-  public GenericSpawnItemData? ItemQuery;
+  public GenericSpawnItemDataWithCondition? ItemQuery;
+  public List<GenericSpawnItemDataWithCondition> ItemQueries = [];
   public string? HarvestTool;
   public string? ProduceTexture;
   public Dictionary<string, string> SkinProduceTexture = new Dictionary<string, string>();
@@ -25,6 +26,7 @@ public class AnimalExtensionData {
   public float GlowRadius = 10f;
   public int? SpeedOverride = null;
   public List<AppearanceData> TextureOverrides = [];
+  public string? GoOutsideCondition = null;
   // LMAO
   public bool IsAttackAnimal = false;
   public int AttackDamage = 1;

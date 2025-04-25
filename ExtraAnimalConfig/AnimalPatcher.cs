@@ -212,6 +212,15 @@ sealed class AnimalDataPatcher {
           nameof(FarmAnimal.behaviors)),
         transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_ReplaceRainWinterTranspiler)));
 
+    // skinny animals
+    // this approach is dead, time for teleportation
+    //harmony.Patch(
+    //    original: AccessTools.Method(typeof(FarmAnimal),
+    //      nameof(FarmAnimal.GetBoundingBox)),
+    //    postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_GetBoundingBox_Postfix)));
+    //harmony.Patch(
+    //    original: AccessTools.Method(typeof(Character), nameof(Character.GetSpriteWidthForPositioning)),
+    //    postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.Character_GetSpriteWidthForPositioning_Postfix)));
   }
 
   static void FarmAnimal_isMale_Postfix(FarmAnimal __instance, ref bool __result) {
@@ -447,7 +456,7 @@ sealed class AnimalDataPatcher {
           continue;
         }
         if (!__instance.objects.ContainsKey(key)) {
-          SObject feedObj = SiloUtils.GetFeedFromAnySilo(feedId!);
+          SObject? feedObj = SiloUtils.GetFeedFromAnySilo(feedId!);
           if (feedObj == null) {
             return;
           }
@@ -516,6 +525,8 @@ sealed class AnimalDataPatcher {
       .Advance(3)
       .InsertAndAdvance(
           new CodeInstruction(OpCodes.Ldarg_0),
+          new CodeInstruction(OpCodes.Ldc_I4_S, (int)ProduceMethod.DigUp),
+          new CodeInstruction(OpCodes.Ldnull),
           new CodeInstruction(OpCodes.Call, CreateProduceType)
           )
       .RemoveInstructions(4);
@@ -546,6 +557,8 @@ sealed class AnimalDataPatcher {
       .InsertAndAdvance(
           new CodeInstruction(OpCodes.Ldloc_S, animalVar),
 //          new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(KeyValuePair<long, FarmAnimal>), nameof(KeyValuePair<long, FarmAnimal>.Value))),
+          new CodeInstruction(OpCodes.Ldc_I4_S, (int)ProduceMethod.Tool),
+          new CodeInstruction(OpCodes.Ldnull),
           new CodeInstruction(OpCodes.Call, CreateProduceType)
           )
       .RemoveInstructions(4);
@@ -573,6 +586,8 @@ sealed class AnimalDataPatcher {
       .InsertAndAdvance(
           new CodeInstruction(OpCodes.Ldarg_0),
           new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(MilkPail), nameof(MilkPail.animal))),
+          new CodeInstruction(OpCodes.Ldc_I4_S, (int)ProduceMethod.Tool),
+          new CodeInstruction(OpCodes.Ldarg_0),
           new CodeInstruction(OpCodes.Call, CreateProduceType)
           )
       .RemoveInstructions(4);
@@ -600,6 +615,8 @@ sealed class AnimalDataPatcher {
       .InsertAndAdvance(
           new CodeInstruction(OpCodes.Ldarg_0),
           new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Shears), nameof(Shears.animal))),
+          new CodeInstruction(OpCodes.Ldc_I4_S, (int)ProduceMethod.Tool),
+          new CodeInstruction(OpCodes.Ldarg_0),
           new CodeInstruction(OpCodes.Call, CreateProduceType)
           )
       .RemoveInstructions(4);
@@ -678,6 +695,8 @@ sealed class AnimalDataPatcher {
       .Advance(3)
       .InsertAndAdvance(
         new CodeInstruction(OpCodes.Ldarg_0),
+        new CodeInstruction(OpCodes.Ldc_I4_S, (int)ProduceMethod.DropOvernight),
+        new CodeInstruction(OpCodes.Ldnull),
         new CodeInstruction(OpCodes.Call, CreateProduceType))
       .RemoveInstructions(4);
 
@@ -965,9 +984,10 @@ sealed class AnimalDataPatcher {
   }
 
   static void FarmAnimal_CanLiveIn_Postfix(FarmAnimal __instance, ref bool __result, Building building) {
-    if (!building.isUnderConstruction() && building.GetIndoors() is AnimalHouse &&
-        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
-        animalExtensionData.ExtraHouses.Contains(building.buildingType.Value)) {
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
+        animalExtensionData.ExtraHouses.Count() > 0 &&
+        building is not null && !building.isUnderConstruction() && building.GetIndoors() is AnimalHouse &&
+         (building.GetData()?.ValidOccupantTypes?.Intersect(animalExtensionData.ExtraHouses).Any() ?? false)) {
       __result = true;
     }
   }
@@ -1001,4 +1021,20 @@ sealed class AnimalDataPatcher {
     });
     return matcher.InstructionEnumeration();
   }
+
+  //static void FarmAnimal_GetBoundingBox_Postfix(FarmAnimal __instance, ref Microsoft.Xna.Framework.Rectangle __result) {
+  //  if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
+  //      animalExtensionData.CollisionWidthOverride is not null && animalExtensionData.CollisionHeightOverride is not null) {
+  //    Vector2 vector = __instance.Position;
+  //    __result = new Microsoft.Xna.Framework.Rectangle((int)(vector.X + (float)(animalExtensionData.CollisionWidthOverride * 4 / 2) - 32f + 8f), (int)(vector.Y + (float)(animalExtensionData.CollisionHeightOverride * 4) - 64f + 8f), 32, 32);
+  //  }
+  //}
+
+  //static void Character_GetSpriteWidthForPositioning_Postfix(Character __instance, ref int __result) {
+  //  if (__instance is FarmAnimal animal &&
+  //      ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
+  //      animalExtensionData.CollisionWidthOverride is not null) {
+  //    __result = animalExtensionData.CollisionWidthOverride.Value;
+  //  }
+  //}
 }

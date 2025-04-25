@@ -295,10 +295,16 @@ public static class AnimalUtils {
 
   // the below functions false if the animal ignore rain/winter
   public static bool AnimalAffectedByRain(GameLocation location, FarmAnimal animal) {
-    if ((ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
-          animalExtensionData.IgnoreRain) ||
-      (animal.home?.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreRainKey) ?? false)) {
-      return false;
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData)) {
+      // Hijack this function to do GoOutsideCondition
+      if (animalExtensionData.GoOutsideCondition is not null &&
+          !GameStateQuery.CheckConditions(animalExtensionData.GoOutsideCondition, location, null, null, AnimalUtils.GetGoldenAnimalCracker(animal))) {
+        return true;
+      }
+      if (animalExtensionData.IgnoreRain ||
+          (animal.home?.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreRainKey) ?? false)) {
+        return false;
+      }
     }
     return location.IsRainingHere();
   }
@@ -357,12 +363,14 @@ public static class ExtraProduceUtils {
     return !IsHarvestMethod(animal, produceId, FarmAnimalHarvestType.DropOvernight);
   }
 
-  public static void DropOrAddToGrabber(FarmAnimal animal, string? produceId, out bool drop, out bool addToGrabber) {
+  public static void DropOrAddToGrabber(FarmAnimal animal, string? produceId, out bool drop, out bool addToGrabber, out bool debris) {
     drop = animal.GetHarvestType() == FarmAnimalHarvestType.DropOvernight;
     addToGrabber = animal.GetHarvestType() != FarmAnimalHarvestType.DigUp;
+    debris = false;
     if (GetHarvestMethodOverride(animal, produceId, out var harvestMethod)) {
       drop = harvestMethod == "DropOvernight";
       addToGrabber = harvestMethod != "DigUp";
+      debris = harvestMethod == "Debris";
     }
   }
 
@@ -375,7 +383,7 @@ public static class ExtraProduceUtils {
 
   public static string CachedProduceQualityKey = $"${ModEntry.UniqueId}.CachedProduceQuality";
 
-  public static SObject CreateProduce(string produceId, FarmAnimal animal) {
+  public static SObject CreateProduce(string produceId, FarmAnimal animal, ProduceMethod produceMethod, Tool? tool = null) {
     // Restore cached quality if set
     if (animal.modData.TryGetValue(CachedProduceQualityKey, out var cachedProduceQualityStr) &&
         Int32.TryParse(cachedProduceQualityStr, out var cachedProduceQuality)) {
@@ -383,20 +391,40 @@ public static class ExtraProduceUtils {
       animal.modData.Remove(CachedProduceQualityKey);
     }
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData) &&
-        animalProduceExtensionData.ItemQuery != null) {
-      var context = new ItemQueryContext(animal.home?.GetIndoors(), Game1.GetPlayer(animal.ownerID.Value), Game1.random, "ExtraAnimalConfig animal " + animal.type.Value + " producing");
-      var item = ItemQueryResolver.TryResolveRandomItem(animalProduceExtensionData.ItemQuery, context);
-      if (item is SObject obj) {
-        if (animalProduceExtensionData.IgnoreAnimalQuality) {
-          animal.modData[CachedProduceQualityKey] = animal.produceQuality.ToString();
-          animal.produceQuality.Value = obj.Quality;
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData)) {
+      var context = new ItemQueryContext(animal.currentLocation, Game1.GetPlayer(animal.ownerID.Value), Game1.random, "ExtraAnimalConfig animal " + animal.type.Value + " producing");
+      if (animalProduceExtensionData.ItemQuery != null) {
+        var item = ItemQueryResolver.TryResolveRandomItem(animalProduceExtensionData.ItemQuery, context);
+        if (item is SObject obj) {
+          if (animalProduceExtensionData.IgnoreAnimalQuality) {
+            animal.modData[CachedProduceQualityKey] = animal.produceQuality.ToString();
+            animal.produceQuality.Value = obj.Quality;
+          }
+          ModEntry.ModApi.RunAnimalProduceCreatedEvents(animal, ref obj, produceMethod, tool);
+          return obj;
         }
-        return obj;
+      } else if (animalProduceExtensionData.ItemQueries.Count > 0) {
+        foreach (var itemQuery in animalProduceExtensionData.ItemQueries) {
+          if (itemQuery.Condition != null &&
+              !GameStateQuery.CheckConditions(itemQuery.Condition, animal.currentLocation, null, null, AnimalUtils.GetGoldenAnimalCracker(animal))) {
+            continue;
+          }
+          var item = ItemQueryResolver.TryResolveRandomItem(itemQuery, context);
+          if (item is SObject obj) {
+            if (animalProduceExtensionData.IgnoreAnimalQuality) {
+              animal.modData[CachedProduceQualityKey] = animal.produceQuality.ToString();
+              animal.produceQuality.Value = obj.Quality;
+            }
+            ModEntry.ModApi.RunAnimalProduceCreatedEvents(animal, ref obj, produceMethod, tool);
+            return obj;
+          }
+        }
       }
     }
     // Vanilla fallback
-    return ItemRegistry.Create<SObject>(produceId);
+    var o = ItemRegistry.Create<SObject>(produceId);
+    ModEntry.ModApi.RunAnimalProduceCreatedEvents(animal, ref o, produceMethod, tool);
+    return o;
   }
 
   // Queue the additional produces into the animal's 'queue'. Or drop them/add them to
@@ -441,18 +469,27 @@ public static class ExtraProduceUtils {
       foreach (var key in animal.modData.Keys) {
         if (key.StartsWith(CurrentProduceIdKeyPrefix)) {
           var produceId = animal.modData[key];
-          var produce = CreateProduce(produceId, animal);
-          produce.CanBeSetDown = false;
-          produce.Quality = animal.produceQuality.Value;
-          if (animal.hasEatenAnimalCracker.Value) {
-            produce.Stack = 2;
-          }
-
-          DropOrAddToGrabber(animal, produceId, out bool drop, out bool addToGrabber);
+          DropOrAddToGrabber(animal, produceId, out bool drop, out bool addToGrabber, out bool debris);
+          SObject? produce = null;
+          // We get produce lazily to avoid firing AnimalProduceCreated if not needed
+          var getProduce = () => {
+            if (produce is not null) return produce;
+            else {
+              produce = CreateProduce(produceId, animal,
+                  drop ? ProduceMethod.DropOvernight :
+                  (debris ? ProduceMethod.Debris : ProduceMethod.Tool));
+              produce.CanBeSetDown = false;
+              produce.Quality = animal.produceQuality.Value;
+              if (animal.hasEatenAnimalCracker.Value) {
+                produce.Stack = 2;
+              }
+              return produce;
+            }
+          };
           bool addedToGrabber = false;
           if (addToGrabber) {
             foreach (SObject machine in location.objects.Values) {
-              if (machine.QualifiedItemId == "(BC)165" && machine.heldObject.Value is Chest chest && chest.addItem(produce) == null) {
+              if (machine.QualifiedItemId == "(BC)165" && machine.heldObject.Value is Chest chest && chest.addItem(getProduce()) == null) {
                 machine.showNextIndex.Value = true;
                 addedToGrabber = true;
                 keysToRemove.Add(key);
@@ -462,7 +499,8 @@ public static class ExtraProduceUtils {
           }
           if (!addedToGrabber) {
             if (drop) {
-              produce.Stack = 1;
+              getProduce();
+              produce!.Stack = 1;
               Utility.spawnObjectAround(animal.Tile, produce, location);
               if (animal.hasEatenAnimalCracker.Value) {
                 SObject o = (SObject)produce.getOne();
@@ -526,7 +564,7 @@ public static class ExtraProduceUtils {
       }
     }
     foreach (var produceId in debrisToDrop) {
-      var produce = CreateProduce(produceId, animal);
+      var produce = CreateProduce(produceId, animal, ProduceMethod.Debris);
       produce.Stack = 1;
       produce.Quality = animal.produceQuality.Value;
       var debris = new Debris(-2, 1, animal.Tile * 64f, animal.Tile * 64f, 0.1f) {

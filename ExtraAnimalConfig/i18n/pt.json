@@ -1,0 +1,5 @@
+{
+  "selph.ExtraAnimalConfig.AddedToSiloMsg": "{{count}} unidades de {{displayName}} foram adicionadas ao silo.",
+  "selph.ExtraAnimalConfig.SiloCountMsg": "Quantidade de {{displayName}}: {{count}}/{{maxCount}}",
+  "selph.ExtraAnimalConfig.HopperEmpty": "O funil está vazio. Faça um silo para armazenar a ração e encha ele.",
+}
