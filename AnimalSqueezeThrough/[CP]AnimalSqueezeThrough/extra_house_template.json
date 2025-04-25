@@ -1,0 +1,24 @@
+{
+  "Changes": [
+    // Do this so I don't have to change Chicken Feed lmao
+    {
+      "LogName": "Set coop as main house - {{Animal}}",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "Fields": {
+        "{{Animal}}": {
+          "House": "Coop",
+        },
+      },
+    },
+    {
+      "LogName": "Add barn as extra house - {{Animal}}",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["{{Animal}}", "ExtraHouses"],
+      "Entries": {
+        "Barn": "Barn",
+      }
+    },
+  ]
+}

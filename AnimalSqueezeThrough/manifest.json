@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Animal Squeeze Through",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Allows animals who's bigger than their animal house's teeny door to squeeze through regardless.",
+  "UniqueID": "selph.AnimalSqueezeThrough",
+  "EntryDll": "AnimalSqueezeThrough.dll",
+  "MinimumApiVersion": "4.0.9",
+  "UpdateKeys": ["Nexus:33514"],
+}

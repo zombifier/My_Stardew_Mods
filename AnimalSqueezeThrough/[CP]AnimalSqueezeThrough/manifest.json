@@ -1,0 +1,16 @@
+{
+  "Name": "[CP] Animal Squeeze Through",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Allows ostriches, and modded poultry like geese and turkeys, to live in coops as well as barns.",
+  "UniqueID": "selph.AnimalSqueezeThroughCP",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {"UniqueID": "selph.AnimalSqueezeThrough", "IsRequired": true},
+    {"UniqueID": "selph.ExtraAnimalConfig", "IsRequired": true},
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "UpdateKeys": ["Nexus:???"],
+}

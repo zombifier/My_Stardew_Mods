@@ -1,0 +1,89 @@
+{
+  "Format": "2.6.0",
+  "Changes": [
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Ostrich",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Lumisteria.MtVapius_Goose",
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Lumisteria.MtVapius_StellarGoose",
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Mizu.Turkey_BrownTurkey",
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Mizu.Turkey_WhiteTurkey",
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Goose",
+      },
+      "When": {
+        "HasMod |contains=birdb.Goose": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "WildGoose",
+      },
+      "When": {
+        "HasMod |contains=birdb.Goose": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "BrownGoose",
+      },
+      "When": {
+        "HasMod |contains=birdb.Goose": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Rabbit",
+      },
+    },
+  ]
+}
