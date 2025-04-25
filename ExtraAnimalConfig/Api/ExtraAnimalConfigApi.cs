@@ -30,7 +30,7 @@ public class ExtraAnimalConfigApi : IExtraAnimalConfigApi {
       try {
         var ev = new AnimalProduceCreatedEvent(animal, produce, produceMethod, tool);
         del.Invoke(ev);
-        produce ??= ev.produce;
+        produce = ev.produce ?? produce;
       } catch (Exception e) {
         ModEntry.StaticMonitor.Log("Error processing AnimalProduceCreatedEvent: " + e.ToString(), LogLevel.Error);
       }
