@@ -11,6 +11,7 @@ using StardewValley.Triggers;
 using StardewValley.Internal;
 using StardewValley.Menus;
 using StardewValley.GameData.Machines;
+using StardewValley.GameData.Buildings;
 using StardewValley.GameData.FarmAnimals;
 using StardewValley.TerrainFeatures;
 using HarmonyLib;
@@ -212,6 +213,11 @@ sealed class AnimalDataPatcher {
           nameof(FarmAnimal.behaviors)),
         transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_ReplaceRainWinterTranspiler)));
 
+    harmony.Patch(
+        original: AccessTools.Method(typeof(SObject),
+          nameof(SObject.OutputIncubator)),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.SObject_OutputIncubator_Postfix)));
+
     // skinny animals
     // this approach is dead, time for teleportation
     //harmony.Patch(
@@ -292,6 +298,23 @@ sealed class AnimalDataPatcher {
       id = eggItem.modData[CachedAnimalIdKey];
       data = animalData;
       __result = true;
+      return;
+    }
+    if (!__result && eggItem.HasTypeObject()) {
+      List<string>? list = location?.ParentBuilding?.GetData()?.ValidOccupantTypes;
+      foreach (var (animalId, farmAnimalData) in Game1.farmAnimalData) {
+        // We don't need to check for egg extension data since that's already handled
+        if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animalId, out var animalExtensionData) &&
+            animalExtensionData.ExtraHouses.Count() > 0 &&
+            (list?.Intersect(animalExtensionData.ExtraHouses).Any() ?? false) &&
+            (farmAnimalData.EggItemIds?.Count() > 0) &&
+            (farmAnimalData.EggItemIds?.Contains(eggItem.ItemId) ?? false)) {
+          id = animalId;
+          data = farmAnimalData;
+          __result = true;
+          return;
+        }
+      }
     }
   }
 
@@ -752,7 +775,7 @@ sealed class AnimalDataPatcher {
           shownMessage = true;
         }
       } else if (!shownMessage) {
-				Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
+        Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
         shownMessage = true;
       }
     }
@@ -837,14 +860,14 @@ sealed class AnimalDataPatcher {
     }
   }
 
-	static void MilkPail_DoFunction_Prefix(ref FarmAnimal __state, MilkPail __instance, GameLocation location, int x, int y, int power, Farmer who) {
+  static void MilkPail_DoFunction_Prefix(ref FarmAnimal __state, MilkPail __instance, GameLocation location, int x, int y, int power, Farmer who) {
     if (__instance.animal is null) {
       return;
     }
     __state = __instance.animal;
   }
 
-	static void MilkPail_DoFunction_Postfix(FarmAnimal? __state, MilkPail __instance, GameLocation location, int x, int y, int power, Farmer who) {
+  static void MilkPail_DoFunction_Postfix(FarmAnimal? __state, MilkPail __instance, GameLocation location, int x, int y, int power, Farmer who) {
     if (__state is null) {
       return;
     }
@@ -861,14 +884,14 @@ sealed class AnimalDataPatcher {
     }
   }
 
-	static void Shears_DoFunction_Prefix(ref FarmAnimal __state, Shears __instance, GameLocation location, int x, int y, int power, Farmer who) {
+  static void Shears_DoFunction_Prefix(ref FarmAnimal __state, Shears __instance, GameLocation location, int x, int y, int power, Farmer who) {
     if (__instance.animal is null) {
       return;
     }
     __state = __instance.animal;
   }
 
-	static void Shears_DoFunction_Postfix(FarmAnimal? __state, Shears __instance, GameLocation location, int x, int y, int power, Farmer who) {
+  static void Shears_DoFunction_Postfix(FarmAnimal? __state, Shears __instance, GameLocation location, int x, int y, int power, Farmer who) {
     if (__state is null) {
       return;
     }
@@ -879,11 +902,11 @@ sealed class AnimalDataPatcher {
     ExtraProduceUtils.PopQueueAndReplaceProduce(__instance);
   }
 
-	static void FarmAnimal_behaviors_Prefix(FarmAnimal __instance, GameTime time, GameLocation location) {
+  static void FarmAnimal_behaviors_Prefix(FarmAnimal __instance, GameTime time, GameLocation location) {
     ExtraProduceUtils.ReplaceCurrentProduceWithMatching(__instance, FarmAnimalHarvestType.DigUp);
   }
 
-	static void FarmAnimal_behaviors_Postfix(FarmAnimal __instance, ref bool __result, GameTime time, GameLocation location) {
+  static void FarmAnimal_behaviors_Postfix(FarmAnimal __instance, ref bool __result, GameTime time, GameLocation location) {
     // Evil patch >:)
     if (!Game1.IsMasterGame || __instance.isBaby() || __instance.home is null || __instance.pauseTimer > 0 ||
         Game1.timeOfDay >= 2000 || !__instance.currentLocation.farmers.Any()) {
@@ -1022,6 +1045,21 @@ sealed class AnimalDataPatcher {
     return matcher.InstructionEnumeration();
   }
 
+  static void SObject_OutputIncubator_Postfix(ref Item? __result, SObject machine, Item inputItem, bool probe, MachineItemOutput outputData, Farmer player, ref int? overrideMinutesUntilReady) {
+    if (__result is not null) return;
+    BuildingData? buildingData = machine.Location.ParentBuilding?.GetData();
+    if (buildingData == null) {
+      return;
+    }
+    if (FarmAnimal.TryGetAnimalDataFromEgg(inputItem, machine.Location, out string id, out var animalDataFromEgg) &&
+        ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(id, out var animalExtensionData) &&
+        animalExtensionData.ExtraHouses.Count() > 0 &&
+        (buildingData.ValidOccupantTypes?.Intersect(animalExtensionData.ExtraHouses).Any() ?? false)) {
+      overrideMinutesUntilReady = ((animalDataFromEgg.IncubationTime > 0) ? animalDataFromEgg.IncubationTime : 9000);
+      __result = inputItem.getOne();
+    }
+  }
+
   //static void FarmAnimal_GetBoundingBox_Postfix(FarmAnimal __instance, ref Microsoft.Xna.Framework.Rectangle __result) {
   //  if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
   //      animalExtensionData.CollisionWidthOverride is not null && animalExtensionData.CollisionHeightOverride is not null) {
@@ -1037,4 +1075,5 @@ sealed class AnimalDataPatcher {
   //    __result = animalExtensionData.CollisionWidthOverride.Value;
   //  }
   //}
+  //
 }
