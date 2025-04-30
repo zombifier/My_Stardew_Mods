@@ -416,3 +416,6 @@ hit with lightning. Follow the below instructions:
 * You're free to use any other machine features (e.g. conditions, stack count,
   ExtraMachineConfig byproduce, make it floating, or even mix in regular
   machine rules with the lightning rule).
+* Also note that lightning only strikes on the farm. Lightning rod placed
+  outside of the farm will not get hit. If you're a modder and thinking of
+  adding lightning strikes outside of the farm, please reach out to me for compat.
