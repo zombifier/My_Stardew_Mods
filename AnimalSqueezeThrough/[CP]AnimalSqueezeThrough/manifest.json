@@ -8,6 +8,15 @@
   "Dependencies": [
     {"UniqueID": "selph.AnimalSqueezeThrough", "IsRequired": true},
     {"UniqueID": "selph.ExtraAnimalConfig", "IsRequired": true},
+    {"UniqueID": "Lumisteria.MtVapius", "IsRequired": false},
+    {"UniqueID": "Mizu.Turkey", "IsRequired": false},
+    {"UniqueID": "birdb.CP.Pigeons", "IsRequired": false},
+    {"UniqueID": "birdb.Goose", "IsRequired": false},
+    {"UniqueID": "Syanide.BFAVPeacock", "IsRequired": false},
+    {"UniqueID": "ilucie.EmuBarnAnimal", "IsRequired": false},
+    {"UniqueID": "NMZ.RCBA", "IsRequired": false},
+    {"UniqueID": "Trent.NewAnimals", "IsRequired": false},
+    {"UniqueID": "i24KittyKat.BVGCP", "IsRequired": false},
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"

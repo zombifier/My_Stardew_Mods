@@ -82,7 +82,190 @@
       "Action": "Include",
       "FromFile": "extra_house_template.json",
       "LocalTokens": {
+        "Animal": "Peacock",
+      },
+      "When": {
+        "HasMod |contains=Syanide.BFAVPeacock": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Peacock",
+      },
+      "When": {
+        "HasMod |contains=Syanide.BFAVPeacock": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
         "Animal": "Rabbit",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Emu",
+      },
+      "When": {
+        "HasMod |contains=ilucie.EmuBarnAnimal": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "RealisticEmu",
+      },
+      "When": {
+        "HasMod |contains=ilucie.EmuBarnAnimal": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Crane",
+      },
+      "When": {
+        "HasMod |contains=NMZ.RCBA": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Peahen",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Blue Peacock",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Green Peacock",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Salmon Peacock",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Brown Peacock",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "White Peacock",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Celestial Peacock",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "i24KittyKat.BVGCP_BlueOstrich",
+      },
+      "When": {
+        "HasMod |contains=i24KittyKat.BVGCP": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "i24KittyKat.BVGCP_VoidOstrich",
+      },
+      "When": {
+        "HasMod |contains=i24KittyKat.BVGCP": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "i24KittyKat.BVGCP_GoldenOstrich",
+      },
+      "When": {
+        "HasMod |contains=i24KittyKat.BVGCP": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "i24KittyKat.BVGCP_BlueTurkey",
+      },
+      "When": {
+        "HasMod |contains=i24KittyKat.BVGCP": "true",
+        "HasMod |contains=Mizu.Turkey": "true"
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "i24KittyKat.BVGCP_VoidTurkey",
+      },
+      "When": {
+        "HasMod |contains=i24KittyKat.BVGCP": "true",
+        "HasMod |contains=Mizu.Turkey": "true"
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "i24KittyKat.BVGCP_GoldenTurkey",
+      },
+      "When": {
+        "HasMod |contains=i24KittyKat.BVGCP": "true",
+        "HasMod |contains=Mizu.Turkey": "true"
       },
     },
   ]

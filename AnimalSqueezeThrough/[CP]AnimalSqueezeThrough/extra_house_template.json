@@ -8,6 +8,8 @@
       "Fields": {
         "{{Animal}}": {
           "House": "Coop",
+          "ProfessionForHappinessBoost": 2,
+          "ProfessionForQualityBoost": 2,
         },
       },
     },
