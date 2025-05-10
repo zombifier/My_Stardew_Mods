@@ -554,6 +554,25 @@ sealed class MachineHarmonyPatcher {
 
   // If a machine ran out of automatic producing count, return false.
   public static void MachineDataUtility_CanApplyOutput_Postfix(ref bool __result, SObject machine, MachineOutputRule rule, MachineOutputTrigger trigger, Item inputItem, Farmer who, GameLocation location, ref MachineOutputTriggerRule triggerRule, ref bool matchesExceptCount) {
+    // skip this output rule if all output items are missing fuels
+    List<MachineItemOutput>? outputs = rule?.OutputItem;
+    if (outputs != null && outputs.Count > 0) {
+      IInventory inventory = SObject.autoLoadFrom ?? who.Items;
+      bool noneMatch = true;
+      foreach (MachineItemOutput output in outputs) {
+        if (output.CustomData != null) {
+          if (ModEntry.ModApi.GetFuelsForThisRecipe(output, inputItem, inventory) is null) {
+	    continue;
+          }
+        }
+        noneMatch = false;
+        break;
+      }
+      if (noneMatch) {
+        __result = false;
+      }
+    }
+
     if (trigger == MachineOutputTrigger.OutputCollected &&
         machine.modData.TryGetValue(AutomaticProduceCountRemainingKey, out var str) &&
         Int32.TryParse(str, out var automaticProduceCountRemaining) &&
