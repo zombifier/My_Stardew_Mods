@@ -15,6 +15,7 @@ content packs. For users, install the mod as usual from the link above.
 - [Extra Machine Configuration Framework](#extra-machine-configuration-framework)
    * [Table of Contents](#table-of-contents)
    * [Item Features](#item-features)
+      + [Icons and descriptions for the new buff attributes](#icons-and-descriptions-for-the-new-buff-attributes)
       + [Draw smoke particles around item](#draw-smoke-particles-around-item)
       + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
       + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
@@ -39,10 +40,19 @@ content packs. For users, install the mod as usual from the link above.
       + [Custom slime incubators](#custom-slime-incubators)
       + [Machines that spit out the input item when removed](#machines-that-spit-out-the-input-item-when-removed)
       + [On machine ready effects](#on-machine-ready-effects)
+      + [Edibility based on input](#edibility-based-on-input)
    * [Crafting/Cooking Features](#craftingcooking-features)
       + [Use some machine-like features in crafting and cooking (namely copy flavor and color)](#use-some-machine-like-features-in-crafting-and-cooking-namely-copy-flavor-and-color)
 
 ## Item Features
+
+### Icons and descriptions for the new buff attributes
+
+The new buff attributes added in 1.6.9 (CombatLevel, AttackMultiplier,
+CriticalChanceMultiplier, CriticalPowerMultiplier, Immunity,
+KnockbackMultiplier, WeaponPrecisionMultiplier, and WeaponSpeedMultiplier) now
+have a buff icon and show up in item description where they previously were
+hidden. This is a passive change.
 
 ### Draw smoke particles around item
 
@@ -135,6 +145,31 @@ stopping at the first item query that gives an item.
 
 This action can be used to add flavored items, add items only if a GSQ
 satisfies, or add a random item from a list.
+
+----
+
+### On buff removed trigger
+
+You can listen for the `selph.ExtraMachineConfig_BuffRemoved` trigger in
+[trigger actions](https://stardewvalleywiki.com/Modding:Trigger_actions). The following
+game state queries can be used in the trigger block's `Condition` field:
+
+* `selph.ExtraMachineConfig_BUFF_NAME buffName`: Whether this buff has a
+  specific name. For food/drink buffs, this is the food/drink item's `Name` in
+  its object data. For other buff sources, the below GSQ should be used.
+* `selph.ExtraMachineConfig_BUFF_ID buffId`: Whether this buff has a specific ID. In vanilla, this can be:
+  *  the key in `Data/Buffs`
+  * `iridiumspur`: Iridium Spur buff
+  * `CalicoStatueSpeed`: the speed boost from Calico Statues during the Desert Festival
+  * `DesertFestival`: the buff from eating the Desert Festival food
+  * `food`: a food buff
+  * `drink`: a drink buff
+
+NOTE:
+* Beware that this can fire multiple times when a food with multiple buffs expires.
+* For C# authors, the trigger passes a Weeds item as the target item, of which
+  the GSQs checks for the `modData` fields `selph.ExtraMachineConfig_BuffName`
+  and `selph.ExtraMachineConfig_BuffId`.
 
 ----
 
@@ -1029,6 +1064,27 @@ This example makes the keg play the wood chop sound, a brief funky animation, an
 ```
 
 </details>
+
+-----
+
+### Edibility based on input 
+
+In machine output's `CustomData`:
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.InputEdibilityMultiplier` | If set, the output's edibility will be a multiplier of the primary input's edibility. For reference, the vanilla Jelly is 2. This will apply even if the input item's edibility is negative.|
+
+-----
+
+### Colored draw layers based on output item
+
+Set these fields on the machine's top level `CustomFields` field in `Data/Machines`.
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.DrawLayerTexture` | The texture asset to use for the extra draw layer on top of the machine. This will be drawn if the machine has an output item (whether ready or processing). Arrange it similarly to the big craftables sheet (ie. 1x2). |
+| `selph.ExtraMachineConfig.DrawLayerTextureIndex` | The starting index inside the texture. NOTE: If the machine itself has a work/loading effect that changes it frame, the offset will also be applied to the draw layer's value. This is to also allow the layer to animate.|
 
 -----
 
