@@ -99,7 +99,8 @@ sealed class MachineHarmonyPatcher {
         original: AccessTools.Method(typeof(SObject),
           nameof(SObject.PlaceInMachine)),
         prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_PlaceInMachine_Prefix)),
-        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_PlaceInMachine_Postfix)));
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_PlaceInMachine_Postfix)),
+        transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_PlaceInMachine_Transpiler)));
 
     harmony.Patch(
         original: AccessTools.Method(typeof(MachineDataUtility),
@@ -223,7 +224,6 @@ sealed class MachineHarmonyPatcher {
     if (outputs == null || outputs.Count < 0) {
       return;
     }
-    string? invalidMessage = null;
     IInventory inventory = SObject.autoLoadFrom ?? who.Items;
     List<MachineItemOutput> newOutputs = new List<MachineItemOutput>();
     foreach (MachineItemOutput output in outputs) {
@@ -233,17 +233,9 @@ sealed class MachineHarmonyPatcher {
       }
       if (ModEntry.ModApi.GetFuelsForThisRecipe(output, inputItem, inventory) is not null) {
         newOutputs.Add(output);
-      } else {
-        if (output.CustomData.TryGetValue(RequirementInvalidMsgKey, out var msg)) {
-          invalidMessage ??= msg;
-        }
       }
     }
     outputs = newOutputs;
-    if (outputs.Count == 0 && invalidMessage != null && who.IsLocalPlayer &&
-        SObject.autoLoadFrom == null) {
-      Game1.showRedMessage(invalidMessage);
-    }
   }
 
   // This patch:
@@ -552,27 +544,85 @@ sealed class MachineHarmonyPatcher {
     enableGetOutputItemSideEffect = false;
   }
 
-  // If a machine ran out of automatic producing count, return false.
-  public static void MachineDataUtility_CanApplyOutput_Postfix(ref bool __result, SObject machine, MachineOutputRule rule, MachineOutputTrigger trigger, Item inputItem, Farmer who, GameLocation location, ref MachineOutputTriggerRule triggerRule, ref bool matchesExceptCount) {
+  public static IEnumerable<CodeInstruction> SObject_PlaceInMachine_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+  {
+    var matcher = new CodeMatcher(instructions, generator);
+    return matcher
+      .MatchStartForward([
+        new(OpCodes.Call, AccessTools.Method(typeof(MachineDataUtility), nameof(MachineDataUtility.TryGetMachineOutputRule))),
+        new() { opcodes = [OpCodes.Brtrue, OpCodes.Brtrue_S] },
+      ])
+      .ThrowIfNotMatch($"could not find branch on {typeof(MachineDataUtility)}.{nameof(MachineDataUtility.TryGetMachineOutputRule)}")
+      .Insert([
+        new(OpCodes.Ldnull),
+        new(OpCodes.Stsfld, AccessTools.Field(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.invalidMessage))),
+      ])
+      .MatchEndForward([
+        new(OpCodes.Ldarg_S, (byte)5), // showMessages
+        new() { opcodes = [OpCodes.Brfalse, OpCodes.Brfalse_S] },
+      ])
+      .ThrowIfNotMatch("could not find branch on showMessages")
+      .MatchEndForward([
+        new(OpCodes.Ldarg_3), // probe
+        new() { opcodes = [OpCodes.Brtrue, OpCodes.Brtrue_S] },
+      ])
+      .ThrowIfNotMatch("could not find branch on probe")
+      .MatchEndForward([
+        new(OpCodes.Ldsfld, AccessTools.Field(typeof(SObject), nameof(SObject.autoLoadFrom))),
+        new() { opcodes = [OpCodes.Brtrue, OpCodes.Brtrue_S] },
+      ])
+      .ThrowIfNotMatch($"could not find branch on {typeof(SObject)}.{nameof(SObject.autoLoadFrom)}")
+      .Insert([
+        matcher.Instruction,
+        new(OpCodes.Ldarg_S, 4), // who
+        new(OpCodes.Call, AccessTools.Method(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_PlaceInMachine_showInvalidMessage))),
+      ])
+      .InstructionEnumeration();
+  }
+
+  private static bool SObject_PlaceInMachine_showInvalidMessage(Farmer who)
+  {
+    if (invalidMessage is not null) {
+      Game1.showRedMessage(invalidMessage);
+      who.ignoreItemConsumptionThisFrame = true;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // reset to null immediately before collecting invalid messages
+  private static string? invalidMessage = null;
+
+  public static void MachineDataUtility_CanApplyOutput_Postfix(ref bool __result, SObject machine, MachineOutputRule rule, MachineOutputTrigger trigger, Item inputItem, Farmer who, GameLocation location, ref MachineOutputTriggerRule? triggerRule, ref bool matchesExceptCount) {
     // skip this output rule if all output items are missing fuels
-    List<MachineItemOutput>? outputs = rule?.OutputItem;
-    if (outputs != null && outputs.Count > 0) {
-      IInventory inventory = SObject.autoLoadFrom ?? who.Items;
-      bool noneMatch = true;
-      foreach (MachineItemOutput output in outputs) {
-        if (output.CustomData != null) {
-          if (ModEntry.ModApi.GetFuelsForThisRecipe(output, inputItem, inventory) is null) {
-	    continue;
+    if (__result) {
+      List<MachineItemOutput>? outputs = rule?.OutputItem;
+      if (outputs != null && outputs.Count > 0) {
+        IInventory inventory = SObject.autoLoadFrom ?? who.Items;
+        bool noneMatch = true;
+        foreach (MachineItemOutput output in outputs) {
+          if (output.CustomData != null) {
+            if (ModEntry.ModApi.GetFuelsForThisRecipe(output, inputItem, inventory) is null) {
+              if (output.CustomData.TryGetValue(RequirementInvalidMsgKey, out var msg)) {
+                invalidMessage ??= msg;
+              }
+              continue;
+            }
           }
+          noneMatch = false;
+          break;
         }
-        noneMatch = false;
-        break;
-      }
-      if (noneMatch) {
-        __result = false;
+        if (noneMatch) {
+          matchesExceptCount = false;
+          triggerRule = null;
+          __result = false;
+          return;
+        }
       }
     }
 
+    // If a machine ran out of automatic producing count, return false.
     if (trigger == MachineOutputTrigger.OutputCollected &&
         machine.modData.TryGetValue(AutomaticProduceCountRemainingKey, out var str) &&
         Int32.TryParse(str, out var automaticProduceCountRemaining) &&
