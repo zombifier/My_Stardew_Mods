@@ -23,6 +23,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Items with multiple flavors and colors](#items-with-multiple-flavors-and-colors)
       + [Items that can be used as slingshot ammo](#items-that-can-be-used-as-slingshot-ammo)
       + [Use item queries in add item trigger action](#use-item-queries-in-add-item-trigger-action)
+      + [On buff removed trigger](#on-buff-removed-trigger)
    * [Machine Features](#machine-features)
       + [Passive features/fixes](#passive-features-fixes)
       + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
@@ -41,6 +42,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Machines that spit out the input item when removed](#machines-that-spit-out-the-input-item-when-removed)
       + [On machine ready effects](#on-machine-ready-effects)
       + [Edibility based on input](#edibility-based-on-input)
+      + [Colored draw layers based on output item](#colored-draw-layers-based-on-output-item)
    * [Crafting/Cooking Features](#craftingcooking-features)
       + [Use some machine-like features in crafting and cooking (namely copy flavor and color)](#use-some-machine-like-features-in-crafting-and-cooking-namely-copy-flavor-and-color)
 
