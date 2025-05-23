@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StardewValley;
+using StardewValley.Buffs;
 using StardewValley.GameData.Objects;
 using StardewValley.Triggers;
 using StardewValley.Delegates;
@@ -12,6 +13,7 @@ using StardewValley.Internal;
 using StardewValley.Objects;
 using StardewValley.Menus;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using Leclair.Stardew.BetterCrafting;
@@ -32,11 +34,24 @@ internal sealed class ModEntry : Mod {
 
   internal static string JunimoLovedItemContextTag = "junimo_loved_item";
 
+  internal static string BuffStringsAssetName = null!;
+  internal static string BuffsIconsAssetName = null!;
+
+  static Texture2D? buffsIcons = null;
+  static Texture2D BuffsIcons() {
+    if (buffsIcons is null) {
+      buffsIcons = Game1.content.Load<Texture2D>(BuffsIconsAssetName);
+    }
+    return buffsIcons!;
+  }
+
   public override void Entry(IModHelper helper) {
     Helper = helper;
     StaticMonitor = this.Monitor;
     ModApi = new ExtraMachineConfigApi();
     UniqueId = this.ModManifest.UniqueID;
+    BuffStringsAssetName = $"{UniqueId}/BuffStrings";
+    BuffsIconsAssetName = $"{UniqueId}/BuffsIcons";
 
     extraOutputAssetHandler = new ExtraOutputAssetHandler();
     extraCraftingConfigAssetHandler = new ExtraCraftingConfigAssetHandler();
@@ -47,6 +62,7 @@ internal sealed class ModEntry : Mod {
     MachineHarmonyPatcher.ApplyPatches(harmony);
     SmokedItemHarmonyPatcher.ApplyPatches(harmony);
     CraftingHarmonyPatcher.ApplyPatches(harmony);
+    TooltipPatcher.ApplyPatches(harmony);
 
     extraOutputAssetHandler.RegisterEvents(Helper);
     extraCraftingConfigAssetHandler.RegisterEvents(Helper);
@@ -54,12 +70,18 @@ internal sealed class ModEntry : Mod {
 
     Helper.Events.GameLoop.DayStarted += OnDayStartedJunimoHut;
     Helper.Events.GameLoop.GameLaunched += OnGameLaunchedBetterCrafting;
+    Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
     Helper.Events.Content.AssetRequested += OnAssetRequested;
 
     // Register item query
     ItemQueryResolver.Register($"{UniqueId}_FLAVORED_ITEM", flavoredItemQuery);
-    // Register trigger action
+    // Register triggers
+    TriggerActionManager.RegisterTrigger($"{UniqueId}_BuffRemoved");
     TriggerActionManager.RegisterAction($"{UniqueId}_AddItemQuery", addItemQueryAction);
+    // Register game state queries
+    // See MachineHarmonyPatcher for where the trigger is being raised
+    GameStateQuery.Register($"{UniqueId}_BUFF_NAME", BUFF_NAME);
+    GameStateQuery.Register($"{UniqueId}_BUFF_ID", BUFF_ID);
 
     try {
       if (Helper.ModRegistry.IsLoaded("Pathoschild.Automate")) {
@@ -95,6 +117,27 @@ internal sealed class ModEntry : Mod {
         }
       }
     }
+  }
+
+  static string GetMultiplierBuffString(float value, string key) {
+    return Game1.content.LoadString(key, $"+{value * 100}%");
+  }
+
+  static string GetBuffString(float value, string key) {
+    return Game1.content.LoadString(key, $"+{value}");
+  }
+
+  public void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
+    BuffsDisplay.displayAttributes.AddRange(new List<BuffAttributeDisplay> {
+			new BuffAttributeDisplay(() => Game1.buffsIcons, 20, (Buff buff) => buff.effects.CombatLevel.Value, (float value) => GetBuffString(value, "Strings/UI:ItemHover_Buff3")),
+			new BuffAttributeDisplay(BuffsIcons, 0, (Buff buff) => buff.effects.AttackMultiplier.Value, (float value) => GetMultiplierBuffString(value, $"{BuffStringsAssetName}:ItemHoverBuff0")),
+			new BuffAttributeDisplay(BuffsIcons, 1, (Buff buff) => buff.effects.Immunity.Value, (float value) => GetBuffString(value, $"{BuffStringsAssetName}:ItemHoverBuff1")),
+			new BuffAttributeDisplay(BuffsIcons, 2, (Buff buff) => buff.effects.KnockbackMultiplier.Value, (float value) => GetMultiplierBuffString(value, $"{BuffStringsAssetName}:ItemHoverBuff2")),
+			new BuffAttributeDisplay(BuffsIcons, 3, (Buff buff) => buff.effects.WeaponSpeedMultiplier.Value, (float value) => GetMultiplierBuffString(value, $"{BuffStringsAssetName}:ItemHoverBuff3")),
+			new BuffAttributeDisplay(BuffsIcons, 4, (Buff buff) => buff.effects.CriticalChanceMultiplier.Value, (float value) => GetMultiplierBuffString(value, $"{BuffStringsAssetName}:ItemHoverBuff4")),
+			new BuffAttributeDisplay(BuffsIcons, 5, (Buff buff) => buff.effects.CriticalPowerMultiplier.Value, (float value) => GetMultiplierBuffString(value, $"{BuffStringsAssetName}:ItemHoverBuff5")),
+			new BuffAttributeDisplay(BuffsIcons, 6, (Buff buff) => buff.effects.WeaponPrecisionMultiplier.Value, (float value) => GetMultiplierBuffString(value, $"{BuffStringsAssetName}:ItemHoverBuff6")),
+    });
   }
 
   public void OnGameLaunchedBetterCrafting(object? sender, GameLaunchedEventArgs e) {
@@ -165,14 +208,53 @@ internal sealed class ModEntry : Mod {
   public void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
     if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects")) {
       e.Edit(asset =>
-          {
+        {
           var data = asset.AsDictionary<string, ObjectData>().Data;
           data[MachineHarmonyPatcher.HolderId] = new ObjectData {
             DisplayName = ModEntry.Helper.Translation.Get("HolderName"),
             Description = ModEntry.Helper.Translation.Get("HolderDescription"),
             Type = "Basic",
-          };
-          });
+        };
+      });
+    }
+    if (e.NameWithoutLocale.IsEquivalentTo(BuffStringsAssetName)) {
+      e.LoadFrom(() =>
+        new Dictionary<string, string> {
+          // Item tooltip display
+          ["ItemHoverBuff0"] = ModEntry.Helper.Translation.Get("AttackMultiplierBuff"),
+          ["ItemHoverBuff1"] = ModEntry.Helper.Translation.Get("ImmunityBuff"),
+          ["ItemHoverBuff2"] = ModEntry.Helper.Translation.Get("KnockbackMultiplierBuff"),
+          ["ItemHoverBuff3"] = ModEntry.Helper.Translation.Get("WeaponSpeedMultiplierBuff"),
+          ["ItemHoverBuff4"] = ModEntry.Helper.Translation.Get("CriticalChanceMultiplierBuff"),
+          ["ItemHoverBuff5"] = ModEntry.Helper.Translation.Get("CriticalPowerMultiplierBuff"), 
+          ["ItemHoverBuff6"] = ModEntry.Helper.Translation.Get("WeaponPrecisionMultiplierBuff"),
+      }, AssetLoadPriority.Medium);
+    }
+    if (e.NameWithoutLocale.IsEquivalentTo(BuffsIconsAssetName)) {
+      e.LoadFromModFile<Texture2D>("assets/BuffsIcons.png", AssetLoadPriority.Medium);
     }
   }
+
+  public static bool BUFF_ID(string[] query, GameStateQueryContext context) {
+    if (!ArgUtility.TryGet(query, 1, out var buffIdToCheck, out var error)) {
+      return GameStateQuery.Helpers.ErrorResult(query, error);
+    }
+    if (context.TargetItem is null || 
+        !context.TargetItem.modData.TryGetValue($"{UniqueId}_BuffId", out var buffId)) {
+      return GameStateQuery.Helpers.ErrorResult(query, "no target item found - called outside BuffRemoved triggers?");
+    }
+    return buffId == buffIdToCheck;
+  }
+
+  public static bool BUFF_NAME(string[] query, GameStateQueryContext context) {
+    if (!ArgUtility.TryGet(query, 1, out var buffNameToCheck, out var error)) {
+      return GameStateQuery.Helpers.ErrorResult(query, error);
+    }
+    if (context.TargetItem is null || 
+        !context.TargetItem.modData.TryGetValue($"{UniqueId}_BuffName", out var buffName)) {
+      return GameStateQuery.Helpers.ErrorResult(query, "no target item found - called outside BuffRemoved triggers?");
+    }
+    return buffName == buffNameToCheck;
+  }
+
 }

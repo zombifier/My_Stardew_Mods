@@ -1,6 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
@@ -42,6 +43,7 @@ sealed class MachineHarmonyPatcher {
   internal static string OverrideInputItemIdKey = $"{ModEntry.UniqueId}.OverrideInputItemId";
   internal static string UnflavoredDisplayNameOverrideKey = $"{ModEntry.UniqueId}.UnflavoredDisplayNameOverride";
   internal static string AutomaticProduceCountKey = $"{ModEntry.UniqueId}.AutomaticProduceCount";
+  internal static string InputEdibilityMultiplierKey = $"{ModEntry.UniqueId}.InputEdibilityMultiplier";
 
   // Keys for machine CustomFields
   internal static string TriggerActionToRunWhenReady = $"{ModEntry.UniqueId}.TriggerActionToRunWhenReady";
@@ -50,6 +52,8 @@ sealed class MachineHarmonyPatcher {
   internal static string AllowMoreThanOneQualityIncrement = $"{ModEntry.UniqueId}.AllowMoreThanOneQualityIncrement";
   internal static string ReturnInput = $"{ModEntry.UniqueId}.ReturnInput";
   internal static string IsCustomSlimeIncubator = $"{ModEntry.UniqueId}.IsCustomSlimeIncubator";
+  internal static string DrawLayerTexture = $"{ModEntry.UniqueId}.DrawLayerTexture";
+  internal static string DrawLayerTextureIndex = $"{ModEntry.UniqueId}.DrawLayerTextureIndex";
 
   // ModData keys
   internal static string ExtraContextTagsKey = $"{ModEntry.UniqueId}.ExtraContextTags";
@@ -200,6 +204,18 @@ sealed class MachineHarmonyPatcher {
           nameof(SObject.performRemoveAction)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_performRemoveAction_Postfix)));
 
+    // drawwwww
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(SObject),
+          nameof(SObject.draw),
+          new Type[] {typeof(SpriteBatch), typeof(int), typeof(int), typeof(float)}),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_draw_Postfix)));
+
+    // buff trigger end
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Buff),
+          nameof(Buff.OnRemoved)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Buff_OnRemoved_Postfix)));
 
 
     // Transpilers go here
@@ -286,6 +302,7 @@ sealed class MachineHarmonyPatcher {
     }
     
     var resultObject = __result as SObject;
+    var inputObject = inputItem as SObject;
 
     // Generate the extra output items and save them in a chest saved in the output item's heldObject.
     var extraOutputs = ModEntry.ModApi.GetExtraOutputs(outputData, machine.GetMachineData());
@@ -312,7 +329,7 @@ sealed class MachineHarmonyPatcher {
     if ((outputData.PreserveId == "INHERIT" ||
           (outputData.CustomData != null &&
            outputData.CustomData.ContainsKey(InheritPreserveIdKey))) &&
-        inputItem is SObject inputObject &&
+        inputObject is not null &&
         inputObject.preservedParentSheetIndex.Value != "-1" &&
         resultObject != null) {
       resultObject.preservedParentSheetIndex.Value = inputObject.preservedParentSheetIndex.Value;
@@ -486,6 +503,12 @@ sealed class MachineHarmonyPatcher {
           SObject.ConsumeInventoryItem(who, inputItem, baseOutputStack - requiredCountMin);
         }
       }
+    }
+
+    if (resultObject is not null && inputObject is not null &&
+        outputData.CustomData.TryGetValue(InputEdibilityMultiplierKey, out var inputEdiblityMultiplierStr) &&
+        Double.TryParse(inputEdiblityMultiplierStr, out var inputEdibilityMultiplier)) {
+      resultObject.Edibility = (int)(inputObject.Edibility * inputEdibilityMultiplier);
     }
   }
 
@@ -878,5 +901,56 @@ sealed class MachineHarmonyPatcher {
         (__instance.GetMachineData()?.CustomFields?.ContainsKey(ReturnInput) ?? false)) {
       __instance.Location.debris.Add(new Debris(__instance.heldObject.Value, __instance.TileLocation * 64f + new Vector2(32f, 32f)));
     }
+  }
+
+  public static void SObject_draw_Postfix(SObject __instance, SpriteBatch spriteBatch, int x, int y, float alpha, int ____machineAnimationFrame, MachineEffects ____machineAnimation) {
+    if (__instance.isTemporarilyInvisible || !__instance.bigCraftable.Value || __instance.heldObject.Value is null) return;
+    if ((__instance.GetMachineData()?.CustomFields?.TryGetValue(DrawLayerTexture, out var drawLayerTexture) ?? false)) {
+      int drawLayerTextureIndex = 0;
+      if (!(__instance.GetMachineData()?.CustomFields?.TryGetValue(DrawLayerTextureIndex, out var drawLayerTextureIndexStr) ?? false) ||
+          !Int32.TryParse(drawLayerTextureIndexStr, out drawLayerTextureIndex)) {
+        drawLayerTextureIndex = 0;
+      }
+      var offset = __instance.ParentSheetIndex - ItemRegistry.GetDataOrErrorItem(__instance.QualifiedItemId).SpriteIndex;
+      var color = TailoringMenu.GetDyeColor(__instance.heldObject.Value) ?? Color.White;
+      int animationOffset = 0;
+      if (__instance.showNextIndex.Value) {
+        animationOffset = 1;
+      }
+      if (____machineAnimationFrame >= 0 && ____machineAnimation != null) {
+        animationOffset = ____machineAnimationFrame;
+      }
+      Vector2 vector = __instance.getScale();
+      vector *= 4f;
+      Vector2 vector2 = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+      Rectangle destinationRectangle = new Microsoft.Xna.Framework.Rectangle((int)(vector2.X - vector.X / 2f) + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(vector2.Y - vector.Y / 2f) + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(64f + vector.X), (int)(128f + vector.Y / 2f));
+      Texture2D texture = GetTexture(drawLayerTexture);
+      float layer = Math.Max(0f, (float)((y + 1) * 64 - 24) / 10000f) + (float)x * 1E-05f + 1E-06f;
+      spriteBatch.Draw(
+          texture,
+          destinationRectangle,
+          SObject.getSourceRectForBigCraftable(texture, drawLayerTextureIndex + animationOffset + offset), color * alpha, 0f, Vector2.Zero, SpriteEffects.None, layer);
+    }
+  }
+
+  static Dictionary<string, Texture2D> textures = new();
+  static Texture2D GetTexture(string name) {
+    if (textures.TryGetValue(name, out var texture)) {
+      return texture;
+    }
+    try {
+      textures[name] = Game1.content.Load<Texture2D>(name);
+      return textures[name];
+    } catch (Exception e) {
+      ModEntry.StaticMonitor.Log($"Error loading texture {name}: {e.ToString()}", LogLevel.Error);
+      return Game1.bigCraftableSpriteSheet;
+    }
+  }
+
+  public static void Buff_OnRemoved_Postfix(Buff __instance) {
+    var targetItem = ItemRegistry.Create("(O)0");
+    targetItem.modData[$"{ModEntry.UniqueId}_BuffName"] = __instance.source ?? "";
+    targetItem.modData[$"{ModEntry.UniqueId}_BuffId"] = __instance.id ?? "";
+    TriggerActionManager.Raise($"{ModEntry.UniqueId}_BuffRemoved", targetItem: targetItem);
   }
 }

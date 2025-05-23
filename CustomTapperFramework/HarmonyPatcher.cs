@@ -4,6 +4,7 @@ using System.Reflection.Emit;
 using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Extensions;
 using StardewValley.Delegates;
 using StardewValley.GameData.Machines;
 using StardewValley.Internal;
@@ -170,14 +171,13 @@ public class HarmonyPatcher {
     harmony.Patch(
         original: AccessTools.Method(typeof(Utility),
           nameof(Utility.performLightningUpdate)),
-        transpiler: new HarmonyMethod(typeof(HarmonyPatcher),
-          nameof(HarmonyPatcher.Utility_performLightningUpdate_Transpiler)));
+        prefix: new HarmonyMethod(AccessTools.Method(typeof(HarmonyPatcher), nameof(Utility_performLightningUpdate_Prefix)), Priority.High + 1));
   }
 
-	static void SObject_canBePlacedHere_Postfix(SObject __instance, ref bool __result, GameLocation l, Vector2 tile, CollisionMask collisionMask = CollisionMask.All, bool showError = false) {
+  static void SObject_canBePlacedHere_Postfix(SObject __instance, ref bool __result, GameLocation l, Vector2 tile, CollisionMask collisionMask = CollisionMask.All, bool showError = false) {
     // Check crab pots
     if (Utils.IsCrabPot(__instance)) {
-			__result = CrabPot.IsValidCrabPotLocationTile(l, (int)tile.X, (int)tile.Y);
+      __result = CrabPot.IsValidCrabPotLocationTile(l, (int)tile.X, (int)tile.Y);
       return;
     }
 
@@ -242,7 +242,7 @@ public class HarmonyPatcher {
           @object.hoeDirt.Value.state.Value = 1;
         }
         location.objects.Add(vector, @object);
-  			location.playSound("woodyStep");
+        location.playSound("woodyStep");
         __result = true;
         return false;
     }
@@ -399,7 +399,7 @@ public class HarmonyPatcher {
   }
 
   // Disallow tea bushes in water planters and custom pots
-	static bool IndoorPot_performObjectDropInAction_Prefix(IndoorPot __instance, ref bool __result, Item dropInItem, bool probe, Farmer who, bool returnFalseIfItemConsumed = false) {
+  static bool IndoorPot_performObjectDropInAction_Prefix(IndoorPot __instance, ref bool __result, Item dropInItem, bool probe, Farmer who, bool returnFalseIfItemConsumed = false) {
     if (!probe &&
         (__instance.QualifiedItemId == WaterIndoorPotUtils.WaterPlanterQualifiedItemId ||
          __instance.QualifiedItemId == WaterIndoorPotUtils.WaterPotQualifiedItemId ||
@@ -426,7 +426,7 @@ public class HarmonyPatcher {
   }
 
   // Don't sink debris if there's a building at that tile or in the adjacent tiles
-	static void GameLocation_doesTileSinkDebris_Postfix(GameLocation __instance, ref bool __result, int xTile, int yTile, Debris.DebrisType type) {
+  static void GameLocation_doesTileSinkDebris_Postfix(GameLocation __instance, ref bool __result, int xTile, int yTile, Debris.DebrisType type) {
     if (__instance.objects.ContainsKey(new Vector2(xTile, yTile)) ||
         __instance.objects.ContainsKey(new Vector2(xTile+1, yTile)) ||
         __instance.objects.ContainsKey(new Vector2(xTile, yTile+1)) ||
@@ -442,13 +442,13 @@ public class HarmonyPatcher {
     }
   }
 
-	static void HoeDirt_canPlantThisSeedHere_Postfix(HoeDirt __instance, ref bool __result, string itemId, bool isFertilizer = false) {
+  static void HoeDirt_canPlantThisSeedHere_Postfix(HoeDirt __instance, ref bool __result, string itemId, bool isFertilizer = false) {
     if (!__result || isFertilizer) return;
     WaterIndoorPotUtils.canPlant(__instance, itemId, ref __result);
   }
 
   // Make paddy crops inside water planters considered to be near water.
-	static void HoeDirt_paddyWaterCheck_Postfix(HoeDirt __instance, ref bool __result, bool forceUpdate = false) {
+  static void HoeDirt_paddyWaterCheck_Postfix(HoeDirt __instance, ref bool __result, bool forceUpdate = false) {
     if (__result ||
         !__instance.modData.ContainsKey(WaterIndoorPotUtils.HoeDirtIsWaterPlanterModDataKey) ||
         !__instance.hasPaddyCrop()) return;
@@ -461,10 +461,10 @@ public class HarmonyPatcher {
 
   // This is a super hacky way of essentially passing in the machine object as an extra parameter to (the second) GetOutputData,
   // but it's the only way that guarantees maximum compatibility and not outright replace the entire function, so...
-	static void MachineDataUtility_GetOutputDataParent_Prefix(SObject machine, MachineData machineData, MachineOutputRule outputRule, Item inputItem, Farmer who, GameLocation location) {
+  static void MachineDataUtility_GetOutputDataParent_Prefix(SObject machine, MachineData machineData, MachineOutputRule outputRule, Item inputItem, Farmer who, GameLocation location) {
     machineBeingChecked = machine;
   }
-	static void MachineDataUtility_GetOutputDataParent_Postfix(SObject machine, MachineData machineData, MachineOutputRule outputRule, Item inputItem, Farmer who, GameLocation location) {
+  static void MachineDataUtility_GetOutputDataParent_Postfix(SObject machine, MachineData machineData, MachineOutputRule outputRule, Item inputItem, Farmer who, GameLocation location) {
     machineBeingChecked = null;
   }
 
@@ -543,12 +543,45 @@ public class HarmonyPatcher {
       }
     }
   }
-	static void SObject_PlaceInMachine_postfix(SObject __instance, bool __result, MachineData machineData, Item inputItem, bool probe, Farmer who, bool showMessages = true, bool playSounds = true) {
+  static void SObject_PlaceInMachine_postfix(SObject __instance, bool __result, MachineData machineData, Item inputItem, bool probe, Farmer who, bool showMessages = true, bool playSounds = true) {
     if (Utils.IsCrabPot(__instance) && __result && !probe) {
       CustomCrabPotUtils.resetRemovalTimer(__instance);
     }
   }
 
+  public static bool Utility_performLightningUpdate_Prefix(int time_of_day) {
+    Random random = Utility.CreateRandom(Game1.uniqueIDForThisGame, Game1.stats.DaysPlayed, time_of_day);
+    if (random.NextDouble() < 0.125 + Game1.player.team.AverageDailyLuck() + Game1.player.team.AverageLuckLevel() / 100.0) {
+      Farm.LightningStrikeEvent lightningStrikeEvent = new Farm.LightningStrikeEvent();
+      lightningStrikeEvent.bigFlash = true;
+      Farm farm = Game1.getFarm();
+      List<Vector2> list = new List<Vector2>();
+      foreach (KeyValuePair<Vector2, SObject> pair in farm.objects.Pairs) {
+        if (Utils.IsCustomLightningRod(pair.Value.QualifiedItemId)) {
+          list.Add(pair.Key);
+        }
+      }
+      if (list.Count > 0) {
+        for (int i = 0; i < 2; i++) {
+          Vector2 vector = random.ChooseFrom(list);
+          if (farm.objects[vector].heldObject.Value == null) {
+            if (!Utils.UpdateCustomLightningRod(farm.objects[vector])) {
+              farm.objects[vector].heldObject.Value = ItemRegistry.Create<SObject>("(O)787");
+              farm.objects[vector].minutesUntilReady.Value = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay);
+              farm.objects[vector].shakeTimer = 1000;
+              lightningStrikeEvent.createBolt = true;
+              lightningStrikeEvent.boltPosition = vector * 64f + new Vector2(32f, 0f);
+              farm.lightningStrikeEvent.Fire(lightningStrikeEvent);
+            }
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  // This transpiler is cleaner, but alas we need a skipping prefix to beat Safe Lightning's...
   public static IEnumerable<CodeInstruction> Utility_performLightningUpdate_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
     CodeMatcher matcher = new(instructions, generator);
     // Old: if (pair.Value.QualifiedItemId == "(BC)9")
