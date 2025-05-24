@@ -69,4 +69,21 @@
   // Other stuff
   "FameBanner": "Notoriété : {{fame}}",
   "FameBanner.tooltip": "Prix ​​de vente : +{{sellPriceIncrease}}%\nDifficulté : +{{difficultyIncrease}}%",
+  // New in 2.0 Below
+  "PartiallyFreshItemName": "{{Name}} ({{freshPercentage}}% Fresh)",
+  "Config.freshDays.name": "Jour de fraîcheur",
+  "Config.freshDays.description": "Nombre de jours pendant lesquels les produits frais resteront frais avant d'être périmés. La valeur par défaut est d'un jour, ce qui signifie que le produit se périme le lendemain matin.",
+  "Config.fridgeFreshDays.name": "Jour de fraîcheur (réfrigérateurs)",
+  "Config.fridgeFreshDays.description": "Nombre de jours pendant lesquels les produits frais resteront frais dans les réfrigérateurs. La valeur par défaut est de trois jours.",
+  "Config.enableRandomPresets.name": "Activer les préréglages\nde la compétition aléatoire",
+  "Config.enableRandomPresets.description": "Active les préréglages aléatoires de la compétition. Si cette option est désactivée, seul le préréglage par défaut \"expédier une variété de chaque article\" sera choisi.",
+  "Config.presetOptions.name": "Options prédéfinies",
+  "Config.choosePresets.name": "Choisir les préréglages possibles",
+  "Config.choosePresets.description": "Choisissez les préréglages qui peuvent être choisis de manière aléatoire. Notez que certains préréglages peuvent être assortis d'une condition saisonnière supplémentaire et donc ne pas être choisis au hasard. Si aucune n'est éligible, le préréglage Variété par défaut sera utilisé.",
+  "Config.forcedPreset.name": "Forcer le préréglage",
+  "Config.forcedPreset.description": "Si cette option est activée, ce préréglage sera choisi pour le concours du mois suivant. Cette option ne tient pas compte des paramètres ci-dessus et ne tient pas compte des vérifications des conditions saisonnières.",
+  "Config.forcedPreset.none": "Aucun",
+  "Config.swagBagItemCount.name": "Nombre d'articles de triche\ndans le sac à surprises",
+  "Config.swagBagItemCount.description": "Le nombre d'objets de triche de perfection que chaque sac à surprises donne. La valeur 0 signifie qu'il n'y en a pas. Les autres prix (assaisonnement Qi, appât magique, service à thé) ne sont pas affectés.",
+  "PresetUI": "Préréglage : {{presetName}}",
 }
