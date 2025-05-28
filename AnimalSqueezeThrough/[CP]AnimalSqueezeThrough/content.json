@@ -268,5 +268,165 @@
         "HasMod |contains=Mizu.Turkey": "true"
       },
     },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_EorzeanCommon",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_EorzeanUncommon",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_EorzeanRare",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_EorzeanLegacy",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_LucianCommon",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_LucianUncommon",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_LucianRare",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_IvalicianCommon",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_IvalicianUncommon",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_IvalicianRare",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_VanadelianCommon",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_VanadelianUncommon",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_VanadelianRare",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_PulsianCommon",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_PulsianUncommon",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Kitsutsune.Chocobovalley_PulsianRare",
+      },
+      "When": {
+        "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
   ]
 }
