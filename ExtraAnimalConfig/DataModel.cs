@@ -78,3 +78,9 @@ public class AppearanceData {
   public string? TextureToUse;
   public DefaultTextureEnum? DefaultTextureToUse;
 }
+
+public class ExtraHousesData {
+  public string? Id;
+  public string? AnimalHouse;
+  public string? BuildingOccupantType;
+}

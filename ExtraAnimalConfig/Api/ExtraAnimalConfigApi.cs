@@ -22,6 +22,22 @@ public class ExtraAnimalConfigApi : IExtraAnimalConfigApi {
     return result;
   }
 
+  public Dictionary<string, List<string>> GetExtraDrops(string animalType) {
+    var result = new Dictionary<string, List<string>>();
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animalType ?? "", out var animalExtensionData)) {
+      int i = 0;
+      foreach (var entry in animalExtensionData.ExtraProduceSpawnList) {
+        var list = new List<string>();
+        result.Add(entry.Id ?? i.ToString(), list);
+        foreach (var produceData in entry.ProduceItemIds) {
+          list.Add(produceData.ItemId ?? "0");
+        }
+        i++;
+      }
+    }
+    return result;
+  }
+
   public event Action<IAnimalProduceCreatedEvent>? AnimalProduceCreated;
 
   internal void RunAnimalProduceCreatedEvents(FarmAnimal animal, ref SObject produce, ProduceMethod produceMethod, Tool? tool) {
