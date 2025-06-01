@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Inventories;
 using StardewValley.Extensions;
 using StardewValley.Buildings;
 using StardewValley.Objects;
@@ -20,38 +21,97 @@ static class FishPondCropManager {
   public static string AquaponicsHoeDirt = $"{ModEntry.UniqueId}_IsAquaponics";
   public static string CropsChestName = $"{ModEntry.UniqueId}_CropsChest";
   public static string OutputChestName = $"{ModEntry.UniqueId}_OutputChest";
+  public static string AlreadyDoubled = $"{ModEntry.UniqueId}_AlreadyDoubled";
+
+  public static string PotsXCoordKey = $"{ModEntry.UniqueId}_XPotCoords";
+
+  public static Chest? GetOldCropsChestForMigration(FishPond pond) {
+    return pond.GetBuildingChest(CropsChestName);
+  }
 
   public static Chest? GetFishPondOutputChest(FishPond pond) {
     return pond.GetBuildingChest(OutputChestName);
   }
 
-  public static Chest? GetFishPondCropsChest(FishPond pond) {
-    return pond.GetBuildingChest(CropsChestName);
-  }
 
-  const int MAX_TRIES = 10;
+  public const int MAX_SEED_COUNT = 20;
+  const int MAX_TRIES = 100;
 
-  // In the unlikely, unlikely event the shadow tile we wanted was taken, pick a new tile
-  static Vector2? GetUnoccupiedDummyTile(GameLocation location) {
-    for (int i = 0; i < MAX_TRIES; i++) {
-      var coord = new Vector2(Game1.random.Next(-99999, -9999), 0);
-      if (!location.objects.ContainsKey(coord)) {
-        return coord;
+  public static List<IndoorPot>? GetFishPondIndoorPots(FishPond pond, bool addIfNotFound = false) {
+    var location = pond.GetParentLocation() ?? Game1.getFarm();
+    // No pots, initialize!
+    if (!pond.modData.ContainsKey(PotsXCoordKey)) {
+      int tries = 0;
+      while (tries < MAX_TRIES) {
+        int x = Game1.random.Next(int.MinValue, -9999);
+        bool free = true;
+        for (int y = 0; y < MAX_SEED_COUNT; y++) {
+          if (location.objects.ContainsKey(new(x, y))) {
+            free = false;
+            break;
+          }
+        }
+        if (free) {
+          for (int y = 0; y < MAX_SEED_COUNT; y++) {
+            var newPot = new IndoorPot(new (x, y));
+            newPot.Water();
+            newPot.hoeDirt.Value.modData[AquaponicsHoeDirt] = "";
+            newPot.hoeDirt.Value.modData["selph.CustomTapperFramework.IsAmphibious"] = "";
+            location.objects.Add(new (x, y), newPot);
+          }
+          pond.modData[PotsXCoordKey] = x.ToString();
+          break;
+        }
+        tries++;
       }
     }
-    ModEntry.StaticMonitor.Log("ERROR: Unable to find tile to place shadow pot for forage crops", LogLevel.Error);
+
+    if (pond.modData.TryGetValue(PotsXCoordKey, out var potsXCoordStr) &&
+        Int64.TryParse(potsXCoordStr, out var xCoord)) {
+      var result = new List<IndoorPot>();
+      for (int y = 0; y < ModEntry.Config.SeedCount; y++) {
+        if (location.objects.TryGetValue(new Vector2(xCoord, y), out var obj) &&
+            obj is IndoorPot pot) {
+          result.Add(pot);
+        } else if (addIfNotFound) {
+          var newPot = new IndoorPot(new (xCoord, y));
+          newPot.Water();
+          newPot.hoeDirt.Value.modData[AquaponicsHoeDirt] = "";
+          newPot.hoeDirt.Value.modData["selph.CustomTapperFramework.IsAmphibious"] = "";
+          location.objects.Add(new (xCoord, y), newPot);
+          result.Add(newPot);
+        } else {
+          ModEntry.StaticMonitor.Log($"Pot not found at {xCoord} {y}. If this is an MP game, it might be because of lag; otherwise if this is filling your logs please report.", LogLevel.Info);
+        }
+      }
+      return result;
+    } else {
+      ModEntry.StaticMonitor.Log($"ERROR: Pond has no x coords set???", LogLevel.Error);
+    }
     return null;
+  }
+
+  public static void ClearFishPondIndoorPots(FishPond pond) {
+    if (pond.modData.TryGetValue(PotsXCoordKey, out var potsXCoordStr) &&
+        Int64.TryParse(potsXCoordStr, out var x)) {
+      var location = pond.GetParentLocation() ?? Game1.getFarm();
+      var result = new List<IndoorPot>();
+      for (int y = 0; y < MAX_SEED_COUNT; y++) {
+        location.objects.Remove(new(x, y));
+      }
+    }
+    pond.modData.Remove(PotsXCoordKey);
   }
 
   // Get one pot if it has crops or bushes
   public static bool TryGetOnePot(FishPond pond, [NotNullWhen(true)] out IndoorPot? pot) {
-    var chest = GetFishPondCropsChest(pond);
-    if (chest is null) {
-      ModEntry.StaticMonitor.Log($"IMPOSSIBLE: No chest found?", LogLevel.Error);
+    var pots = GetFishPondIndoorPots(pond);
+    if (pots is null) {
+      ModEntry.StaticMonitor.Log($"IMPOSSIBLE: No pots found?", LogLevel.Error);
       pot = null;
       return false;
     }
-    if (chest.Items.Count > 0 && chest.Items[0] is IndoorPot p &&
+    if (pots.Count > 0 && pots[0] is IndoorPot p &&
         (p.hoeDirt.Value.crop is not null || p.bush.Value is not null || p.heldObject.Value is not null)) {
       pot = p;
       return true;
@@ -62,15 +122,15 @@ static class FishPondCropManager {
 
   public static List<Item> RemoveAllCrops(FishPond pond) {
     var saplings = new List<Item>();
-    var chest = GetFishPondCropsChest(pond);
-    if (chest is null) {
-      ModEntry.StaticMonitor.Log($"IMPOSSIBLE: No chest found?", LogLevel.Error);
+    var pots = GetFishPondIndoorPots(pond);
+    if (pots is null) {
+      ModEntry.StaticMonitor.Log($"IMPOSSIBLE: No pots found?", LogLevel.Error);
       return saplings;
     }
     string? bushItemId = null;
     int bushCount = 0;
-    foreach (var item in chest.Items) {
-      if (item is IndoorPot pot && pot.bush.Value is not null) {
+    foreach (var pot in pots) {
+      if (pot.bush.Value is not null) {
         if (bushItemId is not null &&
             (ModEntry.cbApi?.TryGetBush(pot.bush.Value, out var _, out var id) ?? false)) {
           bushItemId = id;
@@ -80,8 +140,8 @@ static class FishPondCropManager {
         bushCount++;
         pot.bush.Value = null;
       }
+      pot.hoeDirt.Value.crop = null;
     }
-    chest.Items.Clear();
     if (bushItemId is not null) {
       saplings.Add(ItemRegistry.Create(bushItemId, bushCount));
     }
@@ -90,9 +150,7 @@ static class FishPondCropManager {
 
   public static bool PlantCrops(FishPond pond, SObject seed, Farmer who, bool showMessage = false) {
     // Only allow seeds
-    // Ban all bushes for now since their day update logic does not work
-    // Well, tea bushes work, but banning all bushes just for consistency
-    if (seed.Category != -74 || seed.IsTeaSapling()) return false;
+    if (seed.Category != -74) return false;
     if (TryGetOnePot(pond, out var _)) {
       if (showMessage) {
         Game1.showRedMessage(ModEntry.Helper.Translation.Get("Plant.alreadyPlanted"));
@@ -117,49 +175,25 @@ static class FishPondCropManager {
       }
       return false;
     }
-    var chest = GetFishPondCropsChest(pond);
-    if (chest is null) {
-      ModEntry.StaticMonitor.Log($"IMPOSSIBLE: No chest found?", LogLevel.Error);
+    var pots = GetFishPondIndoorPots(pond, true);
+    if (pots is null) {
+      ModEntry.StaticMonitor.Log($"IMPOSSIBLE: No pots found?", LogLevel.Error);
       return false;
     }
     var location = pond.GetParentLocation();
-    chest.Items.Clear();
-    // Initialize if chest empty
-    //if (chest.Items.Count < ModEntry.Config.SeedCount) {
-    //  for (int i = chest.Items.Count; i < ModEntry.Config.SeedCount; i++) {
-    for (int i = 0; i < ModEntry.Config.SeedCount; i++) {
-      var tile = new Vector2(-9999-pond.tileX.Value-i-1, 0);
-      var newPot = new IndoorPot(tile);
-      // Just in case so they don't stack, but this shouldn't happen
-      newPot.Name += "_" + i;
-      // We do this again because otherwise the hoe dirt's crops won't be set,
-      // and its draw logic doesn't work without it set (updateDrawMath does not run if tile is 0,0)
-      // Usually, a real pot will have its tile set by GameLocation.OnObjectAdded
-      newPot.TileLocation = tile;
-      newPot.Location = location;
-      newPot.Water();
-      newPot.hoeDirt.Value.modData[AquaponicsHoeDirt] = "";
-      newPot.hoeDirt.Value.modData["selph.CustomTapperFramework.IsAmphibious"] = "";
-      chest.Items.Add(newPot);
-    }
-    //}
-    //chest.Items.RemoveEmptySlots();
     int plantedCount = 0;
-    foreach (var item in chest.Items) {
-      if (item is IndoorPot pot) {
-        if (!pot.performObjectDropInAction(seed, false, who)) {
-          if (plantedCount > 0) {
-            ModEntry.StaticMonitor.Log($"IMPOSSIBLE: Only some pots were planted (seed ID {seed.QualifiedItemId})?", LogLevel.Error);
-          }
-          return false;
+    foreach (var pot in pots) {
+      if (!pot.performObjectDropInAction(seed, false, who)) {
+        if (plantedCount > 0) {
+          ModEntry.StaticMonitor.Log($"IMPOSSIBLE: Only some pots were planted (seed ID {seed.QualifiedItemId})?", LogLevel.Error);
         }
-        plantedCount++;
-      } else {
-        ModEntry.StaticMonitor.Log("IMPOSSIBLE (PLANT CROPS): Non-pots in fish pond input?", LogLevel.Error);
+        return false;
       }
+      plantedCount++;
     }
 	  location.playSound("dropItemInWater");
     seed.Stack -= ModEntry.Config.SeedCount;
+    ModEntry.Helper.Multiplayer.SendMessage(pond.id.Value.ToString(), $"{ModEntry.UniqueId}_SyncCrops", modIDs: new[] { ModEntry.UniqueId });
     return true;
   }
 
@@ -168,48 +202,41 @@ static class FishPondCropManager {
     farmingExp = 0;
     foragingExp = 0;
     who ??= Game1.player;
-    var cropsChest = GetFishPondCropsChest(pond);
+    var pots = GetFishPondIndoorPots(pond);
     var outputChest = GetFishPondOutputChest(pond);
-    if (cropsChest is null || outputChest is null) {
+    if (pots is null || outputChest is null) {
       ModEntry.StaticMonitor.Log($"IMPOSSIBLE: No chest found?", LogLevel.Error);
       return false;
     }
     // this is only for the crop quality rng
-    int i = 0;
-    foreach (var item in cropsChest.Items) {
-      if (item is IndoorPot pot) {
-        MaybeFixPotFields(pot, pond);
-        if (pot.heldObject.Value is not null) {
-          var forageHarvest = pot.heldObject.Value;
-          forageHarvest.Quality = pot.Location.GetHarvestSpawnedObjectQuality(who, true, new(pond.tileX.Value, pond.tileY.Value));
-          outputChest.addItem(forageHarvest);
-          pot.heldObject.Value = null;
-          //pot.Location.OnHarvestedForage(who, forageHarvest);
-  	      foragingExp += 2;
-          farmingExp += 3;
-        } else if (pot.bush.Value is not null &&
-            pot.bush.Value.readyForHarvest()) {
-          var harvestItem =
-            (ModEntry.cbApi?.TryGetShakeOffItem(pot.bush.Value, out var bushHarvest) ?? false) ? bushHarvest : ItemRegistry.Create("(O)815");
-          pot.bush.Value.tileSheetOffset.Value = 0;
-          pot.bush.Value.setUpSourceRect();
-          if (Game1.random.NextBool(0.5)) {
-            harvestItem.Stack *= 2;
-            outputChest.addItem(harvestItem);
-          }
-        } else if (pot.hoeDirt.Value.readyForHarvest()) {
-          var harvester = GetHarvesterFor(pond);
-          if (pot.hoeDirt.Value.crop.harvest(
-              pond.tileX.Value + i, pond.tileY.Value + i,
-              pot.hoeDirt.Value, GetHarvesterFor(pond))) {
-            pot.hoeDirt.Value.destroyCrop(false);
-          }
-          farmingExp += harvester.farmingExp;
+    foreach (var pot in pots) {
+      if (pot.heldObject.Value is not null) {
+        var forageHarvest = pot.heldObject.Value;
+        forageHarvest.Quality = pot.Location.GetHarvestSpawnedObjectQuality(who, true, new(pond.tileX.Value, pond.tileY.Value));
+        outputChest.addItem(forageHarvest);
+        pot.heldObject.Value = null;
+        //pot.Location.OnHarvestedForage(who, forageHarvest);
+  	    foragingExp += 2;
+        farmingExp += 3;
+      } else if (pot.bush.Value is not null &&
+          pot.bush.Value.readyForHarvest()) {
+        var harvestItem =
+          (ModEntry.cbApi?.TryGetShakeOffItem(pot.bush.Value, out var bushHarvest) ?? false) ? bushHarvest : ItemRegistry.Create("(O)815");
+        pot.bush.Value.tileSheetOffset.Value = 0;
+        pot.bush.Value.setUpSourceRect();
+        if (Game1.random.NextBool(0.5)) {
+          harvestItem.Stack *= 2;
+          outputChest.addItem(harvestItem);
         }
-      } else {
-        ModEntry.StaticMonitor.Log("IMPOSSIBLE (HARVEST): Non-pots in fish pond input?", LogLevel.Error);
+      } else if (pot.hoeDirt.Value.readyForHarvest()) {
+        var harvester = GetHarvesterFor(pond);
+        if (pot.hoeDirt.Value.crop.harvest(
+            (int)pot.TileLocation.X, (int)pot.TileLocation.Y,
+            pot.hoeDirt.Value, GetHarvesterFor(pond))) {
+          pot.hoeDirt.Value.destroyCrop(false);
+        }
+        farmingExp += harvester.farmingExp;
       }
-      i++;
     }
     if (outputChest.isEmpty()) {
       return false;
@@ -240,83 +267,88 @@ static class FishPondCropManager {
     }
   }
 
-  public static void DayUpdateHoeDirt(FishPond pond) {
-    var cropsChest = GetFishPondCropsChest(pond);
+  public static void DayStarted(FishPond pond) {
+    var pots = GetFishPondIndoorPots(pond);
     var location = pond.GetParentLocation();
-    if (cropsChest is null) {
+    if (pots is null || pots.Count == 0) {
       ModEntry.StaticMonitor.Log($"IMPOSSIBLE: No chest found?", LogLevel.Error);
       return;
     }
-    bool shouldSpeedUpBushes = Game1.random.NextBool(0.25);
-    foreach (var item in cropsChest.Items) {
-      if (item is IndoorPot pot) {
-        MaybeFixPotFields(pot, pond);
-        bool isForageCrop =
-          pot.hoeDirt.Value.crop is not null &&
-          (pot.hoeDirt.Value.crop.isWildSeedCrop() || pot.hoeDirt.Value.crop.replaceWithObjectOnFullGrown is not null);
-        // Forage crops work by *actually* finding the pot from Game1.objects using its tile coords and put it in heldObject.
-        // In order for it to work we need to temporarily place the pot in the world and remove it afterwards.
-        if (isForageCrop) {
-          if (pot.Location.objects.ContainsKey(pot.TileLocation)) {
-            pot.TileLocation = GetUnoccupiedDummyTile(pot.Location) ?? pot.TileLocation;
-          }
-          pot.Location.objects[pot.TileLocation] = pot;
-        }
-        pot.DayUpdate();
-        pot.Water();
-        if (isForageCrop) {
-          pot.Location.objects.Remove(pot.TileLocation);
-        }
-        // Destroy crop on season start automatically
-        if (pot.hoeDirt.Value.crop is not null) {
-          var crop = pot.hoeDirt.Value.crop;
-          if (crop.dead.Value) {
-            pot.hoeDirt.Value.destroyCrop(false);
-          } else {
-            crop.sourceRect = crop.getSourceRect(0);
-          }
-        }
-        if (shouldSpeedUpBushes && pot.bush.Value is not null &&
-            pot.bush.Value.datePlanted.Value > -999) {
-          pot.bush.Value.datePlanted.Value -= 1;
-        }
-      } else {
-        ModEntry.StaticMonitor.Log("IMPOSSIBLE (UPDATE): Non-pots in fish pond input?", LogLevel.Error);
+    bool hasCrops = (pots.Count > 0 && pots[0] is IndoorPot p &&
+        (p.hoeDirt.Value.crop is not null || p.bush.Value is not null || p.heldObject.Value is not null));
+    // Fish spawns 25% faster
+    if (hasCrops && Game1.random.NextBool(0.25)) {
+      pond.daysSinceSpawn.Value += 1;
+    }
+    // Output has 50% chance to be doubled
+    if (hasCrops &&
+        pond.output.Value is not null &&
+        !pond.output.Value.modData.ContainsKey(AlreadyDoubled) &&
+        Game1.random.NextBool(0.50)) {
+      pond.output.Value.Stack = (int)(pond.output.Value.Stack * (pond.goldenAnimalCracker.Value ? 1.5 : 2));
+      pond.output.Value.modData[AlreadyDoubled] = "";
+    }
+    bool shouldSpeedUpBushes = hasCrops && Game1.random.NextBool(0.25);
+    // Water pots automatically and speed up bushes growth by 25%
+    foreach (var pot in pots) {
+      pot.Water();
+      // Destroy dead crops automatically
+      if (pot.hoeDirt.Value.crop?.dead.Value ?? false) {
+          pot.hoeDirt.Value.destroyCrop(false);
+      }
+      if (shouldSpeedUpBushes && pot.bush.Value is not null &&
+          pot.bush.Value.datePlanted.Value > -999) {
+        pot.bush.Value.datePlanted.Value -= 1;
       }
     }
   }
 
   public static void SaveLoaded() {
     Utility.ForEachBuilding(building => {
-      if (ModEntry.IsAquaponicsPond(building, out var pond)) {
+      if (ModEntry.IsAquaponicsPond(building, out var pond) &&
+          !pond.modData.ContainsKey(PotsXCoordKey)) {
         var location = pond.GetParentLocation() ?? Game1.getFarm();
-        var chest = GetFishPondCropsChest(pond);
+        var chest = FishPondCropManager.GetOldCropsChestForMigration(pond);
         if (chest is null) {
-          ModEntry.StaticMonitor.Log($"IMPOSSIBLE: No chest found?", LogLevel.Error);
+          ModEntry.StaticMonitor.Log($"No old crops chest found? This is harmless, probably.", LogLevel.Warn);
           return true;
         }
-        int i = 0;
-        foreach (var item in chest.Items) {
-          if (item is IndoorPot pot) {
-            pot.Location = location;
-            var tile = new Vector2(-9999-pond.tileX.Value-i-1, 0);
-            pot.TileLocation = tile; 
-            if (pot.bush.Value is not null) {
-              pot.bush.Value.setUpSourceRect();
+        // migrate only if we have enough pots to fill the slots, otherwise just clear and return
+        if (chest.Items.Count < ModEntry.Config.SeedCount) {
+          chest.Items.Clear();
+          return true;
+        }
+
+        int tries = 0;
+        int? x = null;
+        while (tries < MAX_TRIES) {
+          x = Game1.random.Next(int.MinValue, -9999);
+          bool free = true;
+          for (int y = 0; y < ModEntry.Config.SeedCount; y++) {
+            if (location.objects.ContainsKey(new(x.Value, y))) {
+              free = false;
+              break;
             }
-            i++;
+          }
+          if (free) {
+            pond.modData[PotsXCoordKey] = x.ToString();
+            break;
+          }
+          x = null;
+          tries++;
+        }
+        if (x is not null) {
+          int y = 0;
+          foreach (var item in chest.Items) {
+            if (item is IndoorPot oldPot) {
+              location.objects.Add(new(x.Value, y), oldPot);
+            }
+            y++;
           }
         }
+        chest.Items.Clear();
       }
       return true;
     });
-  }
-
-  // In MP games the pot may not have its location and tile set, fix it if it isn't
-  static void MaybeFixPotFields(IndoorPot pot, FishPond pond) {
-    pot.Location ??= pond.GetParentLocation() ?? Game1.getFarm();
-    if (pot.TileLocation == Vector2.Zero) {
-      pot.TileLocation = GetUnoccupiedDummyTile(pot.Location) ?? Vector2.Zero;
-    }
   }
 }

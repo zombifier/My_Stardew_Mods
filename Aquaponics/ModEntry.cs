@@ -31,7 +31,6 @@ internal sealed class ModEntry : Mod {
   public static IItemExtensionsApi? ieApi = null;
 
   public static string AquaponicsFishPondBuilding = null!;
-  public static string AlreadyDoubled = null!;
 
   public override object GetApi() {
       return api;
@@ -44,7 +43,6 @@ internal sealed class ModEntry : Mod {
     StaticMonitor = this.Monitor;
     UniqueId = this.ModManifest.UniqueID;
     AquaponicsFishPondBuilding =  $"{UniqueId}_AquaponicsFishPond";
-    AlreadyDoubled =  $"{UniqueId}_AlreadyDoubled";
 
     ImageAssetsManager.RegisterEvents(helper);
     helper.Events.Content.AssetRequested += OnAssetRequested;
@@ -84,6 +82,18 @@ internal sealed class ModEntry : Mod {
         postfix: new HarmonyMethod(typeof(ModEntry),
           nameof(ModEntry.HoeDirt_GetFertilizerQualityBoostLevel_Postfix)));
 
+    harmony.Patch(
+        original: AccessTools.Method(typeof(HoeDirt),
+          nameof(HoeDirt.paddyWaterCheck)),
+        postfix: new HarmonyMethod(typeof(ModEntry),
+          nameof(ModEntry.HoeDirt_paddyWaterCheck_Postfix)));
+
+    //harmony.Patch(
+    //    original: AccessTools.Method(typeof(Building),
+    //      nameof(Building.performActionOnDemolition)),
+    //    postfix: new HarmonyMethod(typeof(ModEntry),
+    //      nameof(ModEntry.Building_performActionOnDemolition_Postfix)));
+
     PondQueryMenuPatcher.ApplyPatches(harmony);
 
     // Debug command
@@ -103,6 +113,10 @@ internal sealed class ModEntry : Mod {
         $"{UniqueId}_DowngradePond",
         Helper.Translation.Get("Command.downgradePond"),
         DowngradePond);
+    helper.ConsoleCommands.Add(
+        $"{UniqueId}_ClearPots",
+        Helper.Translation.Get("Command.clearPots"),
+        ClearPots);
   }
 
   public static bool IsAquaponicsPond(Building building, [NotNullWhen(true)] out FishPond? pond) {
@@ -125,18 +139,18 @@ internal sealed class ModEntry : Mod {
             Description = Helper.Translation.Get("AquaponicsFishPond.description"),
             Texture = fishPondData.Texture,
             Size = {
-              X = fishPondData.Size.X,
-              Y = fishPondData.Size.Y,
+              X = 5,
+              Y = 5,
             },
             BuildingType = "StardewValley.Buildings.FishPond",
             Builder = fishPondData.Builder,
             BuildDays = 2,
-            BuildCost = 5000,
+            BuildCost = 15000,
             BuildMaterials = new() {
               new() {
                 // Wood
                 ItemId = "(O)388",
-                Amount = 50
+                Amount = 200
               },
               new() {
                 // Iron
@@ -144,9 +158,9 @@ internal sealed class ModEntry : Mod {
                 Amount = 10
               },
               new() {
-                // Gold
-                ItemId = "(O)336",
-                Amount = 5
+                // Iridium
+                ItemId = "(O)337",
+                Amount = 1
               },
             },
             BuildingToUpgrade = "Fish Pond",
@@ -163,6 +177,16 @@ internal sealed class ModEntry : Mod {
             },
             MaxOccupants = -1,
           };
+        } else {
+          Monitor.Log($"IMPOSSIBLE: No fish pond building detected?", LogLevel.Error);
+        }
+      });
+      // Run one later for fish pondering compat
+      e.Edit(asset => {
+        var data = asset.AsDictionary<string, BuildingData>().Data;
+        if (data.TryGetValue("Fish Pond", out var fishPondData) && data.TryGetValue(AquaponicsFishPondBuilding, out var aquaponicsPondData)) {
+          aquaponicsPondData.Size.X = fishPondData.Size.X;
+          aquaponicsPondData.Size.Y = fishPondData.Size.Y;
         } else {
           Monitor.Log($"IMPOSSIBLE: No fish pond building detected?", LogLevel.Error);
         }
@@ -201,35 +225,33 @@ internal sealed class ModEntry : Mod {
         tooltip: () => Helper.Translation.Get("Config.seedCount.description"),
         getValue: () => Config.SeedCount,
         setValue: value => { Config.SeedCount = value; },
-        min: 1
+        min: 1,
+        max: FishPondCropManager.MAX_SEED_COUNT
     );
   }
 
-  // If there is planted crop, make fish spawn faster and give a small chance to double stack
   void OnDayStarted(object? sender, DayStartedEventArgs e) {
     if (!Context.IsMainPlayer) return;
     Utility.ForEachBuilding(building => {
-      if (IsAquaponicsPond(building, out var pond) &&
-          FishPondCropManager.TryGetOnePot(pond, out var pot) &&
-          (pot.hoeDirt.Value.crop is not null || pot.bush.Value is not null || pot.heldObject.Value is not null)) {
-        FishPondCropManager.DayUpdateHoeDirt(pond);
-        if (Game1.random.NextBool(0.25)) {
-          pond.daysSinceSpawn.Value += 1;
-        }
-        if (pond.output.Value is not null &&
-            !pond.output.Value.modData.ContainsKey(AlreadyDoubled) &&
-            Game1.random.NextBool(0.50)) {
-          pond.output.Value.Stack = (int)(pond.output.Value.Stack * (pond.goldenAnimalCracker.Value ? 1.5 : 2));
-          pond.output.Value.modData[AlreadyDoubled] = "";
-        }
+      if (IsAquaponicsPond(building, out var pond)) {
+        FishPondCropManager.DayStarted(pond);
       }
       return true;
     });
   }
 
-  // Initialize our pots with data that was expected to be populated for regular location pots
   void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
+    // Migrate old pots to new system
     FishPondCropManager.SaveLoaded();
+    // This is more reliable than performActionOnDemolition I think
+    Utility.ForEachLocation(location => {
+      location.buildings.OnValueRemoved += (Building building) => {
+        if (IsAquaponicsPond(building, out var pond)) {
+          FishPondCropManager.ClearFishPondIndoorPots(pond);
+        }
+      };
+      return true;
+    });
   }
 
   // Harvest crops if no output
@@ -268,8 +290,8 @@ internal sealed class ModEntry : Mod {
     var scale = Game1.pixelZoom * scaleModifier;
     // Draw crops
     Vector2 topLeft = new Vector2(__instance.tileX.Value, __instance.tileY.Value) * 64f;
-    var cropsChest = FishPondCropManager.GetFishPondCropsChest(__instance);
-    if (cropsChest is not null && FishPondCropManager.TryGetOnePot(__instance, out var pot)) {
+    var pots = FishPondCropManager.GetFishPondIndoorPots(__instance);
+    if (pots is not null && FishPondCropManager.TryGetOnePot(__instance, out var pot)) {
       int potIndexToDraw = 0;
       for (int x = 1; x < 5; x++) {
         for (int y = 1; y < 3; y++) {
@@ -348,10 +370,10 @@ internal sealed class ModEntry : Mod {
           }
           // Change to next pot
           potIndexToDraw++;
-          if (potIndexToDraw >= cropsChest.Items.Count) {
+          if (potIndexToDraw >= pots.Count) {
             potIndexToDraw = 0;
           }
-          pot = (cropsChest.Items[potIndexToDraw] as IndoorPot) ?? pot;
+          pot = pots[potIndexToDraw] ?? pot;
         }
       }
     }
@@ -625,6 +647,13 @@ internal sealed class ModEntry : Mod {
       __result = 0.33f;
     }
   }
+  static void HoeDirt_paddyWaterCheck_Postfix(HoeDirt __instance, ref bool __result, bool forceUpdate = false) {
+    if (__result ||
+        !api.IsAquaponicsHoeDirt(__instance) ||
+        !__instance.hasPaddyCrop()) return;
+    __instance.nearWaterForPaddy.Value = 1;
+    __result = true;
+  }
 
   private void OpenCropsChest(string command, string[] args) {
     int distance = Int32.MaxValue;
@@ -640,7 +669,7 @@ internal sealed class ModEntry : Mod {
     }
     if (pondToReturn is not null) {
       ModEntry.StaticMonitor.Log($"Opening {FishPondCropManager.CropsChestName}", LogLevel.Info);
-      var chest = FishPondCropManager.GetFishPondCropsChest(pondToReturn);
+      var chest = FishPondCropManager.GetOldCropsChestForMigration(pondToReturn);
       if (chest is not null) { 
         Game1.activeClickableMenu = new ItemGrabMenu(chest.Items);
       }
@@ -684,6 +713,7 @@ internal sealed class ModEntry : Mod {
       if (Game1.activeClickableMenu is PondQueryMenu menu) {
         var pond = Helper.Reflection.GetField<FishPond>(menu, "_pond").GetValue();
         if (pond.buildingType.Value != "Fish Pond") {
+          FishPondCropManager.ClearFishPondIndoorPots(pond);
           pond.buildingType.Value = "Fish Pond";
           pond.ReloadBuildingData();
           pond.daysUntilUpgrade.Value = 0;
@@ -692,6 +722,25 @@ internal sealed class ModEntry : Mod {
       }
     } catch (Exception e) {
       StaticMonitor.Log($"Error downgrading pond: {e.ToString()}", LogLevel.Warn);
+    }
+  }
+
+  private void ClearPots(string command, string[] args) {
+    try {
+      if (Game1.activeClickableMenu is PondQueryMenu menu) {
+        var b = Helper.Reflection.GetField<FishPond>(menu, "_pond").GetValue();
+        if (IsAquaponicsPond(b, out var pond)) {
+          FishPondCropManager.ClearFishPondIndoorPots(pond);
+        }
+      }
+    } catch (Exception e) {
+      StaticMonitor.Log($"Error clearing pots of pond: {e.ToString()}", LogLevel.Warn);
+    }
+  }
+
+	static void Building_performActionOnDemolition_Postfix(Building __instance, GameLocation location) {
+    if (IsAquaponicsPond(__instance, out var pond)) {
+      FishPondCropManager.ClearFishPondIndoorPots(pond);
     }
   }
 }

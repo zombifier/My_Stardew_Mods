@@ -6,7 +6,6 @@
   "Plant.alreadyPlanted": "The hydroponics tank is already growing crops.",
   "PondQueryMenu.removeCrops": "Remove Planted Crops",
   "PondQueryMenu.removeCropsConfirmation": "Are you sure you want to remove all planted crops?",
-  // Custom bush support is not implemented yet, but we'll use the string below once it is
   "PondQueryMenu.removeBushesConfirmation": "Are you sure you want to remove all planted bushes? You'll get the bush saplings back.",
   // Configs
   "Config.seedCount.name": "Hydroponics Seed Count",
@@ -15,5 +14,6 @@
   "Command.openCropsChest": "Open the chest containing the indoor pots of the nearest fish pond. WARNING: For debugging only. Only run this command if you know what you're doing.",
   "Command.openOutputChest": "Open the chest containing the output of the nearest fish pond. WARNING: For debugging only. Only run this command if you know what you're doing.",
   "Command.downgradePond": "Downgrade the pond with a pond menu open to the base version.",
-  "Command.downgradeAllAquaponicsPonds": "Downgrade all aquaponics pond to regular fish ponds. Only run this command if you want to uninstall this mod cleanly."
+  "Command.downgradeAllAquaponicsPonds": "Downgrade all aquaponics pond to regular fish ponds. Only run this command if you want to uninstall this mod cleanly.",
+  "Command.clearPots": "Delete all indoor pots associated with the pond with the menu open. For debugging only."
 }

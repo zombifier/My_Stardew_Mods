@@ -137,7 +137,11 @@ static class PondQueryMenuPatcher {
     if (removeCropsButton?.containsPoint(x, y) ?? false) {
       ____confirmationBoxRectangle = new Microsoft.Xna.Framework.Rectangle(0, 0, 400, 100);
       ____confirmationBoxRectangle.X = Game1.uiViewport.Width / 2 - ____confirmationBoxRectangle.Width / 2;
-      ____confirmationText = ModEntry.Helper.Translation.Get("PondQueryMenu.removeCropsConfirmation");
+      if (FishPondCropManager.TryGetOnePot(____pond, out var pot) && pot.bush.Value is not null) {
+        ____confirmationText = ModEntry.Helper.Translation.Get("PondQueryMenu.removeBushesConfirmation");
+      } else {
+        ____confirmationText = ModEntry.Helper.Translation.Get("PondQueryMenu.removeCropsConfirmation");
+      }
       ____confirmationText = Game1.parseText(____confirmationText, Game1.smallFont, ____confirmationBoxRectangle.Width);
       Vector2 vector = Game1.smallFont.MeasureString(____confirmationText);
       ____confirmationBoxRectangle.Height = (int)vector.Y;
@@ -145,12 +149,12 @@ static class PondQueryMenuPatcher {
       __instance.yesButton = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(Game1.uiViewport.Width / 2 - 64 - 4, ____confirmationBoxRectangle.Bottom + 32, 64, 64), Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 46), 1f)
       {
         myID = 111,
-             rightNeighborID = 105
+        rightNeighborID = 105
       };
       __instance.noButton = new ClickableTextureComponent(new Microsoft.Xna.Framework.Rectangle(Game1.uiViewport.Width / 2 + 4, ____confirmationBoxRectangle.Bottom + 32, 64, 64), Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 47), 1f)
       {
         myID = 105,
-             leftNeighborID = 111
+        leftNeighborID = 111
       };
       Game1.playSound("smallSelect");
       if (Game1.options.SnappyMenus) {
