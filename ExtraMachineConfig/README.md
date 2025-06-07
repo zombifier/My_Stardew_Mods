@@ -190,7 +190,6 @@ NOTE: slain Prismatic Slimes *will* drop Prismatic Jelly. If you're
 going to make prismatic jellies a common item in your mod, it's highly
 recommended you do the following:
 * Make prismatic jellies trashable (and perhaps sellable) in `Data/Objects`.
-  optional.
 * Make the Wizard's special order not remove prismatic jellies when it ends in
   `Data/SpecialOrders`.
 
