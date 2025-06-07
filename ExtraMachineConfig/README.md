@@ -198,8 +198,9 @@ You can also control the chance of hatched/spawned (as in, not randomly spawned
 by the Wizard special order) prismatic slimes dropping prismatic jellies on
 killed by editing `Data/Machines`, targeting the slime incubator's entry
 (`"(BC)156"`), and add `selph.ExtraMachineConfig.HatchedPrismaticJellyChance`
-as a key. The value is the chance (a number between 0.0, never, and 1.0,
-always). You can use CP When conditions to control this number.
+to the `CustomFields` dictionary. The value is the chance (a number between
+0.0, never, and 1.0, always). You can use CP When conditions to control this
+number.
 
 NOTE: Despite being a field on `Data/Machines`, it will globally affect every
 prismatic slime, regardless of from which incubator they spawn. The reason it's
