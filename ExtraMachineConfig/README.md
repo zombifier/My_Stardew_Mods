@@ -24,6 +24,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Items that can be used as slingshot ammo](#items-that-can-be-used-as-slingshot-ammo)
       + [Use item queries in add item trigger action](#use-item-queries-in-add-item-trigger-action)
       + [On buff removed trigger](#on-buff-removed-trigger)
+      + [Custom slime eggs (including prismatic slime eggs)](#custom-slime-eggs-including-prismatic-slime-eggs)
    * [Machine Features](#machine-features)
       + [Passive features/fixes](#passive-features-fixes)
       + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
@@ -174,6 +175,43 @@ NOTE:
   and `selph.ExtraMachineConfig_BuffId`.
 
 ----
+
+### Custom slime eggs (including prismatic slime eggs) 
+
+You can define custom slime eggs by adding the field
+`selph.ExtraMachineConfig.SlimeColorToHatch` field to the object data's
+`CustomFields` dictionary. The value is either three numbers corresponding to
+RGB values separated by commas (e.g. `"155,50,20"`), or `"Prismatic"` to make
+it a prismatic slime.
+
+Don't forget to also add the `slime_egg_item` context tag!
+
+NOTE: slain Prismatic Slimes *will* drop Prismatic Jelly. If you're
+going to make prismatic jellies a common item in your mod, it's highly
+recommended you do the following:
+* Make prismatic jellies trashable (and perhaps sellable) in `Data/Objects`.
+  optional.
+* Make the Wizard's special order not remove prismatic jellies when it ends in
+  `Data/SpecialOrders`.
+
+You can also control the chance of hatched/spawned (as in, not randomly spawned
+by the Wizard special order) prismatic slimes dropping prismatic jellies on
+killed by editing `Data/Machines`, targeting the slime incubator's entry
+(`"(BC)156"`), and add `selph.ExtraMachineConfig.HatchedPrismaticJellyChance`
+as a key. The value is the chance (a number between 0.0, never, and 1.0,
+always). You can use CP When conditions to control this number.
+
+NOTE: Despite being a field on `Data/Machines`, it will globally affect every
+prismatic slime, regardless of from which incubator they spawn. The reason it's
+like that is because I'm too lazy to make an entirely new asset for it.
+
+Finally, this mod includes a passive feature that allows prismatic slimes to
+breed with other slimes, making more prismatic slimes (50% chance if only one
+of the parent is prismatic). Feel free to use it for nefarious purposes.
+
+These works with [custom slime incubators](#custom-slime-incubators)!
+
+---
 
 ## Machine Features
 Unless otherwise specified, this mod reads extra data defined the [`CustomData`
@@ -996,7 +1034,7 @@ NOTE: Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
 
 -----
 
-### Custom slime incubators
+### Custom slime incubators 
 
 Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
 

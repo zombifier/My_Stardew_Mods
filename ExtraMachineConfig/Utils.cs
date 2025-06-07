@@ -3,7 +3,9 @@ using StardewModdingAPI;
 using System;
 using System.Linq;
 using StardewValley;
+using StardewValley.GameData.Objects;
 using StardewValley.Menus;
+using StardewValley.Monsters;
 using StardewValley.Objects;
 using StardewValley.Inventories;
 using StardewValley.GameData.Machines;
@@ -286,5 +288,21 @@ static class Utils {
       return null;
     }
     return chest.Items[0];
+  }
+
+  public static void MakeSlime(SObject machine, Vector2 position, ref GreenSlime? slime) {
+    if (machine.heldObject.Value is null || slime is not null) return;
+    if (ItemRegistry.GetDataOrErrorItem(machine.heldObject.Value.QualifiedItemId).RawData is ObjectData objectData &&
+        (objectData.CustomFields?.TryGetValue(MachineHarmonyPatcher.SlimeColorToHatch, out var slimeColorStr) ?? false)) {
+      if (slimeColorStr == "Prismatic") {
+        slime = new GreenSlime(position);
+        slime.makePrismatic();
+        slime.modData[MachineHarmonyPatcher.IsHatchedSlime] = "";
+      } else {
+        var slimeColor = Utils.stringToColor(slimeColorStr) ?? Color.White;
+        slime = new GreenSlime(position, 121);
+        slime.color.Value = slimeColor;
+      }
+    }
   }
 }

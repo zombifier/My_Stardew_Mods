@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Extensions;
 using StardewValley.Monsters;
 using StardewValley.Triggers;
 using StardewValley.GameData.Objects;
@@ -54,11 +55,13 @@ sealed class MachineHarmonyPatcher {
   internal static string IsCustomSlimeIncubator = $"{ModEntry.UniqueId}.IsCustomSlimeIncubator";
   internal static string DrawLayerTexture = $"{ModEntry.UniqueId}.DrawLayerTexture";
   internal static string DrawLayerTextureIndex = $"{ModEntry.UniqueId}.DrawLayerTextureIndex";
+  internal static string HatchedPrismaticJellyChance = $"{ModEntry.UniqueId}.HatchedPrismaticJellyChance";
 
   // ModData keys
   internal static string ExtraContextTagsKey = $"{ModEntry.UniqueId}.ExtraContextTags";
   internal static string ExtraPreserveIdKeyPrefix = $"{ModEntry.UniqueId}.ExtraPreserveId";
   internal static string ExtraColorKeyPrefix = $"{ModEntry.UniqueId}.ExtraColor";
+  internal static string IsHatchedSlime = $"{ModEntry.UniqueId}.IsHatchedSlime";
   // on machines
   internal static string AutomaticProduceCountRemainingKey = $"{ModEntry.UniqueId}.AutomaticProduceCountRemaining";
   //internal static string TriggerActionToRunWhenReady = $"{ModEntry.UniqueId}.TriggerActionToRunWhenReady";
@@ -75,6 +78,7 @@ sealed class MachineHarmonyPatcher {
   internal static string SlingshotDamage = $"{ModEntry.UniqueId}.SlingshotDamage";
   internal static string SlingshotExplosiveRadius = $"{ModEntry.UniqueId}.SlingshotExplosiveRadius";
   internal static string SlingshotExplosiveDamage = $"{ModEntry.UniqueId}.SlingshotExplosiveDamage";
+  internal static string SlimeColorToHatch = $"{ModEntry.UniqueId}.SlimeColorToHatch";
 
   // The ID of the holder item to get around the `Object` only limitation.
   internal static string HolderId = $"{ModEntry.UniqueId}.Holder";
@@ -216,6 +220,11 @@ sealed class MachineHarmonyPatcher {
           nameof(Buff.OnRemoved)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Buff_OnRemoved_Postfix)));
 
+    // For the "prismatic jelly drop chance" patch
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(GreenSlime),
+          nameof(GreenSlime.getExtraDropItems)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.GreenSlime_getExtraDropItems_Postfix)));
 
     // Transpilers go here
     // Allow non-Object input (by turning them into weeds if necessary to satisfy the non-machine code branches)
@@ -224,8 +233,16 @@ sealed class MachineHarmonyPatcher {
         original: AccessTools.DeclaredMethod(typeof(SObject),
           nameof(SObject.performObjectDropInAction)),
         transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_performObjectDropInAction_transpiler)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(SObject),
+          nameof(SObject.DayUpdate)),
+        transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_DayUpdate_Transpiler)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(GreenSlime),
+          nameof(GreenSlime.mateWith)),
+        transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.GreenSlime_mateWith_Transpiler)));
     } catch (Exception e) {
-      ModEntry.StaticMonitor.Log("Error when patching performObjectDropInAction: " + e.Message, LogLevel.Error);
+      ModEntry.StaticMonitor.Log("Error when transpiling: " + e.ToString(), LogLevel.Error);
     }
 
   }
@@ -747,6 +764,9 @@ sealed class MachineHarmonyPatcher {
             greenSlime = new GreenSlime(position, 121);
             greenSlime.makeTigerSlime();
             break;
+          default:
+            Utils.MakeSlime(__instance, position, ref greenSlime);
+            break;
         }
         if (greenSlime != null) {
           Game1.showGlobalMessage(greenSlime.cute.Value ? Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12689") : Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12691"));
@@ -883,5 +903,86 @@ sealed class MachineHarmonyPatcher {
     targetItem.modData[$"{ModEntry.UniqueId}_BuffName"] = __instance.source ?? "";
     targetItem.modData[$"{ModEntry.UniqueId}_BuffId"] = __instance.id ?? "";
     TriggerActionManager.Raise($"{ModEntry.UniqueId}_BuffRemoved", targetItem: targetItem);
+  }
+
+  public static IEnumerable<CodeInstruction> SObject_DayUpdate_Transpiler(IEnumerable<CodeInstruction> instructions) {
+    CodeMatcher matcher = new(instructions);
+    // Old: case "(O)857": whatevs
+    // New: our code
+    matcher
+      .End()
+      .MatchStartBackwards(
+        new CodeMatch(OpCodes.Ldloc_S),
+        new CodeMatch(OpCodes.Ldc_I4_0),
+        new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(GreenSlime), new[] {typeof(Vector2), typeof(int)})),
+        new CodeMatch(OpCodes.Stloc_S)
+      )
+      .ThrowIfNotMatch($"Could not find entry point 1 for {nameof(SObject_DayUpdate_Transpiler)}");
+    var positionVar = matcher.Operand;
+    matcher.Advance(3);
+    var greenSlimeVar = matcher.Operand;
+    matcher
+      .MatchEndBackwards(
+        new CodeMatch(OpCodes.Ldloc_S),
+        new CodeMatch(OpCodes.Ldstr, "(O)857"),
+        new CodeMatch(OpCodes.Call),
+        new CodeMatch(OpCodes.Brtrue_S),
+        new CodeMatch(OpCodes.Br_S))
+      .ThrowIfNotMatch($"Could not find entry point 2 for {nameof(SObject_DayUpdate_Transpiler)}")
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Ldarg_0),
+        new CodeInstruction(OpCodes.Ldloc_S, positionVar),
+        new CodeInstruction(OpCodes.Ldloca_S, greenSlimeVar),
+        new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(Utils), nameof(Utils.MakeSlime)))
+          );
+    return matcher.InstructionEnumeration();
+  }
+
+  public static IEnumerable<CodeInstruction> GreenSlime_mateWith_Transpiler(IEnumerable<CodeInstruction> instructions) {
+    CodeMatcher matcher = new(instructions);
+    // Just insert our own stuff near the end of the function, before doneMating
+    // The babby slime is local var 0
+    matcher
+      .End()
+      .MatchStartBackwards(
+        new CodeMatch(OpCodes.Ldarg_1),
+        new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(GreenSlime), nameof(GreenSlime.doneMating)))
+      )
+      .ThrowIfNotMatch($"Could not find entry point 1 for {nameof(GreenSlime_mateWith_Transpiler)}")
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Ldloc_0),
+        new CodeInstruction(OpCodes.Ldarg_0),
+        new CodeInstruction(OpCodes.Ldarg_1),
+        new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.MaybeMakePrismatic)))
+          );
+    return matcher.InstructionEnumeration();
+  }
+
+  static void MaybeMakePrismatic(GreenSlime? child, GreenSlime parent1, GreenSlime parent2) {
+    if (child is null) return;
+    int prismaticCount = 0;
+    if (parent1.prismatic.Value) prismaticCount++;
+    if (parent2.prismatic.Value) prismaticCount++;
+    if (prismaticCount >= 2 ||
+        (prismaticCount == 1 && Game1.random.NextBool(0.5))) {
+      child.makePrismatic();
+      child.modData[MachineHarmonyPatcher.IsHatchedSlime] = "";
+    }
+  }
+
+  static double GetPrismaticJellyFromHatchedSlimesChance() {
+    return
+      DataLoader.Machines(Game1.content).TryGetValue("(BC)156", out var slimeIncubatorEntry)
+      && (slimeIncubatorEntry.CustomFields?.TryGetValue(HatchedPrismaticJellyChance, out var chanceStr) ?? false)
+      && Double.TryParse(chanceStr, out var chance)
+      ? chance : 1.0;
+
+  }
+
+  static void GreenSlime_getExtraDropItems_Postfix(GreenSlime __instance, List<Item> __result) {
+    if (__instance.prismatic.Value && __instance.modData.ContainsKey(IsHatchedSlime) &&
+        !Game1.random.NextBool(GetPrismaticJellyFromHatchedSlimesChance())) {
+      __result.RemoveWhere(item => item.QualifiedItemId == "(O)876");
+    }
   }
 }
