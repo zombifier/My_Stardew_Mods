@@ -690,10 +690,13 @@ internal sealed class ModEntry : Mod {
   }
 
   public static bool ItemSoldForCompetition(string[] args, TriggerActionContext context, out string? error) {
-    if (context.TriggerArgs.Count() == 0 ||
-        context.TriggerArgs[0] is not SObject soldObj){
+    if (context.TriggerArgs.Count() == 0) {
       error = "ERROR - ItemSoldForCompetition not called in response to BETAS' item sold trigger?";
       return false;
+    }
+    if (context.TriggerArgs[0] is not SObject soldObj) {
+      error = null;
+      return true;
     }
     var specialOrder = GetCompetitionSpecialOrder();
     if (specialOrder is null) {

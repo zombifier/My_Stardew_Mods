@@ -1041,6 +1041,10 @@
               "ContextTags": ["color_jade"],
             },
             {
+              "Id": "color_sea_green",
+              "ContextTags": ["color_sea_green"],
+            },
+            {
               "Id": "color_prismatic",
               "ContextTags": ["color_prismatic"],
             },
