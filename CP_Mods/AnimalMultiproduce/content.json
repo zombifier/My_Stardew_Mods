@@ -10,7 +10,7 @@
     {
       "LogName": "Farm Animal Rules",
       "Action": "Include",
-      "FromFile": "Data/farmanimals.json",
+      "FromFile": "Data/farmanimals_ah_workaround.json",
     },
   ]
 }

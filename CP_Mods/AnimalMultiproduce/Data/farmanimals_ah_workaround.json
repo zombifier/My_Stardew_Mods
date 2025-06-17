@@ -4,18 +4,18 @@
       "LogName": "Remove feather from duck",
       "Action": "EditData",
       "Target": "Data/FarmAnimals",
-      "TargetField": ["Duck", "DeluxeProduceItemIds"],
+      "TargetField": ["Duck", "DeluxeProduceItemIds", "Default"],
       "Entries": {
-        "Default": null,
+        "ItemId": 442,
       },
     },
     {
       "LogName": "Remove feet from rabbit",
       "Action": "EditData",
       "Target": "Data/FarmAnimals",
-      "TargetField": ["Rabbit", "DeluxeProduceItemIds"],
+      "TargetField": ["Rabbit", "DeluxeProduceItemIds", "Default"],
       "Entries": {
-        "Default": null,
+        "ItemId": 440,
       },
     },
     {
