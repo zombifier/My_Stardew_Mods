@@ -88,4 +88,3 @@
   "Config.swagBagItemCount.description": "각 스웨그 백에서 제공하는 완벽 치트 아이템의 수입니다. 0으로 설정하면 제공되지 않습니다. 다른 보상(치 양념, 마법 미끼, 찻잔 세트)에는 영향을 주지 않습니다.",
   "PresetUI": "프리셋: {{presetName}}",
 }
-}
