@@ -1,4 +1,5 @@
 {
+  // Credits to Mazoout
   "AquaponicsFishPond.name": "Étang aquaponique",
   "AquaponicsFishPond.description": "Ajoute un bassin hydroponique dans lequel planter des cultures. Les poissons comme les plantes bénéficient de ce système !",
   "Plant.notEnoughSeeds": "Nécessite {{num}} graines du même type.",

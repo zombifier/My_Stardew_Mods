@@ -1,4 +1,5 @@
 {
+  // Credits to https://github.com/CaranudLapin
   "CompetitionName": "Ferme de la saison",
   "CompetitionDescription": "Remplissez chaque catégorie en expédiant une grande variété de produits frais et soyez couronné la meilleure ferme de toute la République de Ferngill !",
   "StaleItemName": "{{Name}} (rassis)",

@@ -1,5 +1,5 @@
-// Translation courtesy of ghygr123
 {
+  // Credits to https://next.nexusmods.com/profile/ghygr123
   "selph.ExtraAnimalConfig.AddedToSiloMsg": "将 {{count}} 个 {{displayName}} 添加到筒仓.",
   "selph.ExtraAnimalConfig.SiloCountMsg": "个 {{displayName}}: {{count}}/{{maxCount}}",
   "selph.ExtraAnimalConfig.HopperEmpty": "料斗是空的，请建造一个饲料筒仓并向里放入饲料.",

@@ -1,4 +1,5 @@
 {
+  // Credits to https://github.com/wally232 and https://next.nexusmods.com/profile/snowstreet12 (2.0 TLs)
   "CompetitionName": "시즌 농장 대회",
   "CompetitionDescription": "다양한 신선 제품을 배송하여 각 카테고리를 채우고 펌길 공화국 최고의 농장으로 선정되세요!",
   "StaleItemName": "{{Name}} (오래됨)",
@@ -69,4 +70,22 @@
   // Other stuff
   "FameBanner": "명성: {{fame}}",
   "FameBanner.tooltip": "판매 가격: +{{sellPriceIncrease}}%\n난이도: +{{difficultyIncrease}}%",
+  // New in 2.0 Below
+  "PartiallyFreshItemName": "{{Name}} (신선도 {{freshPercentage}}%)",
+  "Config.freshDays.name": "신선함 유지 일수",
+  "Config.freshDays.description": "신선한 농산물이 상하기 전까지 신선하게 유지되는 일수입니다. 기본값은 하루이며, 다음날 아침에 상하게 됩니다.",
+  "Config.fridgeFreshDays.name": "냉장고 내 신선함 유지 일수",
+  "Config.fridgeFreshDays.description": "냉장고 안에 있는 신선한 농산물이 상하기 전까지 신선하게 유지되는 일수입니다. 기본값은 3일입니다.",
+  "Config.enableRandomPresets.name": "랜덤 대회 프리셋 활성화",
+  "Config.enableRandomPresets.description": "랜덤 대회 프리셋을 활성화합니다. 비활성화하면 항상 기본 '모든 품목을 다양하게 출하' 프리셋만 선택됩니다.",
+  "Config.presetOptions.name": "프리셋 옵션",
+  "Config.choosePresets.name": "선택 가능한 프리셋 지정",
+  "Config.choosePresets.description": "무작위로 선택될 수 있는 프리셋을 지정합니다. 일부 프리셋은 계절 조건이 있어 선택되지 않을 수도 있습니다. 선택 가능한 프리셋이 없으면 기본 다양성 프리셋이 사용됩니다.",
+  "Config.forcedPreset.name": "프리셋 강제 지정",
+  "Config.forcedPreset.description": "설정 시 다음 달 대회에 이 프리셋이 강제로 사용됩니다. 위의 설정과 계절 조건을 무시합니다.",
+  "Config.forcedPreset.none": "없음",
+  "Config.swagBagItemCount.name": "스웨그 백 치트 아이템 개수",
+  "Config.swagBagItemCount.description": "각 스웨그 백에서 제공하는 완벽 치트 아이템의 수입니다. 0으로 설정하면 제공되지 않습니다. 다른 보상(치 양념, 마법 미끼, 찻잔 세트)에는 영향을 주지 않습니다.",
+  "PresetUI": "프리셋: {{presetName}}",
+}
 }

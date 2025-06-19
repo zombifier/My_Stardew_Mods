@@ -1,4 +1,5 @@
 {
+  // Credits to BockerLamum
   "AquaponicsFishPond.name": "鱼菜共生池塘",
   "AquaponicsFishPond.description": "安装一个水培罐，可以在其中种植农作物。",
   "Plant.notEnoughSeeds": "需要 {{num}} 个相同类型的种子。",
