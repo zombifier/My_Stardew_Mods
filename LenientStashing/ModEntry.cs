@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley.Menus;
+using StardewValley.Objects;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -25,8 +26,9 @@ internal sealed class ModEntry : Mod {
   public static void ItemGrabMenu_FillOutStacks_Postfix(ItemGrabMenu __instance) {
     var farmerInventory = __instance.inventory.actualInventory;
     var chestInventory = __instance.ItemsToGrabMenu.actualInventory;
-    if (chestInventory.Count >= __instance.ItemsToGrabMenu.capacity) {
-      StaticMonitor.Log("Chest full, returning.", LogLevel.Info);
+    var capacity = (__instance.sourceItem as Chest)?.GetActualCapacity() ?? __instance.ItemsToGrabMenu.capacity;
+    if (chestInventory.Count >= capacity) {
+      StaticMonitor.Log($"Chest full ({chestInventory.Count}/{capacity}), returning.", LogLevel.Info);
       return;
     }
     // TODO:
@@ -64,8 +66,10 @@ internal sealed class ModEntry : Mod {
         var itemSprite = new ItemGrabMenu.TransferredItemSprite(farmerInventory[i].getOne(), __instance.inventory.inventory[i].bounds.X, __instance.inventory.inventory[i].bounds.Y);
 				__instance._transferredItemSprites.Add(itemSprite);
         farmerInventory[i] = null;
-        if (chestInventory.Count >= __instance.ItemsToGrabMenu.capacity) {
-          StaticMonitor.Log("Chest full, returning.", LogLevel.Info);
+        // Calculate capacity again since unlimited storage dynamically adjusts it to be "item count + 1"
+        capacity = (__instance.sourceItem as Chest)?.GetActualCapacity() ?? __instance.ItemsToGrabMenu.capacity;
+        if (chestInventory.Count >= capacity) {
+          StaticMonitor.Log($"Chest full ({chestInventory.Count}/{capacity}), returning.", LogLevel.Info);
           break;
         }
       }

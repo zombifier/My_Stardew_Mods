@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Lenient Stashing - Add to Existing Stacks Change",
   "Author": "selph",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Change behavior of 'add to existing stacks' to also add items of the same base type into the chest even if they don't stack (ie. different colored flowers or artisan goods).",
   "UniqueID": "selph.LenientStashing",
   "EntryDll": "LenientStashing.dll",
