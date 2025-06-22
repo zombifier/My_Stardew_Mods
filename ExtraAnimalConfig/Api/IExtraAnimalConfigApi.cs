@@ -13,7 +13,8 @@ public interface IExtraAnimalConfigApi {
   // produceId: the qualified or unqualified ID of the base produce (ie. the value in (Deluxe)ProduceItemIds)
   public List<GenericSpawnItemDataWithCondition> GetItemQueryOverrides(string animalType, string produceId);
   // Events that will fire when a produce is created. You can register an event here to listen for animal produce events, and potentially even change the output item.
-  // WARNING: Because of a quirk in vanilla code, this will fire if an autograbber was unable to grab the produce from a tool harvested animal because it is full!
+  // WARNING: Because of a quirk in vanilla code, this will fire if an autograbber was unable to grab the produce from a tool harvested animal because it is full and doing nothing afterwards!
+  // Drop overnight animals are safe from this event double firing.
   public event Action<IAnimalProduceCreatedEvent>? AnimalProduceCreated;
   // Get a list of extra custom drops associated with this animal using EAC's feature (ie not in Data/FarmAnimals).
   // This is a dictionary of strings to lists of unqualified item IDs, with each dictionary corresponding to one slot.
