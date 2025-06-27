@@ -42,15 +42,15 @@ public class ExtraAnimalConfigApi : IExtraAnimalConfigApi {
 
   internal void RunAnimalProduceCreatedEvents(FarmAnimal animal, ref SObject produce, ProduceMethod produceMethod, Tool? tool) {
     if (AnimalProduceCreated is null) return;
+    var ev = new AnimalProduceCreatedEvent(animal, produce, produceMethod, tool);
     foreach (Action<IAnimalProduceCreatedEvent> del in AnimalProduceCreated.GetInvocationList()) {
       try {
-        var ev = new AnimalProduceCreatedEvent(animal, produce, produceMethod, tool);
         del.Invoke(ev);
-        produce = ev.produce ?? produce;
       } catch (Exception e) {
         ModEntry.StaticMonitor.Log("Error processing AnimalProduceCreatedEvent: " + e.ToString(), LogLevel.Error);
       }
     }
+    produce = ev.produce ?? produce;
     return;
   }
 }

@@ -1,4 +1,5 @@
 using StardewValley;
+using StardewValley.Delegates;
 using StardewValley.Pathfinding;
 using StardewValley.Extensions;
 using StardewValley.Internal;
@@ -119,6 +120,19 @@ public static class AnimalUtils {
   static string CustomTroughTileProperty = $"{ModEntry.UniqueId}.CustomTrough";
   public static string BuildingFeedOverrideIdKey = $"{ModEntry.UniqueId}.BuildingFeedOverrideId";
 
+  public static GameStateQueryContext GetGsqContext(FarmAnimal animal, GameLocation location, Farmer? player = null) {
+    return new GameStateQueryContext(
+        location,
+        player ?? Game1.GetPlayer(animal.ownerID.Value),
+        null /*targetItem*/,
+        AnimalUtils.GetGoldenAnimalCracker(animal),
+        Game1.random,
+        null,
+        new() {
+        [$"{ModEntry.UniqueId}_HomeLocation"] = animal.homeInterior,
+        });
+  }
+
   // Whether this animal only eats modded food and not hay/grass
   // Returns false if they do eat grass outside, or don't need to eat at all
   public static bool AnimalOnlyEatsModdedFood(FarmAnimal animal) {
@@ -213,7 +227,11 @@ public static class AnimalUtils {
     return BeginAttackTimeDict[animal.myID.Value];
   }
 
-  static Farmer? GetVictim(FarmAnimal animal, int attackRange) {
+  // Get the victim of this animal, cached or fresh.
+  // shouldGoOnCooldown is set to true if the animal has an attack GSQ, but it wasn't satisfied.
+  // This is to avoid checking potentially expensive GSQs every tick.
+  static Farmer? GetVictim(FarmAnimal animal, int attackRange, out bool shouldGoOnCooldown) {
+    shouldGoOnCooldown = false;
     if (CurrentVictimDict.TryGetValue(animal.myID.Value, out var farmerId)) {
       var farmer = Game1.GetPlayer(farmerId);
       if (farmer?.currentLocation != animal.currentLocation) {
@@ -222,11 +240,20 @@ public static class AnimalUtils {
       }
     }
     IList<Farmer> victimList = [];
+    string? attackCondition = null;
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData)) {
+      attackCondition = animalExtensionData.AttackCondition;
+    }
     foreach (var potentialVictim in animal.currentLocation.farmers) {
       // Mercifully, animals will not attack farmers trying to harvest from them with a tool
       if (!animal.CanGetProduceWithTool(potentialVictim.CurrentTool) &&
           FarmAnimal.GetFollowRange(animal, attackRange).Contains(potentialVictim.StandingPixel)) {
-        victimList.Add(potentialVictim);
+        var context = GetGsqContext(animal, animal.currentLocation, potentialVictim);
+        if (attackCondition is null || GameStateQuery.CheckConditions(attackCondition, context)) {
+          victimList.Add(potentialVictim);
+        } else {
+          shouldGoOnCooldown = true;
+        }
       }
     }
     if (victimList.Count > 0) {
@@ -252,11 +279,14 @@ public static class AnimalUtils {
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.IsAttackAnimal &&
         time.TotalGameTime.TotalMilliseconds - GetLastAttackTime(animal) > animalExtensionData.AttackIntervalMs) {
-      var victim = GetVictim(animal, animalExtensionData.AttackRange);
+      var victim = GetVictim(animal, animalExtensionData.AttackRange, out var shouldGoOnCooldown);
       if (victim is not null) {
         if (FarmAnimal.GetFollowRange(animal, 1).Intersects(victim.GetBoundingBox())) {
           // RAWR!
-          if (animalExtensionData.AttackDamage > 0) {
+          // Check the GSQ one last time in case it changed on the fly
+          var context = GetGsqContext(animal, animal.currentLocation);
+          if (animalExtensionData.AttackDamage > 0
+              && (animalExtensionData.AttackCondition is null || !GameStateQuery.CheckConditions(animalExtensionData.AttackCondition, context))) {
             animal.doEmote(12);
             victim.takeDamage(animalExtensionData.AttackDamage, false, null);
           }
@@ -286,6 +316,9 @@ public static class AnimalUtils {
         // No victim or victim became null, clean up
         CurrentVictimDict.Remove(animal.myID.Value);
         BeginAttackTimeDict.Remove(animal.myID.Value);
+        if (shouldGoOnCooldown) {
+          LastAttackTimeDict[animal.myID.Value] = time.TotalGameTime.TotalMilliseconds;
+        }
       }
     }
   }
@@ -297,8 +330,9 @@ public static class AnimalUtils {
   public static bool AnimalAffectedByRain(GameLocation location, FarmAnimal animal) {
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData)) {
       // Hijack this function to do GoOutsideCondition
+      var context = GetGsqContext(animal, location);
       if (animalExtensionData.GoOutsideCondition is not null &&
-          !GameStateQuery.CheckConditions(animalExtensionData.GoOutsideCondition, location, null, null, AnimalUtils.GetGoldenAnimalCracker(animal))) {
+          !GameStateQuery.CheckConditions(animalExtensionData.GoOutsideCondition, context)) {
         return true;
       }
       if (animalExtensionData.IgnoreRain ||
@@ -393,6 +427,7 @@ public static class ExtraProduceUtils {
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData)) {
       var context = new ItemQueryContext(animal.currentLocation, Game1.GetPlayer(animal.ownerID.Value), Game1.random, "ExtraAnimalConfig animal " + animal.type.Value + " producing");
+      var gsqContext = AnimalUtils.GetGsqContext(animal, animal.currentLocation);
       if (animalProduceExtensionData.ItemQuery != null) {
         var item = ItemQueryResolver.TryResolveRandomItem(animalProduceExtensionData.ItemQuery, context);
         if (item is SObject obj) {
@@ -406,7 +441,7 @@ public static class ExtraProduceUtils {
       } else if (animalProduceExtensionData.ItemQueries.Count > 0) {
         foreach (var itemQuery in animalProduceExtensionData.ItemQueries) {
           if (itemQuery.Condition != null &&
-              !GameStateQuery.CheckConditions(itemQuery.Condition, animal.currentLocation, null, null, AnimalUtils.GetGoldenAnimalCracker(animal))) {
+              !GameStateQuery.CheckConditions(itemQuery.Condition, gsqContext)) {
             continue;
           }
           var item = ItemQueryResolver.TryResolveRandomItem(itemQuery, context);

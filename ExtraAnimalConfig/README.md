@@ -53,6 +53,7 @@ to edit it.
 | `AttackIntervalMs` | `int` | The minimum interval between attacks in milliseconds (default 5000 aka 5 seconds).|
 | `AttackRange` | `int` | The minimum range chasing range (default 10 tiles).|
 | `AttackMaxChaseTimeMs` | `int` | How long to chase before the animal gets bored (default 10000 aka 10 seconds).|
+| `AttackCondition` | `string` | A game state query to control whether this animal will attack. Player-based conditions can be used here, and is checked for each victim.|
 
 
 `AnimalSpawnData` is a model with the following fields:

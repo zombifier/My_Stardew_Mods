@@ -33,6 +33,7 @@ public class AnimalExtensionData {
   public int AttackIntervalMs = 5000;
   public int AttackRange = 10;
   public int AttackMaxChaseTimeMs = 10000;
+  public string? AttackCondition;
 }
 
 public class EggExtensionData {
