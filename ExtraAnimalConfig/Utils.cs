@@ -286,7 +286,7 @@ public static class AnimalUtils {
           // Check the GSQ one last time in case it changed on the fly
           var context = GetGsqContext(animal, animal.currentLocation);
           if (animalExtensionData.AttackDamage > 0
-              && (animalExtensionData.AttackCondition is null || !GameStateQuery.CheckConditions(animalExtensionData.AttackCondition, context))) {
+              && (animalExtensionData.AttackCondition is null || GameStateQuery.CheckConditions(animalExtensionData.AttackCondition, context))) {
             animal.doEmote(12);
             victim.takeDamage(animalExtensionData.AttackDamage, false, null);
           }
