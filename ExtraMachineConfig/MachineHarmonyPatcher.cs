@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -52,6 +53,7 @@ sealed class MachineHarmonyPatcher {
   internal static string CaskWorksAnywhere = $"{ModEntry.UniqueId}.CaskWorksAnywhere";
   internal static string AllowMoreThanOneQualityIncrement = $"{ModEntry.UniqueId}.AllowMoreThanOneQualityIncrement";
   internal static string ReturnInput = $"{ModEntry.UniqueId}.ReturnInput";
+  internal static string ReturnActualInput = $"{ModEntry.UniqueId}.ReturnActualInput";
   internal static string IsCustomSlimeIncubator = $"{ModEntry.UniqueId}.IsCustomSlimeIncubator";
   internal static string DrawLayerTexture = $"{ModEntry.UniqueId}.DrawLayerTexture";
   internal static string DrawLayerTextureIndex = $"{ModEntry.UniqueId}.DrawLayerTextureIndex";
@@ -295,7 +297,7 @@ sealed class MachineHarmonyPatcher {
         }
         context.CustomFields["Tile"] = machine.TileLocation;
         context.CustomFields["Machine"] = machine;
-  			inputItem = ItemQueryResolver.TryResolveRandomItem(overrideInputId, context);
+        inputItem = ItemQueryResolver.TryResolveRandomItem(overrideInputId, context);
       } else {
         inputItem = null;
       }
@@ -588,7 +590,7 @@ sealed class MachineHarmonyPatcher {
     if (!probe) enableGetOutputItemSideEffect = true;
   }
 
-	public static void SObject_PlaceInMachine_Postfix(MachineData machineData, Item inputItem, bool probe, Farmer who, bool showMessages = true, bool playSounds = true) {
+  public static void SObject_PlaceInMachine_Postfix(MachineData machineData, Item inputItem, bool probe, Farmer who, bool showMessages = true, bool playSounds = true) {
     enableGetOutputItemSideEffect = false;
   }
 
@@ -683,7 +685,7 @@ sealed class MachineHarmonyPatcher {
     return true;
   }
 
-	public static void Farmer_GetItemReceiveBehavior_postfix(Item item, ref bool needsInventorySpace, ref bool showNotification) {
+  public static void Farmer_GetItemReceiveBehavior_postfix(Item item, ref bool needsInventorySpace, ref bool showNotification) {
     if (item.QualifiedItemId == HolderQualifiedId) {
       showNotification = false;
       if (item is SObject obj &&
@@ -694,8 +696,8 @@ sealed class MachineHarmonyPatcher {
   }
   public static void ItemQueryResolver_ApplyItemFields_postfix(ref ISalable __result, ISalable item, int minStackSize, int maxStackSize, int toolUpgradeLevel, string objectInternalName, string objectDisplayName, string objectColor, int quality, bool isRecipe, List<QuantityModifier> stackSizeModifiers, QuantityModifier.QuantityModifierMode stackSizeModifierMode, List<QuantityModifier> qualityModifiers, QuantityModifier.QuantityModifierMode qualityModifierMode, Dictionary<string, string> modData, ItemQueryContext context, Item? inputItem = null) {
     if (__result is Clothing clothing && !string.IsNullOrWhiteSpace(objectColor)) {
-			Color? color = Utility.StringToColor(objectColor);
-			if (color is not null) {
+      Color? color = Utility.StringToColor(objectColor);
+      if (color is not null) {
         clothing.Dye((Color)color);
       }
     }
@@ -848,9 +850,27 @@ sealed class MachineHarmonyPatcher {
 
   public static void SObject_performRemoveAction_Postfix(SObject __instance) {
     if (__instance.heldObject.Value is not null &&
-        !__instance.readyForHarvest.Value &&
-        (__instance.GetMachineData()?.CustomFields?.ContainsKey(ReturnInput) ?? false)) {
-      __instance.Location.debris.Add(new Debris(__instance.heldObject.Value, __instance.TileLocation * 64f + new Vector2(32f, 32f)));
+        !__instance.readyForHarvest.Value) {
+      if (__instance.GetMachineData()?.CustomFields?.ContainsKey(ReturnInput) ?? false) {
+        __instance.Location.debris.Add(new Debris(__instance.heldObject.Value, __instance.TileLocation * 64f + new Vector2(32f, 32f)));
+      }
+      if ((__instance.GetMachineData()?.CustomFields?.ContainsKey(ReturnActualInput) ?? false)
+          && __instance.lastInputItem.Value is not null && __instance.lastOutputRuleId.Value is not null) {
+        MachineData machineData = __instance.GetMachineData();
+        MachineOutputRule? machineOutputRule = machineData.OutputRules?.FirstOrDefault((MachineOutputRule p) => p.Id == __instance.lastOutputRuleId.Value);
+        if (machineOutputRule != null) {
+          foreach (var trigger in machineOutputRule.Triggers) {
+            if (trigger.Trigger.HasFlag(MachineOutputTrigger.ItemPlacedInMachine)
+                && (trigger.RequiredItemId == null || ItemRegistry.HasItemId(__instance.lastInputItem.Value, trigger.RequiredItemId))
+                && (trigger.RequiredTags == null || trigger.RequiredTags.Count == 0 || ItemContextTagManager.DoAllTagsMatch(trigger.RequiredTags, __instance.lastInputItem.Value.GetContextTags()))) {
+              var drop = __instance.lastInputItem.Value.getOne();
+              drop.Stack = trigger.RequiredCount;
+              __instance.Location.debris.Add(new Debris(drop, __instance.TileLocation * 64f + new Vector2(32f, 32f)));
+              return;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -912,28 +932,28 @@ sealed class MachineHarmonyPatcher {
     matcher
       .End()
       .MatchStartBackwards(
-        new CodeMatch(OpCodes.Ldloc_S),
-        new CodeMatch(OpCodes.Ldc_I4_0),
-        new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(GreenSlime), new[] {typeof(Vector2), typeof(int)})),
-        new CodeMatch(OpCodes.Stloc_S)
-      )
+          new CodeMatch(OpCodes.Ldloc_S),
+          new CodeMatch(OpCodes.Ldc_I4_0),
+          new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(GreenSlime), new[] {typeof(Vector2), typeof(int)})),
+          new CodeMatch(OpCodes.Stloc_S)
+          )
       .ThrowIfNotMatch($"Could not find entry point 1 for {nameof(SObject_DayUpdate_Transpiler)}");
     var positionVar = matcher.Operand;
     matcher.Advance(3);
     var greenSlimeVar = matcher.Operand;
     matcher
       .MatchEndBackwards(
-        new CodeMatch(OpCodes.Ldloc_S),
-        new CodeMatch(OpCodes.Ldstr, "(O)857"),
-        new CodeMatch(OpCodes.Call),
-        new CodeMatch(OpCodes.Brtrue_S),
-        new CodeMatch(OpCodes.Br_S))
+          new CodeMatch(OpCodes.Ldloc_S),
+          new CodeMatch(OpCodes.Ldstr, "(O)857"),
+          new CodeMatch(OpCodes.Call),
+          new CodeMatch(OpCodes.Brtrue_S),
+          new CodeMatch(OpCodes.Br_S))
       .ThrowIfNotMatch($"Could not find entry point 2 for {nameof(SObject_DayUpdate_Transpiler)}")
       .InsertAndAdvance(
-        new CodeInstruction(OpCodes.Ldarg_0),
-        new CodeInstruction(OpCodes.Ldloc_S, positionVar),
-        new CodeInstruction(OpCodes.Ldloca_S, greenSlimeVar),
-        new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(Utils), nameof(Utils.MakeSlime)))
+          new CodeInstruction(OpCodes.Ldarg_0),
+          new CodeInstruction(OpCodes.Ldloc_S, positionVar),
+          new CodeInstruction(OpCodes.Ldloca_S, greenSlimeVar),
+          new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(Utils), nameof(Utils.MakeSlime)))
           );
     return matcher.InstructionEnumeration();
   }
@@ -945,15 +965,15 @@ sealed class MachineHarmonyPatcher {
     matcher
       .End()
       .MatchStartBackwards(
-        new CodeMatch(OpCodes.Ldarg_1),
-        new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(GreenSlime), nameof(GreenSlime.doneMating)))
-      )
+          new CodeMatch(OpCodes.Ldarg_1),
+          new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(GreenSlime), nameof(GreenSlime.doneMating)))
+          )
       .ThrowIfNotMatch($"Could not find entry point 1 for {nameof(GreenSlime_mateWith_Transpiler)}")
       .InsertAndAdvance(
-        new CodeInstruction(OpCodes.Ldloc_0),
-        new CodeInstruction(OpCodes.Ldarg_0),
-        new CodeInstruction(OpCodes.Ldarg_1),
-        new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.MaybeMakePrismatic)))
+          new CodeInstruction(OpCodes.Ldloc_0),
+          new CodeInstruction(OpCodes.Ldarg_0),
+          new CodeInstruction(OpCodes.Ldarg_1),
+          new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.MaybeMakePrismatic)))
           );
     return matcher.InstructionEnumeration();
   }

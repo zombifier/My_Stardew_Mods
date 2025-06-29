@@ -1051,6 +1051,7 @@ Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.ReturnInput` | Whether this machine should return the *output* item (despite the name) as debris when removed, like the crystalarium. Only works for `ItemPlacedInMachine` and `OutputCollected` rules. This should only be used for crystalarium-like machines where the input is the same as the output. Let me know if you want this to also work for machines where the input is different from the output.|
+| `selph.ExtraMachineConfig.ReturnActualInput` | Whether this machine should return the actual input item as debris when removed. Only works for `ItemPlacedInMachine` and `OutputCollected` rules.|
 
 -----
 
