@@ -7,6 +7,7 @@ using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Delegates;
 using StardewValley.GameData.Machines;
+using StardewValley.GameData.Crops;
 using StardewValley.Internal;
 using StardewValley.Objects;
 using StardewValley.Tools;
@@ -172,6 +173,16 @@ public class HarmonyPatcher {
         original: AccessTools.Method(typeof(Utility),
           nameof(Utility.performLightningUpdate)),
         prefix: new HarmonyMethod(AccessTools.Method(typeof(HarmonyPatcher), nameof(Utility_performLightningUpdate_Prefix)), Priority.High + 1));
+
+    // Crop and bush harvest event patches
+    harmony.Patch(
+        original: AccessTools.Method(typeof(Crop), nameof(Crop.harvest)),
+        transpiler: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.Crop_harvest_Transpiler)));
+
+    // only for vanilla tea bushes
+    harmony.Patch(
+        original: AccessTools.Method(typeof(Crop), nameof(Crop.harvest)),
+        transpiler: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.Crop_harvest_Transpiler)));
   }
 
   static void SObject_canBePlacedHere_Postfix(SObject __instance, ref bool __result, GameLocation l, Vector2 tile, CollisionMask collisionMask = CollisionMask.All, bool showError = false) {
@@ -628,5 +639,59 @@ public class HarmonyPatcher {
         new CodeInstruction(OpCodes.Ret)
           );
     return matcher.InstructionEnumeration();
+  }
+
+  public static IEnumerable<CodeInstruction> Crop_harvest_Transpiler(IEnumerable<CodeInstruction> instructions) {
+    CodeMatcher matcher = new(instructions);
+    // Find the harvest count var
+    matcher
+      .End()
+      .MatchStartBackwards(
+        new CodeMatch(OpCodes.Ldfld, AccessTools.DeclaredField(typeof(CropData), nameof(CropData.ExtraHarvestChance))),
+        new CodeMatch(OpCodes.Call,  AccessTools.DeclaredMethod(typeof(Math), nameof(Math.Min), new[] {typeof(double), typeof(double)})))
+      .MatchStartBackwards(
+        new CodeMatch(OpCodes.Ldloc_S),
+        new CodeMatch(OpCodes.Ldc_I4_1),
+        new CodeMatch(OpCodes.Add),
+        new CodeMatch(OpCodes.Stloc_S))
+      .ThrowIfNotMatch($"Could not find 1st entry point for {nameof(Crop_harvest_Transpiler)}");
+    var harvestCountVar = matcher.Operand;
+    // Insert RunCropHarvestedEvents after first produce creation
+    matcher
+      .Start()
+      .MatchStartForward(
+        new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(ColoredObject), new[] {typeof(string), typeof(int), typeof(Color)})))
+      .MatchStartForward(
+        new CodeMatch(OpCodes.Stloc_S))
+      .ThrowIfNotMatch($"Could not find 2nd entry point for {nameof(Crop_harvest_Transpiler)}");
+    var harvestItemVar = matcher.Operand;
+    matcher.Advance(1)
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Ldarg_0),
+        new CodeInstruction(OpCodes.Ldloca_S, harvestItemVar),
+        new CodeInstruction(OpCodes.Ldloca_S, harvestCountVar),
+        new CodeInstruction(OpCodes.Ldc_I4_1),
+        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatcher), nameof(HarmonyPatcher.RunCropHarvestedEvents)))
+    );
+    // Insert RunCropHarvestedEvents after second produce creation
+    matcher
+      .MatchStartForward(
+        new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(ColoredObject), new[] {typeof(string), typeof(int), typeof(Color)})))
+      .MatchStartForward(
+        new CodeMatch(OpCodes.Stloc_S))
+      .ThrowIfNotMatch($"Could not find 3rd entry point for {nameof(Crop_harvest_Transpiler)}");
+    matcher.Advance(1)
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Ldarg_0),
+        new CodeInstruction(OpCodes.Ldloca_S, harvestItemVar),
+        new CodeInstruction(OpCodes.Ldloca_S, harvestCountVar),
+        new CodeInstruction(OpCodes.Ldc_I4_0),
+        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatcher), nameof(HarmonyPatcher.RunCropHarvestedEvents)))
+    );
+    return matcher.InstructionEnumeration();
+  }
+
+  static void RunCropHarvestedEvents(Crop crop, ref Item produce, ref int count, bool isExtraDrops) {
+    ModEntry.ModApi.RunCropHarvestedEvents(crop, ref produce, ref count, isExtraDrops);
   }
 }

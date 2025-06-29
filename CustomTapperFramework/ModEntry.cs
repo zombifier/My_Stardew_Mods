@@ -15,15 +15,18 @@ using SObject = StardewValley.Object;
 namespace Selph.StardewMods.MachineTerrainFramework;
 
 internal sealed class ModEntry : Mod {
-  internal static new IModHelper Helper;
-  internal static IMonitor StaticMonitor;
-  public static string UniqueId;
-  internal static AssetHandler assetHandler;
+  internal static new IModHelper Helper = null!;
+  internal static IMonitor StaticMonitor = null!;
+  public static string UniqueId = null!;
+  internal static AssetHandler assetHandler = null!;
+  internal static MachineTerrainFrameworkApi ModApi = null!;
 
   public override void Entry(IModHelper helper) {
     Helper = helper;
     StaticMonitor = this.Monitor;
     UniqueId = this.ModManifest.UniqueID;
+
+    ModApi = new MachineTerrainFrameworkApi();
 
     assetHandler = new AssetHandler();
 
@@ -60,11 +63,19 @@ internal sealed class ModEntry : Mod {
         MachineTerrainGameStateQueries.MACHINE_TILE_HAS_TERRAIN_FEATURE);
     GameStateQuery.Register($"{UniqueId}_MACHINE_TILE_HAS_FRUIT_TREE_IN_SEASON",
         MachineTerrainGameStateQueries.MACHINE_TILE_HAS_FRUIT_TREE_IN_SEASON);
+    GameStateQuery.Register($"{UniqueId}_IS_VALID_FISH_FOR_POND",
+        MachineTerrainGameStateQueries.IS_VALID_FISH_FOR_POND);
 
     ItemQueryResolver.Register($"{UniqueId}_MACHINE_CRAB_POT_OUTPUT",
         MachineTerrainItemQueries.MACHINE_CRAB_POT_OUTPUT);
     ItemQueryResolver.Register($"{UniqueId}_MACHINE_FISH_LOCATION",
         MachineTerrainItemQueries.MACHINE_FISH_LOCATION);
+    ItemQueryResolver.Register($"{UniqueId}_FISH_POND_DROP",
+        MachineTerrainItemQueries.FISH_POND_DROP);
+  }
+
+  public override object GetApi() {
+    return ModApi;
   }
 
   static public IATApi? atApi;

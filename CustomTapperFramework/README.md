@@ -85,18 +85,24 @@ The `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE` GSQ takes the
 | `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE <feature type> [optional feature ID]` | Whether machine tile has a terrain feature where feature type can be one of `Tree`, `FruitTree` or `GiantCrop`. A feature ID can optionally be specified, to limit the condition to certain types of wild trees/fruit trees/giant crops. |
 | `selph.CustomTapperFramework_MACHINE_TILE_HAS_FRUIT_TREE_IN_SEASON | Whether machine tile has a fruit tree that is in season.|
 
+Additional GSQs that can be used anywhere:
+
+| Game State Queries |  Description |
+| ---------- |  ----------- |
+| `selph.CustomTapperFramework_IS_VALID_FISH_FOR_POND <target>` | Whether the target item (`Target` or `Input`) can be put in a fish pond building.|
 ---
 
 #### Extra item queries
 
-This mod adds the following item queries, usable only in machine output item
-rules (as well as any mod that pass a `Tile` parameter into the item query
-context's custom fields):
+This mod adds the following item queries, the first two usable only in machine
+output item rules (as well as any mod that pass a `Tile` parameter into the
+item query context's custom fields), while the last one is usable anywhere:
 
 | Item query |  Description |
 | ---------- |  ----------- |
 | `selph.CustomTapperFramework_MACHINE_CRAB_POT_OUTPUT <ignoreLocationJunkChance> <usingGoodBait> <isMariner> <baitTargetFish>` | Get a crab pot fish, or a junk item, from the tile the machine is placed on. This GSQ attempts to simulate vanilla crab pot logic as close as humanly possible, including the percentage chance each fish can be caught, and thus accepts four optional parameters to control its behavior:<br><br>`ignoreLocationJunkChance`: if `true`, ignore the location's crab pot junk chance as defined in [`CrabPotJunkChance`](https://stardewvalleywiki.com/Modding:Location_data).<br><br>`usingGoodBait`: Whether to cut the aformentioned junk chance in half (e.g. due to good bait being used).<br><br>`isMariner`: Whether to simulate the farmer having the [Mariner profession](https://stardewvalleywiki.com/Fishing#Fishing_Skill), which does three things: remove junk from crab pots entirely, make crab pots ignore fish-specific bait, and make all crab pot fish equally likely to be picked.<br><br>`baitTargetFish`: The ID of a specific fish to prioritize, to simulate the effect of targeted bait. If your machine rules accept a targeted bait item, you can put `DROP_IN_PRESERVE` into this field.|
 | `selph.CustomTapperFramework_MACHINE_FISH_LOCATION <getAllFish> <alsoCatchBossFish> <usingMagicBait> <allowNonObject>`| Identical to the [`FISH_LOCATION`](https://stardewvalleywiki.com/Modding:Item_queries#Specialized) GSQ, but with location, bobber tile and bobber depth already populated with the machine's current location. Accepts the following params:<br><br>*`getAllFish`: if `true`, get all possible fish that can be caught from this body of water, ignoring catch chance, player position requirement, bobber/depth requirement, and time requirement. Setting this to `true` will also activate the parameters after this one, settings to `false` will just have the item query call `FISH_LOCATION` directly. Highly recommended this is set to true.<br><br>`alsoCatchBossFish`: If set to `true`, also allow legendary boss fish to be caught.<br><br>`usingMagicBait`: If set to `true`, ignore season requirement, and allows catching fish that is marked to only be catchable with magic bait.<br><br>`allowNonObject` If set to `true`, also allow non-objects to be selected (ie. the Iridium Krobus statue). Keep this false/unset for machine rules to avoid machines blowing up, unless you're using Extra Machine Config's "non-object output" feature.|
+| `selph.CustomTapperFramework_FISH_POND_DROP <fishId> <fallbackId>`| Get the drop of a hypothetical fish pond containing the specified fishId. The pond will be treated as having full capacity of the specified fish, and ignores the base population-based chance. Note that since ponds don't always produce, a fallback item (defaults to green algae) should be provided so your machine doesn't randomly stop working.|
 
 If you want the fish caught by these item queries to count for perfection, add
 `"selph.CustomTapperFramework.CountForPerfection": "true"` to the item query's `ModData`

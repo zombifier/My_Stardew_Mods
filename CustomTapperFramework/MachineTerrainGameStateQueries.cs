@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Delegates;
 using StardewValley.TerrainFeatures;
+using StardewValley.Buildings;
 using System;
 
 namespace Selph.StardewMods.MachineTerrainFramework;
@@ -55,5 +56,15 @@ public static class MachineTerrainGameStateQueries {
         fruitTree.IsInSeasonHere()) {
     }
     return false;
+  }
+
+  public static bool IS_VALID_FISH_FOR_POND(string[] query, GameStateQueryContext context) {
+    if (!Helpers.TryGetItemArg(query, 1, context.TargetItem, context.InputItem, out var item, out var error)) {
+      return Helpers.ErrorResult(query, error);
+    }
+    if (item == null) {
+      return false;
+    }
+    return FishPond.GetRawData(item.ItemId) != null;
   }
 }
