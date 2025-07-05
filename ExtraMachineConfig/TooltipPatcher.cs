@@ -10,28 +10,28 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 
-namespace Selph.StardewMods.ExtraMachineConfig; 
+namespace Selph.StardewMods.ExtraMachineConfig;
 
 using SObject = StardewValley.Object;
 
 sealed class TooltipPatcher {
   public static void ApplyPatches(Harmony harmony) {
     try {
-    harmony.Patch(
-        original: AccessTools.DeclaredMethod(typeof(BuffEffects),
-          nameof(BuffEffects.ToLegacyAttributeFormat)),
-        postfix: new HarmonyMethod(typeof(TooltipPatcher), nameof(TooltipPatcher.BuffEffects_ToLegacyAttributeFormat_Postfix)));
+      harmony.Patch(
+          original: AccessTools.DeclaredMethod(typeof(BuffEffects),
+            nameof(BuffEffects.ToLegacyAttributeFormat)),
+          postfix: new HarmonyMethod(typeof(TooltipPatcher), nameof(TooltipPatcher.BuffEffects_ToLegacyAttributeFormat_Postfix)));
 
-    //harmony.Patch(
-    //    original: AccessTools.DeclaredMethod(typeof(IClickableMenu),
-    //      nameof(IClickableMenu.drawToolTip)),
-    //    transpiler: new HarmonyMethod(typeof(TooltipPatcher), nameof(TooltipPatcher.IClickableMenu_drawToolTip_Transpiler)));
+      //harmony.Patch(
+      //    original: AccessTools.DeclaredMethod(typeof(IClickableMenu),
+      //      nameof(IClickableMenu.drawToolTip)),
+      //    transpiler: new HarmonyMethod(typeof(TooltipPatcher), nameof(TooltipPatcher.IClickableMenu_drawToolTip_Transpiler)));
 
-    // High priority to run before SpaceCore's own transpilers...
-    harmony.Patch(
-        original: AccessTools.DeclaredMethod(typeof(IClickableMenu),
-          nameof(IClickableMenu.drawHoverText),
-          new Type[] {
+      // High priority to run before SpaceCore's own transpilers...
+      harmony.Patch(
+          original: AccessTools.DeclaredMethod(typeof(IClickableMenu),
+            nameof(IClickableMenu.drawHoverText),
+            new Type[] {
           typeof(SpriteBatch),
           typeof(StringBuilder),
           typeof(SpriteFont),
@@ -57,24 +57,25 @@ sealed class TooltipPatcher {
           typeof(float),
           typeof(int),
           typeof(int),
-          }),
-        transpiler: new HarmonyMethod(AccessTools.Method(typeof(TooltipPatcher), nameof(TooltipPatcher.IClickableMenu_drawHoverText_Transpiler)), Priority.High));
-    } catch (Exception e) {
+            }),
+          transpiler: new HarmonyMethod(AccessTools.Method(typeof(TooltipPatcher), nameof(TooltipPatcher.IClickableMenu_drawHoverText_Transpiler)), Priority.High));
+    }
+    catch (Exception e) {
       ModEntry.StaticMonitor.Log($"Failed patching in extra tooltip/buff icons: {e.ToString()}", LogLevel.Error);
     }
   }
 
   // Makes combat level shows up. Not that it does anything...
-	static void BuffEffects_ToLegacyAttributeFormat_Postfix(BuffEffects __instance, ref string[] __result) {
+  static void BuffEffects_ToLegacyAttributeFormat_Postfix(BuffEffects __instance, ref string[] __result) {
     __result[3] = ((int)__instance.CombatLevel.Value).ToString();
   }
 
   static float[]? GetExtraBuffs(Item? hoveredItem) {
     if (hoveredItem is null || !Game1.objectData.TryGetValue(hoveredItem.ItemId, out var objectData)) return null;
     BuffEffects buffEffects = new BuffEffects();
-		foreach (Buff item in SObject.TryCreateBuffsFromData(objectData, hoveredItem.Name, hoveredItem.DisplayName, 1f, hoveredItem.ModifyItemBuffs)) {
-			buffEffects.Add(item.effects);
-		}
+    foreach (Buff item in SObject.TryCreateBuffsFromData(objectData, hoveredItem.Name, hoveredItem.DisplayName, 1f, hoveredItem.ModifyItemBuffs)) {
+      buffEffects.Add(item.effects);
+    }
     return new[] {
       buffEffects.AttackMultiplier.Value,
       buffEffects.Immunity.Value,
@@ -130,7 +131,7 @@ sealed class TooltipPatcher {
       _ => 0,
     } * 10;
   }
-  
+
   static void DrawExtraBuffs(SpriteBatch b, SpriteFont font, Item hoveredItem, int x, ref int y) {
     var extraBuffs = GetExtraBuffs(hoveredItem);
     if (extraBuffs is null) return;
@@ -150,7 +151,7 @@ sealed class TooltipPatcher {
       string text =
         k == 1 ?
         (((Convert.ToDouble(extraBuffs[k]) > 0.0) ? "+" : "") + extraBuffs[k]) :
-        (((Convert.ToDouble(extraBuffs[k]) > 0.0) ? "+" : "") + extraBuffs[k]*100 + "%");
+        (((Convert.ToDouble(extraBuffs[k]) > 0.0) ? "+" : "") + extraBuffs[k] * 100 + "%");
       text = Game1.content.LoadString($"{ModEntry.BuffStringsAssetName}:ItemHoverBuff{k}", text);
       Utility.drawTextWithShadow(b, text, font, new Vector2(x + 16 + 34 + 4, y + 16), Game1.textColor);
       y += 39;

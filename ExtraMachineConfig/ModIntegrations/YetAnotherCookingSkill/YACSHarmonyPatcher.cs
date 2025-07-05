@@ -35,7 +35,8 @@ public class YACSPatcher {
             "BetterCraftingTempItem");
         bcHeldItem.SetValue(newItem);
       }
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       ModEntry.StaticMonitor.Log("YACS integration failed. Please report to ExtraMachineConfig's bug report page. Detail: " + e.Message, LogLevel.Warn);
       return;
     }

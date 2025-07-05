@@ -6,7 +6,7 @@ using StardewValley.Objects;
 using StardewValley.ItemTypeDefinitions;
 using HarmonyLib;
 
-namespace Selph.StardewMods.ExtraMachineConfig; 
+namespace Selph.StardewMods.ExtraMachineConfig;
 
 sealed class SmokedItemHarmonyPatcher {
   internal static string SmokedItemTag = "smoked_item";
@@ -43,11 +43,11 @@ sealed class SmokedItemHarmonyPatcher {
         prefix: new HarmonyMethod(typeof(SmokedItemHarmonyPatcher), nameof(SmokedItemHarmonyPatcher.Object_drawWhenHeld_prefix)),
         postfix: new HarmonyMethod(typeof(SmokedItemHarmonyPatcher), nameof(SmokedItemHarmonyPatcher.Object_drawWhenHeld_postfix)));
   }
-  
+
   private static bool isSmokedItem(Item item) {
     return ItemContextTagManager.DoesTagMatch(SmokedItemTag, item.GetContextTags());
   }
-  
+
   private static bool isDrawPreserveSpriteItem(StardewValley.Object item) {
     return ItemContextTagManager.DoesTagMatch(DrawPreserveSpriteTag, item.GetContextTags()) &&
       item.preservedParentSheetIndex.Value != null && item.preservedParentSheetIndex.Value != "-1";
@@ -87,7 +87,7 @@ sealed class SmokedItemHarmonyPatcher {
           (transparency == 1f && colorOverride.A < byte.MaxValue) ? ((float)(int)colorOverride.A / 255f) : transparency, __state);
   }
 
-	private static void Object_drawWhenHeld_postfix(StardewValley.Object __instance, ParsedItemData? __state, SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f) {
+  private static void Object_drawWhenHeld_postfix(StardewValley.Object __instance, ParsedItemData? __state, SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f) {
     float layerDepth = Math.Max(0f, (float)(f.StandingPixel.Y + 4) / 10000f);
     if (isSmokedItem(__instance)) {
       drawSmoke(__instance, spriteBatch, objectPosition, 1f, layerDepth, 1f, __state);
@@ -103,7 +103,7 @@ sealed class SmokedItemHarmonyPatcher {
     parsedItemData = null;
     if (isDrawPreserveSpriteItem(item)) {
       item.AdjustMenuDrawForRecipes(ref transparency, ref scaleSize);
-			if (drawShadow) {
+      if (drawShadow) {
         spriteBatch.Draw(Game1.shadowTexture, location + new Vector2(32f, 48f), Game1.shadowTexture.Bounds, colorOverride * 0.5f, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 3f, SpriteEffects.None, layerDepth - 0.0001f);
       }
       parsedItemData = ItemRegistry.GetData(item.preservedParentSheetIndex.Value);
@@ -115,7 +115,7 @@ sealed class SmokedItemHarmonyPatcher {
     return true;
   }
 
-	private static bool drawWhenHeld(StardewValley.Object item, out ParsedItemData? parsedItemData, SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f) {
+  private static bool drawWhenHeld(StardewValley.Object item, out ParsedItemData? parsedItemData, SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f) {
     parsedItemData = null;
     if (isDrawPreserveSpriteItem(item)) {
       parsedItemData = ItemRegistry.GetData(item.preservedParentSheetIndex.Value);
@@ -126,7 +126,7 @@ sealed class SmokedItemHarmonyPatcher {
     return true;
   }
 
-	private static void drawSprite(ParsedItemData? parsedItemData, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float layerDepth, float transparency = 1f) {
+  private static void drawSprite(ParsedItemData? parsedItemData, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float layerDepth, float transparency = 1f) {
     if (parsedItemData is null) return;
     Vector2 vector = new Vector2(8f, 8f);
     float num = 4f * scaleSize;
@@ -165,8 +165,8 @@ sealed class SmokedItemHarmonyPatcher {
       if (item.modData.TryGetValue($"{MachineHarmonyPatcher.ExtraColorKeyPrefix}.{i}", out var val)) {
         Color color = Utils.stringToColor(val) ?? Color.White;
         // The first color mask is for the base color, so we add i to 1
-				Microsoft.Xna.Framework.Rectangle sourceRect = dataOrErrorItem.GetSourceRect(i + 1, item.ParentSheetIndex);
-				spriteBatch.Draw(texture2D, location + new Vector2(32f, 32f) * scaleSize, sourceRect, color * transparency, 0f, vector * scaleSize, num, SpriteEffects.None, Math.Min(1f, layerDepth + 2E-05f));
+        Microsoft.Xna.Framework.Rectangle sourceRect = dataOrErrorItem.GetSourceRect(i + 1, item.ParentSheetIndex);
+        spriteBatch.Draw(texture2D, location + new Vector2(32f, 32f) * scaleSize, sourceRect, color * transparency, 0f, vector * scaleSize, num, SpriteEffects.None, Math.Min(1f, layerDepth + 2E-05f));
         i++;
       } else {
         break;

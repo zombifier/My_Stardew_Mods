@@ -15,7 +15,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Linq;
 
-namespace Selph.StardewMods.ExtraMachineConfig; 
+namespace Selph.StardewMods.ExtraMachineConfig;
 
 using SObject = StardewValley.Object;
 
@@ -66,7 +66,8 @@ sealed class CraftingHarmonyPatcher {
 
       var ingredients = getUsedIngredients(oldInventories, newInventories);
       return Utils.applyCraftingChanges(item, ingredients, craftingConfig);
-    } finally {
+    }
+    finally {
       Game1.player.Items.OverwriteWith(oldPlayerInventory);
     }
   }

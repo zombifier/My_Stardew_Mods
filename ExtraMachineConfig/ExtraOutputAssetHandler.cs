@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Selph.StardewMods.ExtraMachineConfig;
 
 public sealed class ExtraOutputAssetHandler : DictAssetHandler<MachineItemOutput> {
-  public ExtraOutputAssetHandler() : base($"{ModEntry.UniqueId}/ExtraOutputs", ModEntry.StaticMonitor) {}
+  public ExtraOutputAssetHandler() : base($"{ModEntry.UniqueId}/ExtraOutputs", ModEntry.StaticMonitor) { }
 }
 
 public class IngredientConfig {
@@ -29,7 +29,7 @@ public class ExtraCraftingConfig {
 }
 
 public sealed class ExtraCraftingConfigAssetHandler : DictAssetHandler<ExtraCraftingConfig> {
-  public ExtraCraftingConfigAssetHandler() : base($"{ModEntry.UniqueId}/ExtraCraftingConfig", ModEntry.StaticMonitor) {}
+  public ExtraCraftingConfigAssetHandler() : base($"{ModEntry.UniqueId}/ExtraCraftingConfig", ModEntry.StaticMonitor) { }
 }
 
 public class ExtraMachineData {
@@ -41,5 +41,5 @@ public class ReadyEffects : MachineEffects {
 }
 
 public sealed class ExtraMachineDataAssetHandler : DictAssetHandler<ExtraMachineData> {
-  public ExtraMachineDataAssetHandler() : base($"{ModEntry.UniqueId}/ExtraMachineData", ModEntry.StaticMonitor) {}
+  public ExtraMachineDataAssetHandler() : base($"{ModEntry.UniqueId}/ExtraMachineData", ModEntry.StaticMonitor) { }
 }

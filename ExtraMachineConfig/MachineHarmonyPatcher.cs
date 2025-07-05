@@ -22,7 +22,7 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 
-namespace Selph.StardewMods.ExtraMachineConfig; 
+namespace Selph.StardewMods.ExtraMachineConfig;
 
 using SObject = StardewValley.Object;
 
@@ -72,7 +72,7 @@ sealed class MachineHarmonyPatcher {
   internal static Regex DropInIdRegex = new Regex(@"DROP_IN_ID_(\d+)");
   internal static Regex DropInPreserveRegex = new Regex(@"DROP_IN_PRESERVE_(\d+)");
   internal static Regex InputExtraIdRegex = new Regex(@"INPUT_EXTRA_ID_(\d+)");
-  
+
   // Display name macros
   internal static string ExtraPreservedDisplayNamePrefix = "%EXTRA_PRESERVED_DISPLAY_NAME";
 
@@ -144,7 +144,7 @@ sealed class MachineHarmonyPatcher {
 
     // Slingshot patches
     harmony.Patch(
-        original: AccessTools.DeclaredMethod(typeof(Slingshot), nameof(Slingshot.canThisBeAttached), new Type[]{typeof(SObject), typeof(int)}),
+        original: AccessTools.DeclaredMethod(typeof(Slingshot), nameof(Slingshot.canThisBeAttached), new Type[] { typeof(SObject), typeof(int) }),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Slingshot_canThisBeAttached_postfix)));
 
     harmony.Patch(
@@ -158,7 +158,7 @@ sealed class MachineHarmonyPatcher {
     harmony.Patch(
         original: AccessTools.DeclaredMethod(typeof(Slingshot), nameof(Slingshot.GetAmmoCollisionSound)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Slingshot_GetAmmoCollisionSound_postfix)));
-    
+
     // Holder item patches (the draw patches are in SmokedItemHarmonyPatcher)
     harmony.Patch(
         original: AccessTools.DeclaredPropertyGetter(typeof(SObject),
@@ -179,7 +179,7 @@ sealed class MachineHarmonyPatcher {
     harmony.Patch(
         original: AccessTools.DeclaredMethod(typeof(ItemQueryResolver),
           nameof(ItemQueryResolver.ApplyItemFields),
-          new Type[] {typeof(ISalable), typeof(int), typeof(int), typeof(int), typeof(string), typeof(string), typeof(string), typeof(int), typeof(bool), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(Dictionary<string, string>), typeof(ItemQueryContext), typeof(Item)}),
+          new Type[] { typeof(ISalable), typeof(int), typeof(int), typeof(int), typeof(string), typeof(string), typeof(string), typeof(int), typeof(bool), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(Dictionary<string, string>), typeof(ItemQueryContext), typeof(Item) }),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.ItemQueryResolver_ApplyItemFields_postfix)));
 
     harmony.Patch(
@@ -192,7 +192,7 @@ sealed class MachineHarmonyPatcher {
         original: AccessTools.DeclaredMethod(typeof(Cask),
           nameof(Cask.IsValidCaskLocation)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Cask_IsValidCaskLocation_Postfix)));
-     
+
     harmony.Patch(
         original: AccessTools.DeclaredMethod(typeof(SObject),
           nameof(SObject.placementAction)),
@@ -213,7 +213,7 @@ sealed class MachineHarmonyPatcher {
     harmony.Patch(
         original: AccessTools.DeclaredMethod(typeof(SObject),
           nameof(SObject.draw),
-          new Type[] {typeof(SpriteBatch), typeof(int), typeof(int), typeof(float)}),
+          new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_draw_Postfix)));
 
     // buff trigger end
@@ -231,19 +231,20 @@ sealed class MachineHarmonyPatcher {
     // Transpilers go here
     // Allow non-Object input (by turning them into weeds if necessary to satisfy the non-machine code branches)
     try {
-    harmony.Patch(
-        original: AccessTools.DeclaredMethod(typeof(SObject),
-          nameof(SObject.performObjectDropInAction)),
-        transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_performObjectDropInAction_transpiler)));
-    harmony.Patch(
-        original: AccessTools.DeclaredMethod(typeof(SObject),
-          nameof(SObject.DayUpdate)),
-        transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_DayUpdate_Transpiler)));
-    harmony.Patch(
-        original: AccessTools.DeclaredMethod(typeof(GreenSlime),
-          nameof(GreenSlime.mateWith)),
-        transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.GreenSlime_mateWith_Transpiler)));
-    } catch (Exception e) {
+      harmony.Patch(
+          original: AccessTools.DeclaredMethod(typeof(SObject),
+            nameof(SObject.performObjectDropInAction)),
+          transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_performObjectDropInAction_transpiler)));
+      harmony.Patch(
+          original: AccessTools.DeclaredMethod(typeof(SObject),
+            nameof(SObject.DayUpdate)),
+          transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_DayUpdate_Transpiler)));
+      harmony.Patch(
+          original: AccessTools.DeclaredMethod(typeof(GreenSlime),
+            nameof(GreenSlime.mateWith)),
+          transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.GreenSlime_mateWith_Transpiler)));
+    }
+    catch (Exception e) {
       ModEntry.StaticMonitor.Log("Error when transpiling: " + e.ToString(), LogLevel.Error);
     }
 
@@ -327,7 +328,7 @@ sealed class MachineHarmonyPatcher {
     if (__result == null || outputData == null) {
       return;
     }
-    
+
     var resultObject = __result as SObject;
     var inputObject = inputItem as SObject;
 
@@ -573,7 +574,7 @@ sealed class MachineHarmonyPatcher {
     if (item.QualifiedItemId == HolderQualifiedId) {
       __instance.Items.Remove(item);
     }
-    if (__result != null || item is not SObject {heldObject.Value: Chest chest} obj) return;
+    if (__result != null || item is not SObject { heldObject.Value: Chest chest } obj) return;
     foreach (var extraItem in chest.Items) {
       var leftoverItem = __instance.addItem(extraItem);
       if (leftoverItem != null) {
@@ -600,8 +601,8 @@ sealed class MachineHarmonyPatcher {
         machine.modData.TryGetValue(AutomaticProduceCountRemainingKey, out var str) &&
         Int32.TryParse(str, out var automaticProduceCountRemaining) &&
         automaticProduceCountRemaining <= 0) {
-        __result = false;
-      }
+      __result = false;
+    }
   }
 
   public static void SObject_OutputMachine_Prefix(SObject __instance, MachineData machine, MachineOutputRule outputRule, Item inputItem, Farmer who, GameLocation location, bool probe, bool heldObjectOnly = false) {
@@ -661,9 +662,9 @@ sealed class MachineHarmonyPatcher {
         (objectData.CustomFields?.TryGetValue(SlingshotExplosiveDamage, out var slingshotExplosiveDamageStr) ?? false) &&
         Int32.TryParse(slingshotExplosiveRadiusStr, out var slingshotExplosiveRadius) &&
         Int32.TryParse(slingshotExplosiveDamageStr, out var slingshotExplosiveDamage)) {
-        __result = (GameLocation location, int x, int y, Character who) => {
-          location.explode(new Vector2(x / 64, y / 64), slingshotExplosiveRadius, who as Farmer, damage_amount: slingshotExplosiveDamage);
-          };
+      __result = (GameLocation location, int x, int y, Character who) => {
+        location.explode(new Vector2(x / 64, y / 64), slingshotExplosiveRadius, who as Farmer, damage_amount: slingshotExplosiveDamage);
+      };
     }
   }
 
@@ -715,10 +716,10 @@ sealed class MachineHarmonyPatcher {
         new CodeMatch(OpCodes.Ldarg_1),
         new CodeMatch(OpCodes.Isinst, typeof(SObject)),
         new CodeMatch(OpCodes.Stloc_0))
-//        new CodeMatch(OpCodes.Ldloc_0),
-//        new CodeMatch(OpCodes.Brtrue_S),
-//        new CodeMatch(OpCodes.Ldc_I4_0),
-//        new CodeMatch(OpCodes.Ret))
+      //        new CodeMatch(OpCodes.Ldloc_0),
+      //        new CodeMatch(OpCodes.Brtrue_S),
+      //        new CodeMatch(OpCodes.Ldc_I4_0),
+      //        new CodeMatch(OpCodes.Ret))
       .ThrowIfNotMatch($"Could not find entry point for {nameof(SObject_performObjectDropInAction_transpiler)}")
       .Advance(1)
       .InsertAndAdvance(
@@ -779,8 +780,7 @@ sealed class MachineHarmonyPatcher {
           __instance.heldObject.Value = null;
           __instance.MinutesUntilReady = -1;
         }
-      }
-      else {
+      } else {
         __instance.MinutesUntilReady = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay);
         __instance.readyForHarvest.Value = false;
       }
@@ -912,7 +912,8 @@ sealed class MachineHarmonyPatcher {
     try {
       textures[name] = Game1.content.Load<Texture2D>(name);
       return textures[name];
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       ModEntry.StaticMonitor.Log($"Error loading texture {name}: {e.ToString()}", LogLevel.Error);
       return Game1.bigCraftableSpriteSheet;
     }
@@ -934,7 +935,7 @@ sealed class MachineHarmonyPatcher {
       .MatchStartBackwards(
           new CodeMatch(OpCodes.Ldloc_S),
           new CodeMatch(OpCodes.Ldc_I4_0),
-          new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(GreenSlime), new[] {typeof(Vector2), typeof(int)})),
+          new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(GreenSlime), new[] { typeof(Vector2), typeof(int) })),
           new CodeMatch(OpCodes.Stloc_S)
           )
       .ThrowIfNotMatch($"Could not find entry point 1 for {nameof(SObject_DayUpdate_Transpiler)}");

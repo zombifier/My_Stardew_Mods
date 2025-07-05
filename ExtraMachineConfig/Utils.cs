@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 using SObject = StardewValley.Object;
 
-namespace Selph.StardewMods.ExtraMachineConfig; 
+namespace Selph.StardewMods.ExtraMachineConfig;
 
 static class Utils {
   static string CookingItemModifiedKey = $"{ModEntry.UniqueId}.CookingItemModified";
@@ -116,13 +116,13 @@ static class Utils {
             float.TryParse(addPriceMultiplierString, out float parsedAddPriceMultiplier)) {
           priceMultiplier = parsedAddPriceMultiplier;
         }
-        extraRequirements.Add(new AdditionalFuelSettings(){
-            fuelEntryId = match.Groups[1].Value,
-            itemId = entry.Value,
-            count = count,
-            priceMultiplier = priceMultiplier,
-            noDuplicate = outputData.CustomData.ContainsKey(noDuplicateKey),
-            });
+        extraRequirements.Add(new AdditionalFuelSettings() {
+          fuelEntryId = match.Groups[1].Value,
+          itemId = entry.Value,
+          count = count,
+          priceMultiplier = priceMultiplier,
+          noDuplicate = outputData.CustomData.ContainsKey(noDuplicateKey),
+        });
       }
     }
     return extraRequirements;
@@ -160,7 +160,7 @@ static class Utils {
     try {
       if (craftingConfig.IngredientConfigs is not null) {
         foreach (Item ingredient in ingredients) {
-          var ingredientConfig = craftingConfig.IngredientConfigs.Find(config => 
+          var ingredientConfig = craftingConfig.IngredientConfigs.Find(config =>
               (config.ItemId is not null && CraftingRecipe.ItemMatchesForCrafting(ingredient, config.ItemId)) ||
               (config.ContextTags is not null && ItemContextTagManager.DoesTagQueryMatch(config.ContextTags, ingredient.GetContextTags()))
               );
@@ -239,7 +239,8 @@ static class Utils {
         item.modData[CookingItemModifiedKey] = "true";
         return item;
       }
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       ModEntry.StaticMonitor.Log("Error when modifying crafting item: " + e.Message, LogLevel.Warn);
     }
     return item;
@@ -255,7 +256,7 @@ static class Utils {
     var extraRequirements = Utils.GetExtraRequirementsImpl(outputData, false);
     bool valid = true;
     foreach (var entry in extraRequirements) {
-      if (Utils.getItemCountInList(inventory, (item) => 
+      if (Utils.getItemCountInList(inventory, (item) =>
             CraftingRecipe.ItemMatchesForCrafting(item, entry.itemId) &&
             (!entry.noDuplicate || !usedItems.Exists(i => isSameItem(i.Item1, item))),
             out var fuelItem, entry.noDuplicate) >= entry.count) {
@@ -266,7 +267,7 @@ static class Utils {
     }
     var extraTagsRequirements = Utils.GetExtraRequirementsImpl(outputData, true);
     foreach (var entry in extraTagsRequirements) {
-      if (Utils.getItemCountInList(inventory, (item) => 
+      if (Utils.getItemCountInList(inventory, (item) =>
             ItemContextTagManager.DoesTagQueryMatch(entry.itemId, item.GetContextTags()) &&
             (!entry.noDuplicate || !usedItems.Exists(i => isSameItem(i.Item1, item))),
             out var fuelItem, entry.noDuplicate) >= entry.count) {
