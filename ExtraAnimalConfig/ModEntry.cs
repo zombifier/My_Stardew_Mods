@@ -1,4 +1,4 @@
-﻿using StardewModdingAPI;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using HarmonyLib;
 using System.Collections.Generic;
@@ -10,7 +10,8 @@ using VanillaPlusProfessions.Compatibility;
 namespace Selph.StardewMods.ExtraAnimalConfig;
 
 internal sealed class ModEntry : Mod {
-  internal new static IModHelper Helper { get;
+  internal new static IModHelper Helper {
+    get;
     set;
   } = null!;
 
@@ -67,37 +68,37 @@ internal sealed class ModEntry : Mod {
   // Set animal override speed, and clear the attack dictionaries
   static void OnDayStarted(object? sender, DayStartedEventArgs e) {
     AnimalUtils.ClearDicts();
-		Utility.ForEachLocation((GameLocation location) => {
-			foreach (FarmAnimal animal in location.animals.Values) {
+    Utility.ForEachLocation((GameLocation location) => {
+      foreach (FarmAnimal animal in location.animals.Values) {
         if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
             animalExtensionData.SpeedOverride is not null) {
           animal.speed = animalExtensionData.SpeedOverride ?? 2;
         }
         LightUtils.RemoveLight(animal, location);
         LightUtils.AddLight(animal, location);
-			}
+      }
       return true;
     });
   }
 
   // Reset speed so this mod is save to uninstall
   static void OnDayEnding(object? sender, DayEndingEventArgs e) {
-		Utility.ForEachLocation((GameLocation location) => {
-			foreach (FarmAnimal animal in location.animals.Values) {
+    Utility.ForEachLocation((GameLocation location) => {
+      foreach (FarmAnimal animal in location.animals.Values) {
         if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value, out var animalExtensionData) &&
             animalExtensionData.SpeedOverride is not null) {
           // we *could* set everyone to 2, but that might catch animals modified outside of this mod.
           animal.speed = 2;
         }
-			}
+      }
       return true;
     });
   }
 
   static void OnUpdateTicked(object? sender, UpdateTickedEventArgs e) {
-		Utility.ForEachLocation((GameLocation location) => {
+    Utility.ForEachLocation((GameLocation location) => {
       foreach (var animal in location.animals.Values) {
-        LightUtils.UpdateLight(animal,location);
+        LightUtils.UpdateLight(animal, location);
       }
       return true;
     });
@@ -134,7 +135,7 @@ internal sealed class ModEntry : Mod {
     List<string> itemIds = parsedItemId is not null ? new(parsedItemId.Split(",")) :
       SiloUtils.GetFeedForThisBuilding(location.getBuildingAt(new Vector2(tile.X, tile.Y)));
 
-    if (player.ActiveObject?.QualifiedItemId == "(O)178" || 
+    if (player.ActiveObject?.QualifiedItemId == "(O)178" ||
         (itemIds.Contains("(O)178") && itemIds.Count == 1)) {
       location.performAction("BuildingSilo", player, new Location(tile.X, tile.Y));
       return true;
@@ -148,16 +149,15 @@ internal sealed class ModEntry : Mod {
         DelayedAction.playSoundAfterDelay("grassyStep", 100);
         Game1.drawObjectDialogue(Helper.Translation.Get($"{UniqueId}.AddedToSiloMsg",
               new {
-              count = player.ActiveObject.Stack - remainingCount,
-              displayName = player.ActiveObject.DisplayName,
+                count = player.ActiveObject.Stack - remainingCount,
+                displayName = player.ActiveObject.DisplayName,
               }));
         player.ActiveObject.Stack = remainingCount;
         if (player.ActiveObject.Stack <= 0) {
           player.removeItemFromInventory(player.ActiveObject);
         }
       }
-    }
-    else {
+    } else {
       List<string> display = new();
       foreach (var itemId in itemIds) {
         if (itemId == "(O)178") {
@@ -165,9 +165,9 @@ internal sealed class ModEntry : Mod {
         } else {
           display.Add(Helper.Translation.Get($"{UniqueId}.SiloCountMsg",
               new {
-              displayName = ItemRegistry.GetDataOrErrorItem(itemId).DisplayName,
-              count = SiloUtils.GetFeedCountFor(location, itemId),
-              maxCount = SiloUtils.GetFeedCapacityFor(location, itemId),
+                displayName = ItemRegistry.GetDataOrErrorItem(itemId).DisplayName,
+                count = SiloUtils.GetFeedCountFor(location, itemId),
+                maxCount = SiloUtils.GetFeedCapacityFor(location, itemId),
               }));
         }
       }
@@ -188,8 +188,8 @@ internal sealed class ModEntry : Mod {
         DelayedAction.playSoundAfterDelay("grassyStep", 100);
         Game1.drawObjectDialogue(Helper.Translation.Get($"{UniqueId}.AddedToSiloMsg",
               new {
-              count = player.ActiveObject.Stack - remainingCount,
-              displayName = player.ActiveObject.DisplayName,
+                count = player.ActiveObject.Stack - remainingCount,
+                displayName = player.ActiveObject.DisplayName,
               }));
         player.ActiveObject.Stack = remainingCount;
         if (player.ActiveObject.Stack <= 0) {
@@ -206,7 +206,7 @@ internal sealed class ModEntry : Mod {
           Game1.drawObjectDialogue(ModEntry.Helper.Translation.Get($"{ModEntry.UniqueId}.HopperEmpty"));
         }
       } else {
-				Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
+        Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588"));
       }
     }
     return true;

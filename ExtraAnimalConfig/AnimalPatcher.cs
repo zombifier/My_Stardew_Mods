@@ -46,7 +46,7 @@ sealed class AnimalDataPatcher {
     harmony.Patch(
         original: AccessTools.Method(typeof(FarmAnimal),
           nameof(FarmAnimal.GetTexturePath),
-          new Type[] {typeof(FarmAnimalData)}),
+          new Type[] { typeof(FarmAnimalData) }),
         postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.FarmAnimal_GetTexturePath_Postfix)));
 
     harmony.Patch(
@@ -122,7 +122,7 @@ sealed class AnimalDataPatcher {
     harmony.Patch(
         original: AccessTools.Method(typeof(SObject),
           nameof(SObject.DayUpdate)),
-//        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.SObject_DayUpdate_Postfix)),
+        //        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.SObject_DayUpdate_Postfix)),
         transpiler: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.SObject_DayUpdate_Transpiler)));
 
     harmony.Patch(
@@ -278,11 +278,11 @@ sealed class AnimalDataPatcher {
           continue;
         }
         __result = appearanceData.DefaultTextureToUse switch {
-          DefaultTextureEnum.HarvestedTexture => 
+          DefaultTextureEnum.HarvestedTexture =>
             animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.HarvestedTexture ?? animalData.HarvestedTexture,
-          DefaultTextureEnum.Texture => 
+          DefaultTextureEnum.Texture =>
             animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.Texture ?? animalData.Texture,
-          DefaultTextureEnum.BabyTexture => 
+          DefaultTextureEnum.BabyTexture =>
             animalData.Skins?.Find(m => m.Id == __instance.skinID.Value)?.BabyTexture ?? animalData.BabyTexture,
           _ => appearanceData.TextureToUse ?? __result,
         };
@@ -569,7 +569,7 @@ sealed class AnimalDataPatcher {
         new CodeMatch(OpCodes.Ldloc_S),
         new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), nameof(FarmAnimal.currentProduce))),
         new CodeMatch(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(NetFieldBase<string, NetString>), nameof(NetFieldBase<string, NetString>.Value))),
-        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(String), nameof(String.Concat), new Type[] {typeof(string), typeof(string)})),
+        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(String), nameof(String.Concat), new Type[] { typeof(string), typeof(string) })),
         new CodeMatch(OpCodes.Ldc_I4_1),
         new CodeMatch(OpCodes.Ldc_I4_0),
         new CodeMatch(OpCodes.Ldc_I4_0),
@@ -579,7 +579,7 @@ sealed class AnimalDataPatcher {
       .Advance(5)
       .InsertAndAdvance(
           new CodeInstruction(OpCodes.Ldloc_S, animalVar),
-//          new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(KeyValuePair<long, FarmAnimal>), nameof(KeyValuePair<long, FarmAnimal>.Value))),
+          //          new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(KeyValuePair<long, FarmAnimal>), nameof(KeyValuePair<long, FarmAnimal>.Value))),
           new CodeInstruction(OpCodes.Ldc_I4_S, (int)ProduceMethod.Tool),
           new CodeInstruction(OpCodes.Ldnull),
           new CodeInstruction(OpCodes.Call, CreateProduceType)
@@ -598,7 +598,7 @@ sealed class AnimalDataPatcher {
         new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(MilkPail), nameof(MilkPail.animal))),
         new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), nameof(FarmAnimal.currentProduce))),
         new CodeMatch(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(NetFieldBase<string, NetString>), nameof(NetFieldBase<string, NetString>.Value))),
-        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(String), nameof(String.Concat), new Type[] {typeof(string), typeof(string)})),
+        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(String), nameof(String.Concat), new Type[] { typeof(string), typeof(string) })),
         new CodeMatch(OpCodes.Ldc_I4_1),
         new CodeMatch(OpCodes.Ldc_I4_0),
         new CodeMatch(OpCodes.Ldc_I4_0),
@@ -627,7 +627,7 @@ sealed class AnimalDataPatcher {
         new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(Shears), nameof(Shears.animal))),
         new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), nameof(FarmAnimal.currentProduce))),
         new CodeMatch(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(NetFieldBase<string, NetString>), nameof(NetFieldBase<string, NetString>.Value))),
-        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(String), nameof(String.Concat), new Type[] {typeof(string), typeof(string)})),
+        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(String), nameof(String.Concat), new Type[] { typeof(string), typeof(string) })),
         new CodeMatch(OpCodes.Ldc_I4_1),
         new CodeMatch(OpCodes.Ldc_I4_0),
         new CodeMatch(OpCodes.Ldc_I4_0),
@@ -652,76 +652,76 @@ sealed class AnimalDataPatcher {
   // * Don't drop produce on the ground if override is specified
   static IEnumerable<CodeInstruction> FarmAnimal_dayUpdate_Transpiler(IEnumerable<CodeInstruction> instructions) {
     CodeMatcher matcher = new(instructions);
-      // Old: (int)this.fullness < 200 && environment is AnimalHouse
-      // New: ... && !AnimalOnlyEatsModdedFood(this)
-      matcher.MatchEndForward(
-        new CodeMatch(OpCodes.Ldarg_0),
-        new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), nameof(FarmAnimal.fullness))),
-        //new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(NetInt), "op_Implicit")),
-        new CodeMatch(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(NetFieldBase<Int32, NetInt>), nameof(NetInt.Value))),
-        new CodeMatch(OpCodes.Ldc_I4, 200),
-        new CodeMatch(OpCodes.Bge_S),
-        new CodeMatch(OpCodes.Ldarg_1),
-        new CodeMatch(OpCodes.Isinst, typeof(AnimalHouse)),
-        new CodeMatch(OpCodes.Brfalse_S)
-          )
-      .ThrowIfNotMatch($"Could not find entry point for hunger portion of {nameof(FarmAnimal_dayUpdate_Transpiler)}");
-      var label = (Label)matcher.Operand;
-      matcher.Advance(1)
-        .InsertAndAdvance(
-          new CodeInstruction(OpCodes.Ldarg_0),
-          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalUtils), nameof(AnimalUtils.AnimalOnlyEatsModdedFood))),
-          new CodeInstruction(OpCodes.Brtrue_S, label)
-          );
-
-      // Find the variable value of 'text' (aka the produce item ID)
-      matcher.MatchEndForward(
-          new CodeMatch(OpCodes.Ldarg_0),
-          new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), nameof(FarmAnimal.currentProduce))),
-          new CodeMatch(OpCodes.Ldloc_S),
-          new CodeMatch(OpCodes.Callvirt),
-          new CodeMatch(OpCodes.Ldnull),
-          new CodeMatch(OpCodes.Stloc_S)
-          );
-
-      var produceIdVar = matcher.Operand;
-
-      // Old: animalData.HarvestType != FarmAnimalHarvestType.DropOvernight
-      // New: DoNotDropCurrentProduce(animal, text)
-      matcher.MatchStartBackwards(
-        new CodeMatch(OpCodes.Ldloc_0),
-        new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimalData), nameof(FarmAnimalData.HarvestType))),
-        new CodeMatch(OpCodes.Ldc_I4_0),
-        new CodeMatch(OpCodes.Cgt_Un)
-          )
-        .ThrowIfNotMatch($"Could not find entry point for drop harvest type check portion of {nameof(FarmAnimal_dayUpdate_Transpiler)}");
-      var labels = matcher.Labels;
-      matcher.RemoveInstructions(4)
-        .InsertAndAdvance(
-          new CodeInstruction(OpCodes.Ldarg_0).WithLabels(labels),
-          new CodeInstruction(OpCodes.Ldloc_S, produceIdVar),
-          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ExtraProduceUtils), nameof(ExtraProduceUtils.DoNotDropCurrentProduce))));
-
-
-      // Old: ItemRegistry.Create<Object>("(O)" + text);
-      // New: AnimalDataPatcher.CreateProduce("(O)" + text, this);
-      matcher.MatchStartForward(
-        new CodeMatch(OpCodes.Ldstr, "(O)"),
-        new CodeMatch(OpCodes.Ldloc_S),
-        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(String), nameof(String.Concat), new Type[] {typeof(string), typeof(string)})),
-        new CodeMatch(OpCodes.Ldc_I4_1),
-        new CodeMatch(OpCodes.Ldc_I4_0),
-        new CodeMatch(OpCodes.Ldc_I4_0),
-        new CodeMatch(OpCodes.Call, ItemRegistryCreateObjectType)
-      )
-      .ThrowIfNotMatch($"Could not find entry point for item create {nameof(FarmAnimal_dayUpdate_Transpiler)}")
-      .Advance(3)
+    // Old: (int)this.fullness < 200 && environment is AnimalHouse
+    // New: ... && !AnimalOnlyEatsModdedFood(this)
+    matcher.MatchEndForward(
+      new CodeMatch(OpCodes.Ldarg_0),
+      new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), nameof(FarmAnimal.fullness))),
+      //new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(NetInt), "op_Implicit")),
+      new CodeMatch(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(NetFieldBase<Int32, NetInt>), nameof(NetInt.Value))),
+      new CodeMatch(OpCodes.Ldc_I4, 200),
+      new CodeMatch(OpCodes.Bge_S),
+      new CodeMatch(OpCodes.Ldarg_1),
+      new CodeMatch(OpCodes.Isinst, typeof(AnimalHouse)),
+      new CodeMatch(OpCodes.Brfalse_S)
+        )
+    .ThrowIfNotMatch($"Could not find entry point for hunger portion of {nameof(FarmAnimal_dayUpdate_Transpiler)}");
+    var label = (Label)matcher.Operand;
+    matcher.Advance(1)
       .InsertAndAdvance(
         new CodeInstruction(OpCodes.Ldarg_0),
-        new CodeInstruction(OpCodes.Ldc_I4_S, (int)ProduceMethod.DropOvernight),
-        new CodeInstruction(OpCodes.Ldnull),
-        new CodeInstruction(OpCodes.Call, CreateProduceType))
-      .RemoveInstructions(4);
+        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AnimalUtils), nameof(AnimalUtils.AnimalOnlyEatsModdedFood))),
+        new CodeInstruction(OpCodes.Brtrue_S, label)
+        );
+
+    // Find the variable value of 'text' (aka the produce item ID)
+    matcher.MatchEndForward(
+        new CodeMatch(OpCodes.Ldarg_0),
+        new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimal), nameof(FarmAnimal.currentProduce))),
+        new CodeMatch(OpCodes.Ldloc_S),
+        new CodeMatch(OpCodes.Callvirt),
+        new CodeMatch(OpCodes.Ldnull),
+        new CodeMatch(OpCodes.Stloc_S)
+        );
+
+    var produceIdVar = matcher.Operand;
+
+    // Old: animalData.HarvestType != FarmAnimalHarvestType.DropOvernight
+    // New: DoNotDropCurrentProduce(animal, text)
+    matcher.MatchStartBackwards(
+      new CodeMatch(OpCodes.Ldloc_0),
+      new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(FarmAnimalData), nameof(FarmAnimalData.HarvestType))),
+      new CodeMatch(OpCodes.Ldc_I4_0),
+      new CodeMatch(OpCodes.Cgt_Un)
+        )
+      .ThrowIfNotMatch($"Could not find entry point for drop harvest type check portion of {nameof(FarmAnimal_dayUpdate_Transpiler)}");
+    var labels = matcher.Labels;
+    matcher.RemoveInstructions(4)
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Ldarg_0).WithLabels(labels),
+        new CodeInstruction(OpCodes.Ldloc_S, produceIdVar),
+        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ExtraProduceUtils), nameof(ExtraProduceUtils.DoNotDropCurrentProduce))));
+
+
+    // Old: ItemRegistry.Create<Object>("(O)" + text);
+    // New: AnimalDataPatcher.CreateProduce("(O)" + text, this);
+    matcher.MatchStartForward(
+      new CodeMatch(OpCodes.Ldstr, "(O)"),
+      new CodeMatch(OpCodes.Ldloc_S),
+      new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(String), nameof(String.Concat), new Type[] { typeof(string), typeof(string) })),
+      new CodeMatch(OpCodes.Ldc_I4_1),
+      new CodeMatch(OpCodes.Ldc_I4_0),
+      new CodeMatch(OpCodes.Ldc_I4_0),
+      new CodeMatch(OpCodes.Call, ItemRegistryCreateObjectType)
+    )
+    .ThrowIfNotMatch($"Could not find entry point for item create {nameof(FarmAnimal_dayUpdate_Transpiler)}")
+    .Advance(3)
+    .InsertAndAdvance(
+      new CodeInstruction(OpCodes.Ldarg_0),
+      new CodeInstruction(OpCodes.Ldc_I4_S, (int)ProduceMethod.DropOvernight),
+      new CodeInstruction(OpCodes.Ldnull),
+      new CodeInstruction(OpCodes.Call, CreateProduceType))
+    .RemoveInstructions(4);
 
     return matcher.InstructionEnumeration();
   }
@@ -810,7 +810,7 @@ sealed class AnimalDataPatcher {
       __result = false;
     }
   }
-  
+
   static void FarmAnimal_UpdateRandomMovements_Prefix(FarmAnimal __instance) {
     if (!Game1.IsMasterGame || Game1.timeOfDay >= 2000 || __instance.pauseTimer > 0) {
       return;
@@ -993,7 +993,7 @@ sealed class AnimalDataPatcher {
         new CodeMatch(OpCodes.Ldfld),
         new CodeMatch(OpCodes.Ldnull),
         new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(GameStateQuery), nameof(GameStateQuery.CheckConditions),
-            new Type[] {typeof(string), typeof(GameLocation), typeof(Farmer), typeof(Item), typeof(Item), typeof(Random), typeof(HashSet<string>)}))
+            new Type[] { typeof(string), typeof(GameLocation), typeof(Farmer), typeof(Item), typeof(Item), typeof(Random), typeof(HashSet<string>) }))
         )
       .ThrowIfNotMatch($"Could not find entry point for {nameof(FarmAnimal_GetProduceIDDelegate_Transpiler)}");
     matcher.Advance(2)

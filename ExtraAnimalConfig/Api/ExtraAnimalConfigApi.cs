@@ -46,7 +46,8 @@ public class ExtraAnimalConfigApi : IExtraAnimalConfigApi {
     foreach (Action<IAnimalProduceCreatedEvent> del in AnimalProduceCreated.GetInvocationList()) {
       try {
         del.Invoke(ev);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         ModEntry.StaticMonitor.Log("Error processing AnimalProduceCreatedEvent: " + e.ToString(), LogLevel.Error);
       }
     }
@@ -56,10 +57,10 @@ public class ExtraAnimalConfigApi : IExtraAnimalConfigApi {
 }
 
 class AnimalProduceCreatedEvent : IAnimalProduceCreatedEvent {
-  public FarmAnimal animal {get; }
-  public SObject produce {get; set; }
-  public ProduceMethod produceMethod {get; }
-  public Tool? tool {get; }
+  public FarmAnimal animal { get; }
+  public SObject produce { get; set; }
+  public ProduceMethod produceMethod { get; }
+  public Tool? tool { get; }
 
   internal AnimalProduceCreatedEvent(FarmAnimal animal, SObject produce, ProduceMethod produceMethod, Tool? tool) {
     this.animal = animal;

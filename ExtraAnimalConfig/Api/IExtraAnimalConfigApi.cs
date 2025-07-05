@@ -32,12 +32,12 @@ public enum ProduceMethod {
 }
 
 public interface IAnimalProduceCreatedEvent {
-  public FarmAnimal animal {get; }
+  public FarmAnimal animal { get; }
   // You can modify this field to change what gets returned.
   // Note that changing the stack count does not work - the stack will get reset to 1 (or 2 with Golden Animal Cracker).
   // To add extra stacks, add a copy to player inventory/world/autograbber/etc.
-  public SObject produce {get; set; }
-  public ProduceMethod produceMethod {get; }
+  public SObject produce { get; set; }
+  public ProduceMethod produceMethod { get; }
   // If harvested with tool, the tool that harvested this animal. Will be null if autograbbed or not harvested with tool.
-  public Tool? tool {get; }
+  public Tool? tool { get; }
 }

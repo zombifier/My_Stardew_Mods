@@ -75,15 +75,15 @@ public static class SiloUtils {
   public static SObject? GetFeedFromAnySilo(string itemId, int itemCount = 1) {
     SObject? feedObj = null;
     Utility.ForEachLocation((GameLocation location) => {
-        var totalCount = GetFeedCountFor(location, itemId);
-        var count = Math.Min(totalCount, itemCount);
-        if (count > 0) {
-          totalCount -= count;
-          location.modData[FeedCountKeyPrefix + itemId] = totalCount.ToString();
-          feedObj = ItemRegistry.Create<SObject>(itemId, count);
-          return false;
-        }
-        return true;
+      var totalCount = GetFeedCountFor(location, itemId);
+      var count = Math.Min(totalCount, itemCount);
+      if (count > 0) {
+        totalCount -= count;
+        location.modData[FeedCountKeyPrefix + itemId] = totalCount.ToString();
+        feedObj = ItemRegistry.Create<SObject>(itemId, count);
+        return false;
+      }
+      return true;
     });
     return feedObj;
   }
@@ -129,7 +129,7 @@ public static class AnimalUtils {
         Game1.random,
         null,
         new() {
-        [$"{ModEntry.UniqueId}_HomeLocation"] = animal.homeInterior,
+          [$"{ModEntry.UniqueId}_HomeLocation"] = animal.homeInterior,
         });
   }
 
@@ -302,7 +302,7 @@ public static class AnimalUtils {
           CurrentVictimDict.Remove(animal.myID.Value);
           LastAttackTimeDict[animal.myID.Value] = time.TotalGameTime.TotalMilliseconds;
           BeginAttackTimeDict.Remove(animal.myID.Value);
-//        } else if (FarmAnimal.NumPathfindingThisTick < FarmAnimal.MaxPathfindingPerTick) {
+          //        } else if (FarmAnimal.NumPathfindingThisTick < FarmAnimal.MaxPathfindingPerTick) {
         } else if (time.TotalGameTime.TotalMilliseconds - GetLastPathfindingTime(animal, time) > 1000 &&
             FarmAnimal.NumPathfindingThisTick < FarmAnimal.MaxPathfindingPerTick) {
           // Keep chasing!
@@ -365,7 +365,7 @@ public static class ExtraProduceUtils {
       }
     }
   }
-  
+
   public static bool GetHarvestMethodOverride(FarmAnimal animal, string? produceId, out string? harvestMethod) {
     harvestMethod = null;
     if (produceId != null &&
@@ -379,7 +379,7 @@ public static class ExtraProduceUtils {
   }
 
   public static bool IsHarvestMethod(FarmAnimal animal, string? produceId, FarmAnimalHarvestType harvestMethod, string? tool = null) {
-    if (GetHarvestMethodOverride(animal,  produceId, out var harvestMethodOverride)) {
+    if (GetHarvestMethodOverride(animal, produceId, out var harvestMethodOverride)) {
       var moddedHarvestToolString = harvestMethod switch {
         FarmAnimalHarvestType.DropOvernight => "DropOvernight",
         FarmAnimalHarvestType.DigUp => "DigUp",
@@ -578,9 +578,9 @@ public static class ExtraProduceUtils {
     foreach (var key in animal.modData.Keys) {
       if (key.StartsWith(CurrentProduceIdKeyPrefix) &&
           IsHarvestMethod(animal, animal.modData[key], harvestMethod, tool)) {
-          animal.currentProduce.Value = animal.modData[key];
-          animal.modData[key] = currentProduce;
-          return;
+        animal.currentProduce.Value = animal.modData[key];
+        animal.modData[key] = currentProduce;
+        return;
       }
     }
   }

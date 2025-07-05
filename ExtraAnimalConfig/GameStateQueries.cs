@@ -40,8 +40,7 @@ sealed class AnimalGameStateQueries {
         .Where(animal => (animalType == "ANY" || animal.type.Value == animalType) && animal.friendshipTowardFarmer.Value >= minFriendship)
         .Count();
       return count >= minCount && count <= maxCount;
-    }
-    else {
+    } else {
       return false;
     }
   }
@@ -56,7 +55,7 @@ sealed class AnimalGameStateQueries {
       return GameStateQuery.Helpers.ErrorResult(query, error);
     }
     var count = 0;
-    Utility.ForEachLocation(delegate(GameLocation location) {
+    Utility.ForEachLocation(delegate (GameLocation location) {
       if (location is AnimalHouse animalHouse) {
         var locationCount = animalHouse.animalsThatLiveHere
         .Select(animalId => Utility.getAnimal(animalId))
