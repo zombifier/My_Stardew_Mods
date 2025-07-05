@@ -42,8 +42,8 @@ public static class MachineTerrainItemQueries {
         possibleFish = possibleFish.Concat(locationData.Fish);
       }
       possibleFish = from p in possibleFish
-        orderby p.Precedence, Game1.random.Next()
-        select p;
+                     orderby p.Precedence, Game1.random.Next()
+                     select p;
       List<ItemQueryResult> fishList = new();
       bool alsoCatchBossFish = ArgUtility.GetBool(args, 1);
       bool usingMagicBait = ArgUtility.GetBool(args, 2);
@@ -190,8 +190,7 @@ public static class MachineTerrainItemQueries {
         continue;
       }
       double chanceForCatch = Convert.ToDouble(rawSplit[2]);
-      if (baitTargetFish != null && baitTargetFish == v.Key)
-      {
+      if (baitTargetFish != null && baitTargetFish == v.Key) {
         chanceForCatch *= (double)((chanceForCatch < 0.1) ? 4 : ((chanceForCatch < 0.2) ? 3 : 2));
       }
       if (!(context.Random.NextDouble() < chanceForCatch)) {
@@ -214,7 +213,7 @@ public static class MachineTerrainItemQueries {
     var fallbackItemId = ArgUtility.Get(args, 1, "(O)153");
     FishPondData fishPondData = FishPond.GetRawData(fishId);
     if (fishPondData is null) {
-      return new ItemQueryResult[1] {new(ItemRegistry.Create(fallbackItemId))};
+      return new ItemQueryResult[1] { new(ItemRegistry.Create(fallbackItemId)) };
     }
     Item fish = ItemRegistry.Create(fishId);
     FishPondReward? selectedOutput = null;
@@ -241,6 +240,6 @@ public static class MachineTerrainItemQueries {
       //  item.Stack *= 2;
       //}
     }
-    return new ItemQueryResult[1] {item is not null ? new(item) : new(ItemRegistry.Create(fallbackItemId))};
+    return new ItemQueryResult[1] { item is not null ? new(item) : new(ItemRegistry.Create(fallbackItemId)) };
   }
 }

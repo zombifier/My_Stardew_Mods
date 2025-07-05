@@ -20,13 +20,14 @@ public class JunimaticPatcher {
           nameof(JunimaticPatcher.DataBasedMachine_OnOutputCollected_Postfix)));
   }
 
-	static void DataBasedMachine_OnOutputCollected_Postfix(object __instance, Item item) {
+  static void DataBasedMachine_OnOutputCollected_Postfix(object __instance, Item item) {
     try {
       var machine = ModEntry.Helper.Reflection.GetProperty<SObject>(__instance, "Machine").GetValue();
       if (machine.IsTapper()) {
         Utils.UpdateTapperProduct(machine);
       }
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       ModEntry.StaticMonitor.Log(e.Message, LogLevel.Error);
     }
   }

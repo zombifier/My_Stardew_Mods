@@ -55,19 +55,19 @@ public static class Utils {
         FruitTree fruitTree => fruitTree.growthStage.Value >= 4 && !fruitTree.stump.Value ?
           data.FruitTreeOutputRules : null,
         GiantCrop giantCrop => data.GiantCropOutputRules,
-          _ => null,
+        _ => null,
       };
       if (outputRules == null) return null;
       string? sourceId = GetFeatureId(feature);
       IEnumerable<ExtendedTapItemData> filteredOutputRules;
       if (ruleId != null) {
         filteredOutputRules = from outputRule in outputRules
-          where outputRule.Id == ruleId
-          select outputRule;
+                              where outputRule.Id == ruleId
+                              select outputRule;
       } else {
         filteredOutputRules = from outputRule in outputRules
-        where outputRule.SourceId == null || outputRule.SourceId == sourceId
-        select outputRule;
+                              where outputRule.SourceId == null || outputRule.SourceId == sourceId
+                              select outputRule;
       }
       return filteredOutputRules.ToList();
     }
@@ -232,7 +232,7 @@ public static class Utils {
     }
     isVanillaTapper = !disallowBaseTapperRules;
     return false;
-  } 
+  }
 
   public static string? GetFeatureId(TerrainFeature feature) {
     return feature switch {
@@ -262,7 +262,7 @@ public static class Utils {
     }
   }
 
-	public static Item? OutputTapper(SObject machine, Item inputItem, bool probe, MachineItemOutput outputData, Farmer player, out int? overrideMinutesUntilReady) {
+  public static Item? OutputTapper(SObject machine, Item inputItem, bool probe, MachineItemOutput outputData, Farmer player, out int? overrideMinutesUntilReady) {
     if (GetFeatureAt(machine.Location, machine.TileLocation, out var feature, out var _) && feature is Tree tree) {
       overrideMinutesUntilReady = 0;
       try {
@@ -274,11 +274,11 @@ public static class Utils {
         overrideMinutesUntilReady = Convert.ToInt32(args[5]);
         ModEntry.StaticMonitor.Log($"Found tapper output: {(args[4] as Item)?.QualifiedItemId ?? "null"} ready in {Convert.ToInt32(args[5])}");
         return args[4] as Item;
-      } catch (Exception e) { 
+      }
+      catch (Exception e) {
         ModEntry.StaticMonitor.Log($"Error getting tapper output: {e.Message}", LogLevel.Warn);
       }
-    }
-    else {
+    } else {
       ModEntry.StaticMonitor.Log($"Error getting tapper output: can't find tree underneath machine at {machine.Location.DisplayName} coords {machine.TileLocation.X} {machine.TileLocation.Y}", LogLevel.Warn);
     }
     overrideMinutesUntilReady = null;
@@ -319,19 +319,19 @@ public static class Utils {
       var outputItem = MachineDataUtility.GetOutputItem(obj, outputItemRule, null, player, false, out int? overrideMinutesUntilReady);
       if (outputItem is not SObject outputObject) continue;
       int minutesUntilReady = 0;
-			if (overrideMinutesUntilReady >= 0) {
-				minutesUntilReady = overrideMinutesUntilReady.Value;
-			} else if (outputRule.MinutesUntilReady >= 0 || outputRule.DaysUntilReady >= 0) {
-				minutesUntilReady = ((outputRule.DaysUntilReady >= 0) ? Utility.CalculateMinutesUntilMorning(Game1.timeOfDay, outputRule.DaysUntilReady) : outputRule.MinutesUntilReady);
-			}
+      if (overrideMinutesUntilReady >= 0) {
+        minutesUntilReady = overrideMinutesUntilReady.Value;
+      } else if (outputRule.MinutesUntilReady >= 0 || outputRule.DaysUntilReady >= 0) {
+        minutesUntilReady = ((outputRule.DaysUntilReady >= 0) ? Utility.CalculateMinutesUntilMorning(Game1.timeOfDay, outputRule.DaysUntilReady) : outputRule.MinutesUntilReady);
+      }
       obj.heldObject.Value = outputObject;
-			obj.MinutesUntilReady = minutesUntilReady;
-			obj.shakeTimer = 1000;
-			Farm.LightningStrikeEvent lightningStrikeEvent = new Farm.LightningStrikeEvent();
-			lightningStrikeEvent.bigFlash = true;
-			lightningStrikeEvent.createBolt = true;
-			lightningStrikeEvent.boltPosition = obj.TileLocation * 64f + new Vector2(32f, 0f);
-			farm.lightningStrikeEvent.Fire(lightningStrikeEvent);
+      obj.MinutesUntilReady = minutesUntilReady;
+      obj.shakeTimer = 1000;
+      Farm.LightningStrikeEvent lightningStrikeEvent = new Farm.LightningStrikeEvent();
+      lightningStrikeEvent.bigFlash = true;
+      lightningStrikeEvent.createBolt = true;
+      lightningStrikeEvent.boltPosition = obj.TileLocation * 64f + new Vector2(32f, 0f);
+      farm.lightningStrikeEvent.Fire(lightningStrikeEvent);
       return true;
     }
     return false;

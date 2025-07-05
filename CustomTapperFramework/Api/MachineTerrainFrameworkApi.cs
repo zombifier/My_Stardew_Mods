@@ -13,7 +13,8 @@ public class MachineTerrainFrameworkApi : IMachineTerrainFrameworkApi {
     foreach (Action<ICropHarvestedEvent> del in CropHarvested.GetInvocationList()) {
       try {
         del.Invoke(ev);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         ModEntry.StaticMonitor.Log("Error processing CropHarvestedEvent: " + e.ToString(), LogLevel.Error);
       }
     }
@@ -24,10 +25,10 @@ public class MachineTerrainFrameworkApi : IMachineTerrainFrameworkApi {
 }
 
 class CropHarvestedEvent : ICropHarvestedEvent {
-  public Crop crop {get; }
-  public Item produce {get; set; }
-  public int count {get; set; }
-  public bool isExtraDrops {get; }
+  public Crop crop { get; }
+  public Item produce { get; set; }
+  public int count { get; set; }
+  public bool isExtraDrops { get; }
 
   internal CropHarvestedEvent(Crop crop, Item produce, int count, bool isExtraDrops) {
     this.crop = crop;

@@ -15,12 +15,12 @@ public interface IMachineTerrainFrameworkApi {
 }
 
 public interface ICropHarvestedEvent {
-  public Crop crop {get; }
+  public Crop crop { get; }
   // You can modify these fields to change what gets returned.
-  public Item produce {get; set; }
-  public int count {get; set; }
+  public Item produce { get; set; }
+  public int count { get; set; }
   // Whether this event is for the extra drops (e.g. extra potatoes) from count > 1 that don't benefit from quality
   // instead of the main drop. If you're modifying count, it's highly recommended you only do it when isExtraDrops is false,
   // lest you risk infinite recursion.
-  public bool isExtraDrops {get; }
+  public bool isExtraDrops { get; }
 }

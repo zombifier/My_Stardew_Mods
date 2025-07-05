@@ -14,7 +14,7 @@ namespace Selph.StardewMods.MachineTerrainFramework;
 
 public class AssetHandler {
   private string dataPath;
-  public Dictionary<string, TapperModel> data {get; private set;}
+  public Dictionary<string, TapperModel> data { get; private set; }
 
   public AssetHandler() {
     // "selph.CustomTapperFramework/Data"
@@ -34,39 +34,39 @@ public class AssetHandler {
 
     // Load water planter texture
     if (e.NameWithoutLocale.IsEquivalentTo($"Mods/{ModEntry.UniqueId}/WaterPlanterTexture")) {
-        e.LoadFromModFile<Texture2D>("assets/WaterPlanter.png", AssetLoadPriority.Medium);
+      e.LoadFromModFile<Texture2D>("assets/WaterPlanter.png", AssetLoadPriority.Medium);
     }
 
     // Load water planters
     if (e.NameWithoutLocale.IsEquivalentTo("Data/BigCraftables")) {
-        e.Edit(asset => {
-            var bigCraftables = asset.AsDictionary<string, BigCraftableData>();
-            bigCraftables.Data[WaterIndoorPotUtils.WaterPlanterItemId] = new BigCraftableData {
-              Name = WaterIndoorPotUtils.WaterPlanterItemId,
-              DisplayName = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPlanterItemId}.name"),
-              Description = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPlanterItemId}.description"),
-              Texture = $"Mods/{ModEntry.UniqueId}/WaterPlanterTexture",
-              SpriteIndex = 0,
-              ContextTags = ["custom_crab_pot_item"]
-            };
-            bigCraftables.Data[WaterIndoorPotUtils.WaterPotItemId] = new BigCraftableData {
-              Name = WaterIndoorPotUtils.WaterPotItemId,
-              DisplayName = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPotItemId}.name"),
-              Description = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPotItemId}.description"),
-              Texture = $"Mods/{ModEntry.UniqueId}/WaterPlanterTexture",
-              SpriteIndex = 2,
-            };
-          });
-        }
+      e.Edit(asset => {
+        var bigCraftables = asset.AsDictionary<string, BigCraftableData>();
+        bigCraftables.Data[WaterIndoorPotUtils.WaterPlanterItemId] = new BigCraftableData {
+          Name = WaterIndoorPotUtils.WaterPlanterItemId,
+          DisplayName = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPlanterItemId}.name"),
+          Description = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPlanterItemId}.description"),
+          Texture = $"Mods/{ModEntry.UniqueId}/WaterPlanterTexture",
+          SpriteIndex = 0,
+          ContextTags = ["custom_crab_pot_item"]
+        };
+        bigCraftables.Data[WaterIndoorPotUtils.WaterPotItemId] = new BigCraftableData {
+          Name = WaterIndoorPotUtils.WaterPotItemId,
+          DisplayName = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPotItemId}.name"),
+          Description = ModEntry.Helper.Translation.Get($"{WaterIndoorPotUtils.WaterPotItemId}.description"),
+          Texture = $"Mods/{ModEntry.UniqueId}/WaterPlanterTexture",
+          SpriteIndex = 2,
+        };
+      });
+    }
 
     if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes")) {
       e.Edit(asset => {
         var craftingRecipes = asset.AsDictionary<string, string>();
         craftingRecipes.Data[WaterIndoorPotUtils.WaterPlanterItemId] =
         $"388 20/Home/{WaterIndoorPotUtils.WaterPlanterItemId}/true/default";
-        craftingRecipes.Data[WaterIndoorPotUtils.WaterPotItemId] = 
+        craftingRecipes.Data[WaterIndoorPotUtils.WaterPotItemId] =
         $"(BC)62 1/Home/{WaterIndoorPotUtils.WaterPotItemId}/true/default";
-        });
+      });
     }
     if (e.NameWithoutLocale.IsEquivalentTo("rokugin.perfectionexclusions/recipes")) {
       e.Edit(asset => {
@@ -87,7 +87,8 @@ public class AssetHandler {
           craftingRecipes.Add(WaterIndoorPotUtils.WaterPlanterItemId);
           craftingRecipes.Add(WaterIndoorPotUtils.WaterPotItemId);
           ModEntry.Helper.Reflection.GetMethod(model, "Add").Invoke(ModEntry.UniqueId, entry);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
           ModEntry.StaticMonitor.Log($"Error writing into Perfection Exclusions: {e.ToString()}", LogLevel.Warn);
         }
       });

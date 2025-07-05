@@ -35,19 +35,20 @@ public class AutomatePatcher {
     }
   }
 
-	static void DataBasedMachine_OnOutputCollected_Postfix(object __instance, Item item) {
+  static void DataBasedMachine_OnOutputCollected_Postfix(object __instance, Item item) {
     try {
       var machine = ModEntry.Helper.Reflection.GetProperty<SObject>(__instance, "Machine").GetValue();
       if (machine.IsTapper()) {
         Utils.UpdateTapperProduct(machine);
       }
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       ModEntry.StaticMonitor.Log(e.Message, LogLevel.Error);
     }
   }
 
   // Needed for non-vanilla tappers on trees
-	static void TapperMachine_Reset_Postfix(object __instance, Item item) {
+  static void TapperMachine_Reset_Postfix(object __instance, Item item) {
     try {
       var machine = ModEntry.Helper.Reflection.GetProperty<SObject>(__instance, "Machine").GetValue();
       if (machine.IsTapper()) {
@@ -57,7 +58,8 @@ public class AutomatePatcher {
       MachineData? machineData = machine.GetMachineData();
       if (MachineDataUtility.TryGetMachineOutputRule(machine, machineData, MachineOutputTrigger.OutputCollected, item.getOne(), null, machine.Location, out MachineOutputRule outputCollectedRule, out _, out _, out _))
         machine.OutputMachine(machineData, outputCollectedRule, machine.lastInputItem.Value, null, machine.Location, false);
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       ModEntry.StaticMonitor.Log(e.Message, LogLevel.Error);
     }
   }

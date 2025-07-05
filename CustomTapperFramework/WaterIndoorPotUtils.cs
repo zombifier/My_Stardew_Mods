@@ -23,7 +23,7 @@ public static class WaterIndoorPotUtils {
   public static readonly string WaterPlanterQualifiedItemId = $"(BC){WaterPlanterItemId}";
   public static readonly string WaterPotItemId = $"{ModEntry.UniqueId}.WaterPot";
   public static readonly string WaterPotQualifiedItemId = $"(BC){WaterPotItemId}";
-  
+
   public static readonly string HoeDirtIsWaterModDataKey = $"{ModEntry.UniqueId}.IsWater";
   public static readonly string HoeDirtIsAmphibiousModDataKey = $"{ModEntry.UniqueId}.IsAmphibious";
   public static readonly string HoeDirtIsWaterPlanterModDataKey = $"{ModEntry.UniqueId}.IsWaterPlanter";
@@ -42,8 +42,7 @@ public static class WaterIndoorPotUtils {
 
   public static void transformIndoorPotToItem(IndoorPot indoorPot, string itemId) {
     indoorPot.ItemId = itemId;
-    if (Game1.bigCraftableData.TryGetValue(itemId, out var value))
-    {
+    if (Game1.bigCraftableData.TryGetValue(itemId, out var value)) {
       indoorPot.name = value.Name ?? ItemRegistry.GetDataOrErrorItem($"(BC){itemId}").InternalName;
       indoorPot.Price = value.Price;
       indoorPot.Type = "Crafting";
@@ -57,23 +56,20 @@ public static class WaterIndoorPotUtils {
   }
 
   public static bool isWaterPlanter(SObject obj) {
-    return 
+    return
       obj.QualifiedItemId == WaterIndoorPotUtils.WaterPlanterQualifiedItemId ||
       obj.QualifiedItemId == WaterIndoorPotUtils.WaterPotQualifiedItemId;
   }
 
-  public static void draw(IndoorPot obj, SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
-  {
+  public static void draw(IndoorPot obj, SpriteBatch spriteBatch, int x, int y, float alpha = 1f) {
     GameLocation location = obj.Location;
-    if (location == null)
-    {
+    if (location == null) {
       return;
     }
     CrabPotData crabPotData = CustomCrabPotUtils.getCrabPotData(obj);
     float yBob = (float)(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 500.0 + (double)(x * 64)) * 8.0 + 8.0);
     float yBobCrops = (float)(Math.Sin((Game1.currentGameTime.TotalGameTime.TotalMilliseconds + 500) / 500.0 + (double)(x * 64)) * 8.0 + 8.0);
-    if (yBob <= 0.001f)
-    {
+    if (yBob <= 0.001f) {
       location.temporarySprites.Add(new TemporaryAnimatedSprite("TileSheets\\animations", new Microsoft.Xna.Framework.Rectangle(0, 0, 64, 64), 150f, 8, 0, crabPotData.directionOffset + new Vector2(x * 64 + 4, y * 64 + 32), flicker: false, Game1.random.NextBool(), 0.001f, 0.01f, Color.White, 0.75f, 0.003f, 0f, 0f));
     }
 
@@ -105,8 +101,7 @@ public static class WaterIndoorPotUtils {
     //    destinationRectangle,
     //    dataOrErrorItem.GetSourceRect(obj.showNextIndex.Value ? 1 : 0),
     //    Color.White * alpha, 0f, Vector2.Zero, SpriteEffects.None, Math.Max(0f, (float)((y + 1) * 64 - 24) / 10000f) + (float)x * 1E-05f);
-    if (obj.hoeDirt.Value.HasFertilizer())
-    {
+    if (obj.hoeDirt.Value.HasFertilizer()) {
       Microsoft.Xna.Framework.Rectangle fertilizerSourceRect = obj.hoeDirt.Value.GetFertilizerSourceRect();
       fertilizerSourceRect.Width = 13;
       fertilizerSourceRect.Height = 13;
@@ -139,11 +134,11 @@ public static class WaterIndoorPotUtils {
       //}
       // Is modded pot
       if (!isWater && hoeDirt.Pot is not null &&
-//          (!data.CustomFields?.ContainsKey(CropCanUseRegularDirtKey) ?? false) &&
+         //          (!data.CustomFields?.ContainsKey(CropCanUseRegularDirtKey) ?? false) &&
          (
            ((!data.CustomFields?.ContainsKey(CropCustomPotItemKey) ?? true) && !AcceptsRegularCrops(hoeDirt.Pot)) ||
            ((data.CustomFields?.TryGetValue(CropCustomPotItemKey, out var customPotStr) ?? false) && !customPotStr.Split(' ', ',').Contains(hoeDirt.Pot.QualifiedItemId)))
-         ){
+         ) {
         result = false;
       }
     }
@@ -179,22 +174,22 @@ public static class WaterIndoorPotUtils {
     return shouldOverrideDraw;
   }
 
-	public static void drawPotOverride(IndoorPot pot, SpriteBatch spriteBatch, int x, int y, float alpha = 1f, int? cropYOffset = 0, Color? cropTintColor = null) {
+  public static void drawPotOverride(IndoorPot pot, SpriteBatch spriteBatch, int x, int y, float alpha = 1f, int? cropYOffset = 0, Color? cropTintColor = null) {
     var yOffset = cropYOffset ?? 0;
-		Vector2 vector = pot.getScale();
-		vector *= 4f;
-		Vector2 vector2 = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
-		Microsoft.Xna.Framework.Rectangle destinationRectangle = new Microsoft.Xna.Framework.Rectangle((int)(vector2.X - vector.X / 2f) + ((pot.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(vector2.Y - vector.Y / 2f) + ((pot.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(64f + vector.X), (int)(128f + vector.Y / 2f));
-		ParsedItemData dataOrErrorItem = ItemRegistry.GetDataOrErrorItem(pot.QualifiedItemId);
-		spriteBatch.Draw(dataOrErrorItem.GetTexture(), destinationRectangle, dataOrErrorItem.GetSourceRect(pot.showNextIndex.Value ? 1 : 0), Color.White * alpha, 0f, Vector2.Zero, SpriteEffects.None, Math.Max(0f, (float)((y + 1) * 64 - 24) / 10000f) + (float)x * 1E-05f);
-		if (pot.hoeDirt.Value.HasFertilizer()) {
-			Microsoft.Xna.Framework.Rectangle fertilizerSourceRect = pot.hoeDirt.Value.GetFertilizerSourceRect();
-			fertilizerSourceRect.Width = 13;
-			fertilizerSourceRect.Height = 13;
-			spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(pot.TileLocation.X * 64f + 4f, pot.TileLocation.Y * 64f - 12f + yOffset)), fertilizerSourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (pot.TileLocation.Y + 0.65f) * 64f / 10000f + (float)x * 1E-05f);
-		}
-		pot.hoeDirt.Value.crop?.drawWithOffset(spriteBatch, pot.TileLocation, cropTintColor ?? ((pot.hoeDirt.Value.isWatered() && pot.hoeDirt.Value.crop.currentPhase.Value == 0 && !pot.hoeDirt.Value.crop.raisedSeeds.Value) ? (new Color(180, 100, 200) * 1f) : Color.White), pot.hoeDirt.Value.getShakeRotation(), new Vector2(32f, 8f + yOffset));
-		pot.heldObject.Value?.draw(spriteBatch, x * 64, y * 64 - 48 + yOffset, (pot.TileLocation.Y + 0.66f) * 64f / 10000f + (float)x * 1E-05f, 1f);
-		pot.bush.Value?.draw(spriteBatch, -24f + yOffset);
+    Vector2 vector = pot.getScale();
+    vector *= 4f;
+    Vector2 vector2 = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+    Microsoft.Xna.Framework.Rectangle destinationRectangle = new Microsoft.Xna.Framework.Rectangle((int)(vector2.X - vector.X / 2f) + ((pot.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(vector2.Y - vector.Y / 2f) + ((pot.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(64f + vector.X), (int)(128f + vector.Y / 2f));
+    ParsedItemData dataOrErrorItem = ItemRegistry.GetDataOrErrorItem(pot.QualifiedItemId);
+    spriteBatch.Draw(dataOrErrorItem.GetTexture(), destinationRectangle, dataOrErrorItem.GetSourceRect(pot.showNextIndex.Value ? 1 : 0), Color.White * alpha, 0f, Vector2.Zero, SpriteEffects.None, Math.Max(0f, (float)((y + 1) * 64 - 24) / 10000f) + (float)x * 1E-05f);
+    if (pot.hoeDirt.Value.HasFertilizer()) {
+      Microsoft.Xna.Framework.Rectangle fertilizerSourceRect = pot.hoeDirt.Value.GetFertilizerSourceRect();
+      fertilizerSourceRect.Width = 13;
+      fertilizerSourceRect.Height = 13;
+      spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(pot.TileLocation.X * 64f + 4f, pot.TileLocation.Y * 64f - 12f + yOffset)), fertilizerSourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (pot.TileLocation.Y + 0.65f) * 64f / 10000f + (float)x * 1E-05f);
+    }
+    pot.hoeDirt.Value.crop?.drawWithOffset(spriteBatch, pot.TileLocation, cropTintColor ?? ((pot.hoeDirt.Value.isWatered() && pot.hoeDirt.Value.crop.currentPhase.Value == 0 && !pot.hoeDirt.Value.crop.raisedSeeds.Value) ? (new Color(180, 100, 200) * 1f) : Color.White), pot.hoeDirt.Value.getShakeRotation(), new Vector2(32f, 8f + yOffset));
+    pot.heldObject.Value?.draw(spriteBatch, x * 64, y * 64 - 48 + yOffset, (pot.TileLocation.Y + 0.66f) * 64f / 10000f + (float)x * 1E-05f, 1f);
+    pot.bush.Value?.draw(spriteBatch, -24f + yOffset);
   }
 }

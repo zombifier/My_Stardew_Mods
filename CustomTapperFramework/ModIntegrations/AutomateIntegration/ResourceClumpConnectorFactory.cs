@@ -6,8 +6,7 @@ using Pathoschild.Stardew.Automate;
 using SObject = StardewValley.Object;
 
 namespace Selph.StardewMods.MachineTerrainFramework;
-public class ResourceClumpConnectorFactory : IAutomationFactory
-{
+public class ResourceClumpConnectorFactory : IAutomationFactory {
   public IAutomatable GetFor(SObject obj, GameLocation location, in Vector2 tile) {
     return null;
   }
@@ -22,11 +21,11 @@ public class ResourceClumpConnectorFactory : IAutomationFactory
 
   public IAutomatable GetForTile(GameLocation location, in Vector2 tile) {
     foreach (var resourceClump in location.resourceClumps) {
-    if (resourceClump.occupiesTile((int)tile.X, (int)tile.Y) &&
-        location.objects.TryGetValue(Utils.GetTapperLocationForClump(resourceClump), out SObject tapper) &&
-        tapper.IsTapper()) {
-      return new ResourceClumpConnector(resourceClump, tile);
-    }
+      if (resourceClump.occupiesTile((int)tile.X, (int)tile.Y) &&
+          location.objects.TryGetValue(Utils.GetTapperLocationForClump(resourceClump), out SObject tapper) &&
+          tapper.IsTapper()) {
+        return new ResourceClumpConnector(resourceClump, tile);
+      }
 
     }
     return null;

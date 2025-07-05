@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -46,7 +46,8 @@ internal sealed class ModEntry : Mod {
         this.Monitor.Log("This mod patches Automate. If you notice issues with Automate, make sure it happens without this mod before reporting it to the Automate page.", LogLevel.Debug);
         AutomatePatcher.ApplyPatches(harmony);
       }
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       Monitor.Log("Failed patching Automate. Detail: " + e.Message, LogLevel.Error);
     }
 
@@ -55,7 +56,8 @@ internal sealed class ModEntry : Mod {
         this.Monitor.Log("This mod patches Junimatic. If you notice issues with Junimatic, make sure it happens without this mod before reporting it to the Junimatic page.", LogLevel.Debug);
         JunimaticPatcher.ApplyPatches(harmony);
       }
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       Monitor.Log("Failed patching Junimatic. Detail: " + e.Message, LogLevel.Error);
     }
 
@@ -102,7 +104,7 @@ internal sealed class ModEntry : Mod {
     // Learn the water crop recipes
     // TODO: Currently disabled until I find a way to add recipes that don't count for perfection
     //bool hasAquaticCrops = false;
-		//foreach (KeyValuePair<string, CropData> cropData in Game1.cropData) {
+    //foreach (KeyValuePair<string, CropData> cropData in Game1.cropData) {
     //  if ((cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsWaterCustomFieldsKey) ?? false)
     //      || (cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsAmphibiousCustomFieldsKey) ?? false)) {
     //    hasAquaticCrops = true;
@@ -118,7 +120,7 @@ internal sealed class ModEntry : Mod {
     //  Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPlanterItemId);
     //  Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPotItemId);
     //}
-    
+
   }
 
   private bool IsNormalGameplay() {

@@ -64,7 +64,7 @@ public class HarmonyPatcher {
     harmony.Patch(
         original: AccessTools.Method(typeof(SObject),
           nameof(SObject.draw),
-          new Type[] {typeof(SpriteBatch), typeof(int), typeof(int), typeof(float)}),
+          new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
         prefix: new HarmonyMethod(typeof(HarmonyPatcher),
           nameof(HarmonyPatcher.SObject_draw_Prefix)),
         transpiler: new HarmonyMethod(typeof(HarmonyPatcher),
@@ -81,7 +81,7 @@ public class HarmonyPatcher {
     harmony.Patch(
         original: AccessTools.Method(typeof(IndoorPot),
           nameof(IndoorPot.draw),
-          new Type[] {typeof(SpriteBatch), typeof(int), typeof(int), typeof(float)}),
+          new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
         prefix: new HarmonyMethod(typeof(HarmonyPatcher),
           nameof(HarmonyPatcher.IndoorPot_draw_Prefix)));
 
@@ -167,7 +167,7 @@ public class HarmonyPatcher {
         original: AccessTools.Method(typeof(SObject),
           nameof(SObject.PlaceInMachine)),
         postfix: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.SObject_PlaceInMachine_postfix)));
-    
+
     // Custom lightning rod patch
     harmony.Patch(
         original: AccessTools.Method(typeof(Utility),
@@ -245,17 +245,17 @@ public class HarmonyPatcher {
     }
     if (__instance.QualifiedItemId == WaterIndoorPotUtils.WaterPotQualifiedItemId ||
         WaterIndoorPotUtils.IsCustomPot(__instance)) {
-        IndoorPot @object = new IndoorPot(vector);
-        WaterIndoorPotUtils.transformIndoorPotToItem(@object, __instance.ItemId);
-        // water the pot if water pot
-        if (__instance.QualifiedItemId == WaterIndoorPotUtils.WaterPotQualifiedItemId) {
-          @object.hoeDirt.Value.modData[WaterIndoorPotUtils.HoeDirtIsWaterModDataKey] = "true";
-          @object.hoeDirt.Value.state.Value = 1;
-        }
-        location.objects.Add(vector, @object);
-        location.playSound("woodyStep");
-        __result = true;
-        return false;
+      IndoorPot @object = new IndoorPot(vector);
+      WaterIndoorPotUtils.transformIndoorPotToItem(@object, __instance.ItemId);
+      // water the pot if water pot
+      if (__instance.QualifiedItemId == WaterIndoorPotUtils.WaterPotQualifiedItemId) {
+        @object.hoeDirt.Value.modData[WaterIndoorPotUtils.HoeDirtIsWaterModDataKey] = "true";
+        @object.hoeDirt.Value.state.Value = 1;
+      }
+      location.objects.Add(vector, @object);
+      location.playSound("woodyStep");
+      __result = true;
+      return false;
     }
     return true;
   }
@@ -277,7 +277,7 @@ public class HarmonyPatcher {
       CustomCrabPotUtils.updateWhenCurrentLocation(__instance, time);
     }
   }
-  
+
 
   // If a tapper is present, only shake and remove the tapper instead of damaging the tree.
   static bool FruitTree_performToolAction_Prefix(FruitTree __instance, ref bool __result, Tool t, int explosion, Vector2 tileLocation) {
@@ -302,8 +302,8 @@ public class HarmonyPatcher {
   // If a tapper is present, only shake and remove the tapper instead of damaging the tree.
   static bool GiantCrop_performToolAction_Prefix(GiantCrop __instance, ref bool __result, Tool t, int damage, Vector2 tileLocation) {
     Vector2 centerPos = __instance.Tile;
-        centerPos.X = (int)centerPos.X + (int)__instance.width.Value / 2;
-        centerPos.Y = (int)centerPos.Y + (int)__instance.height.Value - 1;
+    centerPos.X = (int)centerPos.X + (int)__instance.width.Value / 2;
+    centerPos.Y = (int)centerPos.Y + (int)__instance.height.Value - 1;
     if (__instance.Location.objects.TryGetValue(centerPos, out SObject obj) &&
         obj.IsTapper() && t.isHeavyHitter() && !(t is MeleeWeapon)) {
       // Has tapper, try to dislodge it
@@ -342,7 +342,7 @@ public class HarmonyPatcher {
           id.Replace("DROP_IN_ID", /*inputItem?.QualifiedItemId ??*/ "0")
           .Replace("NEARBY_FLOWER_ID", MachineDataUtility.GetNearbyFlowerItemId(__instance) ?? "-1"));
       if (newItem is SObject newObject)
-      __instance.heldObject.Value = newObject;
+        __instance.heldObject.Value = newObject;
     }
     return true;
   }
@@ -439,15 +439,15 @@ public class HarmonyPatcher {
   // Don't sink debris if there's a building at that tile or in the adjacent tiles
   static void GameLocation_doesTileSinkDebris_Postfix(GameLocation __instance, ref bool __result, int xTile, int yTile, Debris.DebrisType type) {
     if (__instance.objects.ContainsKey(new Vector2(xTile, yTile)) ||
-        __instance.objects.ContainsKey(new Vector2(xTile+1, yTile)) ||
-        __instance.objects.ContainsKey(new Vector2(xTile, yTile+1)) ||
-        __instance.objects.ContainsKey(new Vector2(xTile-1, yTile)) ||
-        __instance.objects.ContainsKey(new Vector2(xTile, yTile-1)) ||
+        __instance.objects.ContainsKey(new Vector2(xTile + 1, yTile)) ||
+        __instance.objects.ContainsKey(new Vector2(xTile, yTile + 1)) ||
+        __instance.objects.ContainsKey(new Vector2(xTile - 1, yTile)) ||
+        __instance.objects.ContainsKey(new Vector2(xTile, yTile - 1)) ||
         // diagonal
-        __instance.objects.ContainsKey(new Vector2(xTile+1, yTile+1)) ||
-        __instance.objects.ContainsKey(new Vector2(xTile+1, yTile-1)) ||
-        __instance.objects.ContainsKey(new Vector2(xTile-1, yTile+1)) ||
-        __instance.objects.ContainsKey(new Vector2(xTile-1, yTile-1))
+        __instance.objects.ContainsKey(new Vector2(xTile + 1, yTile + 1)) ||
+        __instance.objects.ContainsKey(new Vector2(xTile + 1, yTile - 1)) ||
+        __instance.objects.ContainsKey(new Vector2(xTile - 1, yTile + 1)) ||
+        __instance.objects.ContainsKey(new Vector2(xTile - 1, yTile - 1))
               ) {
       __result = false;
     }
@@ -537,19 +537,19 @@ public class HarmonyPatcher {
       // mark fish caught for achievements and stats
       IDictionary<string, string> fishData = DataLoader.Fish(Game1.content);
       if (fishData.TryGetValue(__instance.heldObject.Value.ItemId, out string? fishRow)) {
-          var item = __instance.heldObject.Value;
-          int size = 0;
-          try {
-            string[] fields = fishRow.Split('/');
-            bool isValid = fields.Length > 5;
-            bool isRegularFish = fields.Length > 10;
-            int lowerSize = isValid ? (isRegularFish ? Convert.ToInt32(fields[3]) : Convert.ToInt32(fields[5])) : 1;
-            int upperSize = isValid ? (isRegularFish ? Convert.ToInt32(fields[4]) : Convert.ToInt32(fields[6])) : 1;
-            size = Game1.random.Next(lowerSize, upperSize + 1);
-          }
-          catch (Exception e) {
-            ModEntry.StaticMonitor.Log($"Error getting fish length: {e.Message}", LogLevel.Warn);
-          }
+        var item = __instance.heldObject.Value;
+        int size = 0;
+        try {
+          string[] fields = fishRow.Split('/');
+          bool isValid = fields.Length > 5;
+          bool isRegularFish = fields.Length > 10;
+          int lowerSize = isValid ? (isRegularFish ? Convert.ToInt32(fields[3]) : Convert.ToInt32(fields[5])) : 1;
+          int upperSize = isValid ? (isRegularFish ? Convert.ToInt32(fields[4]) : Convert.ToInt32(fields[6])) : 1;
+          size = Game1.random.Next(lowerSize, upperSize + 1);
+        }
+        catch (Exception e) {
+          ModEntry.StaticMonitor.Log($"Error getting fish length: {e.Message}", LogLevel.Warn);
+        }
           (Game1.GetPlayer(__instance.owner.Value) ?? Game1.player).caughtFish(item.ItemId, size);
       }
     }
@@ -648,7 +648,7 @@ public class HarmonyPatcher {
       .End()
       .MatchStartBackwards(
         new CodeMatch(OpCodes.Ldfld, AccessTools.DeclaredField(typeof(CropData), nameof(CropData.ExtraHarvestChance))),
-        new CodeMatch(OpCodes.Call,  AccessTools.DeclaredMethod(typeof(Math), nameof(Math.Min), new[] {typeof(double), typeof(double)})))
+        new CodeMatch(OpCodes.Call, AccessTools.DeclaredMethod(typeof(Math), nameof(Math.Min), new[] { typeof(double), typeof(double) })))
       .MatchStartBackwards(
         new CodeMatch(OpCodes.Ldloc_S),
         new CodeMatch(OpCodes.Ldc_I4_1),
@@ -660,7 +660,7 @@ public class HarmonyPatcher {
     matcher
       .Start()
       .MatchStartForward(
-        new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(ColoredObject), new[] {typeof(string), typeof(int), typeof(Color)})))
+        new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(ColoredObject), new[] { typeof(string), typeof(int), typeof(Color) })))
       .MatchStartForward(
         new CodeMatch(OpCodes.Stloc_S))
       .ThrowIfNotMatch($"Could not find 2nd entry point for {nameof(Crop_harvest_Transpiler)}");
@@ -676,7 +676,7 @@ public class HarmonyPatcher {
     // Insert RunCropHarvestedEvents after second produce creation
     matcher
       .MatchStartForward(
-        new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(ColoredObject), new[] {typeof(string), typeof(int), typeof(Color)})))
+        new CodeMatch(OpCodes.Newobj, AccessTools.Constructor(typeof(ColoredObject), new[] { typeof(string), typeof(int), typeof(Color) })))
       .MatchStartForward(
         new CodeMatch(OpCodes.Stloc_S))
       .ThrowIfNotMatch($"Could not find 3rd entry point for {nameof(Crop_harvest_Transpiler)}");
