@@ -370,7 +370,7 @@ public static class ExtraProduceUtils {
     harvestMethod = null;
     if (produceId != null &&
         ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData) &&
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId ?? "", out var animalProduceExtensionData) &&
         animalProduceExtensionData.HarvestTool != null) {
       harvestMethod = animalProduceExtensionData.HarvestTool;
       return true;
@@ -425,7 +425,7 @@ public static class ExtraProduceUtils {
       animal.modData.Remove(CachedProduceQualityKey);
     }
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
-        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId, out var animalProduceExtensionData)) {
+        animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId ?? "", out var animalProduceExtensionData)) {
       var context = new ItemQueryContext(animal.currentLocation, Game1.GetPlayer(animal.ownerID.Value), Game1.random, "ExtraAnimalConfig animal " + animal.type.Value + " producing");
       var gsqContext = AnimalUtils.GetGsqContext(animal, animal.currentLocation);
       if (animalProduceExtensionData.ItemQuery != null) {
