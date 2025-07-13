@@ -1,7 +1,7 @@
 {
   "Name": "ExtraAnimalConfig",
   "Author": "selph",
-  "Version": "1.8.6",
+  "Version": "1.8.7",
   "Description": "Add extra functionalities to animal definitions.",
   "UniqueID": "selph.ExtraAnimalConfig",
   "EntryDll": "ExtraAnimalConfig.dll",

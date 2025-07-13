@@ -504,6 +504,11 @@ public static class ExtraProduceUtils {
       foreach (var key in animal.modData.Keys) {
         if (key.StartsWith(CurrentProduceIdKeyPrefix)) {
           var produceId = animal.modData[key];
+          if (produceId is null) {
+            ModEntry.StaticMonitor.Log($"WARNING: modData {key} is null?", LogLevel.Warn);
+            animal.modData.Remove(key);
+            continue;
+          }
           DropOrAddToGrabber(animal, produceId, out bool drop, out bool addToGrabber, out bool debris);
           SObject? produce = null;
           // We get produce lazily to avoid firing AnimalProduceCreated if not needed
@@ -594,6 +599,11 @@ public static class ExtraProduceUtils {
     foreach (var key in animal.modData.Keys) {
       if (key.StartsWith(ExtraProduceUtils.CurrentProduceIdKeyPrefix) &&
           IsDebris(animal, animal.modData[key])) {
+        if (animal.modData[key] is null) {
+          ModEntry.StaticMonitor.Log($"WARNING: modData {key} is null?", LogLevel.Warn);
+          animal.modData.Remove(key);
+          continue;
+        }
         debrisToDrop.Add(animal.modData[key]);
         animal.modData.Remove(key);
       }
