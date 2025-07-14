@@ -1,0 +1,9 @@
+// Translation courtesy of Caranud
+{
+  "selph.ExtraTappers.BirdHouse.name": "Nichoir",
+  "selph.ExtraTappers.BirdHouse.description": "Placez-les sur un arbre ou un arbre fruitier et les oiseaux apporteront des objets au hasard chaque jour.",
+  "selph.ExtraTappers.BeeHouse.name": "Ruche arboricole",
+  "selph.ExtraTappers.BeeHouse.description": "Ce nid d'abeilles a été modifié pour pouvoir être placé sur un arbre !",
+  "selph.ExtraTappers.MushroomGrower.name": "Producteur de champignons",
+  "selph.ExtraTappers.MushroomGrower.description": "Plantez ces spores sur un arbre pour faire pousser une colonie de champignons beaucoup plus rapidement que des bûches ordinaires ! Plus efficace sur les arbres fruitiers."
+}

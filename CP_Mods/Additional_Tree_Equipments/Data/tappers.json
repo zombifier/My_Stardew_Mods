@@ -267,7 +267,7 @@
             },
             {
               "DaysUntilReady": 3,
-              "Chance": 0.25,
+              "Chance": 0.3333333,
               "Id": "Chanterelle",
               "ItemId": "(O)281",
               "MinStack": 5,
@@ -393,7 +393,7 @@
             },
             {
               "DaysUntilReady": 3,
-              "Chance": 0.25,
+              "Chance": 0.3333333,
               "Id": "Chanterelle",
               "ItemId": "(O)281",
               "MinStack": 5,
@@ -597,6 +597,136 @@
           "MaxStack": 2,
         },
       },
+    },
+    {
+      "LogName": "Add cornucopia to possible mushroom spores drops",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/Data",
+      "TargetField": ["(BC)selph.ExtraTappers.MushroomGrower", "FruitTreeOutputRules"],
+      "When": {
+        "HasMod": "Cornucopia.MoreCrops"
+      },
+      "Entries": {
+        "Cornucopia_Shiitake": {
+          "DaysUntilReady": 3,
+          "Chance": 0.1,
+          "Id": "Cornucopia_Shiitake",
+          "ItemId": "(O)Cornucopia_Shiitake",
+          "MinStack": 5,
+          "QualityModifierMode": "Maximum",
+          "QualityModifiers": [
+            {
+              "Modification": "Set",
+              "Amount": 1,
+              "Condition": "RANDOM 0.75 @addDailyLuck",
+            },
+            {
+              "Modification": "Set",
+              "Amount": 2,
+              "Condition": "RANDOM 0.5 @addDailyLuck",
+            },
+            {
+              "Modification": "Set",
+              "Amount": 4,
+              "Condition": "RANDOM 0.25 @addDailyLuck",
+            },
+          ],
+        },
+        "Cornucopia_ChickenoftheWoods": {
+          "DaysUntilReady": 3,
+          "Chance": 0.111111111,
+          "Id": "Cornucopia_ChickenoftheWoods",
+          "ItemId": "(O)Cornucopia_ChickenoftheWoods",
+          "MinStack": 5,
+          "QualityModifierMode": "Maximum",
+          "QualityModifiers": [
+            {
+              "Modification": "Set",
+              "Amount": 1,
+              "Condition": "RANDOM 0.75 @addDailyLuck",
+            },
+            {
+              "Modification": "Set",
+              "Amount": 2,
+              "Condition": "RANDOM 0.5 @addDailyLuck",
+            },
+            {
+              "Modification": "Set",
+              "Amount": 4,
+              "Condition": "RANDOM 0.25 @addDailyLuck",
+            },
+          ],
+        }
+      },
+      "MoveEntries": [
+        { "ID": "Cornucopia_ChickenoftheWoods", "ToPosition": "Top" },
+        { "ID": "Cornucopia_Shiitake", "ToPosition": "Top" },
+      ],
+    },
+    {
+      "LogName": "Add cornucopia to possible mushroom spores drops - regular trees",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/Data",
+      "TargetField": ["(BC)selph.ExtraTappers.MushroomGrower", "TreeOutputRules"],
+      "When": {
+        "HasMod": "Cornucopia.MoreCrops"
+      },
+      "Entries": {
+        "Cornucopia_Shiitake": {
+          "DaysUntilReady": 3,
+          "Chance": 0.1,
+          "Id": "Cornucopia_Shiitake",
+          "ItemId": "(O)Cornucopia_Shiitake",
+          "MinStack": 5,
+          "QualityModifierMode": "Maximum",
+          "QualityModifiers": [
+            {
+              "Modification": "Set",
+              "Amount": 1,
+              "Condition": "RANDOM 0.5 @addDailyLuck",
+            },
+            {
+              "Modification": "Set",
+              "Amount": 2,
+              "Condition": "RANDOM 0.25 @addDailyLuck",
+            },
+            {
+              "Modification": "Set",
+              "Amount": 4,
+              "Condition": "RANDOM 0.1 @addDailyLuck",
+            },
+          ],
+        },
+        "Cornucopia_ChickenoftheWoods": {
+          "DaysUntilReady": 3,
+          "Chance": 0.111111111,
+          "Id": "Cornucopia_ChickenoftheWoods",
+          "ItemId": "(O)Cornucopia_ChickenoftheWoods",
+          "MinStack": 5,
+          "QualityModifierMode": "Maximum",
+          "QualityModifiers": [
+            {
+              "Modification": "Set",
+              "Amount": 1,
+              "Condition": "RANDOM 0.5 @addDailyLuck",
+            },
+            {
+              "Modification": "Set",
+              "Amount": 2,
+              "Condition": "RANDOM 0.25 @addDailyLuck",
+            },
+            {
+              "Modification": "Set",
+              "Amount": 4,
+              "Condition": "RANDOM 0.1 @addDailyLuck",
+            },
+          ],
+        }
+      },
+      "MoveEntries": [
+        { "ID": "Cornucopia_ChickenoftheWoods", "ToPosition": "Top" },
+        { "ID": "Cornucopia_Shiitake", "ToPosition": "Top" },
+      ],
     },
   ]
 }
