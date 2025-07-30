@@ -1031,6 +1031,8 @@ NOTE: Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
 | `selph.ExtraMachineConfig.IsCustomCask` | Whether this machine is a cask, and should subject to cask-like behavior (ie. can use cask rules, drop item when smacked, has quality star, only usable in a cellar unless specified below)|
 | `selph.ExtraMachineConfig.CaskWorksAnywhere` | If set, this cask can be placed anywhere.|
 | `selph.ExtraMachineConfig.AllowMoreThanOneQualityIncrement` | Casks by default can only increment quality by one per day. If set, this limitation is removed.|
+| `selph.ExtraMachineConfig.CaskStarLocationX` | Add this, and the Y one too, to be able to set the position of the star location on the cask. For the value put the amount of pixels on the X axis (Horizontal). |
+| `selph.ExtraMachineConfig.CaskStarLocationY` | Put the amount of pixels on the Y axis (Vertical).  |
 
 -----
 
