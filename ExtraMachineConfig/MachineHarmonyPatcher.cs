@@ -52,6 +52,8 @@ sealed class MachineHarmonyPatcher {
   internal static string IsCustomCask = $"{ModEntry.UniqueId}.IsCustomCask";
   internal static string CaskWorksAnywhere = $"{ModEntry.UniqueId}.CaskWorksAnywhere";
   internal static string AllowMoreThanOneQualityIncrement = $"{ModEntry.UniqueId}.AllowMoreThanOneQualityIncrement";
+  internal static string CaskStarLocationX = $"{ModEntry.UniqueId}.CaskStarLocationX";
+  internal static string CaskStarLocationY = $"{ModEntry.UniqueId}.CaskStarLocationY";
   internal static string ReturnInput = $"{ModEntry.UniqueId}.ReturnInput";
   internal static string ReturnActualInput = $"{ModEntry.UniqueId}.ReturnActualInput";
   internal static string IsCustomSlimeIncubator = $"{ModEntry.UniqueId}.IsCustomSlimeIncubator";
@@ -243,6 +245,9 @@ sealed class MachineHarmonyPatcher {
           original: AccessTools.DeclaredMethod(typeof(GreenSlime),
             nameof(GreenSlime.mateWith)),
           transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.GreenSlime_mateWith_Transpiler)));
+      harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Cask), nameof(Cask.draw)),
+        transpiler: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Cask_draw_Transpiler)));
     }
     catch (Exception e) {
       ModEntry.StaticMonitor.Log("Error when transpiling: " + e.ToString(), LogLevel.Error);
@@ -846,6 +851,47 @@ sealed class MachineHarmonyPatcher {
         }
       }
     }
+  }
+
+  static IEnumerable<CodeInstruction> Cask_draw_Transpiler(IEnumerable<CodeInstruction> instructions) {
+    CodeMatcher matcher = new(instructions);
+
+    matcher.MatchEndForward(
+        new CodeMatch(OpCodes.Ldc_I4_0),
+        new CodeMatch(OpCodes.Cgt),
+        new CodeMatch(OpCodes.Brfalse))
+      .ThrowIfNotMatch($"Could not find entry point for {nameof(Cask_draw_Transpiler)}");
+
+    object jumpToEnd = matcher.Operand;
+
+    matcher.Advance(1)
+      .Insert(
+        new CodeInstruction(OpCodes.Ldarg_0),
+        new CodeInstruction(OpCodes.Ldarg_1),
+        new CodeInstruction(OpCodes.Ldarg_2),
+        new CodeInstruction(OpCodes.Ldarg_3),
+        new CodeInstruction(OpCodes.Ldarg_S, 4),
+        new CodeInstruction(OpCodes.Call, AccessTools.DeclaredMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Cask_draw_star_location_method))),
+        new CodeInstruction(OpCodes.Brtrue_S, jumpToEnd)
+        );
+
+    return matcher.InstructionEnumeration();
+  }
+
+  public static bool Cask_draw_star_location_method(Cask instance, SpriteBatch spriteBatch, int x, int y, float alpha = 1f) {
+    if ((instance.GetMachineData()?.CustomFields?.ContainsKey(CaskStarLocationX) ?? false) && (instance.GetMachineData()?.CustomFields?.ContainsKey(CaskStarLocationY) ?? false)) {
+      int locationX = int.Parse(instance.GetMachineData().CustomFields[CaskStarLocationX]);
+      int locationY = int.Parse(instance.GetMachineData().CustomFields[CaskStarLocationY]);
+
+      Vector2 scaleFactor = ((instance.MinutesUntilReady > 0) ? new Vector2(Math.Abs(instance.scale.X - 5f), Math.Abs(instance.scale.Y - 5f)) : Vector2.Zero) * 4f;
+      Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+      Rectangle destination = new Rectangle((int)(position.X + (locationX * 4) - scaleFactor.X / 2f) + ((instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(position.Y + (locationY * 4) - scaleFactor.Y / 2f) + ((instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(16f + scaleFactor.X), (int)(16f + scaleFactor.Y / 2f));
+      spriteBatch.Draw(Game1.mouseCursors, destination, (instance.heldObject.Value.quality.Value < 4) ? new Rectangle(338 + (instance.heldObject.Value.quality.Value - 1) * 8, 400, 8, 8) : new Rectangle(346, 392, 8, 8), Color.White * 0.95f, 0f, Vector2.Zero, SpriteEffects.None, (float)((y + 1) * 64) / 10000f);
+
+      return true;
+    }
+
+    return false;
   }
 
   public static void SObject_performRemoveAction_Postfix(SObject __instance) {
