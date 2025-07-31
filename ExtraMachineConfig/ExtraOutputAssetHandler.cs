@@ -1,6 +1,9 @@
+using Force.DeepCloner;
 using StardewValley.GameData.Machines;
 using Selph.StardewMods.Common;
 using System.Collections.Generic;
+using StardewModdingAPI.Events;
+using StardewValley;
 
 namespace Selph.StardewMods.ExtraMachineConfig;
 
@@ -42,4 +45,18 @@ public class ReadyEffects : MachineEffects {
 
 public sealed class ExtraMachineDataAssetHandler : DictAssetHandler<ExtraMachineData> {
   public ExtraMachineDataAssetHandler() : base($"{ModEntry.UniqueId}/ExtraMachineData", ModEntry.StaticMonitor) { }
+  public override void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
+    base.OnAssetRequested(sender, e);
+    if (e.NameWithoutLocale.IsEquivalentTo(this.dataPath)) {
+      e.Edit(asset => {
+        var data = asset.AsDictionary<string, ExtraMachineData>().Data;
+        foreach (var (key, value) in data) {
+          if ((DataLoader.Machines(Game1.content).GetValueOrDefault(key)?.CustomFields?.TryGetValue(ModEntry.CopyMachineRulesFromKey, out var copyKey) ?? false)
+              && (data.ContainsKey(copyKey))) {
+            data[key] = data[copyKey].DeepClone();
+          }
+        }
+      }, AssetEditPriority.Late + 10);
+    }
+  }
 }

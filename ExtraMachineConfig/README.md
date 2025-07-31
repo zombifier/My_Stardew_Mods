@@ -44,6 +44,7 @@ content packs. For users, install the mod as usual from the link above.
       + [On machine ready effects](#on-machine-ready-effects)
       + [Edibility based on input](#edibility-based-on-input)
       + [Colored draw layers based on output item](#colored-draw-layers-based-on-output-item)
+      + [Duplicate another machine's rules](#duplicate-another-machines-rules)
    * [Crafting/Cooking Features](#craftingcooking-features)
       + [Use some machine-like features in crafting and cooking (namely copy flavor and color)](#use-some-machine-like-features-in-crafting-and-cooking-namely-copy-flavor-and-color)
 
@@ -176,7 +177,7 @@ NOTE:
 
 ----
 
-### Custom slime eggs (including prismatic slime eggs) 
+### Custom slime eggs (including prismatic slime eggs)
 
 You can define custom slime eggs by adding the field
 `selph.ExtraMachineConfig.SlimeColorToHatch` field to the object data's
@@ -392,7 +393,7 @@ This example creates a 'peanut butter and jelly' item that are flavored both aft
           "ObjectInternalName": "{0} Butter and PRESERVE_ID_1 Jelly Sandwich",
           "CopyPrice": true,
           "CopyColor": true,
-          "PriceModifiers": 
+          "PriceModifiers":
           [
             // PB is classic, so increment the price by a little bit more (:
             {
@@ -437,7 +438,7 @@ This example creates a 'peanut butter and jelly' item that are flavored both aft
           "ObjectInternalName": "{0} Butter and PRESERVE_ID_1 Jelly Sandwich",
           "CopyPrice": true,
           "CopyColor": true,
-          "PriceModifiers": 
+          "PriceModifiers":
           [
             {
               "Modification": "Multiply",
@@ -567,7 +568,7 @@ honey's flower flavor to the mead, and increment its price accordingly.
         "ObjectInternalName": "{0} Mead",
         // See https://stardewvalleywiki.com/Modding:Item_queries#Item_spawn_fields
         "ObjectDisplayName": "[LocalizedText Strings\\Objects:selph.FlavoredMead.name %PRESERVED_DISPLAY_NAME]",
-        "PriceModifiers": 
+        "PriceModifiers":
         [
           {
             "Modification": "Add",
@@ -731,7 +732,7 @@ This example modifies the vanilla fruit to wine keg recipe to also spawn fruit-f
           "PreserveId": "DROP_IN",
           "ObjectInternalName": "{0} Mead",
           "ObjectDisplayName": "%PRESERVED_DISPLAY_NAME Mead",
-          "PriceModifiers": 
+          "PriceModifiers":
           [
             {
               "Modification": "Multiply",
@@ -843,7 +844,8 @@ that acts as the generic version of the base game's
 [`FLAVORED_ITEM`](https://stardewvalleywiki.com/Modding:Item_queries#Available_queries),
 but usable for any modded items. The query takes the following arguments:
 
-`selph.ExtraMachineConfig_FLAVORED_ITEM <output item ID> <flavor item ID> [optional override price]`
+`selph.ExtraMachineConfig_FLAVORED_ITEM <output item ID> <flavor item ID> [optional override price]
+[optional price multiplier]`
 
 Replace <output item ID> with your modded artisan item ID, and flavor item ID
 with your desired flavor, including
@@ -872,7 +874,7 @@ The flavored output item spawned by this query will:
   * The item's base price otherwise. It's recommended that the base price be
     lower than the potential price of the flavor ingredient item to avoid the
     unflavored item being more expensive than flavored ones.
-* If you want to scale the price further, use the machine rules' `PriceModifiers`.
+* After the above step, have its price multiplied by the optional fourth parameter
 
 Everything else (e.g. display name, etc.) will have to be set manually by the rest of the item/machine query.
 
@@ -1031,10 +1033,11 @@ NOTE: Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
 | `selph.ExtraMachineConfig.IsCustomCask` | Whether this machine is a cask, and should subject to cask-like behavior (ie. can use cask rules, drop item when smacked, has quality star, only usable in a cellar unless specified below)|
 | `selph.ExtraMachineConfig.CaskWorksAnywhere` | If set, this cask can be placed anywhere.|
 | `selph.ExtraMachineConfig.AllowMoreThanOneQualityIncrement` | Casks by default can only increment quality by one per day. If set, this limitation is removed.|
+| `selph.ExtraMachineConfig.CaskStarLocationX`<br>`selph.ExtraMachineConfig.CaskStarLocationY` | The x and y pixel coordinate of the cask's quality star.|
 
 -----
 
-### Custom slime incubators 
+### Custom slime incubators
 
 Add these to the entry in `Data/Machines`'s `CustomFields` dictionary.
 
@@ -1108,7 +1111,7 @@ This example makes the keg play the wood chop sound, a brief funky animation, an
 
 -----
 
-### Edibility based on input 
+### Edibility based on input
 
 In machine output's `CustomData`:
 
@@ -1128,6 +1131,15 @@ Set these fields on the machine's top level `CustomFields` field in `Data/Machin
 | `selph.ExtraMachineConfig.DrawLayerTextureIndex` | The starting index inside the texture. NOTE: If the machine itself has a work/loading effect that changes it frame, the offset will also be applied to the draw layer's value. This is to also allow the layer to animate.|
 
 -----
+
+### Duplicate another machine's rules
+
+Set this fields on the machine's top level `CustomFields` field in `Data/Machines`. Don't set any
+other fields
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.CopyMachineRulesFrom` | The ID of the `Data/Machines` entry to copy and replace this entry. Useful if, for example, you want a machine with a different texture that can accept all keg rules.<br>EMC will edit the `Data/Machines` asset (and also `selph.ExtraMachineConfig/ExtraMachineData`) to copy and replace the *entire* the entry with `Late+10` priority. You can add an even later CP patch (e.g. `Late+11`) if you wish to fine tune the behavior further.|
 
 ## Crafting/Cooking Features
 

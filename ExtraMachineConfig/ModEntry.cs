@@ -1,4 +1,4 @@
-#nullable enable
+using Force.DeepCloner;
 using HarmonyLib;
 using System;
 using System.Linq;
@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using StardewValley;
 using StardewValley.Buffs;
 using StardewValley.GameData.Objects;
+using StardewValley.GameData.Machines;
 using StardewValley.Triggers;
 using StardewValley.Delegates;
 using StardewValley.Buildings;
@@ -37,6 +38,8 @@ internal sealed class ModEntry : Mod {
   internal static string BuffStringsAssetName = null!;
   internal static string BuffsIconsAssetName = null!;
 
+  public static string CopyMachineRulesFromKey = null!;
+
   static Texture2D? buffsIcons = null;
   static Texture2D BuffsIcons() {
     if (buffsIcons is null) {
@@ -52,6 +55,7 @@ internal sealed class ModEntry : Mod {
     UniqueId = this.ModManifest.UniqueID;
     BuffStringsAssetName = $"{UniqueId}/BuffStrings";
     BuffsIconsAssetName = $"{UniqueId}/BuffsIcons";
+    CopyMachineRulesFromKey = $"{UniqueId}.CopyMachineRulesFrom";
 
     extraOutputAssetHandler = new ExtraOutputAssetHandler();
     extraCraftingConfigAssetHandler = new ExtraCraftingConfigAssetHandler();
@@ -179,6 +183,7 @@ internal sealed class ModEntry : Mod {
     outputObj.Name += " " + itemId;
     outputObj.preservedParentSheetIndex.Value = flavorObj?.ItemId ?? (flavorId == "-1" ? flavorId : null);
     outputObj.Price = ArgUtility.GetInt(array, 2, flavorObj?.Price ?? outputObj.Price);
+    outputObj.Price = (int)(outputObj.Price * ArgUtility.GetFloat(array, 3, 1));
 
     return new ItemQueryResult[1]
     {
@@ -234,6 +239,23 @@ internal sealed class ModEntry : Mod {
     }
     if (e.NameWithoutLocale.IsEquivalentTo(BuffsIconsAssetName)) {
       e.LoadFromModFile<Texture2D>("assets/BuffsIcons.png", AssetLoadPriority.Medium);
+    }
+
+    // Duplicate machine rules
+    // The extra machine data asset is also duplicated in ExtraOutputAssetHandler
+    if (e.NameWithoutLocale.IsEquivalentTo("Data/Machines")) {
+      e.Edit(asset => {
+        var data = asset.AsDictionary<string, MachineData>().Data;
+        foreach (var (key, value) in data) {
+          if (value.CustomFields?.TryGetValue(CopyMachineRulesFromKey, out var copyKey) ?? false) {
+            if (data.ContainsKey(copyKey)) {
+              data[key] = data[copyKey].DeepClone();
+            } else {
+              StaticMonitor.Log($"Error while handling CopyMachineRulesFrom for {key}: {copyKey} does not exist in machine data", LogLevel.Error);
+            }
+          }
+        }
+      }, AssetEditPriority.Late + 10);
     }
   }
 
