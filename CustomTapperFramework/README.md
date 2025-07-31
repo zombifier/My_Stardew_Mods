@@ -34,13 +34,8 @@ There are two APIs available:
 * The Tapper API using a custom asset to define automatic produce
   overtime. This API doesn't support water-placeable buildings.
 
-Both APIs will continue to work into the future, but for now use only one for
-your machine, not both. It's recommended to use the Machine API in most cases,
-and use only the Tapper API if:
-
-* You are modifying the output of the base game's tappers and heavy tappers.
-* You want the "terrain feature produce as the input item" feature (e.g. output
-  based on what crop a giant crop will produce when chopped down).
+The Tapper API is deprecated (the Machine API should support everything it does), but it will
+continue to work into the future. For now use only one for your machine, not both.
 
 ---
 
@@ -77,13 +72,14 @@ field in the machine output rule's `CustomData` field:
 | Field Name |  Description |
 | ---------- |  ----------- |
 | `selph.CustomTapperFramework.TerrainCondition` | Similar to the output rule's `Condition` field, but with the following crucial differences:<br><br>* The `Target` item will be the terrain feature's primary produce: Seed object for wild trees, first defined fruit for fruit trees, and first defined cut-down drop for giant crops.<br><br>* The `Input` item will be the machine itself.<br><br>* The GSQs below are usable in (and *only* in) this field (as well as any GSQ context that passes a tile, ie. SpaceCore crops).|
+| `selph.CustomTapperFramework.ReplaceInputWithTerrainItem` | If set, when calculating the output item, the input item will be replaced with the terrain feature's primary produce. As a result you can use machine fields that depend on the input like `CopyPrice`, `CopyColor`, etc.|
 
 The `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE` GSQ takes the following format:
 
 | Game State Queries |  Description |
 | ---------- |  ----------- |
 | `selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE <feature type> [optional feature ID]` | Whether machine tile has a terrain feature where feature type can be one of `Tree`, `FruitTree` or `GiantCrop`. A feature ID can optionally be specified, to limit the condition to certain types of wild trees/fruit trees/giant crops. |
-| `selph.CustomTapperFramework_MACHINE_TILE_HAS_FRUIT_TREE_IN_SEASON | Whether machine tile has a fruit tree that is in season.|
+| `selph.CustomTapperFramework_MACHINE_TILE_HAS_FRUIT_TREE_IN_SEASON` | Whether machine tile has a fruit tree that is in season.|
 
 Additional GSQs that can be used anywhere:
 

@@ -243,7 +243,7 @@ public static class Utils {
     };
   }
 
-  public static Item? GetFeatureItem(TerrainFeature feature, Farmer? player) {
+  public static Item? GetFeatureItem(TerrainFeature? feature, Farmer? player) {
     switch (feature) {
       case Tree tree:
         return ItemRegistry.Create(tree.GetData().SeedItemId);
@@ -267,7 +267,7 @@ public static class Utils {
       overrideMinutesUntilReady = 0;
       try {
         Random r = Utility.CreateRandom(Game1.uniqueIDForThisGame, Game1.stats.DaysPlayed, 73137.0, (double)tree.Tile.X * 9.0, (double)tree.Tile.Y * 13.0);
-        object[] args = [tree.GetData()?.TapItems, machine.lastInputItem.Value?.ItemId, r, (float)1.0, null, null];
+        object?[] args = [tree.GetData()?.TapItems, machine.lastInputItem.Value?.ItemId, r, (float)1.0, null, null];
         ModEntry.Helper.Reflection
           .GetMethod(tree, "TryGetTapperOutput")
           .Invoke<bool>(args);

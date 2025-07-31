@@ -156,6 +156,7 @@ public class HarmonyPatcher {
     harmony.Patch(
         original: AccessTools.Method(typeof(MachineDataUtility),
           nameof(MachineDataUtility.GetOutputItem)),
+        prefix: new HarmonyMethod(typeof(HarmonyPatcher), nameof(MachineDataUtility_GetOutputItem_prefix)),
         transpiler: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.MachineDataUtility_GetOutputItem_Transpiler)));
 
     harmony.Patch(
@@ -468,6 +469,8 @@ public class HarmonyPatcher {
   }
 
   internal static string TerrainConditionKey = $"{ModEntry.UniqueId}.TerrainCondition";
+  internal static string ReplaceInputWithTerrainItemKey = $"{ModEntry.UniqueId}.ReplaceInputWithTerrainItem";
+
   private static SObject? machineBeingChecked = null;
 
   // This is a super hacky way of essentially passing in the machine object as an extra parameter to (the second) GetOutputData,
@@ -578,7 +581,7 @@ public class HarmonyPatcher {
           if (farm.objects[vector].heldObject.Value == null) {
             if (!Utils.UpdateCustomLightningRod(farm.objects[vector])) {
               farm.objects[vector].heldObject.Value = ItemRegistry.Create<SObject>("(O)787");
-              farm.objects[vector].minutesUntilReady.Value = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay);
+              farm.objects[vector].MinutesUntilReady = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay);
               farm.objects[vector].shakeTimer = 1000;
               lightningStrikeEvent.createBolt = true;
               lightningStrikeEvent.boltPosition = vector * 64f + new Vector2(32f, 0f);
@@ -693,5 +696,15 @@ public class HarmonyPatcher {
 
   static void RunCropHarvestedEvents(Crop crop, ref Item produce, ref int count, bool isExtraDrops) {
     ModEntry.ModApi.RunCropHarvestedEvents(crop, ref produce, ref count, isExtraDrops);
+  }
+
+  static void MachineDataUtility_GetOutputItem_prefix(SObject machine,
+      MachineItemOutput outputData, ref Item? inputItem,
+      Farmer who, bool probe) {
+    if (outputData?.CustomData?.ContainsKey(ReplaceInputWithTerrainItemKey) ?? false) {
+      Utils.GetFeatureAt(machine.Location, machine.TileLocation, out var feature, out var unused);
+      Item? produceItem = Utils.GetFeatureItem(feature, who);
+      inputItem = produceItem;
+    }
   }
 }
