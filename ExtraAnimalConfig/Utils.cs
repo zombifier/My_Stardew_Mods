@@ -501,12 +501,12 @@ public static class ExtraProduceUtils {
 
       List<string> keysToRemove = new();
       // Now process the produce - add them to grabber, drop them, or set them as the animal's main produce if it's null
-      foreach (var key in animal.modData.Keys) {
+      foreach (var key in animal.modData.Keys.ToList()) {
         if (key.StartsWith(CurrentProduceIdKeyPrefix)) {
           var produceId = animal.modData[key];
           if (produceId is null) {
             ModEntry.StaticMonitor.Log($"WARNING: modData {key} is null?", LogLevel.Warn);
-            animal.modData.Remove(key);
+            keysToRemove.Add(key);
             continue;
           }
           DropOrAddToGrabber(animal, produceId, out bool drop, out bool addToGrabber, out bool debris);
@@ -565,13 +565,17 @@ public static class ExtraProduceUtils {
     if (animal.currentProduce.Value is not null) {
       return;
     }
-    foreach (var key in animal.modData.Keys) {
+    List<string> keysToRemove = new();
+    foreach (var key in animal.modData.Keys.ToList()) {
       if (key.StartsWith(CurrentProduceIdKeyPrefix)) {
         animal.currentProduce.Value = animal.modData[key];
         animal.ReloadTextureIfNeeded();
-        animal.modData.Remove(key);
+        keysToRemove.Add(key);
         return;
       }
+    }
+    foreach (var key in keysToRemove) {
+      animal.modData.Remove(key);
     }
   }
 
@@ -580,7 +584,7 @@ public static class ExtraProduceUtils {
       return;
     }
     var currentProduce = animal.currentProduce.Value;
-    foreach (var key in animal.modData.Keys) {
+    foreach (var key in animal.modData.Keys.ToList()) {
       if (key.StartsWith(CurrentProduceIdKeyPrefix) &&
           IsHarvestMethod(animal, animal.modData[key], harvestMethod, tool)) {
         animal.currentProduce.Value = animal.modData[key];
@@ -596,17 +600,21 @@ public static class ExtraProduceUtils {
       debrisToDrop.Add(animal.currentProduce.Value);
       animal.currentProduce.Value = null;
     }
+    List<string> keysToRemove = new();
     foreach (var key in animal.modData.Keys) {
       if (key.StartsWith(ExtraProduceUtils.CurrentProduceIdKeyPrefix) &&
           IsDebris(animal, animal.modData[key])) {
         if (animal.modData[key] is null) {
           ModEntry.StaticMonitor.Log($"WARNING: modData {key} is null?", LogLevel.Warn);
-          animal.modData.Remove(key);
+          keysToRemove.Add(key);
           continue;
         }
         debrisToDrop.Add(animal.modData[key]);
-        animal.modData.Remove(key);
+        keysToRemove.Add(key);
       }
+    }
+    foreach (var key in keysToRemove) {
+      animal.modData.Remove(key);
     }
     foreach (var produceId in debrisToDrop) {
       var produce = CreateProduce(produceId, animal, ProduceMethod.Debris);

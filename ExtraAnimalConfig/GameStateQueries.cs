@@ -68,6 +68,30 @@ sealed class AnimalGameStateQueries {
     return count >= minCount && count <= maxCount;
   }
 
+  // Checks whether the location is an animal house, and that it has between the specified count of animals with at least the amount of friendship
+  public static bool ANIMAL_LOCATION_COUNT(string[] query, GameStateQueryContext context) {
+    GameLocation location = context.Location;
+    if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out var error) ||
+        !ArgUtility.TryGet(query, 2, out var animalType, out error) ||
+        !ArgUtility.TryGetInt(query, 3, out var minFriendship, out error) ||
+        !ArgUtility.TryGetOptional(query, 4, out var playerArg, out error, "Current") ||
+        !ArgUtility.TryGetOptionalInt(query, 5, out var radius, out error, -1) ||
+        !ArgUtility.TryGetOptionalInt(query, 6, out var minCount, out error, 0) ||
+        !ArgUtility.TryGetOptionalInt(query, 7, out var maxCount, out error, int.MaxValue)
+        ) {
+      return GameStateQuery.Helpers.ErrorResult(query, error);
+    }
+    return GameStateQuery.Helpers.WithPlayer(context.Player, playerArg, (farmer) => {
+      var count = location.Animals.Values
+        .Where(animal =>
+            (animalType == "ANY" || animal.type.Value == animalType)
+            && animal.friendshipTowardFarmer.Value >= minFriendship
+            && (radius < 0 || (location == farmer.currentLocation && FarmAnimal.GetFollowRange(animal, radius).Contains(farmer.StandingPixel))))
+        .Count();
+      return count >= minCount && count <= maxCount;
+    });
+  }
+
   public static bool ANIMAL_AGE(string[] query, GameStateQueryContext context) {
     if (!ArgUtility.TryGetInt(query, 1, out var minAge, out var error) ||
         !ArgUtility.TryGetOptionalInt(query, 2, out var maxAge, out error, int.MaxValue)) {

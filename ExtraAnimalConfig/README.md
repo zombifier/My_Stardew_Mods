@@ -165,7 +165,7 @@ general, the flow of how animal is decided with Extra Animal Config is below:
      *optional*; if not set it will accept all feed item that can be stored in
      the building (including vanilla hay).
    * If you're adding modded feed capacity to the vanilla silo (see below),
-     make sure to also convert its default building action to using this action 
+     make sure to also convert its default building action to using this action
    * `selph.ExtraAnimalConfig.CustomFeedHopper (O)ItemId1`: Put into, or take
      the specified feed out of storage. Usable only inside an animal building.
      As of 1.3.0 this tile action is optional - the default hay hopper will
@@ -210,7 +210,8 @@ item IDs to a model that currently only has the following field:
 
 | GSQ                          |  Description              |
 | ---------------------------  | ------------------------ |
-| `selph.ExtraAnimalConfig_ANIMAL_HOUSE_COUNT <location> <animal type> <min friendship> [min count] [max count]` | Whether the specified location (in practice only `Here` or `Target` works reliably) is an animal house and is the home of the specified animal type (or any animal if set to `ANY`) with a count between min (0 if not specified) and max (no limit if not specified), with friendship above the specified amount (or 0 if not specified). IMPORTANT NOTE: If the animal ID has spaces, wrap it in escaped quotes.|
+| `selph.ExtraAnimalConfig_ANIMAL_HOUSE_COUNT <location> <animal type> <min friendship> [min count] [max count]` | Whether the specified [location](https://stardewvalleywiki.com/Modding:Game_state_queries#Target_location) (in practice only `Here` or `Target` works reliably) is an animal house and is the home of the specified animal type (or any animal if set to `ANY`) with a count between min (0 if not specified) and max (no limit if not specified), with friendship above the specified amount (or 0 if not specified). IMPORTANT NOTE: If the animal ID has spaces, wrap it in escaped quotes.|
+| `selph.ExtraAnimalConfig_ANIMAL_LOCATION_COUNT <location> <animal type> <min friendship> [player] [tile radius] [min count] [max count]` | Whether the specified [location](https://stardewvalleywiki.com/Modding:Game_state_queries#Target_location) currently has animals of the specified animal type (or any animal if set to `ANY`) with a count between min (0 if not specified) and max (no limit if not specified), with friendship above the specified amount (or 0 if not specified), optionally is within a certain tile radius of the target [farmer](https://stardewvalleywiki.com/Modding:Game_state_queries#Target_player).|
 | `selph.ExtraAnimalConfig_ANIMAL_COUNT <animal type> <min friendship> [min count] [max count]` | Whether the farmer owns a certain count of an animal (or `ANY`), optionally above a certain friendship amount. This is essentially a global version of the above GSQ; see its entry for more info.|
 | `selph.ExtraAnimalConfig_ANIMAL_AGE <min age> [max age]` | Whether the target animal's age (in days) is between the min value and max value (default unlimited). IMPORTANT NOTE: This only works in certain locations, namely animal produce condition or `AppearanceData` fields, specifically ones that pass a golden animal cracker to the input item field (see below).|
 | `selph.ExtraAnimalConfig_ANIMAL_FRIENDSHIP <min age> [max age]` | Whether the target animal's friendship points is between the min value and max value (default unlimited). IMPORTANT NOTE: See above.|

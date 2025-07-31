@@ -47,6 +47,7 @@ internal sealed class ModEntry : Mod {
 
     GameStateQuery.Register($"{UniqueId}_ANIMAL_HOUSE_COUNT", AnimalGameStateQueries.ANIMAL_HOUSE_COUNT);
     GameStateQuery.Register($"{UniqueId}_ANIMAL_COUNT", AnimalGameStateQueries.ANIMAL_COUNT);
+    GameStateQuery.Register($"{UniqueId}_ANIMAL_LOCATION_COUNT", AnimalGameStateQueries.ANIMAL_LOCATION_COUNT);
     GameStateQuery.Register($"{UniqueId}_ANIMAL_AGE", AnimalGameStateQueries.ANIMAL_AGE);
     GameStateQuery.Register($"{UniqueId}_ANIMAL_FRIENDSHIP", AnimalGameStateQueries.ANIMAL_FRIENDSHIP);
 
