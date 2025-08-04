@@ -69,12 +69,21 @@ All three must either be set, or not be set.
 
 By default, a building can only be associated with one builder. To allow for
 multiple builders for one building (e.g. allow your NPC to also construct Sheds
-even though Shed is associated with Robin), add the following key to the
-building's `CustomFields` field:
+even though Shed is associated with Robin), there are two methods:
+
+### Add an extra building for an NPC
+Add the following key to the building's `CustomFields` field:
 
 `selph.CustomBuilders_ExtraBuilder_<Put Anything Here As Long As It's Unique, Ideally Containing Your Mod ID>`
 
 The value will be the NPC's internal name. You can specify multiple eligible builders by adding multiple entries.
+
+### Inherit all buildings from another NPC
+Add the following key to the custom builder NPC's `CustomFields` field:
+
+`selph.CustomBuilders_InheritBuilder_<Put Anything Here As Long As It's Unique, Ideally Containing Your Mod ID>`
+
+The value is the other builder to inherit from (e.g. `Robin` or `Wizard`).
 
 Additionally, the mod adds the following GSQ that checks the current builder menu:
 

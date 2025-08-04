@@ -1,8 +1,8 @@
-﻿{
-  "Name": "Custom Carpenters",
+{
+  "Name": "Carpentry Catalogue (and Custom Builders)",
   "Author": "selph",
-  "Version": "1.0.0",
-  "Description": "Allows ability to specify custom carpenters NPCs, with their own menus and costs.",
+  "Version": "1.1.0",
+  "Description": "Adds a button that allows scrolling through buildings in a convenient list, and allows specifying custom carpenters NPCs with their own menus and costs.",
   "UniqueID": "selph.CustomBuilders",
   "EntryDll": "CustomBuilders.dll",
   "MinimumApiVersion": "4.0.9",
