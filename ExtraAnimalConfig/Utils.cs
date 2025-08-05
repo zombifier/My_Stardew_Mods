@@ -571,7 +571,7 @@ public static class ExtraProduceUtils {
         animal.currentProduce.Value = animal.modData[key];
         animal.ReloadTextureIfNeeded();
         keysToRemove.Add(key);
-        return;
+        break;
       }
     }
     foreach (var key in keysToRemove) {
