@@ -1,0 +1,12 @@
+{
+  "Name": "Rage Bait",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Add a new bait item, available in Willy's shop after Fishing Mastery. Not for the faint of heart.",
+  "UniqueID": "selph.RageBait",
+  "EntryDll": "RageBait.dll",
+  //"Dependencies": [
+  //],
+  "MinimumApiVersion": "4.0.9",
+  "UpdateKeys": ["Nexus:36611"],
+}

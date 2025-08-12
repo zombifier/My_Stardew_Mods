@@ -1,0 +1,40 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add Rage Bait Item",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}_RageBait": {
+          "Name": "{{ModId}}_RageBait",
+          "SpriteIndex": 0,
+          "DisplayName": "{{i18n:RageBait.name}}",
+          "Description": "{{i18n:RageBait.description}}",
+          "Type": "Basic",
+          "Category": -21,
+          "Texture": "{{ModId}}/Objects",
+          "Price": 100,
+          "ContextTags": [
+						"color_pink",
+          ]
+        },
+        "{{ModId}}_IridiumLobster": {
+          "Name": "{{ModId}}_IridiumLobster",
+          "SpriteIndex": 1,
+          "DisplayName": "{{i18n:IridiumLobster.name}}",
+          "Description": "{{i18n:IridiumLobster.description}}",
+          "Type": "Fish",
+          "Category": -4,
+          "Texture": "{{ModId}}/Objects",
+          "Price": 2000,
+          "ContextTags": [
+						"color_purple",
+          ],
+          "ExcludeFromFishingCollection": true,
+          "ExcludeFromShippingCollection": true,
+          "ExcludeFromRandomSale": true,
+        },
+      },
+    },
+  ]
+}

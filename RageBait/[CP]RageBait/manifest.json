@@ -1,0 +1,15 @@
+{
+  "Name": "Rage Bait (CP Component)",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Add a new bait item, available in Willy's shop after Fishing Mastery. Not for the faint of heart.",
+  "UniqueID": "selph.RageBaitCP",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {"UniqueID": "selph.RageBait", "IsRequired": true},
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher",
+  },
+  "UpdateKeys": [ "Nexus:???" ],
+}

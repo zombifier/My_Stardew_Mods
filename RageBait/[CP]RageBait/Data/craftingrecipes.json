@@ -1,0 +1,12 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add recipes",
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "{{ModId}}_RageBait": "ChallengeBait 25 910 1 82 1/Field/{{ModId}}_RageBait 25/false/none/",
+      },
+    },
+  ]
+}

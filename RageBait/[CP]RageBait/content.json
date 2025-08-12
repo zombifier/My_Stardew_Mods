@@ -1,0 +1,26 @@
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Add Crafting",
+      "Action": "Include",
+      "FromFile": "Data/craftingrecipes.json",
+    },
+    {
+      "LogName": "Objects changes",
+      "Action": "Include",
+      "FromFile": "Data/objects.json",
+    },
+    {
+      "LogName": "Shop changes",
+      "Action": "Include",
+      "FromFile": "Data/shops.json",
+    },
+    // Assets
+    {
+      "Action": "Load",
+      "Target": "{{ModId}}/Objects",
+      "FromFile": "assets/{{TargetWithoutPath}}.png"
+    },
+  ]
+}

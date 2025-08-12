@@ -1,0 +1,19 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add rage bait recipe to Willy",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["FishShop", "Items"],
+      "Entries": {
+        "{{ModId}}_RageBait": {
+          "Id": "{{ModId}}_RageBait",
+          "ItemId": "{{ModId}}_RageBait",
+          "IsRecipe": true,
+          "Price": 20000,
+          "Condition": "PLAYER_HAS_CRAFTING_RECIPE Current Challenge Bait",
+        },
+      },
+    },
+  ]
+}
