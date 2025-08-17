@@ -24,6 +24,7 @@ content packs. For users, install the mod as usual from the link above.
    + [Retexture the water planters](#retexture-the-water-planters)
 * [Custom Planting Pots](#custom-planting-pots)
 * [Custom Lightning Rods](#custom-lightning-rods)
+* [Crop Behavior Expansion](#crop-behavior-expansion)
 
 ## Terrain-Based Machine Feature
 
@@ -358,8 +359,6 @@ crops to grow in it.
 
 ## Custom Planting Pots
 
-NOTE: This feature is beta only.
-
 Additionally, you can add custom planting pots, and specify crops that can be
 planted in them. To specify custom pots, add the following fields to the
 `CustomFields` dictionary in the
@@ -398,8 +397,6 @@ to implementing them.
 
 ## Custom Lightning Rods
 
-NOTE: This feature is beta only.
-
 You can define custom lightning rods, each with their own produce upon getting
 hit with lightning. Follow the below instructions:
 * First, add the `custom_lightning_rod` context tag to your big craftable. This
@@ -421,3 +418,175 @@ hit with lightning. Follow the below instructions:
 * Also note that lightning only strikes on the farm. Lightning rod placed
   outside of the farm will not get hit. If you're a modder and thinking of
   adding lightning strikes outside of the farm, please reach out to me for compat.
+
+## Crop Behavior Expansion
+NOTE: Currently in private testing, not on the Nexus version yet.
+
+This mod expands crop behavior with various modifiers and triggers, allowing crops to buff each
+other or even spread themselves depending on a variety of conditions.
+
+This is achieved via a new asset, `selph.CustomTapperFramework/CropExtensionData`, which is a
+dictionary of key values, the key being either:
+* the crop's key (aka the seed's unqualified item ID) in `Data/Crops`
+* `Default` for behavior that applies to every crop that don't have their own fields set
+* `Empty` for behavior that applies to empty hoe dirt. Only `DayStartTriggers` work here, and only the `PlantCrop` action. This can be used to make crops that sprout that spontaneously sprout in empty dirt.
+
+Whether to use `Default` fields is checked on a per-field basis. For example, if
+`GrowSpeedModifiers` is both set on entry `499` (Ancient Seeds) and `Default`, only the former will
+be used for ancient seeds, while the latter is used for every crop. If `RegrowSpeedModifiers` is
+only set in `Default` both Ancient Seeds and other seeds will use that.
+
+This model is automatically populated with every crop in game, so you can use `TargetField`
+and avoid overwriting another mod's data.
+
+The value being the following data model:
+
+
+| Field Name | Type | Description |
+| ---------- | ---- | ----------- |
+| `GrowSpeedModifiers`<br>`GrowSpeedModifierMode` | [Quantity modifiers and modifier mode](https://stardewvalleywiki.com/Modding:Common_data_field_types#Quantity_modifiers) | A list of quantity modifiers to apply to this crop's grow speed. The base value being modified is 0, so if you want the crop to grow 10% faster you want to `Add` 0.1. Conversely, negative values can slow down the crop's grow speed.<br>IMPORTANT NOTES:<br>* The game rounds up the days remaining for crop growth, including for negative values, so small negative modifiers may not take effect for crops that are already growing very fast!<br>* This will only be checked when the seed is planted, or when fertilizer is applied. It won't be checked retroactively if the surrounding condition changes later! For example, if you have corn grow 10% faster if pumpkin is nearby, planting corn and then pumpkin won't update the corn's grow speed!<br>To get around this, set pumpkins to run the `ResetGrowDays` trigger when planted and destroyed (see below).|
+| `RegrowSpeedModifiers`<br>`RegrowSpeedModifierMode` | [Quantity modifiers and modifier mode](https://stardewvalleywiki.com/Modding:Common_data_field_types#Quantity_modifiers) | Similar to the above, but for regrow speed (ie the times between harvest for multiple harvest crops). This is only checked on harvest, and `ResetGrowDays` do not affect it.|
+| `CropQuantityModifiers`<br>`CropQuantityModifierMode` | [Quantity modifiers and modifier mode](https://stardewvalleywiki.com/Modding:Common_data_field_types#Quantity_modifiers) | A list of quantity modifiers to apply to the harvest quantity. The base value is the original count.|
+| `CropQualityModifiers`<br>`CropQualityModifierMode` | [Quantity modifiers and modifier mode](https://stardewvalleywiki.com/Modding:Common_data_field_types#Quality_modifiers) | A list of quantity modifiers to apply to the harvest's quality. Only the main drop is affected, like vanilla.|
+| `MainDropOverride` | List of [item queries](https://stardewvalleywiki.com/Modding:Item_queries#Item_spawn_fields) | A list of item queries that when evaluated yields an item to override the harvest.<br>IMPORTANT NOTES:<br>* This cannot be used to make the crop drop non-`Object`s, like weapons or rings. Big craftables and furniture is fair game though.<br>* If there are multiple items in the list, the first query whose condition qualifies is chosen.<br>* The item query accepts all the regular fields, with a fewe new additions:<br>  - `CopyColor`: whether to inherit the color of the original produce (e.g. colored flowers). Defaults false.<br>  - `OverrideQuality`: whether to override the quality of the original produce in favor of the `Quality` field. Defaults false.<br>  - `OverrideStack`: whether to override the harvest count of the original produce. Defaults false.<br> * Quality only applies to the first drop for multidrop crops. This is vanilla behavior.|
+| `ExtraDrops` | List of [item queries](https://stardewvalleywiki.com/Modding:Item_queries#Item_spawn_fields) | A list of item queries that when evaluated yields an item to add alongide the main harvest.<br>IMPORTANT NOTES:<br>* If there are multiple items in the list, *every* query that qualifies will be chosen to drop.<br>* Unlike the main drop override, quality and stack is respected.|
+| `PlantTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run when this crop is planted. This accepts the regular actions, plus some special actions that are only usable in this field listed below.|
+| `DestroyedTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run when this crop is removed (via tools or etc.). This accepts the regular actions, plus some special actions that are only usable in this field listed below.|
+| `DayStartTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run on day start for this empty dirt/crop, after the daily logic (growth, harvest, etc.). This accepts the regular actions, plus some special actions that are only usable in this field listed below.<br>IMPORTANT NOTE: This will only run for crops that have grown at least one day (ie. it will not run for seeds spread by the `PlantCrop` trigger).|
+
+### Trigger actions
+The following special actions can only be used in `PlantTriggers` and `DayStartTriggers`. Their main
+purpose is to affect all crops in a radius surrounding the primary crop.
+
+Unless otherwise stated, they have the following common fields:
+* radius: The radius around the crop to affect. This can be 0 to only affect the crop itself.
+* exclude main crop: Optional, whether to exclude the crop being checked from the action itself. Defaults to true.
+* GSQ: Optional, the GSQ that a crop must satisfy before it's acted on. Make sure to wrap it in (escaped) quotes.
+
+| Trigger Action Action | Description |
+| --------------------- | ----------- |
+| `selph.CustomTapperFramework_ResetGrowDays <radius> [exclude main crop] [GSQ]` | Reset the grow days of surrounding crops in a radius. For why this is necessary, read the entry for `GrowSpeedModifiers` above.|
+| `selph.CustomTapperFramework_KillCrop <radius> [exclude main crop] [GSQ]` | Kill crops in a radius, like when a crop goes out of season.|
+| `selph.CustomTapperFramework_DestroyCrop <radius> [exclude main crop] [GSQ]` | Destroy crops in a radius, removing them entirely.|
+| `selph.CustomTapperFramework_TransformCrop <cropId> <radius> [exclude main crop] [GSQ]` | Transform crops in a radius to the specified `cropId`.|
+| `selph.CustomTapperFramework_PlantCrop <cropId> <maxCount> <radius> [chance] [maxCount]` | Plants the specified crop/seed ID in empty tilled dirt (not pots) in a radius. Chance is optional, a number between 0 and 1 for a chance the crop is planted.|
+
+Need even moar power? You can use Cloudy Skies's brilliant [trigger
+actions](https://github.com/KhloeLeclair/StardewMods/blob/main/CloudySkies/author-guide.md#trigger-actions)
+as well! Note that unlike this mod's actions, CS requires you to provide an area to target; you can
+use the following macros in the action string, which will be replaced accordingly:
+
+| Macros | Description |
+| --------------------- | ----------- |
+| TILE_X | The X coordinate of the main crop.|
+| TILE_Y | The Y coordinate of the main crop.|
+| LOCATION_NAME | The name of the crop's location.|
+
+For example, you could use `leclair.cloudyskies_KillCrops Tile Location LOCATION_NAME TILE_X TILE_Y 3` to kill crops in a 2 tile radius around the main crop (CS uses `1` as affecting only 1 tile).
+
+### Game State Queries
+Every `Condition` field in the custom asset has the `Target` item set as the target crop's main
+produce, and the `Input` item set as the seed item. You can thus condition your modifiers/trigger
+actions/etc to act only on a specific crop.
+
+NOTE: conditions in `If` trigger actions don't work! This is a game limitation I'm not quite keen to
+solve just yet.
+
+Additionally, the following GSQs can be used in (and only in) the asset above:
+
+| Game State Query | Description |
+| ---------------- | ----------- |
+| `selph.CustomTapperFramework_NEARBY_CROPS <radius> [sub GSQ] [count] [fullGrownOnly] [acceptsPots]` | Whether there are crops of a certain count near the crop being checked.<br>Fields:<br>* radius: The tile radius to check.<br>* sub GSQ: The game state query to check for the crop in the radius (defaults to accepting any crop). Make sure to wrap it in (escaped) quotes.<br>* count: The total count (defaults to one).<br>* fullGrownOnly: Whether to only consider fully grown crops (default false).<br>* acceptsPots: Whether to also count crops in indoor pots (default false. Water planters are considered "natural" soil).|
+| `selph.CustomTapperFramework_IS_IN_POT` | Whether the crop is in an indoor pot. Water planters are not considered pots.|
+
+### Example
+
+The below example makes ancient fruits:
+* Cause nearby crops to grow 50% slower
+* Have a chance to spread to one nearby tile every day
+* Have a 50% chance to drop iridium bar instead of ancient fruit
+* Have a 50% chance to also drop iridium ore alongside the main drop
+* Increase the main drop's stack count by 4 if it's near 2 other ancient fruits
+* Set the main drop's quality to iridium if it's near 2 other ancient fruits
+* Have a 50% chance to transform nearby non-ancient fruit crops into ancient fruits
+
+<details>
+
+```json
+{
+  "Changes": [
+    {
+      "LogName": "Crop stuff",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/CropExtensionData",
+      "Entries": {
+        "499": {
+          "PlantTriggers": [
+            "selph.CustomTapperFramework_ResetGrowDays 2 true",
+          ],
+          "DestroyedTriggers": [
+            "selph.CustomTapperFramework_ResetGrowDays 2 true",
+          ],
+          "DayStartTriggers": [
+            "selph.CustomTapperFramework_PlantCrop 499 2 1 1",
+          ],
+          "MainDropOverride": [
+            {
+              "Id": "Iridium Bar",
+              "ItemId": "337",
+              "Condition": "RANDOM 0.5",
+            }
+          ],
+          "ExtraDrops": [
+            {
+              "Id": "Iridium Ore",
+              "ItemId": "386",
+              "MinStack": 2,
+              "MaxStack": 10,
+              "Condition": "RANDOM 0.5",
+            }
+          ],
+          "CropQuantityModifiers": [
+            {
+              "Id": "MoreMainDrop",
+              "Modification": "Add",
+              "Amount": 4,
+              "Condition": "selph.CustomTapperFramework_NEARBY_CROPS 2 \"ITEM_ID Input 499\" 2"
+            }
+          ],
+          "CropQualityModifiers": [
+            {
+              "Id": "Iridium",
+              "Modification": "Set",
+              "Amount": 4,
+              "Condition": "selph.CustomTapperFramework_NEARBY_CROPS 2 \"ITEM_ID Input 499\" 2"
+            }
+          ],
+        },
+        "Default": {
+          "DayStartTriggers": [
+            "selph.CustomTapperFramework_TransformCrop 499 0 false \"RANDOM 0.5\"",
+          ],
+          "GrowSpeedModifiers": [
+            {
+              "Id": "Slow",
+              "Modification": "Subtract",
+              "Amount": 0.5,
+              "Condition": "!ITEM_ID Input 499, selph.CustomTapperFramework_NEARBY_CROPS 2 \"ITEM_ID Input 499\""
+            }
+          ],
+          "RegrowSpeedModifiers": [
+            {
+              "Id": "Slow",
+              "Modification": "Subtract",
+              "Amount": 0.5,
+              "Condition": "!ITEM_ID Input 499, selph.CustomTapperFramework_NEARBY_CROPS 2 \"ITEM_ID Input 499\""
+            }
+          ],
+        }
+      }
+    }
+  ]
+}
+```
+</details>
