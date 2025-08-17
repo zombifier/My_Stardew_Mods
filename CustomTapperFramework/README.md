@@ -470,6 +470,7 @@ Unless otherwise stated, they have the following common fields:
 | `selph.CustomTapperFramework_DestroyCrop <radius> [exclude main crop] [GSQ]` | Destroy crops in a radius, removing them entirely.|
 | `selph.CustomTapperFramework_TransformCrop <cropId> <radius> [exclude main crop] [GSQ]` | Transform crops in a radius to the specified `cropId`.|
 | `selph.CustomTapperFramework_PlantCrop <cropId> <maxCount> <radius> [chance] [maxCount]` | Plants the specified crop/seed ID in empty tilled dirt (not pots) in a radius. Chance is optional, a number between 0 and 1 for a chance the crop is planted.|
+| `selph.CustomTapperFramework_IfCrop <query> ## <action if true> ## <action if false>` | A special version of the `If` action that works in crop trigger actions.|
 
 Need even moar power? You can use Cloudy Skies's brilliant [trigger
 actions](https://github.com/KhloeLeclair/StardewMods/blob/main/CloudySkies/author-guide.md#trigger-actions)
@@ -489,8 +490,7 @@ Every `Condition` field in the custom asset has the `Target` item set as the tar
 produce, and the `Input` item set as the seed item. You can thus condition your modifiers/trigger
 actions/etc to act only on a specific crop.
 
-NOTE: conditions in `If` trigger actions don't work! This is a game limitation I'm not quite keen to
-solve just yet.
+NOTE: These conditions cannot be used in `If` actions! Use `selph.CustomTapperFramework_IfCrop` instead.
 
 Additionally, the following GSQs can be used in (and only in) the asset above:
 
@@ -498,6 +498,7 @@ Additionally, the following GSQs can be used in (and only in) the asset above:
 | ---------------- | ----------- |
 | `selph.CustomTapperFramework_NEARBY_CROPS <radius> [sub GSQ] [count] [fullGrownOnly] [acceptsPots]` | Whether there are crops of a certain count near the crop being checked.<br>Fields:<br>* radius: The tile radius to check.<br>* sub GSQ: The game state query to check for the crop in the radius (defaults to accepting any crop). Make sure to wrap it in (escaped) quotes.<br>* count: The total count (defaults to one).<br>* fullGrownOnly: Whether to only consider fully grown crops (default false).<br>* acceptsPots: Whether to also count crops in indoor pots (default false. Water planters are considered "natural" soil).|
 | `selph.CustomTapperFramework_IS_IN_POT` | Whether the crop is in an indoor pot. Water planters are not considered pots.|
+| `selph.CustomTapperFramework_IS_FULLY_GROWN` | Whether the crop is fully grown.|
 
 ### Example
 
