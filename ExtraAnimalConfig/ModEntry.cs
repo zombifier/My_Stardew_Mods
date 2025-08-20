@@ -80,6 +80,7 @@ internal sealed class ModEntry : Mod {
       }
       return true;
     });
+    // TODO:REMOVE
   }
 
   // Reset speed so this mod is save to uninstall

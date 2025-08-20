@@ -1,0 +1,6 @@
+{
+  // Credits to https://next.nexusmods.com/profile/Mazoout
+  "selph.ExtraAnimalConfig.AddedToSiloMsg": "Ajouté {{count}} unités de {{displayName}} dans le silo.",
+  "selph.ExtraAnimalConfig.SiloCountMsg": "Unités de {{displayName}} : {{count}}/{{maxCount}}",
+  "selph.ExtraAnimalConfig.HopperEmpty": "La trémie est vide. Construisez un silo et remplissez-le de nourriture."
+}

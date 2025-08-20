@@ -23,6 +23,20 @@ public static class SiloUtils {
   static string SiloCapacityKeyPrefix = $"{ModEntry.UniqueId}.SiloCapacity.";
   static string FeedCountKeyPrefix = $"{ModEntry.UniqueId}.FeedCount.";
 
+  public static List<string> GetModdedFeedFromCustomFields(Dictionary<string, string>? customFields) {
+    List<string> result = new();
+    if (customFields is null) {
+      return result;
+    }
+    foreach (var entry in customFields) {
+      var index = entry.Key.IndexOf(SiloCapacityKeyPrefix);
+      if (index >= 0) {
+        result.Add(entry.Key.Remove(index, SiloCapacityKeyPrefix.Length));
+      }
+    }
+    return result;
+  }
+
   public static int GetFeedCapacityFor(GameLocation location, string itemId) {
     int totalCapacity = 0;
     foreach (Building building in location.buildings) {
@@ -44,20 +58,9 @@ public static class SiloUtils {
   }
 
   public static List<string> GetFeedForThisBuilding(Building? building) {
-    List<string> result = new();
-    if (building is null) {
-      return result;
-    }
-    if (building.hayCapacity.Value > 0) {
-      result.Add("(O)178");
-    }
-    if (building.GetData()?.CustomFields is not null) {
-      foreach (var entry in building.GetData()?.CustomFields!) {
-        var index = entry.Key.IndexOf(SiloCapacityKeyPrefix);
-        if (index >= 0) {
-          result.Add(entry.Key.Remove(index, SiloCapacityKeyPrefix.Length));
-        }
-      }
+    var result = GetModdedFeedFromCustomFields(building?.GetData()?.CustomFields);
+    if (building?.hayCapacity.Value is not null and > 0) {
+      result.Insert(0, "(O)178");
     }
     return result;
   }

@@ -21,6 +21,11 @@ public interface IExtraAnimalConfigApi {
   // Each slot will be filled by at most one produce from one item in the list.
   // NOTE: EAC may also override the drop with an item query. Use the API function GetItemQueryOverrides to check if this is the case.
   public Dictionary<string, List<string>> GetExtraDrops(string animalType);
+  // Get a list of every modded feed that is/can be stored;
+  // the result is a dictionary of *qualified* item IDs
+  // to an IFeedInfo object that can be used to get the capacity and modify count.
+  // The IFeedInfo object is stateless so you can save it if you want.
+  public Dictionary<string, IFeedInfo> GetModdedFeedInfo();
 }
 
 // The harvest method associated with this animal. Note that (aside from method Tool and null tool) this is not an indicator of whether the produce was autograbbed.
@@ -40,4 +45,11 @@ public interface IAnimalProduceCreatedEvent {
   public ProduceMethod produceMethod { get; }
   // If harvested with tool, the tool that harvested this animal. Will be null if autograbbed or not harvested with tool.
   public Tool? tool { get; }
+}
+
+public interface IFeedInfo {
+  // The total capacity
+  public int capacity { get; }
+  // The current count
+  public int count { get; set; }
 }

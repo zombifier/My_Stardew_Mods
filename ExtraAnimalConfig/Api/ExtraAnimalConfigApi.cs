@@ -54,6 +54,18 @@ public class ExtraAnimalConfigApi : IExtraAnimalConfigApi {
     produce = ev.produce ?? produce;
     return;
   }
+
+  public Dictionary<string, IFeedInfo> GetModdedFeedInfo() {
+    Dictionary<string, IFeedInfo> feedInfo = new();
+    HashSet<string> moddedFeedIds = new();
+    foreach (var data in Game1.buildingData.Values) {
+      moddedFeedIds.UnionWith(SiloUtils.GetModdedFeedFromCustomFields(data.CustomFields));
+    }
+    foreach (var feedId in moddedFeedIds) {
+      feedInfo.Add(feedId, new FeedInfo(feedId));
+    }
+    return feedInfo;
+  }
 }
 
 class AnimalProduceCreatedEvent : IAnimalProduceCreatedEvent {
@@ -67,5 +79,40 @@ class AnimalProduceCreatedEvent : IAnimalProduceCreatedEvent {
     this.produce = produce;
     this.produceMethod = produceMethod;
     this.tool = tool;
+  }
+}
+
+class FeedInfo : IFeedInfo {
+  string qualifiedItemId;
+  public FeedInfo(string qualifiedItemId) {
+    this.qualifiedItemId = qualifiedItemId;
+  }
+  public int capacity {
+    get {
+      int result = 0;
+      Utility.ForEachLocation((GameLocation location) => {
+        result += SiloUtils.GetFeedCapacityFor(location, qualifiedItemId);
+        return true;
+      });
+      return result;
+    }
+  }
+  public int count {
+    get {
+      int result = 0;
+      Utility.ForEachLocation((GameLocation location) => {
+        result += SiloUtils.GetFeedCountFor(location, qualifiedItemId);
+        return true;
+      });
+      return result;
+    }
+    set {
+      var difference = value - count;
+      if (difference > 0) {
+        SiloUtils.StoreFeedInAnySilo(qualifiedItemId, difference);
+      } else if (difference < 0) {
+        SiloUtils.GetFeedFromAnySilo(qualifiedItemId, -difference);
+      }
+    }
   }
 }
