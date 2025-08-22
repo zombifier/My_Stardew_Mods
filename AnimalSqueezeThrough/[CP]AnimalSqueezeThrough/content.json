@@ -52,6 +52,16 @@
       "Action": "Include",
       "FromFile": "extra_house_template.json",
       "LocalTokens": {
+        "Animal": "Mizu.Turkey_GrayTurkey",
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
         "Animal": "Goose",
       },
       "When": {
@@ -426,6 +436,106 @@
       },
       "When": {
         "HasMod |contains=Kitsutsune.Chocobovalley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "African Grey",
+      },
+      "When": {
+        "HasMod |contains=Toffee.Parrots": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Blue Mask Lovebird",
+      },
+      "When": {
+        "HasMod |contains=Toffee.Parrots": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Blue Peach Lovebird",
+      },
+      "When": {
+        "HasMod |contains=Toffee.Parrots": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Cockatiel",
+      },
+      "When": {
+        "HasMod |contains=Toffee.Parrots": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Cockatoo",
+      },
+      "When": {
+        "HasMod |contains=Toffee.Parrots": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Green Mask Lovebird",
+      },
+      "When": {
+        "HasMod |contains=Toffee.Parrots": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Green Peach Lovebird",
+      },
+      "When": {
+        "HasMod |contains=Toffee.Parrots": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Island Parrot",
+      },
+      "When": {
+        "HasMod |contains=Toffee.Parrots": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Void Parrot",
+      },
+      "When": {
+        "HasMod |contains=Toffee.Parrots": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "SummerFlamingo",
+      },
+      "When": {
+        "HasMod |contains=SummerFlamingo": "true",
       },
     },
   ]

@@ -18,6 +18,8 @@
     {"UniqueID": "Trent.NewAnimals", "IsRequired": false},
     {"UniqueID": "i24KittyKat.BVGCP", "IsRequired": false},
     {"UniqueID": "Kitsutsune.Chocobovalley", "IsRequired": false},
+    {"UniqueID": "Toffee.Parrots", "IsRequired": false},
+    {"UniqueID": "SummerFlamingo", "IsRequired": false},
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"
