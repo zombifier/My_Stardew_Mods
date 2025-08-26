@@ -55,7 +55,7 @@ public class ExtraAnimalConfigApi : IExtraAnimalConfigApi {
     return;
   }
 
-  public Dictionary<string, IFeedInfo> GetModdedFeedInfo() {
+  public IDictionary<string, IFeedInfo> GetModdedFeedInfo() {
     Dictionary<string, IFeedInfo> feedInfo = new();
     HashSet<string> moddedFeedIds = new();
     foreach (var data in Game1.buildingData.Values) {

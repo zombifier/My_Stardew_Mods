@@ -25,7 +25,7 @@ public interface IExtraAnimalConfigApi {
   // the result is a dictionary of *qualified* item IDs
   // to an IFeedInfo object that can be used to get the capacity and modify count.
   // The IFeedInfo object is stateless so you can save it if you want.
-  public Dictionary<string, IFeedInfo> GetModdedFeedInfo();
+  public IDictionary<string, IFeedInfo> GetModdedFeedInfo();
 }
 
 // The harvest method associated with this animal. Note that (aside from method Tool and null tool) this is not an indicator of whether the produce was autograbbed.
