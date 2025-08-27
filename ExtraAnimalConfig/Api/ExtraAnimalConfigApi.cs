@@ -68,7 +68,7 @@ public class ExtraAnimalConfigApi : IExtraAnimalConfigApi {
   }
 }
 
-class AnimalProduceCreatedEvent : IAnimalProduceCreatedEvent {
+public class AnimalProduceCreatedEvent : IAnimalProduceCreatedEvent {
   public FarmAnimal animal { get; }
   public SObject produce { get; set; }
   public ProduceMethod produceMethod { get; }
@@ -82,7 +82,7 @@ class AnimalProduceCreatedEvent : IAnimalProduceCreatedEvent {
   }
 }
 
-class FeedInfo : IFeedInfo {
+public class FeedInfo : IFeedInfo {
   string qualifiedItemId;
   public FeedInfo(string qualifiedItemId) {
     this.qualifiedItemId = qualifiedItemId;
