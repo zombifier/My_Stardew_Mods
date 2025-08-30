@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using System;
 using System.Linq;
@@ -35,5 +35,9 @@ internal sealed class ModEntry : Mod {
     Carpenters.RegisterEvents(helper);
     Carpenters.RegisterCustomTriggers();
     Carpenters.ApplyPatches(harmony);
+    // Blacksmiths stuff
+    //Blacksmiths.RegisterEvents(helper);
+    //Blacksmiths.RegisterCustomTriggers();
+    //Blacksmiths.ApplyPatches(harmony);
   }
 }

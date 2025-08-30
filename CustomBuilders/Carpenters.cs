@@ -1,3 +1,4 @@
+using Force.DeepCloner;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -595,15 +596,32 @@ class BuildingEntry : ISalable {
       if (sourceRect == Rectangle.Empty) {
         sourceRect = this.texture.Value.Bounds;
       }
-      //spriteBatch.Draw(Game1.objectSpriteSheet, location + new Vector2((int)(32f * scaleSize), (int)(32f * scaleSize)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, this._id, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, 4f * scaleSize, SpriteEffects.None, layerDepth);
-      var actualScale = 16f / Math.Max(sourceRect.Height, sourceRect.Width);
+      var maxWidth = sourceRect.Width;
+      var maxHeight = sourceRect.Height;
+      // The amount to shift the base draw position because of draw layers bigger than the main
+      // building
+      var xShift = 0;
+      var yShift = 0;
+      if (data.DrawLayers is not null) {
+        foreach (var drawLayer in data.DrawLayers) {
+          xShift -= (int)Math.Min(0, drawLayer.DrawPosition.X + xShift);
+          yShift -= (int)Math.Min(0, drawLayer.DrawPosition.Y + yShift);
+          maxWidth -= (int)Math.Min(0, Math.Min(0, drawLayer.DrawPosition.X) + maxWidth);
+          maxWidth += (int)Math.Max(0, Math.Max(0, drawLayer.DrawPosition.X) + drawLayer.SourceRect.Width - maxWidth);
+          maxHeight -= (int)Math.Min(0, Math.Min(0, drawLayer.DrawPosition.Y) + maxHeight);
+          maxHeight += (int)Math.Max(0, Math.Max(0, drawLayer.DrawPosition.Y) + drawLayer.SourceRect.Height - maxHeight);
+        }
+      }
+      var actualScale = 16f / Math.Max(maxHeight, maxWidth);
       // center the draw location
-      if (sourceRect.Height > sourceRect.Width) {
-        location.X += (sourceRect.Height - sourceRect.Width) * actualScale / 2 * Game1.pixelZoom;
+      if (maxHeight > maxWidth) {
+        location.X += (maxHeight - maxWidth) * actualScale / 2 * Game1.pixelZoom;
       }
-      if (sourceRect.Width > sourceRect.Height) {
-        location.Y += (sourceRect.Width - sourceRect.Height) * actualScale / 2 * Game1.pixelZoom;
+      if (maxWidth > maxHeight) {
+        location.Y += (maxWidth - maxHeight) * actualScale / 2 * Game1.pixelZoom;
       }
+      location.X += xShift * actualScale * Game1.pixelZoom;
+      location.Y += yShift * actualScale * Game1.pixelZoom;
       if (isFishPond) {
         spriteBatch.Draw(
             this.texture.Value,
