@@ -4,6 +4,7 @@ using System.Reflection.Emit;
 using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Extensions;
 using StardewValley.Delegates;
 using StardewValley.GameData.Machines;
@@ -176,11 +177,6 @@ public class HarmonyPatcher {
         prefix: new HarmonyMethod(AccessTools.Method(typeof(HarmonyPatcher), nameof(Utility_performLightningUpdate_Prefix)), Priority.High + 1));
 
     // Crop and bush harvest event patches
-    harmony.Patch(
-        original: AccessTools.Method(typeof(Crop), nameof(Crop.harvest)),
-        transpiler: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.Crop_harvest_Transpiler)));
-
-    // only for vanilla tea bushes
     harmony.Patch(
         original: AccessTools.Method(typeof(Crop), nameof(Crop.harvest)),
         transpiler: new HarmonyMethod(typeof(HarmonyPatcher), nameof(HarmonyPatcher.Crop_harvest_Transpiler)));
@@ -659,7 +655,6 @@ public class HarmonyPatcher {
         new CodeMatch(OpCodes.Stloc_S))
       .ThrowIfNotMatch($"Could not find 1st entry point for {nameof(Crop_harvest_Transpiler)}");
     var harvestCountVar = matcher.Operand;
-    // Insert RunCropHarvestedEvents after first produce creation
     matcher
       .Start()
       .MatchStartForward(
@@ -668,12 +663,16 @@ public class HarmonyPatcher {
         new CodeMatch(OpCodes.Stloc_S))
       .ThrowIfNotMatch($"Could not find 2nd entry point for {nameof(Crop_harvest_Transpiler)}");
     var harvestItemVar = matcher.Operand;
+
+    // Insert RunCropHarvestedEvents after first produce creation
     matcher.Advance(1)
       .InsertAndAdvance(
         new CodeInstruction(OpCodes.Ldarg_0),
         new CodeInstruction(OpCodes.Ldloca_S, harvestItemVar),
         new CodeInstruction(OpCodes.Ldloca_S, harvestCountVar),
-        new CodeInstruction(OpCodes.Ldc_I4_1),
+        new CodeInstruction(OpCodes.Ldc_I4_0),
+        new CodeInstruction(OpCodes.Ldarg_S, 4),
+        new CodeInstruction(OpCodes.Ldarg_S, 5),
         new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatcher), nameof(HarmonyPatcher.RunCropHarvestedEvents)))
     );
     // Insert RunCropHarvestedEvents after second produce creation
@@ -688,14 +687,19 @@ public class HarmonyPatcher {
         new CodeInstruction(OpCodes.Ldarg_0),
         new CodeInstruction(OpCodes.Ldloca_S, harvestItemVar),
         new CodeInstruction(OpCodes.Ldloca_S, harvestCountVar),
-        new CodeInstruction(OpCodes.Ldc_I4_0),
+        new CodeInstruction(OpCodes.Ldc_I4_1),
+        new CodeInstruction(OpCodes.Ldarg_S, 4),
+        new CodeInstruction(OpCodes.Ldarg_S, 5),
         new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatcher), nameof(HarmonyPatcher.RunCropHarvestedEvents)))
     );
+    //foreach (var i in matcher.InstructionEnumeration()) {
+    //  ModEntry.StaticMonitor.Log($"{i.opcode} {i.operand}", LogLevel.Alert);
+    //}
     return matcher.InstructionEnumeration();
   }
 
-  static void RunCropHarvestedEvents(Crop crop, ref Item produce, ref int count, bool isExtraDrops) {
-    ModEntry.ModApi.RunCropHarvestedEvents(crop, ref produce, ref count, isExtraDrops);
+  static void RunCropHarvestedEvents(Crop crop, ref Item produce, ref int count, bool isExtraDrops, JunimoHarvester? junimo, bool isForcedScytheHarvest) {
+    ModEntry.ModApi.RunCropHarvestedEvents(crop, ref produce, ref count, isExtraDrops, junimo, isForcedScytheHarvest);
   }
 
   static void MachineDataUtility_GetOutputItem_prefix(SObject machine,

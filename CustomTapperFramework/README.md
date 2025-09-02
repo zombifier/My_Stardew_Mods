@@ -367,9 +367,8 @@ entry:
 
 * `selph.CustomTapperFramework.IsCustomPot`: if set, this BC will act like a
   garden pot when placed down.
-* `selph.CustomTapperFramework.AcceptsRegularCrops`: if set, this garden pot
-  can accept any crop that regular garden pots can accept; otherwise it will
-  only accept a crop specifically set to be plantable in it (see below).
+* `selph.CustomTapperFramework.BansRegularCrops`: if set, this garden pot will only accept a crop
+  specifically set to be plantable in it (see below).
 * `selph.CustomTapperFramework.CropYOffset`: Optional, the y pixel offset to
   draw the crop at relative to the garden pot's usual crop draw position.
   Negative values push the crop upward, while positive values push them down.

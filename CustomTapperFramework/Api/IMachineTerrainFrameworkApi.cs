@@ -1,5 +1,6 @@
 using System;
 using StardewValley;
+using StardewValley.Characters;
 
 namespace Selph.StardewMods.MachineTerrainFramework;
 
@@ -23,4 +24,6 @@ public interface ICropHarvestedEvent {
   // instead of the main drop. If you're modifying count, it's highly recommended you only do it when isExtraDrops is false,
   // lest you risk infinite recursion.
   public bool isExtraDrops { get; }
+  public JunimoHarvester? junimo { get; }
+  public bool isForcedScytheHarvest { get; }
 }

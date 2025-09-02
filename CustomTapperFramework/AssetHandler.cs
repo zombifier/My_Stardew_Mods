@@ -7,6 +7,7 @@ using StardewValley;
 using StardewValley.GameData.BigCraftables;
 using Pathoschild.Stardew.Automate;
 using Microsoft.Xna.Framework.Graphics;
+using Selph.StardewMods.Common;
 
 using SObject = StardewValley.Object;
 
@@ -125,5 +126,4 @@ public class AssetHandler {
       }
     }
   }
-
 }

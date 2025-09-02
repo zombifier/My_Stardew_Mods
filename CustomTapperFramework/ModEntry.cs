@@ -20,6 +20,7 @@ internal sealed class ModEntry : Mod {
   public static string UniqueId = null!;
   internal static AssetHandler assetHandler = null!;
   internal static MachineTerrainFrameworkApi ModApi = null!;
+  internal static CropExtensionDataAssetHandler cropExtensionDataAssetHandler = null!;
 
   public override void Entry(IModHelper helper) {
     Helper = helper;
@@ -41,6 +42,13 @@ internal sealed class ModEntry : Mod {
 
     var harmony = new Harmony(ModEntry.UniqueId);
     HarmonyPatcher.ApplyPatches(harmony);
+
+    // Crop extension stuff
+    cropExtensionDataAssetHandler = new();
+    cropExtensionDataAssetHandler.RegisterEvents(helper);
+    CropExtensionHandler.Register(harmony, helper);
+    CropExtensionDelegates.Register();
+
     try {
       if (Helper.ModRegistry.IsLoaded("Pathoschild.Automate")) {
         this.Monitor.Log("This mod patches Automate. If you notice issues with Automate, make sure it happens without this mod before reporting it to the Automate page.", LogLevel.Debug);
@@ -167,7 +175,7 @@ internal sealed class ModEntry : Mod {
     // When taking a machine output, also shake the fruit tree for fruits
     if (e.Button.IsActionButton() &&
         Game1.currentLocation.objects.TryGetValue(e.Cursor.GrabTile, out var machine) &&
-        machine.heldObject.Value != null &&
+                machine.heldObject.Value != null &&
         Game1.currentLocation.terrainFeatures.TryGetValue(e.Cursor.GrabTile, out var feature2) &&
         feature2 is FruitTree fruitTree) {
       fruitTree.shake(e.Cursor.GrabTile, false);

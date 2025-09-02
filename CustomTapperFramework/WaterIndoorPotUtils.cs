@@ -36,7 +36,7 @@ public static class WaterIndoorPotUtils {
 
   // Pot custom fields
   public static readonly string IsCustomPotKey = $"{ModEntry.UniqueId}.IsCustomPot";
-  public static readonly string AcceptsRegularCropsKey = $"{ModEntry.UniqueId}.AcceptsRegularCrops";
+  public static readonly string BansRegularCropsKey = $"{ModEntry.UniqueId}.BansRegularCrops";
   public static readonly string CropYOffsetKey = $"{ModEntry.UniqueId}.CropYOffset";
   public static readonly string CropTintColorKey = $"{ModEntry.UniqueId}.CropTintColor";
 
@@ -147,8 +147,8 @@ public static class WaterIndoorPotUtils {
   // Doesn't contain the water planters/pots for now, those use the old hardcoded API
   public static bool AcceptsRegularCrops(SObject obj) {
     return obj.QualifiedItemId == "(BC)62" ||
-      (Game1.bigCraftableData.TryGetValue(obj.ItemId, out var data) &&
-       (data.CustomFields?.ContainsKey(AcceptsRegularCropsKey) ?? false));
+      !Game1.bigCraftableData.TryGetValue(obj.ItemId, out var data) ||
+      !(data.CustomFields?.ContainsKey(BansRegularCropsKey) ?? false);
   }
 
   public static bool IsCustomPot(SObject obj) {
