@@ -419,7 +419,6 @@ hit with lightning. Follow the below instructions:
   adding lightning strikes outside of the farm, please reach out to me for compat.
 
 ## Crop Behavior Expansion
-NOTE: Currently in private testing, not on the Nexus version yet.
 
 This mod expands crop behavior with various modifiers and triggers, allowing crops to buff each
 other or even spread themselves depending on a variety of conditions.
