@@ -3,11 +3,13 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Runtime.CompilerServices;
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.TokenizableStrings;
 using StardewValley.Delegates;
@@ -16,11 +18,25 @@ using StardewValley.Buildings;
 using StardewValley.GameData.Buildings;
 
 using BlueprintEntry = StardewValley.Menus.CarpenterMenu.BlueprintEntry;
+using SObject = StardewValley.Object;
 
 namespace Selph.StardewMods.CustomBuilders;
 
 static class Carpenters {
-  internal static BuildingOverrideManager buildingOverrideManager = new();
+  // Manages builder-specific override data
+  internal static readonly PerScreen<BuildingOverrideManager> buildingOverrideManager = new(createNewState: () => new());
+  // If a blueprint is not in this list, just use vanilla behavior
+  public class BoolWrapper {
+    public bool? Value { get; set; }
+    public BoolWrapper(bool? value) {
+      this.Value = value;
+    }
+  }
+  internal static readonly PerScreen<ConditionalWeakTable<BlueprintEntry, BoolWrapper>> isDirectBuildModeManager = new(createNewState: () => new());
+
+  // maybe one day when i'm feeling less lazy/have a better design
+  //public static string AdditionalUpgradesKey = $"{ModEntry.UniqueId}_AdditionalUpgrades";
+  public static string CanBeDirectBuild = $"{ModEntry.UniqueId}_CanBeDirectBuild";
 
   public static void RegisterCustomTriggers() {
     GameLocation.RegisterTileAction($"{ModEntry.UniqueId}_ShowConstruct", ShowConstruct);
@@ -29,6 +45,8 @@ static class Carpenters {
 
   public static void RegisterEvents(IModHelper helper) {
     helper.Events.Content.AssetsInvalidated += OnAssetsInvalidated;
+    helper.Events.Input.ButtonPressed += OnButtonPressed;
+    helper.Events.Input.MouseWheelScrolled += OnMouseWheelScrolled;
   }
 
   public static void ApplyPatches(Harmony harmony) {
@@ -71,6 +89,22 @@ static class Carpenters {
           nameof(BlueprintEntry.BuildMaterials)),
         postfix: new HarmonyMethod(typeof(Carpenters),
           nameof(Carpenters.BlueprintEntry_BuildMaterials_Postfix)));
+    // Blueprint upgrade patches
+    harmony.Patch(
+        original: AccessTools.PropertyGetter(typeof(BlueprintEntry),
+          nameof(BlueprintEntry.IsUpgrade)),
+        postfix: new HarmonyMethod(typeof(Carpenters),
+          nameof(Carpenters.BlueprintEntry_IsUpgrade_Postfix)));
+    //harmony.Patch(
+    //    original: AccessTools.PropertyGetter(typeof(BlueprintEntry),
+    //      nameof(BlueprintEntry.DisplayName)),
+    //    postfix: new HarmonyMethod(typeof(Carpenters),
+    //      nameof(Carpenters.BlueprintEntry_DisplayName_Postfix)));
+    //harmony.Patch(
+    //    original: AccessTools.PropertyGetter(typeof(BlueprintEntry),
+    //      nameof(BlueprintEntry.UpgradeFrom)),
+    //    postfix: new HarmonyMethod(typeof(Carpenters),
+    //      nameof(Carpenters.BlueprintEntry_UpgradeFrom_Postfix)));
 
 
     // Menu patches
@@ -99,13 +133,62 @@ static class Carpenters {
           nameof(CarpenterMenu.draw)),
         postfix: new HarmonyMethod(typeof(Carpenters),
           nameof(CarpenterMenu_draw_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(CarpenterMenu),
+          nameof(CarpenterMenu.UpdateAppearanceButtonVisibility)),
+        postfix: new HarmonyMethod(typeof(Carpenters),
+          nameof(CarpenterMenu_UpdateAppearanceButtonVisibility_Postfix)));
+    // Dirty dirty hack to make > 999 item count show up
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(SObject),
+          nameof(SObject.maximumStackSize)),
+        postfix: new HarmonyMethod(typeof(Carpenters),
+          nameof(SObject_maximumStackSize_Postfix)));
+    // Another dirty patch to make buildings respect the build days override
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(GameLocation),
+          nameof(GameLocation.buildStructure),
+          new[] {
+          typeof(string),
+          typeof(BuildingData),
+          typeof(Vector2),
+          typeof(Farmer),
+          typeof(Building).MakeByRefType(),
+          typeof(bool),
+          typeof(bool)}),
+        postfix: new HarmonyMethod(typeof(Carpenters),
+          nameof(GameLocation_buildStructure_Postfix)));
+    // Not quite a dirty patch, but make direct built upgrades also mark its upgrades as built in
+    // `Game1.farmer.team.constructedBuildings`.
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Building),
+          nameof(Building.FinishConstruction)),
+        prefix: new HarmonyMethod(typeof(Carpenters),
+          nameof(Buildings_FinishConstruction_Prefix)));
+
+    // Niceties (autoscrolling ingredient list)
+    try {
+      harmony.Patch(
+          original: AccessTools.DeclaredMethod(typeof(CarpenterMenu),
+            nameof(CarpenterMenu.SetNewActiveBlueprint), new[] { typeof(BlueprintEntry) }),
+          postfix: new HarmonyMethod(typeof(Carpenters),
+            nameof(CarpenterMenu_SetNewActiveBlueprint_Postfix)));
+      harmony.Patch(
+          original: AccessTools.DeclaredMethod(typeof(CarpenterMenu), nameof(CarpenterMenu.draw)),
+          transpiler: new HarmonyMethod(typeof(Carpenters),
+            nameof(CarpenterMenu_draw_Transpiler)));
+    }
+    catch (Exception e) {
+      ModEntry.StaticMonitor.Log($"Error patching in scrolling ingredients list: {e.ToString()}", LogLevel.Error);
+    }
   }
 
   static string currentBuilder => ModEntry.Helper.Reflection.GetField<string>(Game1.currentLocation, "_constructLocationBuilderName").GetValue();
 
   static void OnAssetsInvalidated(object? sender, AssetsInvalidatedEventArgs e) {
     if (e.NamesWithoutLocale.Any(name => name.Name == "Data/Buildings")) {
-      buildingOverrideManager.Clear();
+      buildingOverrideManager.Value.Clear();
+      isDirectBuildModeManager.Value.Clear();
     }
   }
 
@@ -303,6 +386,21 @@ static class Carpenters {
     return false;
   }
 
+  static bool HasExtraUpgrades(BuildingData buildingData, GameLocation location) {
+    if (buildingData.CustomFields?.ContainsKey(CanBeDirectBuild) ?? false) {
+      return true;
+    }
+    //if (buildingData.CustomFields?.TryGetValue(AdditionalUpgradesKey, out var additionalUpgrades) ?? false) {
+    //  foreach (var a in additionalUpgrades.Split(",", StringSplitOptions.RemoveEmptyEntries)) {
+    //    var additionalUpgrade = a.Trim();
+    //    if (location.getNumberBuildingsConstructed(additionalUpgrade) == 0) {
+    //      return true;
+    //    }
+    //  }
+    //}
+    return false;
+  }
+
   //static bool IsBaseSkinEligible(BuildingData data, string builder, GameLocation? targetLocation) {
   //  if (data.CustomFields?.TryGetValue($"{UniqueId}_BaseSkinCondition", out var condition) ?? false) {
   //    return GameStateQuery.CheckConditions(condition, targetLocation);
@@ -359,6 +457,25 @@ static class Carpenters {
       new CodeInstruction(OpCodes.Brfalse, labelToJumpTo))
     .RemoveInstructions(6);
 
+    // Old: buildingDatum.Value.BuildingToUpgrade != null
+    // New: !HasDirectBuildUpgrade(buildingDatum.Value) && ...
+    matcher.MatchEndForward(
+      new CodeMatch(OpCodes.Ldloca_S), // buildingDatum
+      new CodeMatch(OpCodes.Call),
+      new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(BuildingData), nameof(BuildingData.BuildingToUpgrade))),
+      new CodeMatch(OpCodes.Brfalse_S)
+    )
+    .ThrowIfNotMatch($"Could not find upgrade eligibility entry point for {nameof(CarpenterMenu_Constructor_Transpiler)}");
+    var labelToJumpTo2 = matcher.Operand;
+    matcher
+    .Advance(-3)
+    .InsertAndAdvance(
+      new CodeInstruction(OpCodes.Ldloca_S, buildingDatumVar),
+      new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(KeyValuePair<string, BuildingData>), nameof(KeyValuePair<string, BuildingData>.Value))),
+      new CodeInstruction(OpCodes.Ldarg_2),
+      new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Carpenters), nameof(Carpenters.HasExtraUpgrades))),
+      new CodeInstruction(OpCodes.Brtrue, labelToJumpTo2));
+
     // This doesn't work the way I want it...
     // Old: this.Blueprints.Add(new BlueprintEntry(num++, buildingDatum.Key, buildingDatum.Value, null));
     // New: Wrap it around `if (IsBaseSkinEligible(buildingDatum.Value, builder, targetLocation))`
@@ -406,7 +523,7 @@ static class Carpenters {
 
   static bool NPC_doPlayRobinHammerAnimation_Prefix(NPC __instance) {
     if (__instance.Name != "Robin") {
-      var indices = buildingOverrideManager.GetConstructAnimationIndices(__instance.Name);
+      var indices = buildingOverrideManager.Value.GetConstructAnimationIndices(__instance.Name);
       if (indices is null) return true;
       var (idleIndex1, idleIndex2, hammerIndex) = indices.Value;
       __instance.Sprite.ClearAnimation();
@@ -424,25 +541,38 @@ static class Carpenters {
   }
 
   static void BlueprintEntry_BuildDays_Postfix(BlueprintEntry __instance, ref int __result) {
-    __result = buildingOverrideManager.GetBuildDaysOverrideFor(currentBuilder, __instance.Data, __instance.Skin) ?? __result;
+    __result = buildingOverrideManager.Value.GetBuildDaysOverrideFor(currentBuilder, __instance.Data, __instance.Skin, GetIsDirectBuildMode(__instance) ?? false) ?? __result;
   }
 
   static void BlueprintEntry_BuildCost_Postfix(BlueprintEntry __instance, ref int __result) {
-    __result = buildingOverrideManager.GetBuildCostOverrideFor(currentBuilder, __instance.Data, __instance.Skin) ?? __result;
+    __result = buildingOverrideManager.Value.GetBuildCostOverrideFor(currentBuilder, __instance.Data, __instance.Skin, GetIsDirectBuildMode(__instance) ?? false) ?? __result;
   }
 
   static void BlueprintEntry_BuildMaterials_Postfix(BlueprintEntry __instance, ref List<BuildingMaterial> __result) {
-    __result = buildingOverrideManager.GetBuildMaterialsOverrideFor(currentBuilder, __instance.Data, __instance.Skin) ?? __result;
+    __result = buildingOverrideManager.Value.GetBuildMaterialsOverrideFor(currentBuilder, __instance.Data, __instance.Skin, GetIsDirectBuildMode(__instance) ?? false) ?? __result;
+  }
+
+  static void BlueprintEntry_IsUpgrade_Postfix(BlueprintEntry __instance, ref bool __result) {
+    var directBuildMode = GetIsDirectBuildMode(__instance);
+    if (directBuildMode is not null) {
+      __result = !directBuildMode.Value;
+    }
   }
 
 
   // List building stuff
   static ClickableTextureComponent? showListButton;
+  static ClickableTextureComponent? toggleDirectBuildModeButton;
 
   static void IClickableMenu_populateClickableComponentList_Postfix(IClickableMenu __instance) {
-    if (__instance is not CarpenterMenu) return;
-    if (showListButton is not null && Game1.options.SnappyMenus) {
-      __instance.allClickableComponents.Add(showListButton);
+    if (__instance is not CarpenterMenu carpenterMenu) return;
+    if (Game1.options.SnappyMenus) {
+      if (showListButton is not null) {
+        __instance.allClickableComponents.Add(showListButton);
+      }
+      if (toggleDirectBuildModeButton is not null) {
+        __instance.allClickableComponents.Add(toggleDirectBuildModeButton);
+      }
     }
   }
 
@@ -450,7 +580,7 @@ static class Carpenters {
     showListButton = new ClickableTextureComponent(
         ModEntry.Helper.Translation.Get("ShowBuildingList"),
         new Microsoft.Xna.Framework.Rectangle(
-          __instance.xPositionOnScreen + __instance.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 320 - 20 - (16 * 4) - 4,
+          __instance.xPositionOnScreen + __instance.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 320 - 20 - (16 * 8) - 4,
           __instance.yPositionOnScreen + __instance.maxHeightOfBuildingViewer + 64, 64, 64),
         null, null, Game1.mouseCursors_1_6, new Microsoft.Xna.Framework.Rectangle(6, 260, 15, 15), 4f) {
       myID = 999,
@@ -458,14 +588,27 @@ static class Carpenters {
       leftNeighborID = -99998,
       upNeighborID = 109,
     };
+    toggleDirectBuildModeButton = new ClickableTextureComponent(
+        ModEntry.Helper.Translation.Get("ToggleDirectBuildMode"),
+        new Microsoft.Xna.Framework.Rectangle(
+          __instance.xPositionOnScreen + __instance.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 320 - 20 - (16 * 4) - 4,
+          __instance.yPositionOnScreen + __instance.maxHeightOfBuildingViewer + 64, 64, 64),
+        null, null, Game1.mouseCursors2, new Microsoft.Xna.Framework.Rectangle(48, 208, 16, 16), 4f) {
+      myID = 998,
+      rightNeighborID = -99998,
+      leftNeighborID = -99998,
+      upNeighborID = 109,
+    };
   }
 
   static void CarpenterMenu_performHoverAction_Postfix(CarpenterMenu __instance, int x, int y) {
-    if (!__instance.onFarm && showListButton is not null) {
-      showListButton.tryHover(x, y);
-      if (showListButton.containsPoint(x, y)) {
+    if (__instance.onFarm) return;
+    foreach (var button in new[] { showListButton, toggleDirectBuildModeButton }) {
+      if (button is null) continue;
+      button.tryHover(x, y);
+      if (button.containsPoint(x, y)) {
         try {
-          ModEntry.Helper.Reflection.GetField<string>(__instance, "hoverText").SetValue(showListButton.name);
+          ModEntry.Helper.Reflection.GetField<string>(__instance, "hoverText").SetValue(button.name);
         }
         catch (Exception e) {
           ModEntry.StaticMonitor.Log($"ERROR drawing building list button: {e.ToString()}", LogLevel.Error);
@@ -475,32 +618,41 @@ static class Carpenters {
   }
 
   static void CarpenterMenu_receiveLeftClick_Postfix(CarpenterMenu __instance, int x, int y, bool playSound = true) {
-    if (!__instance.freeze && !__instance.onFarm && !Game1.IsFading()
-        && (showListButton?.containsPoint(x, y) ?? false)) {
-      var buildingListMenu = new ShopMenu(
-          $"{ModEntry.UniqueId}_BuildingListMenu",
-          itemsForSale: __instance.Blueprints.Select((b) =>
-            new BuildingEntry(
-              b.Id,
-              b.DisplayName,
-              b.Description,
-              b.Skin,
-              (Farmer) => {
-                __instance.SetNewActiveBlueprint(b.Index);
-                __instance.GetChildMenu()?.exitThisMenu();
-              }
-              )).ToList<ISalable>()
-          );
-      foreach (var value in buildingListMenu.itemPriceAndStock.Values) {
-        value.StackDrawType = StackDrawType.Hide;
+    if (!__instance.freeze && !__instance.onFarm && !Game1.IsFading()) {
+      if (toggleDirectBuildModeButton is not null
+          && toggleDirectBuildModeButton.visible
+          && toggleDirectBuildModeButton.containsPoint(x, y)) {
+        ToggleIsDirectBuildMode(__instance.Blueprint);
+        __instance.SetNewActiveBlueprint(__instance.Blueprint);
+        Game1.playSound("smallSelect");
       }
-      __instance.SetChildMenu(buildingListMenu);
+      if (showListButton?.containsPoint(x, y) ?? false) {
+        var buildingListMenu = new ShopMenu(
+            $"{ModEntry.UniqueId}_BuildingListMenu",
+            itemsForSale: __instance.Blueprints.Select((b) =>
+              new BuildingEntry(
+                b.Id,
+                b.DisplayName,
+                b.Description,
+                b.Skin,
+                (Farmer) => {
+                  __instance.SetNewActiveBlueprint(b.Index);
+                  __instance.GetChildMenu()?.exitThisMenu();
+                }
+                )).ToList<ISalable>()
+            );
+        foreach (var value in buildingListMenu.itemPriceAndStock.Values) {
+          value.StackDrawType = StackDrawType.Hide;
+        }
+        __instance.SetChildMenu(buildingListMenu);
+      }
     }
   }
 
   static void CarpenterMenu_draw_Postfix(CarpenterMenu __instance, SpriteBatch b) {
-    if (!__instance.freeze && !__instance.onFarm && !Game1.IsFading() && showListButton is not null) {
-      showListButton.draw(b);
+    if (!__instance.freeze && !__instance.onFarm && !Game1.IsFading()) {
+      showListButton?.draw(b);
+      toggleDirectBuildModeButton?.draw(b, GetIsDirectBuildMode(__instance.Blueprint) is not null ? Color.White : (Color.Gray * 0.8f), 0.88f);
       __instance.drawMouse(b);
       try {
         var hoverText = ModEntry.Helper.Reflection.GetField<string>(__instance, "hoverText").GetValue();
@@ -512,6 +664,182 @@ static class Carpenters {
         ModEntry.StaticMonitor.Log($"ERROR drawing building list button: {e.ToString()}", LogLevel.Error);
       }
     }
+  }
+
+  // upgrade manager stuff
+  static BoolWrapper GetIsDirectBuildModeWrapper(BlueprintEntry blueprintEntry) {
+    return isDirectBuildModeManager.Value.GetValue(blueprintEntry, (be) => {
+      if (be.Data.CustomFields?.ContainsKey(CanBeDirectBuild) ?? false) {
+        return new(false);
+      } else {
+        return new(null);
+      }
+    });
+  }
+
+  static bool? GetIsDirectBuildMode(BlueprintEntry blueprintEntry) {
+    return GetIsDirectBuildModeWrapper(blueprintEntry).Value;
+  }
+
+  static void ToggleIsDirectBuildMode(BlueprintEntry blueprintEntry) {
+    var currentMode = GetIsDirectBuildModeWrapper(blueprintEntry);
+    if (currentMode.Value is not null) {
+      currentMode.Value = !currentMode.Value;
+    }
+  }
+
+  static void CarpenterMenu_UpdateAppearanceButtonVisibility_Postfix(CarpenterMenu __instance) {
+    if (toggleDirectBuildModeButton is not null && __instance.Blueprint is not null)
+      toggleDirectBuildModeButton.visible = GetIsDirectBuildMode(__instance.Blueprint) is not null;
+  }
+
+  static void SObject_maximumStackSize_Postfix(SObject __instance, ref int __result) {
+    if (Game1.activeClickableMenu is CarpenterMenu && __result >= 999) {
+      __result = 99999;
+    }
+  }
+
+  static void GameLocation_buildStructure_Postfix(GameLocation __instance, bool __result, string typeId, BuildingData data, Vector2 tileLocation, Farmer who, ref Building constructed, bool magicalConstruction = false, bool skipSafetyChecks = false) {
+    if (__result && constructed is not null
+        && Game1.activeClickableMenu is CarpenterMenu carpenterMenu
+        && carpenterMenu.Blueprint.Data == data
+        && constructed.isUnderConstruction()) {
+      //&& data.BuildingToUpgrade is not null
+      //&& data.CustomFields?.ContainsKey(CanBeDirectBuild) is true) {
+      constructed.daysOfConstructionLeft.Value = carpenterMenu.Blueprint.BuildDays;
+    }
+  }
+
+  static void Buildings_FinishConstruction_Prefix(Building __instance, bool onGameStart = false) {
+    if (__instance.daysOfConstructionLeft.Value > 0
+        && __instance.GetData()?.CustomFields?.ContainsKey(CanBeDirectBuild) is true) {
+      var parentBuilding = __instance.GetData()?.BuildingToUpgrade;
+      // Avoid potential infinite loops (not that it should happen... right?) by exiting if we
+      // already added a building
+      while (parentBuilding is not null && !Game1.player.team.constructedBuildings.Contains(parentBuilding)) {
+        Game1.player.team.constructedBuildings.Add(parentBuilding);
+        if (!onGameStart) {
+          foreach (Farmer allFarmer in Game1.getAllFarmers()) {
+            allFarmer.autoGenerateActiveDialogueEvent("structureBuilt_" + parentBuilding);
+          }
+        }
+        if (Building.TryGetData(parentBuilding, out var data)) {
+          parentBuilding = data.BuildingToUpgrade;
+        } else {
+          parentBuilding = null;
+        }
+      }
+    }
+  }
+
+  static PerScreen<int> currentScroll = new();
+  static PerScreen<bool> isScrollingDown = new();
+  static PerScreen<int> maxScrollLinger = new();
+
+  static void CarpenterMenu_SetNewActiveBlueprint_Postfix() {
+    currentScroll.Value = 0;
+    maxScrollLinger.Value = 0;
+    isScrollingDown.Value = true;
+  }
+
+  static IEnumerable<CodeInstruction> CarpenterMenu_draw_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+    CodeMatcher matcher = new(instructions, generator);
+    matcher
+      .MatchStartForward(
+      new CodeMatch(OpCodes.Ldloca_S), // ingredientPosition
+      new CodeMatch(OpCodes.Ldflda, AccessTools.Field(typeof(Vector2), nameof(Vector2.Y))),
+      new CodeMatch(OpCodes.Dup),
+      new CodeMatch(OpCodes.Ldind_R4),
+      new CodeMatch(OpCodes.Ldc_R4, (float)21))
+    .ThrowIfNotMatch($"Could not find entry point for {nameof(CarpenterMenu_draw_Transpiler)}");
+    var ingredientPositionVar = matcher.Operand;
+    matcher
+      .MatchStartForward(
+      new CodeMatch(OpCodes.Ldarg_0),
+      new CodeMatch(OpCodes.Ldfld, AccessTools.Field(typeof(CarpenterMenu), nameof(CarpenterMenu.ingredients))))
+    .ThrowIfNotMatch($"Could not find entry point 2 for {nameof(CarpenterMenu_draw_Transpiler)}")
+    .InsertAndAdvance(
+      new CodeInstruction(OpCodes.Ldarg_0),
+      new CodeInstruction(OpCodes.Ldloca_S, ingredientPositionVar),
+      new CodeInstruction(OpCodes.Ldflda, AccessTools.Field(typeof(Vector2), nameof(Vector2.Y))),
+      new CodeInstruction(OpCodes.Ldarg_1),
+      new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Carpenters), nameof(MaybePrepIngredientPositionAndSpriteBatch))))
+    .MatchStartForward(
+      new CodeMatch(OpCodes.Endfinally))
+    .Advance(1);
+    var labels = matcher.Instruction.ExtractLabels();
+    matcher
+    .InsertAndAdvance(
+      new CodeInstruction(OpCodes.Ldarg_0).WithLabels(labels),
+      new CodeInstruction(OpCodes.Ldarg_1),
+      new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Carpenters), nameof(MaybeResetSpriteBatch))));
+    return matcher.InstructionEnumeration();
+  }
+
+  static void MaybePrepIngredientPositionAndSpriteBatch(CarpenterMenu menu, ref float ingredientPosition, SpriteBatch b) {
+    var ingredientCount = menu.ingredients.Count;
+    if (ingredientCount > 3) {
+      // Set limited draw rectangle
+      var blueprint = menu.Blueprint;
+      b.End();
+      int num = LocalizedContentManager.CurrentLanguageCode switch {
+        LocalizedContentManager.LanguageCode.es => menu.maxWidthOfDescription + 64 + ((blueprint.Id == "Deluxe Barn") ? 96 : 0),
+        LocalizedContentManager.LanguageCode.it => menu.maxWidthOfDescription + 96,
+        LocalizedContentManager.LanguageCode.fr => menu.maxWidthOfDescription + 96 + ((blueprint.Id == "Slime Hutch" || blueprint.Id == "Deluxe Coop" || blueprint.Id == "Deluxe Barn") ? 72 : 0),
+        LocalizedContentManager.LanguageCode.ko => menu.maxWidthOfDescription + 96 + ((blueprint.Id == "Slime Hutch") ? 64 : ((blueprint.Id == "Deluxe Coop") ? 96 : ((blueprint.Id == "Deluxe Barn") ? 112 : ((blueprint.Id == "Big Barn") ? 64 : 0)))),
+        _ => menu.maxWidthOfDescription + 64,
+      };
+      Rectangle scissorRectangle = new(menu.xPositionOnScreen + menu.maxWidthOfBuildingViewer, menu.yPositionOnScreen + 256 + 84, num + 20, 68 * 3);
+      b.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, Utility.ScissorEnabled);
+      b.GraphicsDevice.ScissorRectangle = scissorRectangle;
+      // Set draw offset
+      ingredientPosition -= currentScroll.Value;
+      if (maxScrollLinger.Value < 60) {
+        maxScrollLinger.Value++;
+      } else {
+        if (isScrollingDown.Value) {
+          currentScroll.Value++;
+          if (currentScroll.Value >= (ingredientCount - 3) * 68) {
+            isScrollingDown.Value = false;
+            maxScrollLinger.Value = 0;
+          }
+        } else {
+          currentScroll.Value--;
+          if (currentScroll.Value <= 0) {
+            isScrollingDown.Value = true;
+            maxScrollLinger.Value = 0;
+          }
+        }
+      }
+    }
+  }
+  static void MaybeResetSpriteBatch(CarpenterMenu menu, SpriteBatch b) {
+    if (menu.ingredients.Count > 3) {
+      b.End();
+      b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+    }
+  }
+
+  static void OnButtonPressed(object? sender, ButtonPressedEventArgs e) {
+    if (Game1.activeClickableMenu is not CarpenterMenu menu
+        || menu.onFarm
+        || menu.ingredients.Count <= 3) return;
+    if (e.Button == SButton.DPadDown || e.Button == SButton.DPadUp) {
+      maxScrollLinger.Value = 0;
+      isScrollingDown.Value = true;
+      currentScroll.Value += e.Button == SButton.DPadDown ? 20 : -20;
+      currentScroll.Value = Utility.Clamp(currentScroll.Value, 0, (menu.ingredients.Count - 3) * 68);
+    }
+  }
+
+  static void OnMouseWheelScrolled(object? sender, MouseWheelScrolledEventArgs e) {
+    if (Game1.activeClickableMenu is not CarpenterMenu menu
+        || menu.onFarm
+        || menu.ingredients.Count <= 3) return;
+    maxScrollLinger.Value = 0;
+    isScrollingDown.Value = true;
+    currentScroll.Value += e.Delta < 0 ? 20 : -20;
+    currentScroll.Value = Utility.Clamp(currentScroll.Value, 0, (menu.ingredients.Count - 3) * 68);
   }
 }
 
