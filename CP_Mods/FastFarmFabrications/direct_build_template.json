@@ -1,0 +1,16 @@
+{
+  "Changes": [
+    {
+      "LogName": "{{Building}}",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["{{Building}}", "CustomFields"],
+      "Entries": {
+        "selph.CustomBuilders_CanBeDirectBuild": "true",
+        "selph.CustomBuilders_BuildCostForDirectBuild": "{{BuildCost}}",
+        "selph.CustomBuilders_BuildDaysForDirectBuild": "{{BuildDays}}",
+        "selph.CustomBuilders_BuildMaterialsForDirectBuild": "{{BuildMaterials}}",
+      }
+    },
+  ]
+}

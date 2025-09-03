@@ -1,0 +1,255 @@
+{
+  "Format": "2.5.0",
+  "ConfigSchema": {
+    "Mode": {
+      "AllowValues": "Vanilla,Fast",
+      "Default": "Vanilla",
+    },
+  },
+  "Changes": [
+    // Vanilla
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "Big Coop",
+        "BuildCost": 14000,
+        "BuildDays": 5,
+        "BuildMaterials": "388 700 390 250",
+      },
+      "When": {
+        "Mode": "Vanilla",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "Deluxe Coop",
+        "BuildCost": 34000,
+        "BuildDays": 7,
+        "BuildMaterials": "388 1200 390 450",
+      },
+      "When": {
+        "Mode": "Vanilla",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "jenf1.megacoopbarn_MegaCoop",
+        "BuildCost": 74000,
+        "BuildDays": 9,
+        "BuildMaterials": "388 2000 390 800",
+      },
+      "When": {
+        "Mode": "Vanilla",
+        "HasMod": "jenf1.megacoopbarn",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "UncleArya.ResourceChickens.GiantCoop",
+        "BuildCost": 84000,
+        "BuildDays": 9,
+        "BuildMaterials": "388 1800 390 700 709 100",
+      },
+      "When": {
+        "Mode": "Vanilla",
+        "HasMod": "UncleArya.ResourceChickens",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "Big Barn",
+        "BuildCost": 18000,
+        "BuildDays": 5,
+        "BuildMaterials": "388 800 390 350",
+      },
+      "When": {
+        "Mode": "Vanilla",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "Deluxe Barn",
+        "BuildCost": 43000,
+        "BuildDays": 7,
+        "BuildMaterials": "388 1350 390 650",
+      },
+      "When": {
+        "Mode": "Vanilla",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "jenf1.megacoopbarn_MegaBarn",
+        "BuildCost": 93000,
+        "BuildDays": 9,
+        "BuildMaterials": "388 2250 390 1100",
+      },
+      "When": {
+        "Mode": "Vanilla",
+        "HasMod": "jenf1.megacoopbarn",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "Big Shed",
+        "BuildCost": 35000,
+        "BuildDays": 4,
+        "BuildMaterials": "388 850 390 300",
+      },
+      "When": {
+        "Mode": "Vanilla",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "selph.Aquaponics_AquaponicsFishPond",
+        "BuildCost": 20000,
+        "BuildDays": 4,
+        "BuildMaterials": "390 200 152 5 153 5 388 200 335 10 337 1",
+      },
+      "When": {
+        "Mode": "Vanilla",
+        "HasMod": "selph.Aquaponics",
+      },
+    },
+    // Fast
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "Big Coop",
+        "BuildCost": 15000,
+        "BuildDays": 3,
+        "BuildMaterials": "388 700 390 250",
+      },
+      "When": {
+        "Mode": "Fast",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "Deluxe Coop",
+        "BuildCost": 40000,
+        "BuildDays": 5,
+        "BuildMaterials": "388 1200 390 450",
+      },
+      "When": {
+        "Mode": "Fast",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "jenf1.megacoopbarn_MegaCoop",
+        "BuildCost": 90000,
+        "BuildDays": 6,
+        "BuildMaterials": "388 2000 390 800",
+      },
+      "When": {
+        "Mode": "Fast",
+        "HasMod": "jenf1.megacoopbarn",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "UncleArya.ResourceChickens.GiantCoop",
+        "BuildCost": 100000,
+        "BuildDays": 6,
+        "BuildMaterials": "388 1800 390 700 709 100",
+      },
+      "When": {
+        "Mode": "Fast",
+        "HasMod": "UncleArya.ResourceChickens",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "Big Barn",
+        "BuildCost": 20000,
+        "BuildDays": 3,
+        "BuildMaterials": "388 800 390 350",
+      },
+      "When": {
+        "Mode": "Fast",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "Deluxe Barn",
+        "BuildCost": 50000,
+        "BuildDays": 5,
+        "BuildMaterials": "388 1350 390 650",
+      },
+      "When": {
+        "Mode": "Fast",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "jenf1.megacoopbarn_MegaBarn",
+        "BuildCost": 110000,
+        "BuildDays": 6,
+        "BuildMaterials": "388 2250 390 1100",
+      },
+      "When": {
+        "Mode": "Fast",
+        "HasMod": "jenf1.megacoopbarn",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "Big Shed",
+        "BuildCost": 40000,
+        "BuildDays": 3,
+        "BuildMaterials": "388 850 390 300",
+      },
+      "When": {
+        "Mode": "Fast",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "selph.Aquaponics_AquaponicsFishPond",
+        "BuildCost": 22000,
+        "BuildDays": 3,
+        "BuildMaterials": "390 200 152 5 153 5 388 200 335 10 337 1",
+      },
+      "When": {
+        "Mode": "Fast",
+        "HasMod": "selph.Aquaponics",
+      },
+    },
+  ]
+}
