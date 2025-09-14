@@ -52,6 +52,21 @@
       "Action": "Include",
       "FromFile": "direct_build_template.json",
       "LocalTokens": {
+        "Building": "bobkalonger.gigacoopnbarn_GigaCoop",
+        "BuildCost": 194000,
+        "BuildDays": 12,
+        "BuildMaterials": "388 2800 390 1400 709 200",
+      },
+      "When": {
+        "Mode": "Vanilla",
+        "HasMod |contains=bobkalonger.gigacoopnbarn": true,
+        "HasMod |contains=jenf1.megacoopbarn": true
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
         "Building": "UncleArya.ResourceChickens.GiantCoop",
         "BuildCost": 84000,
         "BuildDays": 9,
@@ -106,6 +121,21 @@
       "Action": "Include",
       "FromFile": "direct_build_template.json",
       "LocalTokens": {
+        "Building": "bobkalonger.gigacoopnbarn_GigaBarn",
+        "BuildCost": 243000,
+        "BuildDays": 12,
+        "BuildMaterials": "388 3150 390 1800 709 300",
+      },
+      "When": {
+        "Mode": "Vanilla",
+        "HasMod |contains=bobkalonger.gigacoopnbarn": true,
+        "HasMod |contains=jenf1.megacoopbarn": true
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
         "Building": "Big Shed",
         "BuildCost": 35000,
         "BuildDays": 4,
@@ -113,6 +143,20 @@
       },
       "When": {
         "Mode": "Vanilla",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "genevieve_DeluxeShed",
+        "BuildCost": 135000,
+        "BuildDays": 6,
+        "BuildMaterials": "388 1350 709 400",
+      },
+      "When": {
+        "Mode": "Vanilla",
+        "HasMod": "genevieve.deluxeshed",
       },
     },
     {
@@ -127,6 +171,48 @@
       "When": {
         "Mode": "Vanilla",
         "HasMod": "selph.Aquaponics",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "mytigio.dwarven_expansion_BigCaveCoop",
+        "BuildCost": 16000,
+        "BuildDays": 5,
+        "BuildMaterials": "390 800 388 100 330 45",
+      },
+      "When": {
+        "Mode": "Vanilla",
+        "HasMod": "mytigio.dwarven_expansion",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "mytigio.dwarven_expansion_DeluxeCaveCoop",
+        "BuildCost": 38000,
+        "BuildDays": 7,
+        "BuildMaterials": "390 1550 388 200 330 90",
+      },
+      "When": {
+        "Mode": "Vanilla",
+        "HasMod": "mytigio.dwarven_expansion",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "mytigio.dwarven_expansion_LargeCaveShed",
+        "BuildCost": 30000,
+        "BuildDays": 6,
+        "BuildMaterials": "390 900 388 200",
+      },
+      "When": {
+        "Mode": "Vanilla",
+        "HasMod": "mytigio.dwarven_expansion",
       },
     },
     // Fast
@@ -168,6 +254,21 @@
       "When": {
         "Mode": "Fast",
         "HasMod": "jenf1.megacoopbarn",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "bobkalonger.gigacoopnbarn_GigaCoop",
+        "BuildCost": 230000,
+        "BuildDays": 9,
+        "BuildMaterials": "388 2800 390 1400 709 200",
+      },
+      "When": {
+        "Mode": "Fast",
+        "HasMod |contains=bobkalonger.gigacoopnbarn": true,
+        "HasMod |contains=jenf1.megacoopbarn": true
       },
     },
     {
@@ -228,6 +329,21 @@
       "Action": "Include",
       "FromFile": "direct_build_template.json",
       "LocalTokens": {
+        "Building": "bobkalonger.gigacoopnbarn_GigaBarn",
+        "BuildCost": 290000,
+        "BuildDays": 9,
+        "BuildMaterials": "388 3150 390 1800 709 300",
+      },
+      "When": {
+        "Mode": "Fast",
+        "HasMod |contains=bobkalonger.gigacoopnbarn": true,
+        "HasMod |contains=jenf1.megacoopbarn": true
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
         "Building": "Big Shed",
         "BuildCost": 40000,
         "BuildDays": 3,
@@ -235,6 +351,20 @@
       },
       "When": {
         "Mode": "Fast",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "genevieve_DeluxeShed",
+        "BuildCost": 160000,
+        "BuildDays": 5,
+        "BuildMaterials": "388 1350 709 400",
+      },
+      "When": {
+        "Mode": "Fast",
+        "HasMod": "genevieve.deluxeshed",
       },
     },
     {
@@ -249,6 +379,48 @@
       "When": {
         "Mode": "Fast",
         "HasMod": "selph.Aquaponics",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "mytigio.dwarven_expansion_BigCaveCoop",
+        "BuildCost": 19000,
+        "BuildDays": 4,
+        "BuildMaterials": "390 800 388 100 330 45",
+      },
+      "When": {
+        "Mode": "Fast",
+        "HasMod": "mytigio.dwarven_expansion",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "mytigio.dwarven_expansion_DeluxeCaveCoop",
+        "BuildCost": 45000,
+        "BuildDays": 5,
+        "BuildMaterials": "390 1550 388 200 330 90",
+      },
+      "When": {
+        "Mode": "Fast",
+        "HasMod": "mytigio.dwarven_expansion",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "direct_build_template.json",
+      "LocalTokens": {
+        "Building": "mytigio.dwarven_expansion_LargeCaveShed",
+        "BuildCost": 35000,
+        "BuildDays": 4,
+        "BuildMaterials": "390 900 388 200",
+      },
+      "When": {
+        "Mode": "Fast",
+        "HasMod": "mytigio.dwarven_expansion",
       },
     },
   ]

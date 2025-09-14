@@ -538,5 +538,35 @@
         "HasMod |contains=SummerFlamingo": "true",
       },
     },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Flamingo",
+      },
+      "When": {
+        "HasMod |contains=Otter.OttersAddBarnAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "White Flamingo",
+      },
+      "When": {
+        "HasMod |contains=Otter.OttersAddBarnAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "CITV_Turkey",
+      },
+      "When": {
+        "HasMod |contains=SauriConservationintheValley": "true",
+      },
+    },
   ]
 }

@@ -1,7 +1,7 @@
 {
   "Name": "Fast Farm Fabrications",
   "Author": "selph",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Allows directly building big/deluxe coops/barns and big sheds from scratch, with the appropriate costs and days.",
   "UniqueID": "selph.FastFarmFabrications",
   "MinimumApiVersion": "4.0.0",
@@ -10,6 +10,9 @@
     {"UniqueID": "UncleArya.ResourceChickens", "IsRequired": false},
     {"UniqueID": "jenf1.megacoopbarn", "IsRequired": false},
     {"UniqueID": "selph.Aquaponics", "IsRequired": false},
+    {"UniqueID": "mytigio.dwarven_expansion", "IsRequired": false},
+    {"UniqueID": "bobkalonger.gigacoopnbarn", "IsRequired": false},
+    {"UniqueID": "genevieve.deluxeshed", "IsRequired": false},
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"

@@ -20,6 +20,8 @@
     {"UniqueID": "Kitsutsune.Chocobovalley", "IsRequired": false},
     {"UniqueID": "Toffee.Parrots", "IsRequired": false},
     {"UniqueID": "SummerFlamingo", "IsRequired": false},
+    {"UniqueID": "SauriConservationintheValley", "IsRequired": false},
+    {"UniqueID": "Otter.OttersAddBarnAnimals", "IsRequired": false},
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"
