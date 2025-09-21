@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using Leclair.Stardew.BetterCrafting;
+using LoveOfCooking.Objects;
 
 namespace Selph.StardewMods.ExtraMachineConfig;
 
@@ -156,12 +157,40 @@ internal sealed class ModEntry : Mod {
     catch (Exception exception) {
       ModEntry.StaticMonitor.Log(exception.Message, LogLevel.Error);
     }
+    try {
+      ICookingSkillAPI? locApi = Helper.ModRegistry.GetApi<ICookingSkillAPI>("blueberry.LoveOfCooking");
+      if (locApi != null) {
+        locApi.PostCook += OnPostCook;
+      }
+    }
+    catch (Exception exception) {
+      ModEntry.StaticMonitor.Log(exception.Message, LogLevel.Error);
+    }
   }
 
   public void OnPostCraft(IPostCraftEvent e) {
     var recipe = e.Recipe;
     if (e.Item is not null && ModEntry.extraCraftingConfigAssetHandler.data.TryGetValue(recipe.Name, out var craftingConfig)) {
       e.Item = Utils.applyCraftingChanges(e.Item, e.ConsumedItems, craftingConfig);
+    }
+  }
+
+  public void OnPostCook(IPostCookEvent e) {
+    var recipe = e.Recipe;
+    if (ModEntry.extraCraftingConfigAssetHandler.data.TryGetValue(recipe.name, out var craftingConfig)) {
+      var consumedItemsLists = new Stack<IList<Item>>(e.ConsumedItems);
+      var cookedItems = new Stack<SObject>(e.CookedItems);
+      var newCookedItems = new List<SObject>();
+      // Pop one item at a time from the cook list, process it, and pop them back
+      while (cookedItems.TryPop(out var originalCookedItem)) {
+        while (originalCookedItem.Stack > 0) {
+          var cookedItem = originalCookedItem.getOne();
+          cookedItem.Stack = recipe.numberProducedPerCraft;
+          originalCookedItem.Stack -= recipe.numberProducedPerCraft;
+          newCookedItems.Add((Utils.applyCraftingChanges(cookedItem, consumedItemsLists.TryPop(out var consumedItems) ? consumedItems : new List<Item>(), craftingConfig) as SObject) ?? new SObject("0", 1));
+        }
+      }
+      e.CookedItems = newCookedItems;
     }
   }
 
@@ -182,8 +211,10 @@ internal sealed class ModEntry : Mod {
     ColoredObject outputObj = new ColoredObject(itemId, 1, color);
     outputObj.Name += " " + itemId;
     outputObj.preservedParentSheetIndex.Value = flavorObj?.ItemId ?? (flavorId == "-1" ? flavorId : null);
-    outputObj.Price = ArgUtility.GetInt(array, 2, flavorObj?.Price ?? outputObj.Price);
+    var overridePrice = ArgUtility.GetInt(array, 2, -1);
+    outputObj.Price = overridePrice > 0 ? overridePrice : flavorObj?.Price ?? outputObj.Price;
     outputObj.Price = (int)(outputObj.Price * ArgUtility.GetFloat(array, 3, 1));
+    outputObj.Price += ArgUtility.GetInt(array, 4, 0);
 
     return new ItemQueryResult[1]
     {

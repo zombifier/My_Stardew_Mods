@@ -845,7 +845,7 @@ that acts as the generic version of the base game's
 but usable for any modded items. The query takes the following arguments:
 
 `selph.ExtraMachineConfig_FLAVORED_ITEM <output item ID> <flavor item ID> [optional override price]
-[optional price multiplier]`
+[optional price multiplier] [optional price add]`
 
 Replace <output item ID> with your modded artisan item ID, and flavor item ID
 with your desired flavor, including
@@ -861,20 +861,20 @@ The flavored output item spawned by this query will:
 
 * Have its flavor set to the flavor item ID.
   * Note that like the vanilla `FLAVORED_ITEM` rule, if the flavor is `-1` (due
-    to the `NEARBY_FLOWER_ID` macro) it will be kept as-is and mess up the
-    display name if you use `%PRESERVED_DISPLAY_NAME`! Stardew Valley 1.6.9
+    to the `NEARBY_FLOWER_ID` macro) it will be kept as-is and mess up the display name if you use `%PRESERVED_DISPLAY_NAME`! Stardew Valley 1.6.9
     will fix this as part of the new built-in flavor inherit feature, but in
     the mean time use the field `UnflavoredDisplayNameOverride` (as detailed
     below) to get around this.
 * Inherit the color of the flavor item, if any. If you don't want this, simply
   put an empty sprite next to the item's sprite on the sprite sheet.
 * Have its price set to the first matching entry of the below list:
-  * The optional third parameter, if specified
+  * The optional third parameter, if specified (and larger than 0)
   * The flavor item's price, if applicable
   * The item's base price otherwise. It's recommended that the base price be
     lower than the potential price of the flavor ingredient item to avoid the
     unflavored item being more expensive than flavored ones.
-* After the above step, have its price multiplied by the optional fourth parameter
+* After the above step, have its price multiplied by the optional fourth parameter and increased by
+  the fifth parameter.
 
 Everything else (e.g. display name, etc.) will have to be set manually by the rest of the item/machine query.
 
@@ -1171,8 +1171,11 @@ to apply to the recipe. The model contains the following fields, all of which ar
 
 Multiple configs can be used for one ingredient if more fine grained control is needed, and each ingredient will match with at most one config.
 
-Known issues:
+Important notes:
 
+* For best results, the ingredient slot whose flavor/color to inherit from should only accept one
+  item per cook. If your recipe requires, say, any 5 fruit, the game can and will use 5 different
+  fruits if you don't have 5 of one fruit on hand, and this will lead to... undefined behavior.
 * This feature is compatible with vanilla, SpaceCore, and Better Crafting.
 * With Better Crafting, bulk crafting recipes modified by this mod does not
   currently work, and you need to craft one at a time.

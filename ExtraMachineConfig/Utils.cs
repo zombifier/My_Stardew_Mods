@@ -151,7 +151,7 @@ static class Utils {
     return null;
   }
 
-  public static Item applyCraftingChanges(Item item, List<Item> ingredients, ExtraCraftingConfig craftingConfig) {
+  public static Item applyCraftingChanges(Item item, IList<Item> ingredients, ExtraCraftingConfig craftingConfig) {
     if (item.modData.ContainsKey(CookingItemModifiedKey)) {
       return item;
     }

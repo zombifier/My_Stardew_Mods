@@ -124,7 +124,7 @@ sealed class MachineHarmonyPatcher {
         prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_OutputMachine_Prefix)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.SObject_OutputMachine_Postfix)));
 
-    // other patches 
+    // other patches
     harmony.Patch(
         original: AccessTools.Method(typeof(Item),
           "_PopulateContextTags"),
@@ -178,11 +178,13 @@ sealed class MachineHarmonyPatcher {
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Farmer_GetItemReceiveBehavior_postfix)));
 
     // Le color
+#if SDV1615
     harmony.Patch(
         original: AccessTools.DeclaredMethod(typeof(ItemQueryResolver),
           nameof(ItemQueryResolver.ApplyItemFields),
           new Type[] { typeof(ISalable), typeof(int), typeof(int), typeof(int), typeof(string), typeof(string), typeof(string), typeof(int), typeof(bool), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(Dictionary<string, string>), typeof(ItemQueryContext), typeof(Item) }),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.ItemQueryResolver_ApplyItemFields_postfix)));
+#endif
 
     harmony.Patch(
         original: AccessTools.DeclaredMethod(typeof(SObject),
@@ -700,6 +702,7 @@ sealed class MachineHarmonyPatcher {
       }
     }
   }
+#if SDV1615
   public static void ItemQueryResolver_ApplyItemFields_postfix(ref ISalable __result, ISalable item, int minStackSize, int maxStackSize, int toolUpgradeLevel, string objectInternalName, string objectDisplayName, string objectColor, int quality, bool isRecipe, List<QuantityModifier> stackSizeModifiers, QuantityModifier.QuantityModifierMode stackSizeModifierMode, List<QuantityModifier> qualityModifiers, QuantityModifier.QuantityModifierMode qualityModifierMode, Dictionary<string, string> modData, ItemQueryContext context, Item? inputItem = null) {
     if (__result is Clothing clothing && !string.IsNullOrWhiteSpace(objectColor)) {
       Color? color = Utility.StringToColor(objectColor);
@@ -708,6 +711,7 @@ sealed class MachineHarmonyPatcher {
       }
     }
   }
+#endif
 
   static Item MakeWeeds(SObject? obj) {
     return obj ?? ItemRegistry.Create("(O)0");
@@ -886,7 +890,7 @@ sealed class MachineHarmonyPatcher {
       Vector2 scaleFactor = ((instance.MinutesUntilReady > 0) ? new Vector2(Math.Abs(instance.scale.X - 5f), Math.Abs(instance.scale.Y - 5f)) : Vector2.Zero) * 4f;
       Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
       Rectangle destination = new Rectangle((int)(position.X + (locationX * 4) - scaleFactor.X / 2f) + ((instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(position.Y + (locationY * 4) - scaleFactor.Y / 2f) + ((instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(16f + scaleFactor.X), (int)(16f + scaleFactor.Y / 2f));
-      spriteBatch.Draw(Game1.mouseCursors, destination, (instance.heldObject.Value.quality.Value < 4) ? new Rectangle(338 + (instance.heldObject.Value.quality.Value - 1) * 8, 400, 8, 8) : new Rectangle(346, 392, 8, 8), Color.White * 0.95f, 0f, Vector2.Zero, SpriteEffects.None, (float)((y + 1) * 64) / 10000f);
+      spriteBatch.Draw(Game1.mouseCursors, destination, (instance.heldObject.Value.Quality < 4) ? new Rectangle(338 + (instance.heldObject.Value.Quality - 1) * 8, 400, 8, 8) : new Rectangle(346, 392, 8, 8), Color.White * 0.95f, 0f, Vector2.Zero, SpriteEffects.None, (float)((y + 1) * 64) / 10000f);
 
       return true;
     }

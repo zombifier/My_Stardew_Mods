@@ -192,7 +192,11 @@ sealed class TooltipPatcher {
     matcher
     .End()
     .MatchStartBackwards(
+#if SDV1616
+      new CodeMatch(OpCodes.Ldstr, "Strings/UI:ItemHover_Buff"))
+#else
       new CodeMatch(OpCodes.Ldstr, "Strings\\UI:ItemHover_Buff"))
+#endif
     .MatchStartBackwards(
       new CodeMatch(OpCodes.Ldloc_S),
       new CodeMatch(OpCodes.Ldc_I4_S, (sbyte)12),
