@@ -1176,11 +1176,10 @@ Important notes:
 * For best results, the ingredient slot whose flavor/color to inherit from should only accept one
   item per cook. If your recipe requires, say, any 5 fruit, the game can and will use 5 different
   fruits if you don't have 5 of one fruit on hand, and this will lead to... undefined behavior.
-* This feature is compatible with vanilla, SpaceCore, and Better Crafting.
+* This feature is compatible with vanilla, SpaceCore, Love of Cooking and Better Crafting.
+* Partially compatible with Yet Another Cooking Skill (requires Better Crafting).
 * With Better Crafting, bulk crafting recipes modified by this mod does not
   currently work, and you need to craft one at a time.
-* Partially compatible with Yet Another Cooking Skill (requires Better Crafting).
-* Not currently compatible with Love of Cooking, unless you use Better Crafting.
 
 #### Example
 
