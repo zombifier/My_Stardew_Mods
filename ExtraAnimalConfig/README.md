@@ -42,7 +42,9 @@ to edit it.
 | `ExtraProduceSpawnList`          | `List<ExtraProduceSpawnData>`   | A list of extra produce slots to determine which additional produce aside from the primary produce this animal can make.|
 | `ExtraHouses`           | `List<string>` | A list of extra houses that can house this animal aside from the primary one defined in its animal data.|
 | `IgnoreRain` | `bool` | Whether this animal can go out in rain. You can also override this on a per-building basis (see below).|
+| `IgnoreRainCondition` | `string` | A game state query that, if set, will control whether this animal can go outside during rain. The above must be false/unset if this is set.|
 | `IgnoreWinter` | `bool` | Whether this animal can go out in winter. You can also override this on a per-building basis (see below).|
+| `IgnoreWinterCondition` | `string` | A game state query that, if set, will control whether this animal can go outside during winter. The above must be false/unset if this is set.|
 | `GoOutsideCondition` | `string` | A game state query that, if set, will also control whether this animal can go outside. Can be combined with the above fields to make animals that cannot go outside during sunny days, or cannot go outside during certain modded rains/winters.|
 | `GlowColor` | `string` | If set to a [color](https://stardewvalleywiki.com/Modding:Common_data_field_types#Color), this animal will glow with said color like a light source. NOTE: `patch reload`-ing your mod will only update lights when the animal switches location (ie. when it goes out to eat or goes back in).|
 | `GlowRadius` | `float` | The radius of the light glow, if color is set above. 10 = 1 tile.|

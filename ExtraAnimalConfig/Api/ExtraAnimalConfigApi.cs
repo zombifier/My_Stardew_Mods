@@ -66,6 +66,13 @@ public class ExtraAnimalConfigApi : IExtraAnimalConfigApi {
     }
     return feedInfo;
   }
+
+  public string? GetFeedOverride(string? buildingId) {
+    if (buildingId is not null && Game1.buildingData.TryGetValue(buildingId, out var buildingData)) {
+      return buildingData.CustomFields?.GetValueOrDefault(AnimalUtils.BuildingFeedOverrideIdKey);
+    }
+    return null;
+  }
 }
 
 public class AnimalProduceCreatedEvent : IAnimalProduceCreatedEvent {

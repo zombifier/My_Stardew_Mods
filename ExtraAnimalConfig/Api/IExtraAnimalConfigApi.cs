@@ -26,6 +26,9 @@ public interface IExtraAnimalConfigApi {
   // to an IFeedInfo object that can be used to get the capacity and modify count.
   // The IFeedInfo object is stateless so you can save it if you want.
   public IDictionary<string, IFeedInfo> GetModdedFeedInfo();
+  // Get the qualified id of the feed override for this building type that replaces hay, if any.
+  // Does not get any custom troughs placed alongside vanilla hay troughs in buildings
+  public string? GetFeedOverride(string? buildingId);
 }
 
 // The harvest method associated with this animal. Note that (aside from method Tool and null tool) this is not an indicator of whether the produce was autograbbed.

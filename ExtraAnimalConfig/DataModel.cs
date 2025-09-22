@@ -21,7 +21,9 @@ public class AnimalExtensionData {
   public List<ExtraProduceSpawnData> ExtraProduceSpawnList = [];
   public List<string> ExtraHouses = [];
   public bool IgnoreRain = false;
+  public string? IgnoreRainCondition;
   public bool IgnoreWinter = false;
+  public string? IgnoreWinterCondition;
   public string? GlowColor = null;
   public float GlowRadius = 10f;
   public int? SpeedOverride = null;

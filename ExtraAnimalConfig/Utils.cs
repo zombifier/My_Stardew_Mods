@@ -339,7 +339,8 @@ public static class AnimalUtils {
         return true;
       }
       if (animalExtensionData.IgnoreRain ||
-          (animal.home?.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreRainKey) ?? false)) {
+          (animal.home?.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreRainKey) ?? false) ||
+          (animalExtensionData.IgnoreRainCondition is not null && GameStateQuery.CheckConditions(animalExtensionData.IgnoreRainCondition, context))) {
         return false;
       }
     }
@@ -347,10 +348,12 @@ public static class AnimalUtils {
   }
 
   public static bool AnimalAffectedByWinter(GameLocation location, FarmAnimal animal) {
-    if ((ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
-          animalExtensionData.IgnoreWinter) ||
-        (animal.home?.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreWinterKey) ?? false)) {
-      return false;
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData)) {
+      if (animalExtensionData.IgnoreWinter ||
+          (animalExtensionData.IgnoreWinterCondition is not null && GameStateQuery.CheckConditions(animalExtensionData.IgnoreRainCondition, GetGsqContext(animal, location))) ||
+          (animal.home?.GetData()?.CustomFields?.ContainsKey(BuildingInhabitantsIgnoreWinterKey) ?? false)) {
+        return false;
+      }
     }
     return location.IsWinterHere();
   }
