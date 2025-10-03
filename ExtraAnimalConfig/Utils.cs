@@ -75,7 +75,7 @@ public static class SiloUtils {
       if (count > capacity) {
         location.modData[FeedCountKeyPrefix + itemId] = capacity.ToString();
       }
-      return Math.Max(capacity, count);
+      return Math.Min(capacity, count);
     }
     return 0;
   }
