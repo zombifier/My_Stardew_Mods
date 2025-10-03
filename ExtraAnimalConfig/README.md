@@ -53,9 +53,12 @@ to edit it.
 | `IsAttackAnimal` | `bool` | Whether this animal will attempt to attack the farmer by chasing them and dealing damage on contact.|
 | `AttackDamage` | `int` | The amount of damage dealt (default 1).|
 | `AttackIntervalMs` | `int` | The minimum interval between attacks in milliseconds (default 5000 aka 5 seconds).|
-| `AttackRange` | `int` | The minimum range chasing range (default 10 tiles).|
+| `AttackRange` | `int` | The maximum range chasing range (default 10 tiles).|
 | `AttackMaxChaseTimeMs` | `int` | How long to chase before the animal gets bored (default 10000 aka 10 seconds).|
 | `AttackCondition` | `string` | A game state query to control whether this animal will attack. Player-based conditions can be used here, and is checked for each victim.|
+| `IsHarvester` | `bool` | Whether this animal can harvest crops.|
+| `HarvestInterval` | `int` | The minimum interval between consecutive harvests in milliseconds (default 1000 aka 1 second).|
+| `HarvestRange` | `int` | The maximum crop harvest range starting from the animal door (default 5 tiles).|
 
 
 `AnimalSpawnData` is a model with the following fields:

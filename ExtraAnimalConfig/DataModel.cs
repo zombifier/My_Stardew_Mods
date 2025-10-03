@@ -36,6 +36,10 @@ public class AnimalExtensionData {
   public int AttackRange = 10;
   public int AttackMaxChaseTimeMs = 10000;
   public string? AttackCondition;
+  // Harvest stuff
+  public bool IsHarvester = false;
+  public int HarvestInterval = 1000;
+  public int HarvestRange = 5;
 }
 
 public class EggExtensionData {

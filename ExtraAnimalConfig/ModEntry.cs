@@ -1,11 +1,14 @@
+using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using HarmonyLib;
 using System.Collections.Generic;
 using StardewValley;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using xTile.Dimensions;
 using VanillaPlusProfessions.Compatibility;
+using LeFauxMods.Common.Integrations.CustomBush;
 
 namespace Selph.StardewMods.ExtraAnimalConfig;
 
@@ -23,6 +26,7 @@ internal sealed class ModEntry : Mod {
   internal static ExtraAnimalConfigApi ModApi = null!;
 
   internal static IVanillaPlusProfessions? vppApi;
+  public static ICustomBushApi? cbApi = null;
 
   public override void Entry(IModHelper helper) {
     Helper = helper;
@@ -56,6 +60,12 @@ internal sealed class ModEntry : Mod {
     helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
     helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
     helper.Events.World.LocationListChanged += OnLocationListChanged;
+    if (!Helper.ModRegistry.IsLoaded("selph.AnimalSqueezeThrough")) {
+      helper.Events.GameLoop.SaveLoaded += OnSaveLoadedSqueeze;
+      helper.Events.World.LocationListChanged += OnLocationListChangedSqueeze;
+    }
+    helper.Events.Display.RenderingHud += OnRenderingHud;
+    helper.Events.Player.Warped += OnWarped;
   }
 
   public override object GetApi() {
@@ -63,7 +73,18 @@ internal sealed class ModEntry : Mod {
   }
 
   void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
-    vppApi = Helper.ModRegistry.GetApi<IVanillaPlusProfessions>("KediDili.VanillaPlusProfessions");
+    try {
+      vppApi = Helper.ModRegistry.GetApi<IVanillaPlusProfessions>("KediDili.VanillaPlusProfessions");
+    }
+    catch (Exception exception) {
+      Monitor.Log($"Error registering the VPP API: {exception.ToString()}", LogLevel.Warn);
+    }
+    try {
+      cbApi = Helper.ModRegistry.GetApi<ICustomBushApi>("furyx639.CustomBush");
+    }
+    catch (Exception exception) {
+      Monitor.Log($"Error registering the Custom Bush API: {exception.ToString()}", LogLevel.Warn);
+    }
   }
 
   // Set animal override speed, and clear the attack dictionaries
@@ -212,5 +233,73 @@ internal sealed class ModEntry : Mod {
       }
     }
     return true;
+  }
+
+  static void OnSaveLoadedSqueeze(object? sender, SaveLoadedEventArgs e) {
+    if (!Context.IsMainPlayer) return;
+    Utility.ForEachLocation((GameLocation location) => {
+      location.animals.OnValueAdded += (long id, FarmAnimal animal) => {
+        DelayedAction.functionAfterDelay(() => HandleStuckAnimals(animal, location), 10);
+      };
+      return true;
+    });
+  }
+
+  static void OnLocationListChangedSqueeze(object? sender, LocationListChangedEventArgs e) {
+    if (!Context.IsMainPlayer) return;
+    foreach (var location in e.Added) {
+      location.animals.OnValueAdded += (long id, FarmAnimal animal) => {
+        DelayedAction.functionAfterDelay(() => HandleStuckAnimals(animal, location), 10);
+      };
+    }
+  }
+
+  static void HandleStuckAnimals(FarmAnimal animal, GameLocation location) {
+    if (animal.home is not null &&
+        (animal.GetAnimalData()?.SpriteWidth ?? 16) / 16 > (animal.home.GetData()?.AnimalDoor.Width ?? 1) &&
+        location.buildings.Contains(animal.home) &&
+        animal.home.intersects(animal.GetBoundingBox())) {
+      ModEntry.StaticMonitor.Log($"Squeezing the big {animal.type.Value} through the {animal.home.buildingType.Value}'s teeny door", LogLevel.Info);
+      var rectForAnimalDoor = animal.home.getRectForAnimalDoor();
+      animal.Position = new Vector2(rectForAnimalDoor.X - 32, rectForAnimalDoor.Y);
+      return;
+    }
+  }
+
+  private static bool IsNormalGameplay() {
+    return StardewModdingAPI.Context.CanPlayerMove
+      && Game1.player != null
+      && Game1.currentLocation != null
+      && !Game1.eventUp
+      && !Game1.isFestival()
+      && !Game1.IsFading();
+  }
+
+  // Draw emote icon if the animal has produce ready
+  static void OnRenderingHud(object? sender, RenderingHudEventArgs e) {
+    if (!IsNormalGameplay()) return;
+    foreach (var animal in Game1.currentLocation.animals.Values) {
+      if (animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData)
+          && animalExtensionData.IsHarvester
+          && HarvestUtils.GetAnimalHarvestChest(animal).Count > 0) {
+        var animalData = animal.GetAnimalData();
+        int num4 = animal.Sprite.SpriteWidth / 2 * 4 - 32 + (animalData?.EmoteOffset.X ?? 0);
+        int num5 = -64 + (animalData?.EmoteOffset.Y ?? 0);
+        Vector2 vector = new Vector2(0f, animal.yJumpOffset);
+        Vector2 vector2 = Game1.GlobalToLocal(Game1.viewport, new Vector2(animal.Position.X + vector.X + (float)num4, animal.Position.Y + vector.Y + (float)num5));
+        e.SpriteBatch.Draw(Game1.emoteSpriteSheet, vector2, new Microsoft.Xna.Framework.Rectangle(16 * 16 % Game1.emoteSpriteSheet.Width, 16 * 16 / Game1.emoteSpriteSheet.Width * 16, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)animal.GetBoundingBox().Bottom / 10000f);
+      }
+    }
+  }
+
+  // Draw emote icon if the animal has produce ready
+  static void OnWarped(object? sender, WarpedEventArgs e) {
+    if (e.NewLocation is AnimalHouse animalHouse) {
+      foreach (var o in animalHouse.objects.Values) {
+        if (o.QualifiedItemId == "(BC)99") {
+          SiloUtils.MaybeResetHopperNextIndex(o);
+        }
+      }
+    }
   }
 }

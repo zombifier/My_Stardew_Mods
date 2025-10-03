@@ -1,4 +1,5 @@
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Delegates;
 using StardewValley.Pathfinding;
 using StardewValley.Extensions;
@@ -13,6 +14,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using xTile.Dimensions;
 
 using SObject = StardewValley.Object;
@@ -69,7 +71,11 @@ public static class SiloUtils {
     if (location.modData.TryGetValue(FeedCountKeyPrefix + itemId, out var countStr) &&
         int.TryParse(countStr, out var count) &&
         count > 0) {
-      return count;
+      var capacity = GetFeedCapacityFor(location, itemId);
+      if (count > capacity) {
+        location.modData[FeedCountKeyPrefix + itemId] = capacity.ToString();
+      }
+      return Math.Max(capacity, count);
     }
     return 0;
   }
@@ -116,6 +122,15 @@ public static class SiloUtils {
       return api.HasGathererEnchantment(tool);
     }
     return false;
+  }
+
+  public static void MaybeResetHopperNextIndex(SObject hopper) {
+    if (hopper.Location is not null
+        && AnimalUtils.GetBuildingFeedOverride(hopper.Location, out var feedOverrideId)
+        && feedOverrideId is not null
+        && ModEntry.ModApi.GetModdedFeedInfo().TryGetValue(feedOverrideId, out var feedOverride)) {
+      hopper.showNextIndex.Value = feedOverride.count > 0;
+    }
   }
 }
 
@@ -204,6 +219,7 @@ public static class AnimalUtils {
     return item;
   }
 
+  // TODO: migrate to weak tables now that I know better :>
   static Dictionary<long, double> BeginAttackTimeDict = new();
   static Dictionary<long, double> LastAttackTimeDict = new();
   static Dictionary<long, long> CurrentVictimDict = new();

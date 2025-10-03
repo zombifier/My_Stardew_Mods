@@ -218,6 +218,11 @@ sealed class AnimalDataPatcher {
           nameof(SObject.OutputIncubator)),
         postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.SObject_OutputIncubator_Postfix)));
 
+    harmony.Patch(
+        original: AccessTools.Method(typeof(FarmAnimal),
+          nameof(FarmAnimal.pet)),
+        prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(FarmAnimal_pet_Prefix)));
+
     // skinny animals
     // this approach is dead, time for teleportation
     //harmony.Patch(
@@ -779,6 +784,7 @@ sealed class AnimalDataPatcher {
         shownMessage = true;
       }
     }
+    SiloUtils.MaybeResetHopperNextIndex(__instance);
   }
 
   // Disable dropping hay into the hay hopper if feed override is specified
@@ -808,6 +814,7 @@ sealed class AnimalDataPatcher {
         return;
       }
       __result = false;
+      SiloUtils.MaybeResetHopperNextIndex(__instance);
     }
   }
 
@@ -908,11 +915,14 @@ sealed class AnimalDataPatcher {
 
   static void FarmAnimal_behaviors_Postfix(FarmAnimal __instance, ref bool __result, GameTime time, GameLocation location) {
     // Evil patch >:)
-    if (!Game1.IsMasterGame || __instance.isBaby() || __instance.home is null || __instance.pauseTimer > 0 ||
-        Game1.timeOfDay >= 2000 || !__instance.currentLocation.farmers.Any()) {
+    if (!Game1.IsMasterGame || __instance.isBaby()
+        //|| __instance.home is null
+        || __instance.pauseTimer > 0 ||
+        Game1.timeOfDay >= 2000) {
       return;
     }
-    AnimalUtils.AnimalAttack(__instance, time, ref __result);
+    if (__instance.currentLocation.farmers.Any()) AnimalUtils.AnimalAttack(__instance, time, ref __result);
+    HarvestUtils.AnimalHarvest(__instance, time, ref __result);
   }
 
   static void Grass_TryDropItemsOnCut_Postfix(Grass __instance, Tool? tool, bool addAnimation = true) {
@@ -1076,4 +1086,9 @@ sealed class AnimalDataPatcher {
   //  }
   //}
   //
+
+  static bool FarmAnimal_pet_Prefix(FarmAnimal __instance, Farmer who, bool is_auto_pet) {
+    if (is_auto_pet) return true;
+    return HarvestUtils.DropHarvestIfAvailable(__instance, who);
+  }
 }
