@@ -9,6 +9,7 @@ content packs. For users, install the mod as usual from the link above.
 
 ## Table of Contents
 * [Table of Contents](#table-of-contents)
+* [Passive Changes](#passive-changes)
 * [Animal data asset](#animal-data-asset)
    + [How AnimalProduceExtensionData and ExtraProduceSpawnData interact (aka how extra produce works)](#how-animalproduceextensiondata-and-extraproducespawndata-interact)
    + [Setting up animals that eat alternate feed](#setting-up-animals-that-eat-alternate-feed)
@@ -17,6 +18,11 @@ content packs. For users, install the mod as usual from the link above.
 * [Game State Queries](#game-state-queries)
 * [Building CustomFields](#building-customfields)
 * [Examples](#examples)
+
+## Passive Changes
+* Large animals can now squeeze through doors smaller than them. This is essentially the C#
+  component of [Animal Squeeze Through](https://www.nexusmods.com/stardewvalley/mods/33514), but
+  merged into this mod.
 
 ## Animal data asset
 
