@@ -450,7 +450,9 @@ The value being the following data model:
 | `ExtraDrops` | List of [item queries](https://stardewvalleywiki.com/Modding:Item_queries#Item_spawn_fields) | A list of item queries that when evaluated yields an item to add alongide the main harvest.<br>IMPORTANT NOTES:<br>* If there are multiple items in the list, *every* query that qualifies will be chosen to drop.<br>* Unlike the main drop override, quality and stack is respected.|
 | `PlantTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run when this crop is planted. This accepts the regular actions, plus some special actions that are only usable in this field listed below.|
 | `DestroyedTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run when this crop is removed (via tools or etc.). This accepts the regular actions, plus some special actions that are only usable in this field listed below.|
-| `DayStartTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run on day start for this empty dirt/crop, after the daily logic (growth, harvest, etc.). This accepts the regular actions, plus some special actions that are only usable in this field listed below.<br>IMPORTANT NOTE: This will only run for crops that have grown at least one day (ie. it will not run for seeds spread by the `PlantCrop` trigger).|
+| `HarvestedTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run on harvesting. This accepts the regular actions, plus some special actions that are only usable in this field listed below.<br>IMPORTANT NOTE: This will only run for crops that have grown at least one day (ie. it will not run for seeds spread by the `PlantCrop` trigger).|
+| `DayStartTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run on day start for this empty dirt/crop, after the daily logic (growth, etc.). This accepts the regular actions, plus some special actions that are only usable in this field listed below.<br>IMPORTANT NOTE: This will only run for crops that have grown at least one day (ie. it will not run for seeds spread by the `PlantCrop` trigger).|
+| `HarvestablePhases` | List of numbers | A list of phases that this crop is harvestable from, not just the final phase.|
 
 ### Trigger actions
 The following special actions can only be used in `PlantTriggers` and `DayStartTriggers`. Their main
@@ -467,7 +469,8 @@ Unless otherwise stated, they have the following common fields:
 | `selph.CustomTapperFramework_KillCrop <radius> [exclude main crop] [GSQ]` | Kill crops in a radius, like when a crop goes out of season.|
 | `selph.CustomTapperFramework_DestroyCrop <radius> [exclude main crop] [GSQ]` | Destroy crops in a radius, removing them entirely.|
 | `selph.CustomTapperFramework_TransformCrop <cropId> <radius> [exclude main crop] [GSQ]` | Transform crops in a radius to the specified `cropId`.|
-| `selph.CustomTapperFramework_PlantCrop <cropId> <maxCount> <radius> [chance] [maxCount]` | Plants the specified crop/seed ID in empty tilled dirt (not pots) in a radius. Chance is optional, a number between 0 and 1 for a chance the crop is planted.|
+| `selph.CustomTapperFramework_SetCropPhase <newPhase> <radius> [exclude main crop] [GSQ]` | Sets the phase of crops in a radius to a new value.|
+| `selph.CustomTapperFramework_PlantCrop <cropId> <maxCount> <radius> [chance]` | Plants the specified crop/seed ID in empty tilled dirt (not pots) in a radius. Chance is optional, a number between 0 and 1 for a chance the crop is planted.|
 | `selph.CustomTapperFramework_IfCrop <query> ## <action if true> ## <action if false>` | A special version of the `If` action that works in crop trigger actions.|
 
 Need even moar power? You can use Cloudy Skies's brilliant [trigger
@@ -497,6 +500,7 @@ Additionally, the following GSQs can be used in (and only in) the asset above:
 | `selph.CustomTapperFramework_NEARBY_CROPS <radius> [sub GSQ] [count] [fullGrownOnly] [acceptsPots]` | Whether there are crops of a certain count near the crop being checked.<br>Fields:<br>* radius: The tile radius to check.<br>* sub GSQ: The game state query to check for the crop in the radius (defaults to accepting any crop). Make sure to wrap it in (escaped) quotes.<br>* count: The total count (defaults to one).<br>* fullGrownOnly: Whether to only consider fully grown crops (default false).<br>* acceptsPots: Whether to also count crops in indoor pots (default false. Water planters are considered "natural" soil).|
 | `selph.CustomTapperFramework_IS_IN_POT` | Whether the crop is in an indoor pot. Water planters are not considered pots.|
 | `selph.CustomTapperFramework_IS_FULLY_GROWN` | Whether the crop is fully grown.|
+| `selph.CustomTapperFramework_CURRENT_CROP_PHASE <phase>` | Whether the crop's current phase is the target value.|
 
 ### Example
 
