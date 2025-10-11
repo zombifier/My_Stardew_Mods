@@ -30,6 +30,8 @@ public class CropExtensionData {
   public List<string>? PlantTriggers;
   public List<string>? DestroyedTriggers;
   public List<string>? DayStartTriggers;
+  public List<string>? HarvestedTriggers;
+  public List<int>? HarvestablePhases;
 }
 
 public class CropExtensionDataAssetHandler : DictAssetHandler<CropExtensionData> {

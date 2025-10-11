@@ -700,6 +700,8 @@ public class HarmonyPatcher {
 
   static void RunCropHarvestedEvents(Crop crop, ref Item produce, ref int count, bool isExtraDrops, JunimoHarvester? junimo, bool isForcedScytheHarvest) {
     ModEntry.ModApi.RunCropHarvestedEvents(crop, ref produce, ref count, isExtraDrops, junimo, isForcedScytheHarvest);
+    // Also hijack this to pass the fact that the crop was harvested to the handlers
+    CropExtensionHandler.harvestedCrop = crop;
   }
 
   static void MachineDataUtility_GetOutputItem_prefix(SObject machine,

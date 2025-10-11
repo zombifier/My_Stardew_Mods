@@ -109,7 +109,14 @@ public static class WaterIndoorPotUtils {
     }
     obj.hoeDirt.Value.crop?.drawWithOffset(spriteBatch, obj.TileLocation, /*(obj.hoeDirt.Value.isWatered() && (int)obj.hoeDirt.Value.crop.currentPhase.Value == 0 && !obj.hoeDirt.Value.crop.raisedSeeds.Value) ? (new Color(180, 100, 200) * 1f) :*/ Color.White, obj.hoeDirt.Value.getShakeRotation(), crabPotData.directionOffset + new Vector2(32f, 24f + (int)yBobCrops));
     obj.heldObject.Value?.draw(spriteBatch, x * 64, y * 64 - 48, (obj.TileLocation.Y + 0.66f) * 64f / 10000f + (float)x * 1E-05f, 1f);
-    obj.bush.Value?.draw(spriteBatch, crabPotData.directionOffset.Y + yBobCrops);
+#if SDV1616
+    if (obj.bush.Value is not null) {
+      obj.bush.Value.drawOffset = new((int)crabPotData.directionOffset.X, (int)(crabPotData.directionOffset.Y + yBobCrops));
+      obj.bush.Value.draw(spriteBatch);
+    }
+#else
+        obj.bush.Value?.draw(spriteBatch, crabPotData.directionOffset.Y + yBobCrops);
+#endif
   }
 
   public static void canPlant(HoeDirt hoeDirt, string itemId, ref bool result) {
@@ -190,6 +197,13 @@ public static class WaterIndoorPotUtils {
     }
     pot.hoeDirt.Value.crop?.drawWithOffset(spriteBatch, pot.TileLocation, cropTintColor ?? ((pot.hoeDirt.Value.isWatered() && pot.hoeDirt.Value.crop.currentPhase.Value == 0 && !pot.hoeDirt.Value.crop.raisedSeeds.Value) ? (new Color(180, 100, 200) * 1f) : Color.White), pot.hoeDirt.Value.getShakeRotation(), new Vector2(32f, 8f + yOffset));
     pot.heldObject.Value?.draw(spriteBatch, x * 64, y * 64 - 48 + yOffset, (pot.TileLocation.Y + 0.66f) * 64f / 10000f + (float)x * 1E-05f, 1f);
+#if SDV1616
+    if (pot.bush.Value is not null) {
+      pot.bush.Value.drawOffset = new(0, -24 + yOffset);
+      pot.bush.Value.draw(spriteBatch);
+    }
+#else
     pot.bush.Value?.draw(spriteBatch, -24f + yOffset);
+#endif
   }
 }

@@ -15,10 +15,13 @@ static class CropExtensionDelegates {
   public static void Register() {
     GameStateQuery.Register($"{ModEntry.UniqueId}_NEARBY_CROPS", NEARBY_CROPS);
     GameStateQuery.Register($"{ModEntry.UniqueId}_IS_FULLY_GROWN", IS_FULLY_GROWN);
+    GameStateQuery.Register($"{ModEntry.UniqueId}_IS_IN_POT", IS_IN_POT);
+    GameStateQuery.Register($"{ModEntry.UniqueId}_CURRENT_CROP_PHASE", CURRENT_CROP_PHASE);
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_ResetGrowDays", ResetGrowDays);
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_KillCrop", KillCrop);
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_DestroyCrop", DestroyCrop);
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_TransformCrop", TransformCrop);
+    TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_SetCropPhase", SetCropPhase);
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_PlantCrop", PlantCrop);
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_IfCrop", IfCrop);
   }
@@ -47,7 +50,7 @@ static class CropExtensionDelegates {
             && t is HoeDirt dirt
             && dirt.crop is not null
             && (string.IsNullOrWhiteSpace(subGsq) || GameStateQuery.CheckConditions(subGsq, CropExtensionHandler.GetGsqContext(dirt.crop, context.Player)))
-            && (!fullGrownOnly || dirt.crop.fullyGrown.Value is true)) {
+            && (!fullGrownOnly || dirt.crop?.fullyGrown.Value is true || dirt.readyForHarvest())) {
           count++;
           if (count >= desiredCount) return true;
         }
@@ -57,7 +60,7 @@ static class CropExtensionDelegates {
           && o is IndoorPot pot
           && pot.hoeDirt.Value.crop is not null
           && (string.IsNullOrWhiteSpace(subGsq) || GameStateQuery.CheckConditions(subGsq, CropExtensionHandler.GetGsqContext(pot.hoeDirt.Value.crop, context.Player)))
-          && (!fullGrownOnly || pot.hoeDirt.Value.crop?.fullyGrown.Value is true)) {
+          && (!fullGrownOnly || pot.hoeDirt.Value.crop?.fullyGrown.Value is true || pot.hoeDirt.Value.readyForHarvest() is true)) {
           count++;
           if (count >= desiredCount) return true;
         }
@@ -86,6 +89,20 @@ static class CropExtensionDelegates {
       return GameStateQuery.Helpers.ErrorResult(query, "Error: Called outside of crop extension data?");
     }
     return dirt.crop?.fullyGrown.Value is true;
+  }
+
+  static bool CURRENT_CROP_PHASE(string[] query, GameStateQueryContext context) {
+    if (!ArgUtility.TryGetInt(query, 1, out var currentPhase, out var error, "int currentPhase")) {
+      return GameStateQuery.Helpers.ErrorResult(query, error);
+    }
+    if (context.CustomFields?.TryGetValue("Tile", out var obj) is null or false
+        || obj is not Vector2 tile
+        || context.CustomFields?.TryGetValue("Dirt", out var obj2) is null or false
+        || obj2 is not HoeDirt dirt
+        ) {
+      return GameStateQuery.Helpers.ErrorResult(query, "Error: Called outside of crop extension data?");
+    }
+    return dirt.crop?.currentPhase.Value == currentPhase;
   }
 
   //static bool IS_CROP(string[] query, GameStateQueryContext context) {
@@ -183,12 +200,29 @@ static class CropExtensionDelegates {
       return false;
     }
     return RunTriggerOnCropsCommon(args, context, 1, (hoeDirt, who) => {
-      var newCrop = new Crop(newCropId, (int)hoeDirt.Tile.X, (int)hoeDirt.Tile.Y, hoeDirt.Location);
       var oldCrop = hoeDirt.crop;
       hoeDirt.destroyCrop(false);
       hoeDirt.plant(newCropId, who, false);
-      if (oldCrop is not null && Game1.cropData.ContainsKey(newCropId)) {
-        newCrop.currentPhase.Value = Math.Min(oldCrop.currentPhase.Value, oldCrop.phaseDays.Count - 1);
+      var newCrop = hoeDirt.crop;
+      if (oldCrop is not null && newCrop is not null && Game1.cropData.ContainsKey(newCropId)) {
+        newCrop.currentPhase.Value = Math.Min(oldCrop.currentPhase.Value, newCrop.phaseDays.Count - 1);
+        newCrop.dayOfCurrentPhase.Value = oldCrop.dayOfCurrentPhase.Value;
+        newCrop.updateDrawMath(hoeDirt.Tile);
+      }
+    }, out error);
+  }
+
+  static bool SetCropPhase(string[] args, TriggerActionContext context, out string? error) {
+    if (!ArgUtility.TryGetInt(args, 1, out var newPhase, out error, "int newPhase")) {
+      return false;
+    }
+    return RunTriggerOnCropsCommon(args, context, 1, (hoeDirt, who) => {
+      var crop = hoeDirt.crop;
+      if (crop is not null) {
+        crop.currentPhase.Value = newPhase;
+        crop.dayOfCurrentPhase.Value = 0;
+        crop.fullyGrown.Value = false;
+        crop.updateDrawMath(hoeDirt.crop.tilePosition);
       }
     }, out error);
   }

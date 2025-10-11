@@ -55,6 +55,16 @@ static class CropExtensionHandler {
     catch (Exception e) {
       ModEntry.StaticMonitor.Log($"Error patching HoeDirt.applySpeedIncreases; negative crop grow speed maluses won't work. Error detail: {e.ToString()}", LogLevel.Warn);
     }
+    try {
+      harmony.Patch(
+          original: AccessTools.Method(typeof(Crop),
+            nameof(Crop.harvest)),
+          transpiler: new HarmonyMethod(typeof(CropExtensionHandler),
+            nameof(Crop_harvest_Transpiler)));
+    }
+    catch (Exception e) {
+      ModEntry.StaticMonitor.Log($"Error patching crop.harvest; crop harvestable phases override won't work. Error detail: {e.ToString()}", LogLevel.Warn);
+    }
 
     ModEntry.ModApi.CropHarvested += OnCropHarvested;
     helper.Events.GameLoop.DayStarted += OnDayStarted;
@@ -170,14 +180,37 @@ static class CropExtensionHandler {
     }
   }
 
+  public static Crop? harvestedCrop = null;
   static void Crop_harvest_Postfix(Crop __instance, int xTile, int yTile, HoeDirt soil, JunimoHarvester? junimoHarvester = null, bool isForcedScytheHarvest = false) {
-    if (GetCropDataFor(__instance, out var data, out var defaultData)
-        && __instance.RegrowsAfterHarvest()
-        && (data?.RegrowSpeedModifiers ?? defaultData?.RegrowSpeedModifiers) is { } regrowSpeedModifiers) {
-      var context = GetGsqContext(__instance, Game1.player);
-      var regrowSpeedModifierMode = data?.RegrowSpeedModifiers is not null ? data.RegrowSpeedModifierMode : defaultData?.RegrowSpeedModifierMode ?? QuantityModifier.QuantityModifierMode.Stack;
-      var regrowSpeed = ApplyQuantityModifiers(0, regrowSpeedModifiers, regrowSpeedModifierMode, context);
-      __instance.dayOfCurrentPhase.Value = Math.Max(1, (int)(__instance.dayOfCurrentPhase.Value / Math.Max(1.0f + regrowSpeed, 0.1f)));
+    var c = harvestedCrop;
+    harvestedCrop = null;
+    if (__instance != c) {
+      return;
+    }
+    harvestedCrop = null;
+    if (GetCropDataFor(__instance, out var data, out var defaultData)) {
+      if (__instance.RegrowsAfterHarvest()
+          && (data?.RegrowSpeedModifiers ?? defaultData?.RegrowSpeedModifiers) is { } regrowSpeedModifiers) {
+        var context = GetGsqContext(__instance, Game1.player);
+        var regrowSpeedModifierMode = data?.RegrowSpeedModifiers is not null ? data.RegrowSpeedModifierMode : defaultData?.RegrowSpeedModifierMode ?? QuantityModifier.QuantityModifierMode.Stack;
+        var regrowSpeed = ApplyQuantityModifiers(0, regrowSpeedModifiers, regrowSpeedModifierMode, context);
+        __instance.dayOfCurrentPhase.Value = Math.Max(1, (int)(__instance.dayOfCurrentPhase.Value / Math.Max(1.0f + regrowSpeed, 0.1f)));
+      }
+      if ((data?.HarvestedTriggers ?? defaultData?.HarvestedTriggers) is { } harvestedTriggers) {
+        foreach (var action in harvestedTriggers) {
+          if (!TriggerActionManager.TryRunAction(
+                action
+                .Replace("TILE_X", __instance.tilePosition.X.ToString())
+                .Replace("TILE_Y", __instance.tilePosition.Y.ToString())
+                .Replace("LOCATION_NAME", __instance.currentLocation.Name),
+                "Manual",
+                [__instance, Game1.player, __instance],
+                out var error, out var exception)) {
+            ModEntry.StaticMonitor.Log($"Error running trigger action {action}: {error}", LogLevel.Error);
+            ModEntry.StaticMonitor.Log($"Exception running trigger action {action}: {exception?.ToString()}");
+          }
+        }
+      }
     }
   }
 
@@ -197,7 +230,7 @@ static class CropExtensionHandler {
             [__instance, who, __instance.crop],
             out var error, out var exception)) {
         ModEntry.StaticMonitor.Log($"Error running trigger action {action}: {error}", LogLevel.Error);
-        ModEntry.StaticMonitor.Log($"Exception running trigger action {action}: {exception.ToString()}");
+        ModEntry.StaticMonitor.Log($"Exception running trigger action {action}: {exception?.ToString()}");
       }
     }
   }
@@ -270,7 +303,7 @@ static class CropExtensionHandler {
             [__instance, Game1.player, __state],
             out var error, out var exception)) {
         ModEntry.StaticMonitor.Log($"Error running trigger action {action}: {error}", LogLevel.Error);
-        ModEntry.StaticMonitor.Log($"Exception running trigger action {action}: {exception.ToString()}");
+        ModEntry.StaticMonitor.Log($"Exception running trigger action {action}: {exception?.ToString()}");
       }
     }
   }
@@ -335,5 +368,41 @@ static class CropExtensionHandler {
         ModEntry.StaticMonitor.Log($"Exception running trigger action {action}: {exception?.ToString()}");
       }
     }
+  }
+
+  static IEnumerable<CodeInstruction> Crop_harvest_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
+    CodeMatcher matcher = new(instructions, generator);
+    // Find CropData data = this.GetData() (the start of the crop code)
+    matcher
+      .MatchStartForward(
+        new CodeMatch(OpCodes.Ldarg_0),
+        new CodeMatch(OpCodes.Call, AccessTools.DeclaredMethod(typeof(Crop), nameof(Crop.GetData))),
+        new CodeMatch(OpCodes.Stloc_S))
+      .ThrowIfNotMatch($"Could not find entry point for {nameof(Crop_harvest_Transpiler)}")
+      .CreateLabel(out var label);
+    // Old: if (this.currentPhase.Value >= this.phaseDays.Count - 1 && ....)
+    // New: insert "if (IsHarvestablePhase(crop) || ..."
+    matcher
+      .MatchStartBackwards(
+        new CodeMatch(OpCodes.Ldarg_0),
+        new CodeMatch(OpCodes.Ldfld, AccessTools.DeclaredMethod(typeof(Crop), nameof(Crop.currentPhase))))
+      .ThrowIfNotMatch($"Could not find entry point 2 for {nameof(Crop_harvest_Transpiler)}")
+      .InsertAndAdvance(
+        new CodeMatch(OpCodes.Ldarg_0),
+        new CodeMatch(OpCodes.Call, AccessTools.DeclaredMethod(typeof(CropExtensionHandler), nameof(IsHarvestablePhase))),
+        new CodeMatch(OpCodes.Brtrue_S, label)
+        );
+    //foreach (var i in matcher.InstructionEnumeration()) {
+    //  ModEntry.StaticMonitor.Log($"{i.opcode} {i.operand}", LogLevel.Alert);
+    //}
+    return matcher.InstructionEnumeration();
+  }
+
+  static bool IsHarvestablePhase(Crop crop) {
+    if (GetCropDataFor(crop, out var data, out var defaultData)
+        && (data?.HarvestablePhases) is { } harvestablePhases) {
+      return harvestablePhases.Contains(crop.currentPhase.Value);
+    }
+    return false;
   }
 }
