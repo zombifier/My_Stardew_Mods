@@ -16,7 +16,7 @@ content packs. For users, install the mod as usual from the link above.
    * [Table of Contents](#table-of-contents)
    * [Item Features](#item-features)
       + [Icons and descriptions for the new buff attributes](#icons-and-descriptions-for-the-new-buff-attributes)
-      + [Draw smoke particles around item](#draw-smoke-particles-around-item)
+      + [Draw smoke/steam particles around item](#draw-smokesteam-particles-around-item)
       + [Draw an item's preserve item's sprite instead of its base sprite](#draw-an-items-preserve-items-sprite-instead-of-its-base-sprite)
       + [Define extra loved items for Junimos](#define-extra-loved-items-for-junimos)
       + [Append extra context tags to shop and machine item queries](#append-extra-context-tags-to-shop-and-machine-item-queries)
@@ -34,7 +34,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Adding extra byproducts for machine recipes](#adding-extra-byproducts-for-machine-recipes)
       + [Allow non-Object outputs from machines](#allow-non-object-outputs-from-machines)
       + [Generate nearby flower-flavored modded items (or, generate flavored items outside of machines)](#generate-nearby-flower-flavored-modded-items-or-generate-flavored-items-outside-of-machines)
-      + [Override display name if the output item is unflavored](#override-display-name-if-the-output-item-is-unflavored)
+      + [Override display name for certain flavors of flavored items](#override-display-name-for-certain-flavors-of-flavored-items)
       + [Generate an input item for recipes that don't have any, and use 'nearby flower' as a possible query](#generate-an-input-item-for-recipes-that-dont-have-any-and-use-nearby-flower-as-a-possible-query)
       + [Automatic machines that stop producing after X times](#automatic-machines-that-stop-producing-after-X-times)
       + [Run trigger action on machine ready](#run-trigger-action-on-machine-ready)
@@ -58,10 +58,13 @@ KnockbackMultiplier, WeaponPrecisionMultiplier, and WeaponSpeedMultiplier) now
 have a buff icon and show up in item description where they previously were
 hidden. This is a passive change.
 
-### Draw smoke particles around item
+### Draw smoke/steam particles around item
 
 Items with the context tag `smoked_item` will have its sprite darkened and
 have smoke particles drawn around it like smoked fish.
+
+Items with the context tag `steamed_item` will have steam particles drawn around it (aka smoke
+particles but white). Its sprite won't be darkened.
 
 ### Draw an item's preserve item's sprite instead of its base sprite
 
@@ -882,7 +885,20 @@ Note that this item query technically can be used outside of machine rules.
 
 ---
 
-### Override display name if the output item is unflavored
+### Override display name for certain flavors of flavored items
+
+If you need a special name for certain flavors of a flavored item (for example, you have an item
+named "Jam", with flavored variants named "Apple Jam" or "Grape Jam", but want "Marmalade" for if
+it's flavored after oranges), you can set the following string keys in `Strings/Objects`:
+
+`selph.ExtraMachineConfig_FlavorNameOverride_(O)QualifiedItemId/FlavorId`
+
+The value is the special override name. This key will automatically be used if eligible. `FlavorId` can be
+`0` if you want a special name for unflavored items; this can happen in niche cases where
+`InheritPreserveId` copying from an unflavored item, or if `NEARBY_FLOWER_ID` cannot find a nearby
+flower.
+
+NOTE: The below `CustomData` field is deprecated, but still works.
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |

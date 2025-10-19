@@ -10,6 +10,7 @@ namespace Selph.StardewMods.ExtraMachineConfig;
 
 sealed class SmokedItemHarmonyPatcher {
   internal static string SmokedItemTag = "smoked_item";
+  internal static string SteamedItemTag = "steamed_item";
   internal static string DrawPreserveSpriteTag = "draw_preserve_sprite";
 
   public static void ApplyPatches(Harmony harmony) {
@@ -48,6 +49,10 @@ sealed class SmokedItemHarmonyPatcher {
     return ItemContextTagManager.DoesTagMatch(SmokedItemTag, item.GetContextTags());
   }
 
+  private static bool isSteamedItem(Item item) {
+    return ItemContextTagManager.DoesTagMatch(SteamedItemTag, item.GetContextTags());
+  }
+
   private static bool isDrawPreserveSpriteItem(StardewValley.Object item) {
     return ItemContextTagManager.DoesTagMatch(DrawPreserveSpriteTag, item.GetContextTags()) &&
       item.preservedParentSheetIndex.Value != null && item.preservedParentSheetIndex.Value != "-1";
@@ -76,12 +81,20 @@ sealed class SmokedItemHarmonyPatcher {
       drawSmoke(__instance, spriteBatch, location, scaleSize, layerDepth,
           (transparency == 1f && color.A < byte.MaxValue) ? ((float)(int)color.A / 255f) : transparency, __state);
     }
+    if (isSteamedItem(__instance)) {
+      drawSteam(__instance, spriteBatch, location, scaleSize, layerDepth,
+          (transparency == 1f && color.A < byte.MaxValue) ? ((float)(int)color.A / 255f) : transparency);
+    }
   }
 
   private static void ColoredObject_drawInMenu_postfix(ColoredObject __instance, ParsedItemData? __state, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color colorOverride, bool drawShadow) {
     if (isSmokedItem(__instance)) {
       drawSmoke(__instance, spriteBatch, location, scaleSize, layerDepth,
           (transparency == 1f && colorOverride.A < byte.MaxValue) ? ((float)(int)colorOverride.A / 255f) : transparency, __state);
+    }
+    if (isSteamedItem(__instance)) {
+      drawSteam(__instance, spriteBatch, location, scaleSize, layerDepth,
+          (transparency == 1f && colorOverride.A < byte.MaxValue) ? ((float)(int)colorOverride.A / 255f) : transparency);
     }
     drawExtraColors(__instance, spriteBatch, location, scaleSize, layerDepth,
           (transparency == 1f && colorOverride.A < byte.MaxValue) ? ((float)(int)colorOverride.A / 255f) : transparency, __state);
@@ -91,6 +104,9 @@ sealed class SmokedItemHarmonyPatcher {
     float layerDepth = Math.Max(0f, (float)(f.StandingPixel.Y + 4) / 10000f);
     if (isSmokedItem(__instance)) {
       drawSmoke(__instance, spriteBatch, objectPosition, 1f, layerDepth, 1f, __state);
+    }
+    if (isSteamedItem(__instance)) {
+      drawSteam(__instance, spriteBatch, objectPosition, 1f, layerDepth, 1f);
     }
     if (__instance is ColoredObject) {
       drawExtraColors(__instance, spriteBatch, objectPosition, 1f, layerDepth, 1f, __state);
@@ -151,6 +167,17 @@ sealed class SmokedItemHarmonyPatcher {
     spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(32f, 32f) * scaleSize + new Vector2(0f, (float)((0.0 - Game1.currentGameTime.TotalGameTime.TotalMilliseconds) % 2000.0) * 0.03f), new Microsoft.Xna.Framework.Rectangle(372, 1956, 10, 10), new Color(80, 80, 80) * transparency * 0.53f * (1f - (float)(Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 2000.0) / 2000f), (float)((0.0 - Game1.currentGameTime.TotalGameTime.TotalMilliseconds) % 2000.0) * 0.001f, vector * scaleSize, num / 2f, SpriteEffects.None, Math.Min(1f, layerDepth + 2E-05f));
     spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(24f, 40f) * scaleSize + new Vector2(0f, (float)((0.0 - (Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)num2)) % 2000.0) * 0.03f), new Microsoft.Xna.Framework.Rectangle(372, 1956, 10, 10), new Color(80, 80, 80) * transparency * 0.53f * (1f - (float)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)num2) % 2000.0) / 2000f), (float)((0.0 - (Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)num2)) % 2000.0) * 0.001f, vector * scaleSize, num / 2f, SpriteEffects.None, Math.Min(1f, layerDepth + 2E-05f));
     spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(48f, 21f) * scaleSize + new Vector2(0f, (float)((0.0 - (Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)(num2 * 2))) % 2000.0) * 0.03f), new Microsoft.Xna.Framework.Rectangle(372, 1956, 10, 10), new Color(80, 80, 80) * transparency * 0.53f * (1f - (float)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)(num2 * 2)) % 2000.0) / 2000f), (float)((0.0 - (Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)(num2 * 2))) % 2000.0) * 0.001f, vector * scaleSize, num / 2f, SpriteEffects.None, Math.Min(1f, layerDepth + 2E-05f));
+  }
+
+  private static void drawSteam(Item item, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float layerDepth, float transparency = 1f) {
+    Vector2 vector = new Vector2(8f, 8f);
+    float num = 4f * scaleSize;
+    int num2 = 700 + ((int)item.sellToStorePrice() + 17) * 7777 % 200;
+
+    // Draw steam effects
+    spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(32f, 32f) * scaleSize + new Vector2(0f, (float)((0.0 - Game1.currentGameTime.TotalGameTime.TotalMilliseconds) % 2000.0) * 0.03f), new Microsoft.Xna.Framework.Rectangle(372, 1956, 10, 10), Color.White * transparency * 0.53f * (1f - (float)(Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 2000.0) / 2000f), (float)((0.0 - Game1.currentGameTime.TotalGameTime.TotalMilliseconds) % 2000.0) * 0.001f, vector * scaleSize, num / 2f, SpriteEffects.None, Math.Min(1f, layerDepth + 2E-05f));
+    spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(24f, 40f) * scaleSize + new Vector2(0f, (float)((0.0 - (Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)num2)) % 2000.0) * 0.03f), new Microsoft.Xna.Framework.Rectangle(372, 1956, 10, 10), Color.White * transparency * 0.53f * (1f - (float)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)num2) % 2000.0) / 2000f), (float)((0.0 - (Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)num2)) % 2000.0) * 0.001f, vector * scaleSize, num / 2f, SpriteEffects.None, Math.Min(1f, layerDepth + 2E-05f));
+    spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(48f, 21f) * scaleSize + new Vector2(0f, (float)((0.0 - (Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)(num2 * 2))) % 2000.0) * 0.03f), new Microsoft.Xna.Framework.Rectangle(372, 1956, 10, 10), Color.White * transparency * 0.53f * (1f - (float)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)(num2 * 2)) % 2000.0) / 2000f), (float)((0.0 - (Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)(num2 * 2))) % 2000.0) * 0.001f, vector * scaleSize, num / 2f, SpriteEffects.None, Math.Min(1f, layerDepth + 2E-05f));
   }
 
   private static void drawExtraColors(Item item, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float layerDepth, float transparency = 1f, ParsedItemData? parsedItemData = null) {

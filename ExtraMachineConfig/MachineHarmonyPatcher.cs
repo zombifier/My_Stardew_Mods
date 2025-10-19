@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
@@ -625,6 +626,17 @@ sealed class MachineHarmonyPatcher {
   }
 
   public static void SObject_loadDisplayName_postfix(ref string __result, SObject __instance) {
+    try {
+      __result =
+        Game1.content.LoadStringReturnNullIfNotFound($"Strings/Objects:{ModEntry.UniqueId}_FlavorNameOverride_{__instance.QualifiedItemId}/{__instance.GetPreservedItemId() ?? "0"}")
+        ?? __result;
+    }
+    catch (ContentLoadException) {
+      ModEntry.StaticMonitor.Log("Strings/Objects doesn't exist???", LogLevel.Error);
+    }
+    catch (InvalidCastException) {
+      ModEntry.StaticMonitor.Log("Strings/Objects is the wrong type???", LogLevel.Error);
+    }
     int i = 1;
     while (true) {
       var val = Utils.getPreserveId(__instance, i);

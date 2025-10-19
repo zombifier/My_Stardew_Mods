@@ -13,6 +13,7 @@ using StardewValley.Buildings;
 using StardewValley.Internal;
 using StardewValley.Objects;
 using StardewValley.Menus;
+using StardewValley.TokenizableStrings;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -311,5 +312,4 @@ internal sealed class ModEntry : Mod {
     }
     return buffName == buffNameToCheck;
   }
-
 }

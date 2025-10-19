@@ -150,8 +150,8 @@ sealed class TooltipPatcher {
           0.95f);
       string text =
         k == 1 ?
-        (((Convert.ToDouble(extraBuffs[k]) > 0.0) ? "+" : "") + extraBuffs[k]) :
-        (((Convert.ToDouble(extraBuffs[k]) > 0.0) ? "+" : "") + extraBuffs[k] * 100 + "%");
+        (((Convert.ToDouble(extraBuffs[k]) > 0.0) ? "+" : "") + Math.Round(extraBuffs[k], 2)) :
+        (((Convert.ToDouble(extraBuffs[k]) > 0.0) ? "+" : "") + Math.Round(extraBuffs[k] * 100) + "%");
       text = Game1.content.LoadString($"{ModEntry.BuffStringsAssetName}:ItemHoverBuff{k}", text);
       Utility.drawTextWithShadow(b, text, font, new Vector2(x + 16 + 34 + 4, y + 16), Game1.textColor);
       y += 39;
