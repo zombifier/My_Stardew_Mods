@@ -379,9 +379,9 @@ You can set the following fields on a building data's `CustomFields` field:
           "SyncWithMainProduce": false,
         },
       },
-    }
+    },
     {
-      "LogName": "Make cashmere drop",
+      "LogName": "Make cashmere drop instead of being milked",
       "Action": "EditData",
       "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
       "TargetField": ["Goat", "AnimalProduceExtensionData"],
