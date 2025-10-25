@@ -57,7 +57,7 @@ to edit it.
 | `SpeedOverride` | `int` | This animal's speed, instead of the default 2.|
 | `TextureOverrides` | `List<AppearanceData>` | What texture overrides to use for this animal instead of their `Texture`, `HarvestedTexture`, or `BabyTexture` field. This is a list of `AppearanceData` objects, where the first matching one will be selected|
 | `IsAttackAnimal` | `bool` | Whether this animal will attempt to attack the farmer by chasing them and dealing damage on contact.|
-| `AttackDamage` | `int` | The amount of damage dealt (default 1).|
+| `AttackDamage` | `int` | The amount of damage dealt (default 1). If negative, this will *heal* instead.|
 | `AttackIntervalMs` | `int` | The minimum interval between attacks in milliseconds (default 5000 aka 5 seconds).|
 | `AttackRange` | `int` | The maximum range chasing range (default 10 tiles).|
 | `AttackMaxChaseTimeMs` | `int` | How long to chase before the animal gets bored (default 10000 aka 10 seconds).|

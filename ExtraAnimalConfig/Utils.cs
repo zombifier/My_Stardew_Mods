@@ -304,10 +304,17 @@ public static class AnimalUtils {
           // RAWR!
           // Check the GSQ one last time in case it changed on the fly
           var context = GetGsqContext(animal, animal.currentLocation);
-          if (animalExtensionData.AttackDamage > 0
+          if (animalExtensionData.AttackDamage != 0
               && (animalExtensionData.AttackCondition is null || GameStateQuery.CheckConditions(animalExtensionData.AttackCondition, context))) {
-            animal.doEmote(12);
-            victim.takeDamage(animalExtensionData.AttackDamage, false, null);
+            if (animalExtensionData.AttackDamage < 0) {
+              animal.doEmote(20);
+              victim.health = Math.Min(victim.maxHealth, victim.health - animalExtensionData.AttackDamage);
+              victim.currentLocation.debris.Add(new Debris(-animalExtensionData.AttackDamage, victim.getStandingPosition(), Color.Lime, 1f, victim));
+              Game1.playSound("fairy_heal");
+            } else {
+              animal.doEmote(12);
+              victim.takeDamage(animalExtensionData.AttackDamage, false, null);
+            }
           }
           CurrentVictimDict.Remove(animal.myID.Value);
           LastAttackTimeDict[animal.myID.Value] = time.TotalGameTime.TotalMilliseconds;
@@ -672,7 +679,7 @@ public static class LightUtils {
       if (!animal.modData.ContainsKey(LightSourceIdKey)) {
         animal.modData[LightSourceIdKey] = LightSourceIdPrefix + animal.myID.Value;
       }
-      var color = Utility.StringToColor(animalExtensionData.GlowColor) ?? Color.White;
+      var color = Utility.StringToColor(animalExtensionData.SkinGlowColor.GetValueOrDefault(animal.skinID.Value ?? "UNKNOWN", animalExtensionData.GlowColor)) ?? Color.White;
       if (!location.hasLightSource(animal.modData[LightSourceIdKey])) {
         location.sharedLights.AddLight(new LightSource(
               animal.modData[LightSourceIdKey],

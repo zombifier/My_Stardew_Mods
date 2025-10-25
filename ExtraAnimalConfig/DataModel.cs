@@ -25,6 +25,7 @@ public class AnimalExtensionData {
   public bool IgnoreWinter = false;
   public string? IgnoreWinterCondition;
   public string? GlowColor = null;
+  public Dictionary<string, string> SkinGlowColor = new();
   public float GlowRadius = 10f;
   public int? SpeedOverride = null;
   public List<AppearanceData> TextureOverrides = [];
