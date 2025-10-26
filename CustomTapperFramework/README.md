@@ -501,6 +501,7 @@ Additionally, the following GSQs can be used in (and only in) the asset above:
 | `selph.CustomTapperFramework_IS_IN_POT` | Whether the crop is in an indoor pot. Water planters are not considered pots.|
 | `selph.CustomTapperFramework_IS_FULLY_GROWN` | Whether the crop is fully grown.|
 | `selph.CustomTapperFramework_CURRENT_CROP_PHASE <phase>` | Whether the crop's current phase is the target value.|
+| `selph.CustomTapperFramework_IS_PADDY_CROP_NEAR_PADDY` | (NOTE: NOT RELEASED YET) Whether the crop is a paddy crop and is near water for the paddy bonus.|
 
 ### Example
 
