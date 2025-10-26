@@ -1,7 +1,7 @@
 {
   "Name": "ExtraMachineConfig",
   "Author": "selph",
-  "Version": "1.17.5",
+  "Version": "1.17.6",
   "Description": "Add extra functionalities to machine artisan recipes and other misc data structures.",
   "UniqueID": "selph.ExtraMachineConfig",
   "EntryDll": "ExtraMachineConfig.dll",

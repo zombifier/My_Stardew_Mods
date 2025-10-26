@@ -27,20 +27,23 @@ public class AutomatePatcher {
         foreach (var item in chest.Items) {
           if (item is not null) {
             __result = ModEntry.Helper.Reflection.GetMethod(__instance, "GetTracked")
-              .Invoke<object>(item, (Item _) => {
-                chest.Items.Remove(item);
-                if (chest.Items.Count == 0) {
-                  machine.heldObject.Value.heldObject.Value = null;
-                  if (machine.heldObject.Value.QualifiedItemId == MachineHarmonyPatcher.HolderQualifiedId) {
-                    var item = machine.heldObject.Value;
-                    machine.heldObject.Value = null;
-                    machine.readyForHarvest.Value = false;
-                    machine.showNextIndex.Value = false;
-                    machine.ResetParentSheetIndex();
-                    ModEntry.Helper.Reflection.GetMethod(__instance, "OnOutputCollected").Invoke(item);
+              .Invoke<object>(item, (object trackedStacks, Item _) => {
+                bool empty = ModEntry.Helper.Reflection.GetProperty<int>(trackedStacks, "Count").GetValue() <= 0;
+                if (empty) {
+                  chest.Items.Remove(item);
+                  if (chest.Items.Count == 0) {
+                    machine.heldObject.Value.heldObject.Value = null;
+                    if (machine.heldObject.Value.QualifiedItemId == MachineHarmonyPatcher.HolderQualifiedId) {
+                      var item = machine.heldObject.Value;
+                      machine.heldObject.Value = null;
+                      machine.readyForHarvest.Value = false;
+                      machine.showNextIndex.Value = false;
+                      machine.ResetParentSheetIndex();
+                      ModEntry.Helper.Reflection.GetMethod(__instance, "OnOutputCollected").Invoke(item);
+                    }
                   }
                 }
-              });
+              }, null);
             return;
           }
         }
