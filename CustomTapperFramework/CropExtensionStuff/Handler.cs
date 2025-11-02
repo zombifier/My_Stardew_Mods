@@ -132,6 +132,8 @@ static class CropExtensionHandler {
     }
   }
 
+  static List<Item> ExtraDrops = new();
+
   static void OnCropHarvested(ICropHarvestedEvent e) {
     var context = GetGsqContext(e.crop, Game1.player);
     var iqContext = GetIqContext(e.crop);
@@ -167,13 +169,7 @@ static class CropExtensionHandler {
             if (entry.CopyColor && e.produce is ColoredObject coloredProduce && ColoredObject.TrySetColor(item, coloredProduce.color.Value, out var newColoredItem)) {
               item = newColoredItem;
             }
-            for (int i = 0; i < item.Stack; i++) {
-              if (e.junimo is null) {
-                Game1.createItemDebris(item.getOne(), new Vector2(e.crop.tilePosition.X * 64 + 32, e.crop.tilePosition.Y * 64 + 32), -1);
-              } else {
-                e.junimo.tryToAddItemToHut(item.getOne());
-              }
-            }
+            ExtraDrops.Add(item);
           }
         }
       }
@@ -185,9 +181,19 @@ static class CropExtensionHandler {
     var c = harvestedCrop;
     harvestedCrop = null;
     if (__instance != c) {
+      ExtraDrops.Clear();
       return;
     }
-    harvestedCrop = null;
+    foreach (var item in ExtraDrops) {
+      for (int i = 0; i < item.Stack; i++) {
+        if (junimoHarvester is null) {
+          Game1.createItemDebris(item.getOne(), new Vector2(soil.Tile.X * 64 + 32, soil.Tile.Y * 64 + 32), -1);
+        } else {
+          junimoHarvester.tryToAddItemToHut(item.getOne());
+        }
+      }
+    }
+    ExtraDrops.Clear();
     if (GetCropDataFor(__instance, out var data, out var defaultData)) {
       if (__instance.RegrowsAfterHarvest()
           && (data?.RegrowSpeedModifiers ?? defaultData?.RegrowSpeedModifiers) is { } regrowSpeedModifiers) {

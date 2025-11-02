@@ -692,6 +692,27 @@ public class HarmonyPatcher {
         new CodeInstruction(OpCodes.Ldarg_S, 5),
         new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatcher), nameof(HarmonyPatcher.RunCropHarvestedEvents)))
     );
+
+    matcher.Start()
+      .MatchStartForward(
+          new CodeMatch(OpCodes.Ldc_I4_1),
+          new CodeMatch(OpCodes.Stloc_0)
+          )
+      .ThrowIfNotMatch($"Could not find 1st success entry point for {nameof(Crop_harvest_Transpiler)}")
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Ldarg_0),
+        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatcher), nameof(HarmonyPatcher.NotifyCropExtensionHandler)))
+        )
+      .Advance(3)
+      .MatchStartForward(
+          new CodeMatch(OpCodes.Ldc_I4_1),
+          new CodeMatch(OpCodes.Stloc_0)
+          )
+      .ThrowIfNotMatch($"Could not find 2nd success entry point for {nameof(Crop_harvest_Transpiler)}")
+      .InsertAndAdvance(
+        new CodeInstruction(OpCodes.Ldarg_0),
+        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatcher), nameof(HarmonyPatcher.NotifyCropExtensionHandler)))
+        );
     //foreach (var i in matcher.InstructionEnumeration()) {
     //  ModEntry.StaticMonitor.Log($"{i.opcode} {i.operand}", LogLevel.Alert);
     //}
@@ -700,7 +721,11 @@ public class HarmonyPatcher {
 
   static void RunCropHarvestedEvents(Crop crop, ref Item produce, ref int count, bool isExtraDrops, JunimoHarvester? junimo, bool isForcedScytheHarvest) {
     ModEntry.ModApi.RunCropHarvestedEvents(crop, ref produce, ref count, isExtraDrops, junimo, isForcedScytheHarvest);
-    // Also hijack this to pass the fact that the crop was harvested to the handlers
+  }
+
+  // If harvest was successful, set harvestedCrop so it runs post-harvest events
+  // TODO: Maybe convert this to a proper post-harvest event handler
+  static void NotifyCropExtensionHandler(Crop crop) {
     CropExtensionHandler.harvestedCrop = crop;
   }
 

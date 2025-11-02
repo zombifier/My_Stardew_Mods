@@ -17,6 +17,7 @@ static class CropExtensionDelegates {
     GameStateQuery.Register($"{ModEntry.UniqueId}_IS_FULLY_GROWN", IS_FULLY_GROWN);
     GameStateQuery.Register($"{ModEntry.UniqueId}_IS_IN_POT", IS_IN_POT);
     GameStateQuery.Register($"{ModEntry.UniqueId}_CURRENT_CROP_PHASE", CURRENT_CROP_PHASE);
+    GameStateQuery.Register($"{ModEntry.UniqueId}_IS_PADDY_CROP_NEAR_PADDY", IS_PADDY_CROP_NEAR_PADDY);
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_ResetGrowDays", ResetGrowDays);
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_KillCrop", KillCrop);
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_DestroyCrop", DestroyCrop);
@@ -103,6 +104,17 @@ static class CropExtensionDelegates {
       return GameStateQuery.Helpers.ErrorResult(query, "Error: Called outside of crop extension data?");
     }
     return dirt.crop?.currentPhase.Value == currentPhase;
+  }
+
+  static bool IS_PADDY_CROP_NEAR_PADDY(string[] query, GameStateQueryContext context) {
+    if (context.CustomFields?.TryGetValue("Tile", out var obj) is null or false
+        || obj is not Vector2 tile
+        || context.CustomFields?.TryGetValue("Dirt", out var obj2) is null or false
+        || obj2 is not HoeDirt dirt
+        ) {
+      return GameStateQuery.Helpers.ErrorResult(query, "Error: Called outside of crop extension data?");
+    }
+    return dirt.paddyWaterCheck();
   }
 
   //static bool IS_CROP(string[] query, GameStateQueryContext context) {
