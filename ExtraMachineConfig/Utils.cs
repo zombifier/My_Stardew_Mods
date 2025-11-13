@@ -137,7 +137,8 @@ static class Utils {
     if (colorValues.Count == 3) {
       return new Color(colorValues[0], colorValues[1], colorValues[2]);
     }
-    return null;
+    // Fallback
+    return Utility.StringToColor(colorStr);
   }
 
   // Returns the flavor, or null if not found.

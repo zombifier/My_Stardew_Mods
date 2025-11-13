@@ -67,6 +67,7 @@ sealed class MachineHarmonyPatcher {
   internal static string ExtraPreserveIdKeyPrefix = $"{ModEntry.UniqueId}.ExtraPreserveId";
   internal static string ExtraColorKeyPrefix = $"{ModEntry.UniqueId}.ExtraColor";
   internal static string IsHatchedSlime = $"{ModEntry.UniqueId}.IsHatchedSlime";
+  internal static string HarvestActionRun = $"{ModEntry.UniqueId}.HarvestActionRun";
   // on machines
   internal static string AutomaticProduceCountRemainingKey = $"{ModEntry.UniqueId}.AutomaticProduceCountRemaining";
   //internal static string TriggerActionToRunWhenReady = $"{ModEntry.UniqueId}.TriggerActionToRunWhenReady";
@@ -84,6 +85,7 @@ sealed class MachineHarmonyPatcher {
   internal static string SlingshotExplosiveRadius = $"{ModEntry.UniqueId}.SlingshotExplosiveRadius";
   internal static string SlingshotExplosiveDamage = $"{ModEntry.UniqueId}.SlingshotExplosiveDamage";
   internal static string SlimeColorToHatch = $"{ModEntry.UniqueId}.SlimeColorToHatch";
+  internal static string DyeColorOverride = $"{ModEntry.UniqueId}.DyeColorOverride";
 
   // The ID of the holder item to get around the `Object` only limitation.
   internal static string HolderId = $"{ModEntry.UniqueId}.Holder";
@@ -178,13 +180,17 @@ sealed class MachineHarmonyPatcher {
           nameof(Farmer.GetItemReceiveBehavior)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.Farmer_GetItemReceiveBehavior_postfix)));
 
-    // Le color
+    // Backport some fixes from 1.6.16
 #if SDV1615
     harmony.Patch(
         original: AccessTools.DeclaredMethod(typeof(ItemQueryResolver),
           nameof(ItemQueryResolver.ApplyItemFields),
           new Type[] { typeof(ISalable), typeof(int), typeof(int), typeof(int), typeof(string), typeof(string), typeof(string), typeof(int), typeof(bool), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(List<QuantityModifier>), typeof(QuantityModifier.QuantityModifierMode), typeof(Dictionary<string, string>), typeof(ItemQueryContext), typeof(Item) }),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.ItemQueryResolver_ApplyItemFields_postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(Item),
+          nameof(Item.CopyFieldsFrom)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(Item_CopyFieldsFrom_Postfix)));
 #endif
 
     harmony.Patch(
@@ -255,6 +261,11 @@ sealed class MachineHarmonyPatcher {
     catch (Exception e) {
       ModEntry.StaticMonitor.Log("Error when transpiling: " + e.ToString(), LogLevel.Error);
     }
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ItemContextTagManager),
+          nameof(ItemContextTagManager.GetColorFromTags)),
+        prefix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(ItemContextTagManager_GetColorFromTags_Prefix)));
 
   }
 
@@ -751,12 +762,18 @@ sealed class MachineHarmonyPatcher {
     return matcher.InstructionEnumeration();
   }
 
+  static bool HaventRunHarvestAction(SObject machine) {
+    return machine.heldObject.Value?.modData.ContainsKey(HarvestActionRun) is true;
+  }
+
   static void SObject_onReadyForHarvest_Postfix(SObject __instance, ref MachineEffects ____machineAnimation, ref bool ____machineAnimationLoop, ref int ____machineAnimationIndex, ref int ____machineAnimationFrame, ref int ____machineAnimationInterval) {
-    if (__instance.GetMachineData()?.CustomFields?.TryGetValue(TriggerActionToRunWhenReady, out var action) ?? false) {
+    if (__instance.GetMachineData()?.CustomFields?.TryGetValue(TriggerActionToRunWhenReady, out var action) ?? false
+        && !HaventRunHarvestAction(__instance)) {
       if (!TriggerActionManager.TryRunAction(action, out string error, out Exception ex)) {
         ModEntry.StaticMonitor.Log($"Failed running action '{action}' after machine is ready: {error} (exception: {ex})",
             LogLevel.Warn);
       }
+      __instance.heldObject.Value?.modData.Add(HarvestActionRun, "true");
     }
     if (__instance.modData.TryGetValue(TriggerActionToRunWhenReady, out var action2)) {
       if (!TriggerActionManager.TryRunAction(action2, out string error, out Exception ex)) {
@@ -771,7 +788,7 @@ sealed class MachineHarmonyPatcher {
       if (location.canSlimeHatchHere()) {
         GreenSlime? greenSlime = null;
         Vector2 position = new Vector2((int)__instance.TileLocation.X, (int)__instance.TileLocation.Y + 1) * 64f;
-        switch (__instance.heldObject.Value.QualifiedItemId) {
+        switch (__instance.heldObject.Value?.QualifiedItemId) {
           case "(O)680":
             greenSlime = new GreenSlime(position, 0);
             break;
@@ -1067,5 +1084,21 @@ sealed class MachineHarmonyPatcher {
         !Game1.random.NextBool(GetPrismaticJellyFromHatchedSlimesChance())) {
       __result.RemoveWhere(item => item.QualifiedItemId == "(O)876");
     }
+  }
+
+  static bool ItemContextTagManager_GetColorFromTags_Prefix(Item item, ref Color? __result) {
+    if (Game1.objectData.TryGetValue(item.ItemId, out var objectData)
+        && objectData.CustomFields?.TryGetValue(DyeColorOverride, out var dyeColorStr) is true) {
+      var color = Utils.stringToColor(dyeColorStr);
+      if (color is not null) {
+        __result = color;
+        return false;
+      }
+    }
+    return true;
+  }
+
+  static void Item_CopyFieldsFrom_Postfix(Item __instance, Item source) {
+    __instance.Stack = source.Stack;
   }
 }

@@ -25,6 +25,7 @@ content packs. For users, install the mod as usual from the link above.
       + [Use item queries in add item trigger action](#use-item-queries-in-add-item-trigger-action)
       + [On buff removed trigger](#on-buff-removed-trigger)
       + [Custom slime eggs (including prismatic slime eggs)](#custom-slime-eggs-including-prismatic-slime-eggs)
+      + [Override dye color for an item](#override-dye-color-for-an-item)
    * [Machine Features](#machine-features)
       + [Passive features/fixes](#passive-features-fixes)
       + [Adding additional fuel for a specific recipe](#adding-additional-fuel-for-a-specific-recipe)
@@ -112,7 +113,7 @@ released) is only available in machine rules, or if you use the modded
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.ExtraPreserveId.1` | The unqualified ID of the extra flavor, aside from the primary one. To add more flavors, add another field with the number incremented. With these flavors, the item's display name can contain the `%EXTRA_PRESERVED_DISPLAY_NAME_1` macro (and `_2`, and `_3`, etc.), which will be replaced with the flavor's display name.|
-| `selph.ExtraMachineConfig.ExtraColor.1` | The extra color, formatted as three numbers separated by commas corresponding to the RGB values (e.g. `"255,120,20"`). The sprite two spaces (or three, or four for any additional colors) from the item's primary sprite will be used as the color mask, just like how the immediate next sprite is used for the main color. To add more colors, add another field with the number incremented.|
+| `selph.ExtraMachineConfig.ExtraColor.1` | The extra color, formatted as either the vanilla [Color](https://stardewvalleywiki.com/Modding:Common_data_field_types#Color) format, or three numbers separated by commas corresponding to the RGB values (e.g. `"255,120,20"`). The sprite two spaces (or three, or four for any additional colors) from the item's primary sprite will be used as the color mask, just like how the immediate next sprite is used for the main color. To add more colors, add another field with the number incremented.|
 
 See below for how to copy the fuel's colors into the output for machine rules.
 
@@ -217,6 +218,16 @@ These works with [custom slime incubators](#custom-slime-incubators)!
 
 ---
 
+### Override dye color for an item
+
+Set this in object data `CustomFields`:
+
+| Field Name                         | Description              |
+| ---------------------------------- | ------------------------ |
+| `selph.ExtraMachineConfig.DyeColorOverride` | A string that corresponds to a vanilla [Color](https://stardewvalleywiki.com/Modding:Common_data_field_types#Color), or a comma-separated RGB values (e.g. `"255,128,64"`). This color will be used as the item color (such as when making juice or jelly) instead of the color from its `color_` tag. It's still highly recommended you set a `color_` tag, ideally the nearest vanilla color.|
+
+---
+
 ## Machine Features
 Unless otherwise specified, this mod reads extra data defined the [`CustomData`
 field in
@@ -227,7 +238,8 @@ for each recipe, or even each output in the case of multiple possible outputs.
 
 ### Passive features/fixes
 * Non-objects (eg hats, rings, clothing) can now be used as machine input.
-* Item queries `ObjectColor` and machine rules' `CopyColor` now works to dye shirts.
+* (also fixed in SDV 1.6.16) Item queries `ObjectColor` and machine rules' `CopyColor` now works to dye shirts.
+* (also fixed in SDV 1.6.16) Item queries `ObjectColor` and machine rules' `CopyColor` no longer resets stack count to 1.
 
 ----
 

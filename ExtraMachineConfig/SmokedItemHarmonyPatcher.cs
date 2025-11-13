@@ -97,7 +97,7 @@ sealed class SmokedItemHarmonyPatcher {
           (transparency == 1f && colorOverride.A < byte.MaxValue) ? ((float)(int)colorOverride.A / 255f) : transparency);
     }
     drawExtraColors(__instance, spriteBatch, location, scaleSize, layerDepth,
-          (transparency == 1f && colorOverride.A < byte.MaxValue) ? ((float)(int)colorOverride.A / 255f) : transparency, __state);
+          (transparency == 1f && colorOverride.A < byte.MaxValue) ? ((float)(int)colorOverride.A / 255f) : transparency, __state, drawStackNumber, colorOverride);
   }
 
   private static void Object_drawWhenHeld_postfix(StardewValley.Object __instance, ParsedItemData? __state, SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f) {
@@ -180,7 +180,7 @@ sealed class SmokedItemHarmonyPatcher {
     spriteBatch.Draw(Game1.mouseCursors, location + new Vector2(48f, 21f) * scaleSize + new Vector2(0f, (float)((0.0 - (Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)(num2 * 2))) % 2000.0) * 0.03f), new Microsoft.Xna.Framework.Rectangle(372, 1956, 10, 10), Color.White * transparency * 0.53f * (1f - (float)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)(num2 * 2)) % 2000.0) / 2000f), (float)((0.0 - (Game1.currentGameTime.TotalGameTime.TotalMilliseconds + (double)(num2 * 2))) % 2000.0) * 0.001f, vector * scaleSize, num / 2f, SpriteEffects.None, Math.Min(1f, layerDepth + 2E-05f));
   }
 
-  private static void drawExtraColors(Item item, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float layerDepth, float transparency = 1f, ParsedItemData? parsedItemData = null) {
+  private static void drawExtraColors(Item item, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float layerDepth, float transparency = 1f, ParsedItemData? parsedItemData = null, StackDrawType? drawStackNumber = null, Color? colorOverride = null) {
     Vector2 vector = new Vector2(8f, 8f);
     float num = 4f * scaleSize;
     ParsedItemData dataOrErrorItem = parsedItemData ?? ItemRegistry.GetDataOrErrorItem(item.QualifiedItemId);
@@ -193,11 +193,15 @@ sealed class SmokedItemHarmonyPatcher {
         Color color = Utils.stringToColor(val) ?? Color.White;
         // The first color mask is for the base color, so we add i to 1
         Microsoft.Xna.Framework.Rectangle sourceRect = dataOrErrorItem.GetSourceRect(i + 1, item.ParentSheetIndex);
-        spriteBatch.Draw(texture2D, location + new Vector2(32f, 32f) * scaleSize, sourceRect, color * transparency, 0f, vector * scaleSize, num, SpriteEffects.None, Math.Min(1f, layerDepth + 2E-05f));
+        spriteBatch.Draw(texture2D, location + new Vector2(32f, 32f) * scaleSize, sourceRect, color * transparency, 0f, vector * scaleSize, num, SpriteEffects.None, Math.Min(1f, layerDepth + 2E-05f + i * 2E-06F));
         i++;
       } else {
         break;
       }
+    }
+    if (i > 1 && drawStackNumber is not null && colorOverride is not null) {
+      // draw the icons again because the extra colors will overlap them
+      item.DrawMenuIcons(spriteBatch, location, scaleSize, transparency, layerDepth + 3E-05f, drawStackNumber.Value, colorOverride.Value);
     }
   }
 }
