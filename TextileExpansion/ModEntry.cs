@@ -258,7 +258,8 @@ internal sealed class ModEntry : Mod {
 
   // Don't allow sewing if over limit
   static bool TailoringMenu_IsValidCraft_Prefix(ref bool __result, Item left_item, Item right_item) {
-    if (ItemContextTagManager.HasBaseTag(right_item.QualifiedItemId, $"{ContentPackId}_clothing_template_item")
+    if (right_item is not null
+        && ItemContextTagManager.HasBaseTag(right_item.QualifiedItemId, $"{ContentPackId}_clothing_template_item")
         && DailyTailor.Value >= GetMaxTailor(Game1.player)) {
       __result = false;
       return false;

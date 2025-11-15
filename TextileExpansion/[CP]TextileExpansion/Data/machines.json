@@ -902,7 +902,7 @@
                   "PreserveId": "{{ModId}}_Leather",
                   "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
                   "ObjectInternalName": "{{ModId}}_Cloth {0}",
-                  "ObjectColor": "Brown",
+                  "ObjectColor": "#E8B57F",
                   "PriceModifiers": [
                     {
                       "Id": "Leather",
