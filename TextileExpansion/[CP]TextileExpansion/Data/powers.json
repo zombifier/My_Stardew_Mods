@@ -1,0 +1,20 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add objects",
+      "Action": "EditData",
+      "Target": "Data/Powers",
+      "Entries": {
+        "{{ModId}}_CouturierBonus": {
+          "DisplayName": "[{{CodeComponentId}}_CouturierName]",
+          "Description": "[{{CodeComponentId}}_CouturierDescription]",
+          "TexturePath": "selph.TextileExpansionCode/ProfessionIcon4",
+        },
+      },
+      "When": {
+        "selph.TextileExpansionCode/AnyPlayerHasCouturier": true,
+      },
+    }
+  ]
+}
+

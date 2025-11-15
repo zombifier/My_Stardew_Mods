@@ -1,0 +1,182 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add wild trees",
+      "Action": "EditData",
+      "Target": "Data/WildTrees",
+      "Entries": {
+        "{{ModId}}_BrazilwoodTree": {
+          "Textures": [
+            {
+              "Condition": null,
+              "Season": "Summer",
+              "Texture": "{{ModId}}/Brazilwood_summer"
+            },
+            {
+              "Condition": null,
+              "Season": "Fall",
+              "Texture": "{{ModId}}/Brazilwood_fall"
+            },
+            {
+              "Condition": null,
+              "Season": "Winter",
+              "Texture": "{{ModId}}/Brazilwood_winter"
+            },
+            {
+              "Condition": null,
+              "Season": null,
+              "Texture": "{{ModId}}/Brazilwood_spring"
+            }
+          ],
+          "SeedItemId": "(O){{ModId}}_BrazilwoodSeed",
+          "DropWoodOnChop": false,
+          "DropHardwoodOnLumberChop": true,
+          "SeedDropItems": [
+            {
+              "MinSize": "Tree",
+              "MaxSize": null,
+              "ForStump": false,
+              "Id": "(O){{ModId}}_LogWoodSeed",
+              "ItemId": "(O){{ModId}}_LogWoodSeed",
+              "Chance": 0.1,
+              "MinStack": 1,
+            },
+          ],
+          "ChopItems": [
+            {
+              "MinSize": "Tree",
+              "MaxSize": null,
+              "ForStump": false,
+              "Id": "(O)709",
+              "ItemId": "(O)709",
+              "MinStack": 3,
+              "MaxStack": 6,
+            },
+            {
+              "MinSize": "Tree",
+              "MaxSize": null,
+              "ForStump": false,
+              "Id": "(O){{ModId}}_Brazilwood",
+              "ItemId": "(O){{ModId}}_Brazilwood",
+              "MinStack": 4,
+              "MaxStack": 6,
+            },
+            {
+              "MinSize": "Tree",
+              "MaxSize": null,
+              "ForStump": false,
+              "Id": "(O){{ModId}}_LogWoodSeed",
+              "ItemId": "(O){{ModId}}_LogWoodSeed",
+              "Chance": 0.1,
+              "MinStack": 1,
+            },
+            {
+              "MinSize": null,
+              "MaxSize": null,
+              "ForStump": true,
+              "Id": "(O){{ModId}}_Brazilwood_Stump",
+              "ItemId": "(O){{ModId}}_Brazilwood",
+              "MinStack": 1,
+              "MaxStack": -1,
+            },
+          ],
+          "CustomFields": {
+						"UIInfoSuite.ExtendedData/DisplayName": "{{i18n:tree.Brazilwood.name}}",
+					},
+          "GrowsMoss": true,
+        },
+        "{{ModId}}_LogwoodTree": {
+          "Textures": [
+            {
+              "Condition": null,
+              "Season": "Summer",
+              "Texture": "{{ModId}}/Logwood_summer"
+            },
+            {
+              "Condition": null,
+              "Season": "Fall",
+              "Texture": "{{ModId}}/Logwood_fall"
+            },
+            {
+              "Condition": null,
+              "Season": "Winter",
+              "Texture": "{{ModId}}/Logwood_winter"
+            },
+            {
+              "Condition": null,
+              "Season": null,
+              "Texture": "{{ModId}}/Logwood_spring"
+            }
+          ],
+          "SeedItemId": "(O){{ModId}}_LogwoodSeed",
+          "GrowthChance": 0.15,
+          "FertilizedGrowthChance": 0.6,
+          "SeedSpreadChance": 0.0,
+          "SeedOnShakeChance": 0.0,
+          "SeedOnChopChance": 0.0,
+          "DropWoodOnChop": false,
+          "DropHardwoodOnLumberChop": true,
+          "ChopItems": [
+            {
+              "MinSize": "Tree",
+              "MaxSize": null,
+              "ForStump": false,
+              "Id": "(O)709",
+              "ItemId": "(O)709",
+              "MinStack": 3,
+              "MaxStack": 6,
+            },
+            {
+              "MinSize": "Tree",
+              "MaxSize": null,
+              "ForStump": false,
+              "Id": "(O){{ModId}}_Logwood",
+              "ItemId": "(O){{ModId}}_Logwood",
+              "MinStack": 2,
+              "MaxStack": 4,
+            },
+            {
+              "MinSize": null,
+              "MaxSize": null,
+              "ForStump": true,
+              "Id": "(O){{ModId}}_Logwood_Stump",
+              "ItemId": "(O){{ModId}}_Logwood",
+              "MinStack": 1,
+              "MaxStack": -1,
+            },
+          ],
+          "CustomFields": {
+						"UIInfoSuite.ExtendedData/DisplayName": "{{i18n:tree.Logwood.name}}",
+					},
+          "GrowsMoss": true,
+        },
+      },
+    },
+    {
+      "LogName": "Add green sap as green rain tree tap produce",
+      "Action": "EditData",
+      "Target": "Data/WildTrees",
+      "TargetField": ["10", "TapItems"],
+      "Entries": {
+        "{{ModId}}_GreenSap": {
+          "Id": "{{ModId}}_GreenSap",
+          "ItemId": "{{ModId}}_GreenSap",
+          "DaysUntilReady": 24,
+        }
+      }
+    },
+    {
+      "LogName": "Add green sap as green rain tree tap produce",
+      "Action": "EditData",
+      "Target": "Data/WildTrees",
+      "TargetField": ["11", "TapItems"],
+      "Entries": {
+        "{{ModId}}_GreenSap": {
+          "Id": "{{ModId}}_GreenSap",
+          "ItemId": "{{ModId}}_GreenSap",
+          "DaysUntilReady": 24,
+        }
+      }
+    },
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add new recipes",
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        // This learned in Emily's letter the day after the sewing machine cutscene
+        "{{ModId}}_DyePot": "390 50 335 2 766 30/Home/{{ModId}}_DyePot/true/none/",
+
+        "{{ModId}}_DyeOrange": "{{ModId}}_DyeRed 1 {{ModId}}_DyeYellow 1/Home/{{ModId}}_DyeOrange 2/false/selph.TextileExpansionCode_TextileSkill 1/",
+        "{{ModId}}_DyeGreen": "{{ModId}}_DyeYellow 1 {{ModId}}_DyeBlue 1/Home/{{ModId}}_DyeGreen 2/false/selph.TextileExpansionCode_TextileSkill 1/",
+        "{{ModId}}_DyePurple": "{{ModId}}_DyeBlue 1 {{ModId}}_DyeRed 1/Home/{{ModId}}_DyePurple 2/false/selph.TextileExpansionCode_TextileSkill 1/",
+        "{{ModId}}_DyePink": "{{ModId}}_DyeRed 1 {{ModId}}_DyeWhite 1/Home/{{ModId}}_DyePink 2/false/selph.TextileExpansionCode_TextileSkill 4/",
+        "{{ModId}}_DyeBrown": "{{ModId}}_DyeRed 1 {{ModId}}_DyeBlack 1/Home/{{ModId}}_DyeBrown 2/false/selph.TextileExpansionCode_TextileSkill 4/",
+        "{{ModId}}_DyeCyan": "{{ModId}}_DyeGreen 1 {{ModId}}_DyeBlue 1/Home/{{ModId}}_DyeCyan 2/false/selph.TextileExpansionCode_TextileSkill 4/",
+        "{{ModId}}_DyeGray": "{{ModId}}_DyeBlack 1 {{ModId}}_DyeWhite 1/Home/{{ModId}}_DyeGray 2/false/selph.TextileExpansionCode_TextileSkill 4/",
+
+        "{{ModId}}_SilkwormRack": "{{ModId}}_Silkworm 1 388 60 335 1/Home/{{ModId}}_SilkwormRack/true/selph.TextileExpansionCode_TextileSkill 3/",
+        "{{ModId}}_YarnSpinner": "388 60 771 30 726 1/Home/{{ModId}}_YarnSpinner/true/selph.TextileExpansionCode_TextileSkill 1/",
+      },
+    },
+  ]
+}

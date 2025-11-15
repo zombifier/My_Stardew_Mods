@@ -1,0 +1,106 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add trigger actions",
+      "Action": "EditData",
+      "Target": "Data/TriggerActions",
+      "Entries": {
+        "{{ModId}}_PierreNewSeeds": {
+          "Id": "{{ModId}}_PierreNewSeeds",
+          "Trigger": "DayStarted",
+          "Condition": "PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Action": "AddMail Current {{ModId}}_PierreNewSeeds Now",
+        },
+        "{{ModId}}_EmilyDyePotRecipe": {
+          "Id": "{{ModId}}_EmilyDyePotRecipe",
+          "Trigger": "DayStarted",
+          "Condition": "PLAYER_HAS_SEEN_EVENT Current 992559",
+          "Action": "AddMail Current {{ModId}}_EmilyDyePotRecipe Now",
+        },
+        "{{ModId}}_EmilyFreeDyes": {
+          "Id": "{{ModId}}_EmilyFreeDyes",
+          "Trigger": "DayStarted",
+          "Condition": "PLAYER_HAS_SEEN_EVENT Current 992559",
+          "Action": "AddMail Current {{ModId}}_EmilyFreeDyes Now",
+        },
+        "{{ModId}}_SandyDyeRare": {
+          "Id": "{{ModId}}_SandyDyeRare",
+          "Trigger": "DayStarted",
+          "Condition": "PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Current 9, PLAYER_FRIENDSHIP_POINTS Current Emily 1500, PLAYER_FRIENDSHIP_POINTS Current Sandy 1500",
+          "Action": "AddMail Current {{ModId}}_SandyDyeRare Now",
+        },
+        "{{ModId}}_SpawnNettle": {
+          "Id": "{{ModId}}_SpawnNettle",
+          "Trigger": "DayStarted",
+          "HostOnly": true,
+          "MarkActionApplied": false,
+          "Condition": "!SEASON winter",
+          "Actions": [
+            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Town",
+            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Mountain",
+            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle BusStop",
+            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Railroad",
+            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Backwoods",
+            //"If RANDOM 0.15, {{HasMod |contains=LemurKat.EastScarpe.CP}} ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle EastScarp_Village",
+          ],
+        },
+        "{{ModId}}_SpawnNettleSunday": {
+          "Id": "{{ModId}}_SpawnNettleSunday",
+          "Trigger": "DayStarted",
+          "HostOnly": true,
+          "MarkActionApplied": false,
+          "Condition": "!SEASON winter, DAY_OF_WEEK Sunday",
+          "Actions": [
+            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Town",
+            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Mountain",
+            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle BusStop",
+            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Railroad",
+            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Backwoods",
+            //"If RANDOM 0.15, {{HasMod |contains=LemurKat.EastScarpe.CP}} ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle EastScarp_Village",
+          ],
+        },
+        "{{ModId}}_SpawnSilkworm": {
+          "Id": "{{ModId}}_SpawnSilkworm",
+          "Trigger": "DayStarted",
+          "HostOnly": true,
+          "MarkActionApplied": false,
+          "Condition": "!SEASON winter, PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Any 3",
+          "Actions": [
+            "If RANDOM 0.15, {{HasMod |contains=FlashShifter.StardewValleyExpandedCP}} ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Custom_ForestWest",
+            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Forest",
+          ],
+        },
+        "{{ModId}}_SpawnSilkwormSunday": {
+          "Id": "{{ModId}}_SpawnSilkwormSunday",
+          "Trigger": "DayStarted",
+          "HostOnly": true,
+          "MarkActionApplied": false,
+          "Condition": "!SEASON winter, DAY_OF_WEEK Sunday, PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Any 3",
+          "Actions": [
+            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Forest",
+            "If RANDOM 0.2, {{HasMod |contains=FlashShifter.StardewValleyExpandedCP}} ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Custom_ForestWest",
+          ],
+        },
+        "{{ModId}}_SpawnCochinealBeetles": {
+          "Id": "{{ModId}}_SpawnCochinealBeetles",
+          "Trigger": "DayStarted",
+          "HostOnly": true,
+          "MarkActionApplied": false,
+          "Actions": [
+            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_CochinealBeetle Desert",
+          ],
+        },
+        "{{ModId}}_SpawnCochinealBeetlesSunday": {
+          "Id": "{{ModId}}_SpawnCochinealBeetlesSunday",
+          "Trigger": "DayStarted",
+          "HostOnly": true,
+          "MarkActionApplied": false,
+          "Condition": "DAY_OF_WEEK Sunday",
+          "Actions": [
+            "If RANDOM 0.25 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_CochinealBeetle Desert",
+          ],
+        },
+      }
+    },
+  ]
+}

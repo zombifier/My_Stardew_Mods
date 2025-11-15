@@ -1,0 +1,13 @@
+{
+  "Changes": [
+    {
+      "LogName": "Make Vapius cloth count as dyed",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["Lumisteria.MtVapius_Fabric_NightSilk", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      }
+    }
+  ]
+}

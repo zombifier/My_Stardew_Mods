@@ -1,0 +1,178 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add strings",
+      "Action": "EditData",
+      "Target": "Strings/Objects",
+      "Entries": {
+        "{{ModId}}_Clothing{{Clothing}}": "{{i18n: item.{{Clothing}}.name}}",
+      },
+    },
+    {
+      "LogName": "Add clothing-related objects",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}_Template{{Clothing}}": {
+          "Name": "{{ModId}}_Template{{Clothing}}",
+          "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Template {{i18n:item.{{Clothing}}.name}}]",
+          "Description": "{{i18n: item.ClothingTemplate.description.{{ClothOrYarnBase}}}}",
+          "Type": "Basic",
+          "Category": 0,
+          "Price": 0,
+          "Texture": "{{ModId}}/Objects3",
+          "SpriteIndex": "{{Query: {{SpriteIndex}} * 5}}",
+          "ContextTags": [
+            "{{ModId}}_clothing_template_item",
+          ],
+          "ExcludeFromShippingCollection": true,
+          "ExcludeFromRandomSale": true,
+        },
+        "{{ModId}}_Clothing{{Clothing}}": {
+          "Name": "{{ModId}}_Clothing{{Clothing}}",
+          "DisplayName": "{{i18n: item.{{Clothing}}.name}}",
+          "Description": "{{i18n: item.Clothing.description.canEmbroider.{{CanEmbroider}}}}",
+          "Type": "Basic",
+          "Category": -26,
+          "Price": 1000,
+          "Texture": "{{ModId}}/Objects3",
+          "SpriteIndex": "{{Query: {{SpriteIndex}} * 5 + 1}}",
+          "ContextTags": [
+            "{{ModId}}_clothing_item",
+            "{{ModId}}_base_clothing_item",
+            "{{ModId}}_textile_xp",
+          ],
+          "ExcludeFromShippingCollection": true,
+          "ExcludeFromRandomSale": true,
+          "CustomFields": {
+            "{{ModId}}_ClothingType": "{{Clothing}}",
+          },
+        },
+        "{{ModId}}_Clothing{{Clothing}}Embroidered": {
+          "Name": "{{ModId}}_Clothing{{Clothing}}Embroidered",
+          "DisplayName": "{{i18n: item.{{Clothing}}.name}}",
+          //"DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_EmbroideredClothing {{i18n:item.{{Clothing}}.name}}]",
+          "Description": "{{i18n: item.EmbroideredClothing.description.canJewel.{{CanJewel}}}}",
+          "Type": "Basic",
+          "Category": -26,
+          "Price": 2000,
+          "Texture": "{{ModId}}/Objects3",
+          "SpriteIndex": "{{Query: {{SpriteIndex}} * 5 + 1}}",
+          "ContextTags": [
+            "{{ModId}}_clothing_item",
+            "{{ModId}}_embroidered_clothing_item",
+            "{{ModId}}_textile_xp",
+            "{{ModId}}_half_textile_xp",
+          ],
+          "ExcludeFromShippingCollection": true,
+          "ExcludeFromRandomSale": true,
+          "CustomFields": {
+            "{{ModId}}_ClothingType": "{{Clothing}}",
+          },
+        },
+        "{{ModId}}_Clothing{{Clothing}}Jeweled": {
+          "Name": "{{ModId}}_Clothing{{Clothing}}Jeweled",
+          "DisplayName": "{{i18n: item.{{Clothing}}.name}}",
+          //"DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_JeweledClothing {{i18n:item.{{Clothing}}.name}}]",
+          "Description": "{{i18n: item.JeweledClothing.description}}",
+          "Type": "Basic",
+          "Category": -26,
+          "Price": 3000,
+          "Texture": "{{ModId}}/Objects3",
+          "SpriteIndex": "{{Query: {{SpriteIndex}} * 5 + 1}}",
+          "ContextTags": [
+            "{{ModId}}_clothing_item",
+            "{{ModId}}_jeweled_clothing_item",
+            "{{ModId}}_textile_xp",
+            "{{ModId}}_half_textile_xp",
+          ],
+          "ExcludeFromShippingCollection": true,
+          "ExcludeFromRandomSale": true,
+          "CustomFields": {
+            "{{ModId}}_ClothingType": "{{Clothing}}",
+          },
+        },
+      }
+    },
+    {
+      "LogName": "Add recipe for template items",
+      "Action": "EditData",
+      "Target": "Data/CraftingRecipes",
+      "Entries": {
+        "{{ModId}}_Template{{Clothing}}": "388 1/Home/{{ModId}}_Template{{Clothing}} 1/false/selph.TextileExpansionCode_TextileSkill {{UnlockLevel}}/",
+      },
+    },
+    {
+      "LogName": "Add tailoring rules",
+      "Action": "EditData",
+      "Target": "Data/TailoringRecipes",
+      "Entries": {
+        "{{ModId}}_{{Clothing}}": {
+          "Id": "{{ModId}}_{{Clothing}}",
+          "FirstItemTags": [
+            "{{ModId}}_dyed_{{ClothOrYarnBase}}_item",
+          ],
+          "SecondItemTags": [
+            "id_o_{{ModId}}_template{{Clothing}}",
+          ],
+          "SpendRightItem": true,
+          "CraftedItemId": "(O){{ModId}}_Clothing{{Clothing}}",
+        },
+      }
+    },
+    {
+      "LogName": "Add embroidered tailoring rules",
+      "Action": "EditData",
+      "Target": "Data/TailoringRecipes",
+      "Entries": {
+        "{{ModId}}_{{Clothing}}Embroidered": {
+          "Id": "{{ModId}}_{{Clothing}}Embroidered",
+          "FirstItemTags": [
+            "id_o_{{ModId}}_Clothing{{Clothing}}",
+          ],
+          "SecondItemTags": [
+            "{{ModId}}_dyed_yarn_item",
+          ],
+          "SpendRightItem": true,
+          "CraftedItemId": "(O){{ModId}}_Clothing{{Clothing}}Embroidered",
+        },
+      },
+      "When": {
+        "CanEmbroider": "true",
+      }
+    },
+    {
+      "LogName": "Add jeweled tailoring rules",
+      "Action": "EditData",
+      "Target": "Data/TailoringRecipes",
+      "Entries": {
+        "{{ModId}}_{{Clothing}}Jeweled": {
+          "Id": "{{ModId}}_{{Clothing}}Jeweled",
+          "FirstItemTags": [
+            "id_o_{{ModId}}_Clothing{{Clothing}}Embroidered",
+          ],
+          "SecondItemTags": [
+            "category_gem",
+          ],
+          "SpendRightItem": true,
+          "CraftedItemId": "(O){{ModId}}_Clothing{{Clothing}}Jeweled",
+        },
+      },
+      "When": {
+        "CanJewel": "true",
+      },
+    },
+    {
+      "LogName": "Add tag for ignores gift limit",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["{{ModId}}_Clothing{{Clothing}}Jeweled", "ContextTags"],
+      "Entries": {
+        "ignore_gift_limits": "ignore_gift_limits",
+      },
+      "When": {
+        "selph.TextileExpansionCode/PlayerHasOutfitter": true,
+      },
+    },
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add crops",
+      "Action": "EditData",
+      "Target": "Data/Crops",
+      "Entries": {
+        "{{ModId}}_FlaxSeeds": {
+          "Seasons": [
+            "Spring",
+          ],
+          "DaysInPhase": [
+            1,
+            4,
+            4,
+            3,
+          ],
+          "HarvestItemId": "{{ModId}}_Flax",
+          "HarvestMethod": "Scythe",
+          "Texture": "{{ModId}}/Crops",
+          "SpriteIndex": 0,
+        },
+        "{{ModId}}_HempSeeds": {
+          "Seasons": [
+            "Summer",
+          ],
+          "DaysInPhase": [
+            1,
+            3,
+            3,
+            2,
+          ],
+          "HarvestItemId": "{{ModId}}_Hemp",
+          "HarvestMethod": "Scythe",
+          "Texture": "{{ModId}}/Crops",
+          "SpriteIndex": 1,
+        },
+        "{{ModId}}_MadderRootsSeeds": {
+          "Seasons": [
+            "Spring",
+            "Fall",
+          ],
+          "DaysInPhase": [
+            1,
+            2,
+            3,
+            2,
+          ],
+          "HarvestItemId": "{{ModId}}_MadderRoots",
+          "Texture": "{{ModId}}/Crops",
+          "SpriteIndex": 2,
+        },
+        "{{ModId}}_SafflowerSeeds": {
+          "Seasons": [
+            "Summer",
+          ],
+          "DaysInPhase": [
+            1,
+            1,
+            2,
+            2,
+          ],
+          "HarvestItemId": "{{ModId}}_Safflower",
+          "Texture": "{{ModId}}/Crops",
+          "SpriteIndex": 3,
+        },
+        "{{ModId}}_IndigoSeeds": {
+          "Seasons": [
+            "Spring",
+            "Summer",
+            "Fall",
+            "Winter"
+          ],
+          "DaysInPhase": [
+            1,
+            4,
+            4,
+            3,
+          ],
+          "RegrowDays": 3,
+          "HarvestItemId": "{{ModId}}_Indigo",
+          "PlantableLocationRules": [
+            {
+              "Id": "NotOutsideUnlessGingerIsland",
+              "Condition": "LOCATION_IS_OUTDOORS Here, !LOCATION_CONTEXT Here Island",
+              "PlantedIn": "Any",
+              "Result": "Deny",
+              "DeniedMessage": "[LocalizedText Strings\\Objects:CactusSeedsOutside]"
+            }
+          ],
+          "Texture": "{{ModId}}/Crops",
+          "SpriteIndex": 4,
+        },
+      }
+    },
+    {
+      "LogName": "Add extra drops",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/CropExtensionData",
+      "Fields": {
+        "{{ModId}}_FlaxSeeds": {
+          "ExtraDrops": [
+            {
+              "Id": "Seeds",
+              "ItemId": "(O){{ModId}}_FlaxSeeds",
+              "MaxStack": 2,
+              "Condition": "RANDOM 0.666",
+            },
+          ],
+        },
+        "{{ModId}}_HempSeeds": {
+          "ExtraDrops": [
+            {
+              "Id": "Seeds",
+              "ItemId": "(O){{ModId}}_HempSeeds",
+              "MaxStack": 3,
+            },
+          ],
+        },
+      },
+    },
+    {
+      "LogName": "Add extra drops for cactus",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/CropExtensionData",
+      "TargetField": ["802", "ExtraDrops"],
+      "Entries": {
+        "{{ModId}}_CochinealBeetle": {
+          "Id": "{{ModId}}_CochinealBeetle",
+          "ItemId": "(O){{ModId}}_CochinealBeetle",
+          "Condition": "RANDOM 0.05",
+        },
+      },
+    },
+    {
+      "LogName": "Buff cotton a little bit",
+      "Action": "EditData",
+      "Target": "Data/Crops",
+      "TargetField": ["Cornucopia_CottonBollSeeds"],
+      "Entries": {
+        "ExtraHarvestChance": 0.17,
+      },
+    },
+  ]
+}

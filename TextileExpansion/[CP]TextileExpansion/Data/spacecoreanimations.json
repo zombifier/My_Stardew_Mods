@@ -1,0 +1,17 @@
+{
+  "Changes": [
+    {
+      "LogName": "Animate empty silkworm rack",
+      "Action": "EditData",
+      "Target": "spacechase0.SpaceCore/TextureOverrides",
+      "Entries": {
+        "{{ModId}}_AnimateSilkwormRack": {
+          "TargetTexture": "{{ModId}}/BigCraftables",
+          "TargetRect": {"X" : 0, "Y": 64, "Width": 16, "Height": 32},
+          "SourceTexture": "{{ModId}}/BigCraftables:12@60,{{ModId}}/BigCraftables:14@60",
+          "ChancePerTick": 1,
+        }
+      }
+    },
+  ]
+}

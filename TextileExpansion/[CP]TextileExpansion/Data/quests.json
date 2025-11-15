@@ -1,0 +1,12 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add new quests",
+      "Action": "EditData",
+      "Target": "Data/Quests",
+      "Entries": {
+        "{{ModId}}_EmilyDyedCloth": "Basic/{{i18n:quest.EmilyDyedCloth.name}}/{{i18n:quest.EmilyDyedCloth.description}}/{{i18n:quest.EmilyDyedCloth.objective}}/-1/-1/1000/-1/false",
+      },
+    },
+  ]
+}

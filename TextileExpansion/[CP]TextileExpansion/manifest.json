@@ -1,0 +1,25 @@
+{
+  "Name": "Cloths and Colors",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "An artisan good expansion focused on textiles, dyes and clothing, with a new sewing skill.",
+  "UniqueID": "selph.TextileExpansion",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {"UniqueID": "selph.ExtraMachineConfig", "IsRequired": true},
+    {"UniqueID": "selph.TextileExpansionCode", "IsRequired": true},
+    {"UniqueID": "selph.CustomTapperFramework", "IsRequired": true},
+    {"UniqueID": "selph.ExtraAnimalConfig", "IsRequired": false},
+    {"UniqueID": "Cornucopia.MoreCrops", "IsRequired": false},
+    {"UniqueID": "Cornucopia.GrowableForage", "IsRequired": false},
+    {"UniqueID": "FlashShifter.StardewValleyExpandedCP", "IsRequired": false},
+    {"UniqueID": "appleseed.BCP", "IsRequired": false},
+    {"UniqueID": "skellady.SBVCP", "IsRequired": false},
+    {"UniqueID": "Lumisteria.MtVapius", "IsRequired": false},
+    {"UniqueID": "ZoeyHoshi.Camelus", "IsRequired": false},
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "UpdateKeys": ["Nexus:???"],
+}

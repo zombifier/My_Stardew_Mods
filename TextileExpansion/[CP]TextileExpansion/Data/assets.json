@@ -1,0 +1,27 @@
+{
+  "Changes": [
+    {
+      "Action": "Load",
+      "Target": "{{ModId}}/Objects,{{ModId}}/Objects2,{{ModId}}/Objects3,{{ModId}}/BigCraftables,{{ModId}}/Crops,{{ModId}}/FruitTrees",
+      "FromFile": "Assets/{{TargetWithoutPath}}.png",
+    },
+    {
+      "Action": "Load",
+      "Target": "{{ModId}}/Brazilwood_spring,{{ModId}}/Brazilwood_summer,{{ModId}}/Brazilwood_fall,{{ModId}}/Brazilwood_winter,{{ModId}}/Logwood_spring,{{ModId}}/Logwood_summer,{{ModId}}/Logwood_fall,{{ModId}}/Logwood_winter",
+      "FromFile": "Assets/{{TargetWithoutPath}}.png",
+    },
+    //{
+    //  "Action": "Load",
+    //  "Target": "{{ModId}}/SkillIcon,{{ModId}}/SkillPageIcon,{{ModId}}/ProfessionIcon0,{{ModId}}/ProfessionIcon1,{{ModId}}/ProfessionIcon2,{{ModId}}/ProfessionIcon3,{{ModId}}/ProfessionIcon4,{{ModId}}/ProfessionIcon5",
+    //  "FromFile": "Assets/{{TargetWithoutPath}}.png",
+    //},
+    {
+      "Action": "Load",
+      "Target": "Cornucopia.MoreCrops/Objects,Cornucopia.MoreCrops/Crops",
+      "FromFile": "Assets/Cornucopia/{{TargetWithoutPath}}.png",
+      "When": {
+        "HasMod |contains=Cornucopia.MoreCrops": "false",
+      }
+    },
+  ]
+}

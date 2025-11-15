@@ -1,0 +1,102 @@
+{
+	"Changes": [
+		{
+			"Action": "EditData",
+			"Target": "Data/Objects",
+			"Entries": {
+				"Cornucopia_CottonBoll": {
+					"Name": "Cornucopia_CottonBoll",
+					"Type": "Forage",
+					"Category": -81,
+					"SpriteIndex": 14,
+					"DisplayName": "{{i18n:item.CottonBoll.name}}",
+					"Description": "{{i18n:item.CottonBoll.description}}",
+					"Texture": "Cornucopia.MoreCrops/Objects",
+					"Price": 80,
+					"Edibility": -300,
+					"ContextTags": [
+						"color_white",
+						"season_fall",
+						"season_summer",
+						"cornucopia_crop_produce",
+						"cornucopia_rarity_rare",
+						"cornucopia_pack_essential",
+						"modid_cornucopia.morecrops",
+						"cotton_item"
+					],
+				},
+				"Cornucopia_CottonBollSeeds": {
+					"Name": "Cornucopia_CottonBollSeeds",
+					"Type": "Seed",
+					"Category": -74,
+					"SpriteIndex": 15,
+					"DisplayName": "{{i18n:item.CottonBollSeeds.name}}",
+					"Description": "{{i18n:item.CottonBollSeeds.description}}",
+					"Texture": "Cornucopia.MoreCrops/Objects",
+					"Price": 100,
+					"ContextTags": [
+						"cornucopia_crop_seed",
+						"cornucopia_rarity_rare",
+						"cornucopia_pack_essential",
+						"cornucopia_season_summer",
+						"cornucopia_season_fall",
+						"cornucopia_shop_pierre",
+						"modid_cornucopia.morecrops"
+					]
+				},
+      },
+    },
+		{
+			"Action": "EditData",
+			"Target": "Data/Crops",
+			"Entries": {
+				"Cornucopia_CottonBollSeeds": {
+					"Seasons": [ "summer", "fall" ],
+					"DaysInPhase": [ 1, 1, 2, 2, 2 ],
+					"HarvestItemId": "Cornucopia_CottonBoll",
+					"Texture": "Cornucopia.MoreCrops/Crops",
+					"SpriteIndex": 28,
+					"RegrowDays": 2,
+					"HarvestMinStack": 1,
+					"HarvestMaxStack": 1,
+					"ExtraHarvestChance": 0.1,
+				},
+			}
+		},
+		{
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [
+				"(BC)17",
+				"OutputRules"
+			],
+			"Entries": {
+				"Cornucopia_CottonCloth": {
+					"Id": "Cornucopia_CottonCloth",
+					"Triggers": [
+						{
+							"RequiredItemId": "(O)Cornucopia_CottonBoll",
+							"RequiredCount": 3
+						}
+					],
+					"OutputItem": [
+						{
+							"ItemId": "(O)428",
+							"StackModifiers": [
+								{
+									"Id": "DoubleQuality",
+									"Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+									"Modification": 2,
+									"Amount": 2.0,
+									"RandomAmount": null
+								}
+							]
+						}
+					],
+					"MinutesUntilReady": 240,
+					"InvalidCountMessage": "{{i18n: machine.YarnSpinner.invalidCountCotton}}"
+				}
+			}
+		}
+  ]
+}

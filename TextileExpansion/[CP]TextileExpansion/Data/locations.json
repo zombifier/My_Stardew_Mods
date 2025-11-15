@@ -1,0 +1,107 @@
+{
+  // UNUSED!!! This is the old vanilla method
+  "Changes": [
+    {
+      "LogName": "Silkworm Forest",
+      "Action": "Include",
+      "FromFile": "Data/location_forage_template.json",
+      "LocalTokens": {
+        "ItemId": "{{ModId}}_Silkworm",
+        "LocationName": "Forest",
+        "Chance": 0.2,
+        "Condition": "!SEASON Winter",
+      },
+    },
+    {
+      "LogName": "Silkworm Woods",
+      "Action": "Include",
+      "FromFile": "Data/location_forage_template.json",
+      "LocalTokens": {
+        "ItemId": "{{ModId}}_Silkworm",
+        "LocationName": "Woods",
+        "Chance": 0.3,
+        "Condition": "!SEASON Winter",
+      },
+    },
+    {
+      "LogName": "Nettle Backwoods",
+      "Action": "Include",
+      "FromFile": "Data/location_forage_template.json",
+      "LocalTokens": {
+        "ItemId": "{{ModId}}_Nettle",
+        "LocationName": "Backwoods",
+        "Chance": 0.2,
+        "Condition": "!SEASON Winter",
+      },
+    },
+    {
+      "LogName": "Nettle Town",
+      "Action": "Include",
+      "FromFile": "Data/location_forage_template.json",
+      "LocalTokens": {
+        "ItemId": "{{ModId}}_Nettle",
+        "LocationName": "Town",
+        "Chance": 0.3,
+        "Condition": "!SEASON Winter",
+      },
+    },
+    {
+      "LogName": "Nettle Mountain",
+      "Action": "Include",
+      "FromFile": "Data/location_forage_template.json",
+      "LocalTokens": {
+        "ItemId": "{{ModId}}_Nettle",
+        "LocationName": "Mountain",
+        "Chance": 0.3,
+        "Condition": "!SEASON Winter",
+      },
+    },
+    {
+      "LogName": "Nettle Backwoods",
+      "Action": "Include",
+      "FromFile": "Data/location_forage_template.json",
+      "LocalTokens": {
+        "ItemId": "{{ModId}}_Nettle",
+        "LocationName": "BusStop",
+        "Chance": 0.2,
+        "Condition": "!SEASON Winter",
+      },
+    },
+    {
+      "LogName": "Nettle Railroad",
+      "Action": "Include",
+      "FromFile": "Data/location_forage_template.json",
+      "LocalTokens": {
+        "ItemId": "{{ModId}}_Nettle",
+        "LocationName": "Railroad",
+        "Chance": 0.2,
+        "Condition": "!SEASON Winter",
+      },
+    },
+    {
+      "LogName": "Cochineal Beetle Desert",
+      "Action": "Include",
+      "FromFile": "Data/location_forage_template.json",
+      "LocalTokens": {
+        "ItemId": "{{ModId}}_CochinealBeetle",
+        "LocationName": "Desert",
+        "Chance": 0.4,
+        "Condition": "TRUE",
+      },
+    },
+    {
+      "LogName": "Silkworm SVE Forest",
+      "Action": "Include",
+      "FromFile": "Data/location_forage_template.json",
+      "LocalTokens": {
+        "ItemId": "{{ModId}}_Silkworm",
+        "LocationName": "Woods",
+        "Chance": 0.3,
+        "Condition": "!SEASON Winter",
+      },
+      "When": {
+        "HasMod": "FlashShifter.StardewValleyExpandedCP",
+      }
+    },
+  ]
+}

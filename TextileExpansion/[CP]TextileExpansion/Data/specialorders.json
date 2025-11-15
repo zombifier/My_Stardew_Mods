@@ -1,0 +1,55 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add SO strings",
+      "Action": "EditData",
+      "Target": "Strings/SpecialOrderStrings",
+      "Entries": {
+        "{{ModId}}_QiFabric_Name": "{{i18n:specialOrder.QiFabric.Name}}",
+        "{{ModId}}_QiFabric_Description": "{{i18n:specialOrder.QiFabric.Description}}",
+        "{{ModId}}_QiFabric_Objective": "{{i18n:specialOrder.QiFabric.Objective}}",
+      }
+    },
+    {
+      "LogName": "Add Special Orders",
+      "Action": "EditData",
+      "Target": "Data/SpecialOrders",
+      "Entries": {
+        "{{ModId}}_QiFabric": {
+          "Name": "[{{ModId}}_QiFabric_Name]",
+          "Requester": "Qi",
+          "Duration": "Month",
+          "Repeatable": true,
+          "RequiredTags": "!rule_QI_BEANS",
+          "Condition": "PLAYER_SPECIAL_ORDER_COMPLETE Host QiChallenge2, PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Host 9",
+          "OrderType": "Qi",
+          "SpecialRule": "QI_BEANS, DROP_QI_BEANS",
+          "Text": "[{{ModId}}_QiFabric_Description]",
+          "ItemToRemoveOnEnd": null,
+          "MailToRemoveOnEnd": null,
+          "RandomizedElements": null,
+          "Objectives": [
+            {
+              "Type": "Ship",
+              "Text": "[{{ModId}}_QiFabric_Objective]",
+              "RequiredCount": "100",
+              "Data": {
+                "AcceptedContextTags": "item_o_{{ModId}}_MysteryBlueCloth/item_o_{{ModId}}_MysteryBlueYarn",
+              }
+            }
+          ],
+          "Rewards": [
+            {
+              "Type": "Gems",
+              "Data": {
+                "Amount": "120"
+              }
+            }
+          ],
+          "CustomFields": null
+        }
+      }
+    },
+  ]
+}
+

@@ -1,0 +1,66 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add new big craftables",
+      "Action": "EditData",
+      "Target": "Data/BigCraftables",
+      "Entries": {
+        "{{ModId}}_YarnSpinner": {
+          "Name": "{{ModId}}_YarnSpinner",
+          "DisplayName": "{{i18n: item.YarnSpinner.name}}",
+          "Description": "{{i18n: item.YarnSpinner.description}}",
+          "Texture": "{{ModId}}/BigCraftables",
+          "SpriteIndex": 0,
+          "ContextTags": [
+            "{{ModId}}_textile_xp",
+          ],
+        },
+        "{{ModId}}_LeafBasket": {
+          "Name": "{{ModId}}_LeafBasket",
+          "DisplayName": "{{i18n: item.LeafBasket.name}}",
+          "Description": "{{i18n: item.LeafBasket.description}}",
+          "Texture": "{{ModId}}/BigCraftables",
+          "SpriteIndex": 6,
+          "ContextTags": [
+            "tapper_item",
+            "custom_fruit_tree_tapper_item",
+          ],
+        },
+        "{{ModId}}_Renderer": {
+          "Name": "{{ModId}}_Renderer",
+          "DisplayName": "{{i18n: item.Renderer.name}}",
+          "Description": "{{i18n: item.Renderer.description}}",
+          "Texture": "{{ModId}}/BigCraftables",
+          "SpriteIndex": 8,
+        },
+        "{{ModId}}_SilkwormRack": {
+          "Name": "{{ModId}}_SilkwormRack",
+          "DisplayName": "{{i18n: item.SilkwormRack.name}}",
+          "Description": "{{i18n: item.SilkwormRack.description}}",
+          "Texture": "{{ModId}}/BigCraftables",
+          "SpriteIndex": 12,
+        },
+        "{{ModId}}_DyePot": {
+          "Name": "{{ModId}}_DyePot",
+          "DisplayName": "{{i18n: item.DyePot.name}}",
+          "Description": "{{i18n: item.DyePot.description}}",
+          "Texture": "{{ModId}}/BigCraftables",
+          "SpriteIndex": 18,
+          "ContextTags": [
+            "{{ModId}}_textile_xp",
+            "{{ModId}}_half_textile_xp",
+          ],
+        },
+      }
+    },
+    {
+      "LogName": "Add tag for loom",
+      "Action": "EditData",
+      "Target": "Data/BigCraftables",
+      "TargetField": ["17", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_textile_xp": "{{ModId}}_textile_xp",
+      },
+    },
+  ]
+}

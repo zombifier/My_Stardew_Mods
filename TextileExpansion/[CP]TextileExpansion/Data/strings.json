@@ -1,0 +1,41 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add strings",
+      "Action": "EditData",
+      "Target": "Strings/Objects",
+      "Entries": {
+        "{{ModId}}_Cloth": "{{i18n:item.Cloth.name.flavored}}",
+        "{{ModId}}_Yarn": "{{i18n:item.Yarn.name.flavored}}",
+        "{{ModId}}_RenderedMeat": "{{i18n:item.Meat.name.rendered}}",
+        "{{ModId}}_Template": "{{i18n:item.ClothingTemplate.name}}",
+        "{{ModId}}_EmbroideredClothing": "{{i18n:item.EmbroideredClothing.name}}",
+        "{{ModId}}_JeweledClothing": "{{i18n:item.JeweledClothing.name}}",
+        "{{ModId}}_ClothingDynamicName": "{{i18n:item.Clothing.name.dynamic}}",
+        "{{ModId}}_EmbroideredClothingDynamicName": "{{i18n:item.EmbroideredClothing.name.dynamic}}",
+        "{{ModId}}_JeweledClothingDynamicName": "{{i18n:item.JeweledClothing.name.dynamic}}",
+        "{{ModId}}_ClothingDynamicDescription1": "{{i18n:item.Clothing.description.dynamic1}}",
+        "{{ModId}}_ClothingDynamicDescription1_Undyed": "{{i18n:item.Clothing.description.dynamic1.undyed}}",
+        "{{ModId}}_ClothingDynamicDescription2": "{{i18n:item.Clothing.description.dynamic2}}",
+        "{{ModId}}_ClothingDynamicDescription3": "{{i18n:item.Clothing.description.dynamic3}}",
+        "{{ModId}}_ClothingDynamicDescription3_Undyed": "{{i18n:item.Clothing.description.dynamic3.undyed}}",
+        "{{ModId}}_ClothingDynamicDescription4": "{{i18n:item.Clothing.description.dynamic4}}",
+        "{{ModId}}_ClothingDynamicDescription5": "{{i18n:item.Clothing.description.dynamic5}}",
+        // Edit cloth description since it's not just wool anymore
+        "Cloth_Description": "{{i18n: item.Cloth.description}}",
+      },
+    },
+    {
+      "LogName": "Edit Rabbit's Foot name/desc",
+      "Action": "EditData",
+      "Target": "Strings/Objects",
+      "Entries": {
+        "RabbitsFoot_Name": "{{i18n:item.Angora.name}}",
+        "RabbitsFoot_Description": "{{i18n:item.Angora.description}}",
+      },
+      "When": {
+        "ReskinRabbitsFoot": "true",
+      },
+    },
+  ]
+}

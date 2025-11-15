@@ -1,0 +1,155 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add gift tastes",
+      "Action": "EditData",
+      "Target": "Data/NPCGiftTastes",
+      "TextOperations": [
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Emily", "1"],
+          "Value": "{{ModId}}_Yarn dyed_yarn_item dyed_cloth_item {{ModId}}_Silkworm {{ModId}}_Cashmere {{ModId}}_SilkCocoon",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Emily", "3"],
+          "Value": "dye_powder_item {{ModId}}_Indigo",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Emily", "5"],
+          "Value": "{{ModId}}_CochinealBeetle {{ModId}}_MurexSnail",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Robin", "1"],
+          "Value": "{{ModId}}_Brazilwood {{ModId}}_Logwood",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Robin", "3"],
+          "Value": "{{ModId}}_LinseedOil",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Leah", "1"],
+          "Value": "{{ModId}}_LinseedOil {{ModId}}_Brazilwood {{ModId}}_Logwood",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Leah", "3"],
+          "Value": "{{ModId}}_LinseedOil",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Willy", "1"],
+          "Value": "{{ModId}}_MurexSnail",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Elliott", "1"],
+          "Value": "{{ModId}}_MurexSnail",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Sandy", "1"],
+          "Value": "{{ModId}}_CochinealBeetle",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Wizard", "1"],
+          "Value": "{{ModId}}_GreenSap",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Demetrius", "9"],
+          "Value": "{{ModId}}_CochinealBeetles",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Fields", "Maru", "9"],
+          "Value": "{{ModId}}_CochinealBeetles",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Universal_Dislike"],
+          "Value": "{{ModId}}_LinseedOil",
+          "Delimiter": " "
+        },
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Universal_Hate"],
+          "Value": "{{ModId}}_CochinealBeetles",
+          "Delimiter": " "
+        },
+      ]
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Emily",
+      "Entries": {
+        "AcceptGift_(O){{ModId}}_Silkworm": "{{i18n: gift.Emily.Silkworm}}",
+        "AcceptGift_(O){{ModId}}_Indigo": "{{i18n: gift.Emily.Dye}}",
+        "AcceptGift_{{ModId}}_dye_powder_item": "{{i18n: gift.Emily.Dye}}",
+        "RejectItem_{{ModId}}_bug_dye_item": "{{i18n: gift.Emily.BugDye}}",
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Robin",
+      "Entries": {
+        "AcceptGift_(O){{ModId}}_LinseedOil": "{{i18n: gift.Robin.LinseedOil}}",
+        "AcceptGift_{{ModId}}_wood_dye_item": "{{i18n: gift.Robin.Wood}}",
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Leah",
+      "Entries": {
+        "AcceptGift_(O){{ModId}}_LinseedOil": "{{i18n: gift.Leah.LinseedOil}}",
+        "AcceptGift_{{ModId}}_wood_dye_item": "{{i18n: gift.Leah.Wood}}",
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Elliott",
+      "Entries": {
+        "AcceptGift_(O){{ModId}}_MurexSnail": "{{i18n: gift.Elliott.MurexSnail}}",
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Willy",
+      "Entries": {
+        "AcceptGift_(O){{ModId}}_MurexSnail": "{{i18n: gift.Willy.MurexSnail}}",
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Wizard",
+      "Entries": {
+        "AcceptGift_(O){{ModId}}_GreenSap": "{{i18n: gift.Wizard.GreenSap}}",
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Sandy",
+      "Entries": {
+        "AcceptGift_(O){{ModId}}_CochinealBeetle": "{{i18n: gift.Sandy.GreenSap}}",
+      }
+    },
+  ]
+}

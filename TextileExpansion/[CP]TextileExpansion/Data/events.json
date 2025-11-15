@@ -1,0 +1,87 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add events",
+      "Action": "EditData",
+      "Target": "Data/Events/HaleyHouse",
+      "Entries": {
+        "{{ModId}}_EmilyDyedCloth/HasItem {{ModId}}_ClothRed/LocalMail {{ModId}}_EmilyFreeDyes": "
+ragtime/
+14 6/
+farmer 16 10 0 Emily 15 5 2/
+skippable/
+removeQuest {{ModId}}_EmilyDyedCloth/
+viewport 14 6 true/
+move farmer 0 -2 0/
+move farmer -1 0 0/
+speak Emily \"{{i18n: event.Emily.dialogue1}}\"/
+pause 500/
+showFrame 36/
+temporaryAnimatedSprite {{ModId}}\\Objects 32 0 16 16 10000000 1 1 15 6 false false 8 0 1 0 0 0/
+playSound shwip/
+pause 200/
+showFrame 0/
+pause 2000/
+speak Emily \"{{i18n: event.Emily.dialogue2}}\"/
+quickQuestion # {{i18n: event.Farmer.dialogue1}}
+# {{i18n: event.Farmer.dialogue2}}
+(break)pause 200\\speak Emily \"{{i18n: event.Emily.dialogue3}}\"(break)friendship Emily 50\\pause 200\\speak Emily \"{{i18n: event.Emily.dialogue4}}\"/
+pause 200/
+showFrame 36/
+pause 200/
+showFrame 0/
+playSound shwip/
+removeTemporarySprites/
+pause 200/
+speak Emily \"{{i18n: event.Emily.dialogue5}}\"/
+pause 200/
+playSound shwip/
+showFrame Emily 1/
+pause 200/
+showFrame Emily 0/
+temporaryAnimatedSprite {{ModId}}\\Objects 0 0 16 16 10000000 1 1 15 6 false false 8 0 1 0 0 0/
+pause 500/
+speak Emily \"{{i18n: event.Emily.dialogue6}}\"/
+pause 200/
+removeTemporarySprites/
+playSound shwip/
+showFrame Emily 1/
+pause 200/
+showFrame Emily 0/
+temporaryAnimatedSprite {{ModId}}\\Objects 96 0 16 16 10000000 1 1 15 6 false false 8 0 1 0 0 0/
+pause 500/
+speak Emily \"{{i18n: event.Emily.dialogue7}}\"/
+pause 200/
+removeTemporarySprites/
+playSound shwip/
+showFrame Emily 1/
+pause 200/
+showFrame Emily 0/
+temporaryAnimatedSprite {{ModId}}\\Objects 0 16 16 16 10000000 1 1 15 6 false false 8 0 1 0 0 0/
+pause 500/
+speak Emily \"{{i18n: event.Emily.dialogue8}}\"/
+pause 200/
+removeTemporarySprites/
+playSound shwip/
+showFrame Emily 1/
+pause 200/
+showFrame Emily 0/
+temporaryAnimatedSprite {{ModId}}\\Objects 96 16 16 16 10000000 1 1 15 6 false false 8 0 1 0 0 0/
+pause 500/
+speak Emily \"{{i18n: event.Emily.dialogue9}}\"/
+pause 200/
+playSound shwip/
+removeTemporarySprites/
+pause 200/
+speak Emily \"{{i18n: event.Emily.dialogue10}}\"/
+pause 500/
+speak Emily \"{{i18n: event.Emily.dialogue11}}\"/
+quickQuestion # {{i18n: event.Farmer.dialogue3}}
+# {{i18n: event.Farmer.dialogue4}}(break)pause 1(break)pause 1/
+speak Emily \"{{i18n: event.Emily.dialogue12}}\"/
+pause 500/
+end",
+      },
+    },
+  ]
+}

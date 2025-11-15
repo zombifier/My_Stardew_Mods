@@ -1,0 +1,25 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add wild trees",
+      "Action": "EditData",
+      "Target": "Data/FruitTrees",
+      "Entries": {
+        "{{ModId}}_MulberrySapling": {
+          "DisplayName": "{{i18n: item.Mulberry.name}}",
+          "Seasons": [
+            "Summer"
+          ],
+          "Fruit": [
+            {
+              "Id": "Default",
+              "ItemId": "(O){{ModId}}_Mulberry",
+            },
+          ],
+          "Texture": "{{ModID}}/FruitTrees",
+          "TextureSpriteRow": 0,
+        },
+      },
+    },
+  ]
+}

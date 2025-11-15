@@ -1,0 +1,69 @@
+{
+  "Changes": [
+    {
+      "LogName": "Allow yarn spinner to spin camel wool",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_YarnSpinner", "OutputRules"],
+      "Entries": {
+        "FlashShifter.StardewValleyExpandedCP_YarnRulesId": {
+          "Id": "FlashShifter.StardewValleyExpandedCP_YarnRulesId",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine_Default",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "FlashShifter.StardewValleyExpandedCP_Camel_Wool",
+              "RequiredCount": 1,
+            },
+          ],
+          "UseFirstValidOutput": false,
+          "OutputItem": [
+            {
+              "Id": "FlashShifter.StardewValleyExpandedCP_Yarn",
+              "ItemId": "FlashShifter.StardewValleyExpandedCP_Yarn",
+				      "CopyQuality": true,
+              "StackModifiers": [
+                //{
+                //  "Id": "DoubleQuality",
+                //  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                //  "Modification": "Multiply",
+                //  "Amount": 2.0,
+                //},
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 2.0,
+                },
+              ],
+              "StackModifierMode": "Stack",
+              "QualityModifierMode": "Stack"
+            },
+          ],
+          "MinutesUntilReady": 120,
+        }
+      }
+    },
+    {
+      "LogName": "Allow dye pot to dye camel yarn",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules"],
+      "Entries": {
+        "SVECamelYarn": {
+          "Id": "SVECamelYarn",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O)FlashShifter.StardewValleyExpandedCP_Yarn",
+            },
+          ],
+          // Output items are in dyed-objects-template.json
+          "OutputItem": [],
+          "MinutesUntilReady": 480,
+        },
+      },
+    },
+  ]
+}

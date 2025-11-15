@@ -1,0 +1,76 @@
+
+{
+  "Changes": [
+    {
+      "LogName": "Allow yarn spinner to spin llama hair",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_YarnSpinner", "OutputRules"],
+      "Entries": {
+        "skellady.SBVCP_AlpacaWool": {
+          "Id": "skellady.SBVCP_AlpacaWool",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+							"RequiredItemId": "(O)skellady.SBVCP_AlpacaWool",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O){{ModId}}_Yarn",
+              "ItemId": "(O){{ModId}}_Yarn",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Yarn {0}",
+              "MinStack": 2,
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 2.0,
+                },
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "AlpacaWoolModifier",
+                  "Modification": "Set",
+                  "Amount": 360,
+                },
+              ],
+            },
+          ],
+          "MinutesUntilReady": 240,
+        },
+      },
+    },
+    {
+      "LogName": "Allow dye pot to dye llama cloth",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules"],
+      "Entries": {
+        "SBVLlamaCloth": {
+          "Id": "SBVLlamaCloth",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O)skellady.SBVCP_AlpacaWoolFabric",
+            },
+          ],
+          // Output items are in dyed-objects-template.json
+          "OutputItem": [],
+          "MinutesUntilReady": 480,
+        },
+      },
+    },
+  ]
+}

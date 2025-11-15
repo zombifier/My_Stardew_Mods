@@ -1,0 +1,268 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add dye objects",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "{{ModId}}_Dye{{Color}}": {
+          "Name": "{{ModId}}_Dye{{Color}}",
+          "DisplayName": "{{i18n: item.{{Color}}Dye.name}}",
+          "Description": "{{i18n: item.{{Color}}Dye.description}}",
+          "Type": "Basic",
+          "Category": -16,
+          "Price": "{{Round: {{Query: {{PriceMultiplier}} * 10}}}}",
+          "Texture": "{{ModId}}/Objects",
+          "SpriteIndex": "{{Query: {{SpriteIndex}} * 3}}",
+          "ContextTags": [
+            "{{ModId}}_dye_powder_item",
+            "{{ColorTag}}",
+          ],
+          "ExcludeFromShippingCollection": true,
+        },
+        "{{ModId}}_Yarn{{Color}}": {
+          // Add cloth to the name so it benefits from Rancher
+          "Name": "{{ModId}}_YarnCloth{{Color}}",
+          "DisplayName": "{{i18n: item.{{Color}}Yarn.name}}",
+          "Description": "{{i18n: item.{{Color}}Yarn.description}}",
+          "Type": "Basic",
+          "Category": -26,
+          "Price": "{{Round: {{Query: {{PriceMultiplier}} * 235}}}}",
+          "Texture": "{{ModId}}/Objects",
+          "SpriteIndex": "{{Query: {{SpriteIndex}} * 3 + 1}}",
+          "ContextTags": [
+            "yarn_item",
+            "{{ModId}}_dyed_yarn_item",
+            "{{ColorTag}}",
+            //"{{ModId}}_textile_xp",
+            //"{{ModId}}_half_textile_xp",
+          ],
+          "CustomFields": {
+            "{{ModId}}_Dye": "{{ModId}}_Dye{{Color}}",
+          }
+        },
+        "{{ModId}}_Cloth{{Color}}": {
+          "Name": "{{ModId}}_Cloth{{Color}}",
+          "DisplayName": "{{i18n: item.{{Color}}Cloth.name}}",
+          "Description": "{{i18n: item.{{Color}}Cloth.description}}",
+          "Type": "Basic",
+          "Category": -26,
+          "Price": "{{Round: {{Query: {{PriceMultiplier}} * 470}}}}",
+          "Texture": "{{ModId}}/Objects",
+          "SpriteIndex": "{{Query: {{SpriteIndex}} * 3 + 2}}",
+          "ContextTags": [
+            "cloth_item",
+            "{{ModId}}_dyed_cloth_item",
+            "{{ColorTag}}",
+            //"{{ModId}}_textile_xp",
+            //"{{ModId}}_half_textile_xp",
+          ],
+          "CustomFields": {
+            "{{ModId}}_Dye": "{{ModId}}_Dye{{Color}}",
+          }
+        },
+      }
+    },
+    {
+      "LogName": "Add color override for dye",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["{{ModId}}_Dye{{Color}}", "CustomFields"],
+      "Entries": {
+        "selph.ExtraMachineConfig.DyeColorOverride": "{{OverrideColor}}",
+      },
+      "When": {
+        "OverrideColor |contains=none": false,
+      }
+    },
+    {
+      "LogName": "Add color override for cloth",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["{{ModId}}_Cloth{{Color}}", "CustomFields"],
+      "Entries": {
+        "selph.ExtraMachineConfig.DyeColorOverride": "{{OverrideColor}}",
+      },
+      "When": {
+        "OverrideColor |contains=none": false,
+      }
+    },
+    {
+      "LogName": "Add color override for yarn",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["{{ModId}}_Yarn{{Color}}", "CustomFields"],
+      "Entries": {
+        "selph.ExtraMachineConfig.DyeColorOverride": "{{OverrideColor}}",
+      },
+      "When": {
+        "OverrideColor |contains=none": false,
+      }
+    },
+    {
+      "LogName": "Adds dye cloth machine rules",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "Cloth", "OutputItem"],
+      "Entries": {
+        "(O){{ModId}}_{{Color}}Cloth": {
+          "Id": "(O){{ModId}}_Cloth{{Color}}",
+          "ItemId": "(O){{ModId}}_Cloth{{Color}}",
+          "PreserveId": "DROP_IN_PRESERVE",
+          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Cloth %PRESERVED_DISPLAY_NAME]",
+          "ObjectInternalName": "{{ModId}}_Cloth{{Color}} {0}",
+          "CopyPrice": true,
+          "CopyQuality": true,
+          "PriceModifiers": [
+            {
+              "Id": "Color",
+              "Modification": "Multiply",
+              "Amount": "{{PriceMultiplier}}",
+            },
+          ],
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
+          },
+          "Condition": "{{DyeCondition}}",
+        }
+      }
+    },
+    {
+      "LogName": "Adds dye yarn machine rules",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "Yarn", "OutputItem"],
+      "Entries": {
+        "(O){{ModId}}_Yarn{{Color}}": {
+          "Id": "(O){{ModId}}_Yarn{{Color}}",
+          "ItemId": "(O){{ModId}}_Yarn{{Color}}",
+          "PreserveId": "DROP_IN_PRESERVE",
+          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Yarn %PRESERVED_DISPLAY_NAME]",
+          "ObjectInternalName": "{{ModId}}_YarnCloth{{Color}} {0}",
+          "CopyPrice": true,
+          "PriceModifiers": [
+            {
+              "Id": "Color",
+              "Modification": "Multiply",
+              "Amount": "{{PriceMultiplier}}",
+            },
+          ],
+          "MinStack": 2,
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
+          },
+        }
+      }
+    },
+    {
+      "LogName": "Adds dye camel yarn machine rules",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "SVECamelYarn", "OutputItem"],
+      "Entries": {
+        "(O){{ModId}}_Yarn{{Color}}_Void": {
+          "Id": "(O){{ModId}}_Yarn{{Color}}_Void",
+          "ItemId": "(O){{ModId}}_Yarn{{Color}}",
+          "PreserveId": "ZoeyHoshi.Camelus_CamelHair_Void",
+          "Condition": "ITEM_ID Input ZoeyHoshi.Camelus_CamelHairYarn_Void",
+          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Yarn %PRESERVED_DISPLAY_NAME]",
+          "ObjectInternalName": "{{ModId}}_YarnCloth{{Color}} {0}",
+          "CopyPrice": true,
+          "PriceModifiers": [
+            {
+              "Id": "Color",
+              "Modification": "Multiply",
+              "Amount": "{{PriceMultiplier}}",
+            },
+          ],
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
+          },
+        },
+        "(O){{ModId}}_Yarn{{Color}}": {
+          "Id": "(O){{ModId}}_Yarn{{Color}}",
+          "ItemId": "(O){{ModId}}_Yarn{{Color}}",
+          "PreserveId": "FlashShifter.StardewValleyExpandedCP_Camel_Wool",
+          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Yarn %PRESERVED_DISPLAY_NAME]",
+          "ObjectInternalName": "{{ModId}}_YarnCloth{{Color}} {0}",
+          "CopyPrice": true,
+          "PriceModifiers": [
+            {
+              "Id": "Color",
+              "Modification": "Multiply",
+              "Amount": "{{PriceMultiplier}}",
+            },
+          ],
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
+          },
+        }
+      },
+      "When": {
+        "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+      },
+    },
+    {
+      "LogName": "Adds dye llama cloth machine rules",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "SBVLlamaCloth", "OutputItem"],
+      "Entries": {
+        "(O){{ModId}}_Cloth{{Color}}": {
+          "Id": "(O){{ModId}}_Cloth{{Color}}",
+          "ItemId": "(O){{ModId}}_Cloth{{Color}}",
+          "PreserveId": "skellady.SBVCP_AlpacaWool",
+          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Cloth %PRESERVED_DISPLAY_NAME]",
+          "ObjectInternalName": "{{ModId}}_Yarn{{Color}} {0}",
+          "CopyPrice": true,
+          "PriceModifiers": [
+            {
+              "Id": "Color",
+              "Modification": "Multiply",
+              "Amount": "{{PriceMultiplier}}",
+            },
+          ],
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
+          },
+        }
+      },
+      "When": {
+        "HasMod |contains=skellady.SBVCP": "true",
+      },
+    },
+    {
+      "LogName": "Load strings for TokenizedText",
+      "Action": "EditData",
+      "Target": "Strings/Objects",
+      "Entries": {
+        "{{ModId}}_{{Color}}Yarn": "{{i18n:item.{{Color}}Yarn.name.flavored}}",
+        "{{ModId}}_{{Color}}Cloth": "{{i18n:item.{{Color}}Cloth.name.flavored}}",
+        "selph.ExtraMachineConfig_FlavorNameOverride_(O){{Color}}Cloth/0": "{{i18n:item.{{Color}}Cloth.name}}",
+        "selph.ExtraMachineConfig_FlavorNameOverride_(O){{Color}}Yarn/0": "{{i18n:item.{{Color}}Yarn.name}}",
+      }
+    },
+    {
+      "LogName": "Get dye back if Dyer",
+      "Action": "EditData",
+      "Target": "selph.ExtraMachineConfig/ExtraOutputs",
+      "Entries": {
+        "{{ModId}}_DyeBack{{Color}}": {
+          "Id": "{{ModId}}_DyeBack{{Color}}",
+          "ItemId": "(O){{ModId}}_Dye{{Color}}",
+          "Condition": "{{CodeComponentId}}_HAS_DYER Target, RANDOM 0.5",
+        }
+      }
+    },
+  ]
+}

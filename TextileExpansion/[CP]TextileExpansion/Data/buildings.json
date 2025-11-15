@@ -1,0 +1,485 @@
+{
+  "Changes": [
+    {
+      "LogName": "Edit Loom",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Mill", "ItemConversions"],
+      "Entries": {
+        // Yellow
+        "{{ModId}}_Dandelion": {
+          "Id": "{{ModId}}_Dandelion",
+          "RequiredTags": [
+            "id_o_22"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        "{{ModId}}_Daffodil": {
+          "Id": "{{ModId}}_Daffodil",
+          "RequiredTags": [
+            "id_o_18"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        "{{ModId}}_SweetPea": {
+          "Id": "{{ModId}}_SweetPea",
+          "RequiredTags": [
+            "id_o_402"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        "{{ModId}}_Crocus": {
+          "Id": "{{ModId}}_Crocus",
+          "RequiredTags": [
+            "id_o_418"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        "{{ModId}}_Safflower": {
+          "Id": "{{ModId}}_Safflower",
+          "RequiredTags": [
+            "id_o_{{ModId}}_Safflower"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        "{{ModId}}_NettleRoots": {
+          "Id": "{{ModId}}_NettleRoots",
+          "RequiredTags": [
+            "id_o_{{ModId}}_NettleRoots"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        "{{ModId}}_Pomegranate": {
+          "Id": "{{ModId}}_Pomegranate",
+          "RequiredTags": [
+            "id_o_637"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        "{{ModId}}_Turmeric": {
+          "Id": "{{ModId}}_Turmeric",
+          "RequiredTags": [
+            "turmeric_item"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        "{{ModId}}_Onion": {
+          "Id": "{{ModId}}_Onion",
+          "RequiredTags": [
+            "onion_item"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        "{{ModId}}_RedOnion": {
+          "Id": "{{ModId}}_RedOnion",
+          "RequiredTags": [
+            "red_onion_item"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        "{{ModId}}_Chamomile": {
+          "Id": "{{ModId}}_Chamomile",
+          "RequiredTags": [
+            "chamomile_item"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        "{{ModId}}_Daisy": {
+          "Id": "{{ModId}}_Daisy",
+          "RequiredTags": [
+            "daisy_item"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeYellow",
+              "ItemId": "(O){{ModId}}_DyeYellow",
+            }
+          ],
+        },
+        // Red Dye
+        "{{ModId}}_WinterRoot": {
+          "Id": "{{ModId}}_WinterRoot",
+          "RequiredTags": [
+            "id_o_412"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeRed",
+              "ItemId": "(O){{ModId}}_DyeRed",
+            }
+          ],
+        },
+        "{{ModId}}_SnowYam": {
+          "Id": "{{ModId}}_SnowYam",
+          "RequiredTags": [
+            "id_o_416"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeRed",
+              "ItemId": "(O){{ModId}}_DyeRed",
+            }
+          ],
+        },
+        "{{ModId}}_CaveCarrot": {
+          "Id": "{{ModId}}_CaveCarrot",
+          "RequiredTags": [
+            "id_o_78"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeRed",
+              "ItemId": "(O){{ModId}}_DyeRed",
+            }
+          ],
+        },
+        "{{ModId}}_RedMushroom": {
+          "Id": "{{ModId}}_RedMushroom",
+          "RequiredTags": [
+            "id_o_420"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeRed",
+              "ItemId": "(O){{ModId}}_DyeRed",
+            }
+          ],
+        },
+        "{{ModId}}_Brazilwood": {
+          "Id": "{{ModId}}_Brazilwood",
+          "RequiredTags": [
+            "id_o_{{ModId}}_Brazilwood"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeRed",
+              "ItemId": "(O){{ModId}}_DyeRed",
+            }
+          ],
+        },
+        "{{ModId}}_MadderRoots": {
+          "Id": "{{ModId}}_MadderRoots",
+          "RequiredTags": [
+            "id_o_{{ModId}}_MadderRoots"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeRed",
+              "ItemId": "(O){{ModId}}_DyeRed",
+            }
+          ],
+        },
+        // Blue
+        "{{ModId}}_Indigo": {
+          "Id": "{{ModId}}_Indigo",
+          "RequiredTags": [
+            "id_o_{{ModId}}_Indigo"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeBlue",
+              "ItemId": "(O){{ModId}}_DyeBlue",
+            }
+          ],
+        },
+        "{{ModId}}_RainbowShell": {
+          "Id": "{{ModId}}_RainbowShell",
+          "RequiredTags": [
+            "id_o_394"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeBlue",
+              "ItemId": "(O){{ModId}}_DyeBlue",
+              "MinStack": 4,
+            }
+          ],
+        },
+        "{{ModId}}_PurpleMushroom": {
+          "Id": "{{ModId}}_PurpleMushroom",
+          "RequiredTags": [
+            "id_o_422"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeBlue",
+              "ItemId": "(O){{ModId}}_DyeBlue",
+              "MinStack": 2,
+            }
+          ],
+        },
+        // Black
+        "{{ModId}}_SquidInk": {
+          "Id": "{{ModId}}_SquidInk",
+          "RequiredTags": [
+            "id_o_814"
+          ],
+          "RequiredCount": 2,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeBlack",
+              "ItemId": "(O){{ModId}}_DyeBlack",
+              "MinStack": 1,
+            }
+          ],
+        },
+        "{{ModId}}_IronOre": {
+          "Id": "{{ModId}}_IronOre",
+          "RequiredTags": [
+            "id_o_380"
+          ],
+          "RequiredCount": 5,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeBlack",
+              "ItemId": "(O){{ModId}}_DyeBlack",
+            }
+          ],
+        },
+        "{{ModId}}_VoidEgg": {
+          "Id": "{{ModId}}_VoidEgg",
+          "RequiredTags": [
+            "id_o_305"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeBlack",
+              "ItemId": "(O){{ModId}}_DyeBlack",
+              "MinStack": 2,
+            }
+          ],
+        },
+        // Luxury Dyes
+        "{{ModId}}_CochinealBeetle": {
+          "Id": "{{ModId}}_CochinealBeetle",
+          "RequiredTags": [
+            "id_o_{{ModId}}_CochinealBeetle"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeCrimsonRed",
+              "ItemId": "(O){{ModId}}_DyeCrimsonRed",
+            }
+          ],
+        },
+        "{{ModId}}_QiFruit": {
+          "Id": "{{ModId}}_QiFruit",
+          "RequiredTags": [
+            "id_o_889"
+          ],
+          "RequiredCount": 3,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeMysteryBlue",
+              "ItemId": "(O){{ModId}}_DyeMysteryBlue",
+            }
+          ],
+        },
+        "{{ModId}}_GreenSap": {
+          "Id": "{{ModId}}_GreenSap",
+          "RequiredTags": [
+            "id_o_{{ModId}}_GreenSap"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeVerdantGreen",
+              "ItemId": "(O){{ModId}}_DyeVerdantGreen",
+            }
+          ],
+        },
+        "{{ModId}}_MurexSnail": {
+          "Id": "{{ModId}}_MurexSnail",
+          "RequiredTags": [
+            "id_o_{{ModId}}_MurexSnail"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeRoyalPurple",
+              "ItemId": "(O){{ModId}}_DyeRoyalPurple",
+            }
+          ],
+        },
+        "{{ModId}}_Logwood": {
+          "Id": "{{ModId}}_Logwood",
+          "RequiredTags": [
+            "id_o_{{ModId}}_Logwood"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyePitchBlack",
+              "ItemId": "(O){{ModId}}_DyePitchBlack",
+            }
+          ],
+        },
+      },
+    },
+  ]
+}

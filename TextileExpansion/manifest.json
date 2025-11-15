@@ -1,0 +1,14 @@
+{
+  "Name": "Cloths and Colors (C#)",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "An artisan good expansion focused on textiles, dyes and clothing, with a new sewing skill.",
+  "UniqueID": "selph.TextileExpansionCode",
+  "EntryDll": "TextileExpansion.dll",
+  "MinimumApiVersion": "4.0.9",
+  "Dependencies": [
+    {"UniqueID": "spacechase0.SpaceCore", "IsRequired": true},
+    {"UniqueID": "Pathoschild.ContentPatcher", "IsRequired": true},
+  ],
+  "UpdateKeys": ["Nexus:39216"],
+}

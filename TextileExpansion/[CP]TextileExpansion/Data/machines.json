@@ -1,0 +1,1298 @@
+{
+  "Changes": [
+    {
+      "LogName": "Edit Loom",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)17", "OutputRules"],
+      "Entries": {
+        "{{ModId}}_Flax": {
+          "Id": "{{ModId}}_Flax",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_Flax",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "{{ModId}}_Linen",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#B6D1FF",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "FlaxModifier",
+                  "Modification": "Set",
+                  "Amount": 330,
+                },
+              ],
+            },
+          ],
+          "MinutesUntilReady": 240,
+        },
+        "{{ModId}}_Hemp": {
+          "Id": "{{ModId}}_Hemp",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_Hemp",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#B9FFC3",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "HempModifier",
+                  "Modification": "Set",
+                  "Amount": 260,
+                },
+              ],
+            },
+          ],
+          "MinutesUntilReady": 240,
+        },
+        "{{ModId}}_Nettle": {
+          "Id": "{{ModId}}_Nettle",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_Nettle",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#D0FFBC",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "NettleModifier",
+                  "Modification": "Set",
+                  "Amount": 350,
+                },
+              ],
+              "CustomData": {
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_NettleRoots",
+              },
+            },
+          ],
+          "MinutesUntilReady": 240,
+        },
+        "{{ModId}}_Cashmere": {
+          "Id": "{{ModId}}_Cashmere",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_Cashmere",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#FFF8CD",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "CashmereModifier",
+                  "Modification": "Set",
+                  "Amount": 700,
+                },
+              ],
+            },
+          ],
+          "MinutesUntilReady": 240,
+        },
+        "{{ModId}}_Silk": {
+          "Id": "{{ModId}}_Silk",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_SilkCocoon",
+              "RequiredCount": 3,
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "{{ModId}}_Silk",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#FFFFFF",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "SilkModifier",
+                  "Modification": "Multiply",
+                  "Amount": 2,
+                },
+              ],
+            },
+          ],
+          "MinutesUntilReady": 240,
+					"InvalidCountMessage": "{{i18n: machine.Loom.invalidCountSilkCocoons}}"
+        },
+      }
+    },
+    {
+      "LogName": "extra produce",
+      "Action": "EditData",
+      "Target": "selph.ExtraMachineConfig/ExtraOutputs",
+      "Entries": {
+        "{{ModId}}_NettleRoots": {
+          "Id": "{{ModId}}_NettleRoots",
+          "ItemId": "(O){{ModId}}_NettleRoots",
+        },
+        "{{ModId}}_Bones": {
+          "Id": "{{ModId}}_Bones",
+          "ItemId": "(O)881",
+          "MinStack": 5,
+          "MaxStack": 10,
+        },
+        "{{ModId}}_MeatBack": {
+          "Id": "{{ModId}}_MeatBack",
+          "ItemId": "DROP_IN_ID",
+          "ObjectInternalName": "{0} Rendered",
+          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_RenderedMeat %DISPLAY_NAME]",
+          "CopyQuality": true,
+          "ModData": {
+            "selph.ExtraMachineConfig.ExtraContextTags": "{{ModId}}_rendered",
+          },
+        },
+        "{{ModId}}_BugMeatBack": {
+          "Id": "{{ModId}}_BugMeatBack",
+          "ItemId": "(O)684",
+          "ObjectInternalName": "{0} Rendered",
+          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_RenderedMeat %DISPLAY_NAME]",
+          "MinStack": 20,
+          "CopyQuality": true,
+          "ModData": {
+            "selph.ExtraMachineConfig.ExtraContextTags": "{{ModId}}_rendered",
+          },
+        },
+      }
+    },
+    //{
+    //  "LogName": "Edit Cornucopia Cotton Input Count",
+    //  "Action": "EditData",
+    //  "Target": "Data/Machines",
+    //  "TargetField": ["(BC)17", "OutputRules", "Cornucopia_CottonCloth", "Triggers", "#0"],
+    //  "Entries": {
+    //    "RequiredItemCount": 2,
+    //  },
+    //  "When": {
+    //    "HasMod": "Cornucopia.MoreCrops"
+    //  },
+    //},
+    {
+      "LogName": "Edit Wool Output",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)17", "OutputRules", "Default", "OutputItem", "(O)428"],
+      "Entries": {
+        "PreserveId": "DROP_IN",
+        "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+        "ObjectInternalName": "{{ModId}}_Cloth {0}",
+        "ObjectColor": "#FFEBCB",
+      },
+    },
+    {
+      "LogName": "Edit Wool Output - Weaver",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)17", "OutputRules", "Default", "OutputItem", "(O)428", "StackModifiers"],
+      "Entries": {
+        "{{ModId}}_Weaver": {
+          "Id": "{{ModId}}_Weaver",
+          "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+          "Modification": "Add",
+          "Amount": 1.0,
+        },
+      },
+    },
+    {
+      "LogName": "Edit Cornucopia Cotton Output Item",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)17", "OutputRules", "Cornucopia_CottonCloth", "OutputItem", "#0"],
+      "Entries": {
+        "PreserveId": "{{ModId}}_Cotton",
+        "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+        "ObjectInternalName": "{{ModId}}_Cloth {0}",
+        "ObjectColor": "#B5E4FF",
+        "PriceModifiers": [
+          {
+            "Id": "CottonModifier",
+            "Modification": "Set",
+            "Amount": 240,
+          },
+        ],
+      },
+    },
+    {
+      "LogName": "Edit Cornucopia Cotton Output Item - Weaver",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)17", "OutputRules", "Cornucopia_CottonCloth", "OutputItem", "#0", "StackModifiers"],
+      "Entries": {
+        "{{ModId}}_Weaver": {
+          "Id": "{{ModId}}_Weaver",
+          "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+          "Modification": "Add",
+          "Amount": 1.0,
+        },
+      },
+    },
+    {
+      "LogName": "Adds machines",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "Entries": {
+        "(BC){{ModId}}_YarnSpinner": {
+          "OutputRules": [
+            {
+              "Id": "{{ModId}}_Wool",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+							    "RequiredItemId": "(O)440",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "(O){{ModId}}_Yarn",
+                  "ItemId": "(O){{ModId}}_Yarn",
+                  "PreserveId": "DROP_IN",
+                  "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
+                  "ObjectInternalName": "{{ModId}}_Yarn {0}",
+                  "ObjectColor": "#FFEBCB",
+                  "MinStack": 2,
+                  "StackModifiers": [
+                    {
+                      "Id": "DoubleQuality",
+                      "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                      "Modification": "Multiply",
+                      "Amount": 2.0,
+                    },
+                    {
+                      "Id": "{{ModId}}_Weaver",
+                      "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                      "Modification": "Add",
+                      "Amount": 2.0,
+                    },
+                  ],
+                },
+              ],
+              "MinutesUntilReady": 240,
+            },
+            {
+              "Id": "{{ModId}}_Cotton",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+							    "RequiredItemId": "(O)Cornucopia_CottonBoll",
+							    "RequiredCount": 3,
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "(O){{ModId}}_Yarn",
+                  "ItemId": "(O){{ModId}}_Yarn",
+                  "PreserveId": "{{ModId}}_Cotton",
+                  "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
+                  "ObjectInternalName": "{{ModId}}_Yarn {0}",
+                  "ObjectColor": "#B5E4FF",
+                  "MinStack": 2,
+                  "StackModifiers": [
+                    {
+                      "Id": "DoubleQuality",
+                      "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                      "Modification": "Multiply",
+                      "Amount": 2.0,
+                    },
+                    {
+                      "Id": "{{ModId}}_Weaver",
+                      "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                      "Modification": "Add",
+                      "Amount": 2.0,
+                    },
+                  ],
+                  "PriceModifiers": [
+                    {
+                      "Id": "CottonModifier",
+                      "Modification": "Set",
+                      "Amount": 120,
+                    },
+                  ],
+                },
+              ],
+              "MinutesUntilReady": 240,
+					    "InvalidCountMessage": "{{i18n: machine.YarnSpinner.invalidCountCotton}}"
+            },
+            {
+              "Id": "{{ModId}}_Flax",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O){{ModId}}_Flax",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "(O){{ModId}}_Yarn",
+                  "ItemId": "(O){{ModId}}_Yarn",
+                  "PreserveId": "{{ModId}}_Linen",
+                  "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
+                  "ObjectInternalName": "{{ModId}}_Yarn {0}",
+                  "ObjectColor": "#B6D1FF",
+                  "MinStack": 2,
+                  "StackModifiers": [
+                    {
+                      "Id": "DoubleQuality",
+                      "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                      "Modification": "Multiply",
+                      "Amount": 2.0,
+                    },
+                    {
+                      "Id": "{{ModId}}_Weaver",
+                      "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                      "Modification": "Add",
+                      "Amount": 2.0,
+                    },
+                  ],
+                  "PriceModifiers": [
+                    {
+                      "Id": "FlaxModifier",
+                      "Modification": "Set",
+                      "Amount": 165,
+                    },
+                  ],
+                },
+              ],
+              "MinutesUntilReady": 240,
+            },
+            {
+              "Id": "{{ModId}}_Hemp",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O){{ModId}}_Hemp",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "(O){{ModId}}_Yarn",
+                  "ItemId": "(O){{ModId}}_Yarn",
+                  "PreserveId": "DROP_IN",
+                  "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
+                  "ObjectInternalName": "{{ModId}}_Yarn {0}",
+                  "ObjectColor": "#B9FFC3",
+                  "MinStack": 2,
+                  "StackModifiers": [
+                    {
+                      "Id": "DoubleQuality",
+                      "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                      "Modification": "Multiply",
+                      "Amount": 2.0,
+                    },
+                    {
+                      "Id": "{{ModId}}_Weaver",
+                      "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                      "Modification": "Add",
+                      "Amount": 2.0,
+                    },
+                  ],
+                  "PriceModifiers": [
+                    {
+                      "Id": "HempModifier",
+                      "Modification": "Set",
+                      "Amount": 130,
+                    },
+                  ],
+                },
+              ],
+              "MinutesUntilReady": 240,
+            },
+            {
+              "Id": "{{ModId}}_Nettle",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O){{ModId}}_Nettle",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "(O){{ModId}}_Yarn",
+                  "ItemId": "(O){{ModId}}_Yarn",
+                  "PreserveId": "DROP_IN",
+                  "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
+                  "ObjectInternalName": "{{ModId}}_Yarn {0}",
+                  "ObjectColor": "#D0FFBC",
+                  "MinStack": 2,
+                  "StackModifiers": [
+                    {
+                      "Id": "DoubleQuality",
+                      "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                      "Modification": "Multiply",
+                      "Amount": 2.0,
+                    },
+                    {
+                      "Id": "{{ModId}}_Weaver",
+                      "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                      "Modification": "Add",
+                      "Amount": 2.0,
+                    },
+                  ],
+                  "PriceModifiers": [
+                    {
+                      "Id": "NettleModifier",
+                      "Modification": "Set",
+                      "Amount": 175,
+                    },
+                  ],
+                  "CustomData": {
+                    "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_NettleRoots",
+                  }
+                },
+              ],
+              "MinutesUntilReady": 240,
+            },
+            {
+              "Id": "{{ModId}}_Cashmere",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O){{ModId}}_Cashmere",
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "(O){{ModId}}_Yarn",
+                  "ItemId": "(O){{ModId}}_Yarn",
+                  "PreserveId": "DROP_IN",
+                  "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
+                  "ObjectInternalName": "{{ModId}}_Yarn {0}",
+                  "ObjectColor": "#FFF8CD",
+                  "MinStack": 2,
+                  "StackModifiers": [
+                    {
+                      "Id": "DoubleQuality",
+                      "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                      "Modification": "Multiply",
+                      "Amount": 2.0,
+                    },
+                    {
+                      "Id": "{{ModId}}_Weaver",
+                      "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                      "Modification": "Add",
+                      "Amount": 2.0,
+                    },
+                  ],
+                  "PriceModifiers": [
+                    {
+                      "Id": "CashmereModifier",
+                      "Modification": "Set",
+                      "Amount": 350,
+                    },
+                  ],
+                },
+              ],
+              "MinutesUntilReady": 240,
+            },
+            {
+              "Id": "{{ModId}}_Silk",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O){{ModId}}_SilkCocoon",
+                  "RequiredCount": 3,
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "(O){{ModId}}_Yarn",
+                  "ItemId": "(O){{ModId}}_Yarn",
+                  "PreserveId": "{{ModId}}_Silk",
+                  "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
+                  "ObjectInternalName": "{{ModId}}_Yarn {0}",
+                  "ObjectColor": "#FFFFFF",
+                  "MinStack": 2,
+                  "StackModifiers": [
+                    {
+                      "Id": "DoubleQuality",
+                      "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                      "Modification": "Multiply",
+                      "Amount": 2.0,
+                    },
+                    {
+                      "Id": "{{ModId}}_Weaver",
+                      "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                      "Modification": "Add",
+                      "Amount": 2.0,
+                    },
+                  ],
+                  "PriceModifiers": [
+                    {
+                      "Id": "SilkModifier",
+                      "Modification": "Multiply",
+                      "Amount": 2,
+                    },
+                  ],
+                },
+              ],
+              "MinutesUntilReady": 240,
+					    "InvalidCountMessage": "{{i18n: machine.Loom.invalidCountSilkCocoons}}"
+            },
+          ],
+          "InvalidItemMessage": "{{i18n: machine.YarnSpinner.invalidItem}}",
+          "ShowNextIndexWhenReady": true,
+          "WobbleWhileWorking": false,
+					"LoadEffects": [
+						{
+						  "Id": "Default",
+              "Sounds": [
+                {
+                  "Id": "Ship",
+                  "Delay": 0
+                }
+              ],
+							"Frames": [2, 3, 4, 5],
+							"Interval": 250,
+						}
+					],
+					"WorkingEffects": [
+						{
+						  "Id": "Default",
+							"Frames": [2, 3, 4, 5],
+							"Interval": 250,
+						}
+					],
+					"WorkingEffectChance": 1,
+					"ReadyTimeModifiers": [
+            {
+              "Id": "{{ModId}}_Level1",
+              "Modification": "Multiply",
+              "Amount": ".9",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 1 2",
+            },
+            {
+              "Id": "{{ModId}}_Level3",
+              "Modification": "Multiply",
+              "Amount": ".8",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 3 4",
+            },
+            {
+              "Id": "{{ModId}}_Level5",
+              "Modification": "Multiply",
+              "Amount": ".7",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 5 6",
+            },
+            {
+              "Id": "{{ModId}}_Level7",
+              "Modification": "Multiply",
+              "Amount": ".6",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 7 8",
+            },
+            {
+              "Id": "{{ModId}}_Level9",
+              "Modification": "Multiply",
+              "Amount": ".5",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 9 10",
+            },
+            {
+              "Id": "{{ModId}}_Level11",
+              "Modification": "Multiply",
+              "Amount": ".4",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 11 12",
+            },
+            {
+              "Id": "{{ModId}}_Level13",
+              "Modification": "Multiply",
+              "Amount": ".3",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 13 14",
+            },
+            {
+              "Id": "{{ModId}}_Level15",
+              "Modification": "Multiply",
+              "Amount": ".2",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 15 16",
+            },
+            {
+              "Id": "{{ModId}}_Level17",
+              "Modification": "Multiply",
+              "Amount": ".1",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 17 18",
+            },
+            {
+              "Id": "{{ModId}}_Level19",
+              "Modification": "Multiply",
+              "Amount": ".01",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 19",
+            },
+					],
+        },
+        "(BC){{ModId}}_LeafBasket": {
+          "OutputRules": [
+            {
+              "Id": "Leaves",
+              "Triggers": [
+                {
+                  "Id": "OutputCollected, MachinePutDown, DayUpdate",
+                  "Trigger": "OutputCollected, MachinePutDown, DayUpdate",
+                  "Condition": "!LOCATION_SEASON Target Winter"
+                },
+              ],
+              "UseFirstValidOutput": true,
+              "OutputItem": [
+                {
+                  "Id": "MulberryLeaves",
+                  "ItemId": "(O){{ModId}}_MulberryLeaves",
+                  "MinStack": 10,
+                  "MaxStack": 15,
+                  "CustomData": {
+                    "selph.CustomTapperFramework.TerrainCondition": "selph.CustomTapperFramework_MACHINE_TILE_HAS_TERRAIN_FEATURE FruitTree {{ModId}}_MulberrySapling",
+                  },
+                },
+                {
+                  "Id": "Fiber",
+                  "ItemId": "(O)771",
+                  "MinStack": 6,
+                  "MaxStack": 9,
+                },
+              ],
+              "DaysUntilReady": 3,
+            },
+          ],
+          "ClearContentsOvernightCondition": "LOCATION_SEASON Target Winter",
+          "ShowNextIndexWhenReady": true,
+          "WobbleWhileWorking": false,
+        },
+        "(BC){{ModId}}_SilkwormRack": {
+          "OutputRules": [
+            {
+              "Id": "Silk",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O){{ModId}}_MulberryLeaves",
+                },
+                {
+                  "Id": "OutputCollected",
+                  "Trigger": "OutputCollected",
+                  "Condition": "ITEM_CONTEXT_TAG Input {{ModId}}_free_refill",
+                },
+              ],
+              "UseFirstValidOutput": true,
+              "OutputItem": [
+                {
+                  "Id": "SilkSericulture",
+                  "ItemId": "(O){{ModId}}_SilkCocoon",
+                  "Condition": "{{CodeComponentId}}_HAS_SERICULTURIST Target, RANDOM 0.3",
+                  "ModData": {
+                    "selph.ExtraMachineConfig.ExtraContextTags": "{{ModId}}_free_refill",
+                  },
+                  "IncrementMachineParentSheetIndex": 3,
+                },
+                {
+                  "Id": "Silk",
+                  "ItemId": "(O){{ModId}}_SilkCocoon",
+                },
+              ],
+              "DaysUntilReady": 4,
+            },
+          ],
+          "InvalidItemMessage": "{{i18n: machine.SilkwormRack.invalidItem}}",
+          "ShowNextIndexWhenReady": true,
+          "WobbleWhileWorking": false,
+          // Explanation:
+          // For the Ready sprite we want to use sprite 1 normally, and sprite 4 if there's mulberry leaves left. For the latter this is handled by IncrementMachineParentSheetIndex above, and ShowNextIndexWhenReady for both cases.
+          // However, we still want sprite 3 and 5 as the work animation in all cases. Without IncrementMachineParentSheetIndex, we can just use 3 and 5, but with the index incremented by 3 we subtract 3 from those and use 0 and 2.
+					"LoadEffects": [
+						{
+						  "Id": "FreeRefill",
+							"Frames": [0, 2],
+							"Interval": 1000,
+              "Condition": "ITEM_CONTEXT_TAG Target {{ModId}}_free_refill",
+              "Sounds": [
+                {
+                  "Id": "leafrustle",
+                }
+              ],
+						},
+						{
+						  "Id": "Default",
+							"Frames": [3, 5],
+							"Interval": 1000,
+              "Sounds": [
+                {
+                  "Id": "leafrustle",
+                  "Delay": 0
+                }
+              ],
+						},
+					],
+					"WorkingEffects": [
+						{
+						  "Id": "FreeRefill",
+							"Frames": [0, 2],
+							"Interval": 1000,
+              "Condition": "ITEM_CONTEXT_TAG Target {{ModId}}_free_refill",
+						},
+						{
+						  "Id": "Default",
+							"Frames": [3, 5],
+							"Interval": 1000,
+						},
+					],
+					"ReadyTimeModifiers": [
+            {
+              "Id": "{{ModId}}_Sericulturist",
+              "Modification": "Subtract",
+              "Amount": 1600,
+              "Condition": "{{CodeComponentId}}_HAS_SERICULTURIST Target",
+            },
+					],
+        },
+        "(BC){{ModId}}_Renderer": {
+          "OutputRules": [
+            {
+              "Id": "Meat",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredTags": ["category_meat", "!{{ModId}}_rendered"],
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "(O)428",
+                  "ItemId": "(O)428",
+                  "PreserveId": "{{ModId}}_Leather",
+                  "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+                  "ObjectInternalName": "{{ModId}}_Cloth Leather",
+                  "ObjectColor": "#E8B57F",
+                  "PriceModifiers": [
+                    {
+                      "Id": "LeatherModifier",
+                      "Modification": "Set",
+                      "Amount": 600,
+                    },
+                  ],
+                  "CustomData": {
+                    "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_Bones,{{ModId}}_MeatBack",
+                  },
+                },
+              ],
+              "MinutesUntilReady": 0,
+            },
+            {
+              "Id": "BugMeat",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O)684",
+                  "RequiredCount": 20,
+                },
+              ],
+              "OutputItem": [
+                {
+                  "Id": "(O)428",
+                  "ItemId": "(O)428",
+                  "PreserveId": "{{ModId}}_Leather",
+                  "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+                  "ObjectInternalName": "{{ModId}}_Cloth {0}",
+                  "ObjectColor": "Brown",
+                  "PriceModifiers": [
+                    {
+                      "Id": "Leather",
+                      "Modification": "Multiply",
+                      "Amount": 1.5,
+                    },
+                  ],
+                  "CustomData": {
+                    "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_BugMeatBack",
+                  },
+                },
+              ],
+              "MinutesUntilReady": 0,
+					    "InvalidCountMessage": "{{i18n: machine.Renderer.invalidCountBugMeat}}",
+            },
+          ],
+          "ShowNextIndexWhenReady": true,
+        },
+        "(BC){{ModId}}_DyePot": {
+          "OutputRules": [
+            {
+              "Id": "Cloth",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O)428",
+                },
+              ],
+              // Output items are in dyed-objects-template.json
+              "OutputItem": [],
+              "UseFirstValidOutput": true,
+              "MinutesUntilReady": 480,
+            },
+            {
+              "Id": "Yarn",
+              "Triggers": [
+                {
+                  "Id": "ItemPlacedInMachine",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O){{ModId}}_Yarn",
+                  "RequiredCount": 2,
+                },
+                {
+                  "Id": "ItemPlacedInMachine2",
+                  "Trigger": "ItemPlacedInMachine",
+                  "RequiredItemId": "(O)FlashShifter.StardewValleyExpandedCP_Yarn",
+                },
+              ],
+              // Output items are in dyed-objects-template.json
+              "OutputItem": [],
+              "MinutesUntilReady": 480,
+					    "InvalidCountMessage": "{{i18n: machine.DyePot.invalidCountYarn}}",
+            },
+          ],
+          "InvalidItemMessage": "{{i18n: machine.DyePot.invalidItem}}",
+					"ReadyTimeModifiers": [
+            {
+              "Id": "{{ModId}}_Level1",
+              "Modification": "Multiply",
+              "Amount": ".9",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 1 2",
+            },
+            {
+              "Id": "{{ModId}}_Level3",
+              "Modification": "Multiply",
+              "Amount": ".8",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 3 4",
+            },
+            {
+              "Id": "{{ModId}}_Level5",
+              "Modification": "Multiply",
+              "Amount": ".7",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 5 6",
+            },
+            {
+              "Id": "{{ModId}}_Level7",
+              "Modification": "Multiply",
+              "Amount": ".6",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 7 8",
+            },
+            {
+              "Id": "{{ModId}}_Level9",
+              "Modification": "Multiply",
+              "Amount": ".5",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 9 10",
+            },
+            {
+              "Id": "{{ModId}}_Level11",
+              "Modification": "Multiply",
+              "Amount": ".4",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 11 12",
+            },
+            {
+              "Id": "{{ModId}}_Level13",
+              "Modification": "Multiply",
+              "Amount": ".3",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 13 14",
+            },
+            {
+              "Id": "{{ModId}}_Level15",
+              "Modification": "Multiply",
+              "Amount": ".2",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 15 16",
+            },
+            {
+              "Id": "{{ModId}}_Level17",
+              "Modification": "Multiply",
+              "Amount": ".1",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 17 18",
+            },
+            {
+              "Id": "{{ModId}}_Level19",
+              "Modification": "Multiply",
+              "Amount": ".01",
+              "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 19",
+            },
+					],
+          "ShowNextIndexWhileWorking": true,
+          "LoadEffects": [
+            {
+              "Id": "Default",
+              "Sounds": [
+                {
+                  "Id": "furnace",
+                }
+              ],
+            }
+          ],
+          "WorkingEffects": [
+            {
+              "Id": "Default",
+              "Sounds": [
+                {
+                  "Id": "bubbles",
+                  "Delay": 0
+                }
+              ],
+              "TemporarySprites": [
+                // from kegs
+                {
+                  "Id": "Default",
+                  "Condition": null,
+                  "Texture": "TileSheets\\animations",
+                  "SourceRect": {
+                    "X": 256,
+                    "Y": 1856,
+                    "Width": 64,
+                    "Height": 128
+                  },
+                  "Interval": 80.0,
+                  "Frames": 6,
+                  "Loops": 999999,
+                  "PositionOffset": "0, -32",
+                  "Flicker": false,
+                  "Flip": false,
+                  "SortOffset": 0.0,
+                  "AlphaFade": 0.005,
+                  "Scale": 0.25,
+                  "ScaleChange": 0.0,
+                  "Rotation": 0.0,
+                  "RotationChange": 0.0,
+                  "Color": "#7E7E7EBF"
+                }
+              ]
+            }
+          ],
+					"CustomFields": {
+					  "selph.ExtraMachineConfig.DrawLayerTexture": "{{ModId}}/BigCraftables",
+					  "selph.ExtraMachineConfig.DrawLayerTextureIndex": "20",
+					},
+        },
+      },
+    },
+    {
+      "LogName": "Edit Oil Maker",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)19", "OutputRules"],
+      "Entries": {
+        "{{ModId}}_FlaxSeeds": {
+          "Id": "{{ModId}}_FlaxSeeds",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_FlaxSeeds",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O){{ModId}}_LinseedOil",
+              "ItemId": "(O){{ModId}}_LinseedOil",
+            },
+          ],
+          "MinutesUntilReady": 120,
+        },
+        "{{ModId}}_HempSeeds": {
+          "Id": "{{ModId}}_HempSeeds",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_HempSeeds",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)247",
+              "ItemId": "(O)247",
+            },
+          ],
+          "MinutesUntilReady": 240,
+        },
+      }
+    },
+    {
+      "LogName": "Edit Loom for Angora",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)17", "OutputRules"],
+      "Entries": {
+        "{{ModId}}_Angora": {
+          "Id": "{{ModId}}_Angora",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O)446",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#EBEBEB",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "AngoraModifier",
+                  "Modification": "Set",
+                  "Amount": 820,
+                },
+              ],
+            },
+          ],
+          "MinutesUntilReady": 240,
+        },
+      },
+      "When": {
+        "ReskinRabbitsFoot": "true",
+      },
+    },
+    {
+      "LogName": "Edit Spinner for Angora",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_YarnSpinner", "OutputRules"],
+      "Entries": {
+        "{{ModId}}_Angora": {
+          "Id": "{{ModId}}_Angora",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O)446",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O){{ModId}}_Yarn",
+              "ItemId": "(O){{ModId}}_Yarn",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Yarn {0}",
+              "ObjectColor": "#EBEBEB",
+              "MinStack": 2,
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 2.0,
+                },
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "AngoraModifier",
+                  "Modification": "Set",
+                  "Amount": 410,
+                },
+              ],
+            },
+          ],
+          "MinutesUntilReady": 240,
+        },
+      },
+      "When": {
+        "ReskinRabbitsFoot": "true",
+      },
+    },
+    {
+      "LogName": "Edit Loom Ready Time For Skill",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)17", "ReadyTimeModifiers"],
+      "Entries": {
+        "{{ModId}}_Level1": {
+          //"Amount": "{{Query: 1 - ({{{{CodeComponentId}}/TextileLevel}} + 1) / 2 * 0.05 }}",
+          "Id": "{{ModId}}_Level1",
+          "Modification": "Multiply",
+          "Amount": ".9",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 1 2",
+        },
+        "{{ModId}}_Level3": {
+          "Id": "{{ModId}}_Level3",
+          "Modification": "Multiply",
+          "Amount": ".8",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 3 4",
+        },
+        "{{ModId}}_Level5": {
+          "Id": "{{ModId}}_Level5",
+          "Modification": "Multiply",
+          "Amount": ".7",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 5 6",
+        },
+        "{{ModId}}_Level7": {
+          "Id": "{{ModId}}_Level7",
+          "Modification": "Multiply",
+          "Amount": ".6",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 7 8",
+        },
+        "{{ModId}}_Level9": {
+          "Id": "{{ModId}}_Level9",
+          "Modification": "Multiply",
+          "Amount": ".5",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 9 10",
+        },
+        "{{ModId}}_Level11": {
+          "Id": "{{ModId}}_Level11",
+          "Modification": "Multiply",
+          "Amount": ".4",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 11 12",
+        },
+        "{{ModId}}_Level13": {
+          "Id": "{{ModId}}_Level13",
+          "Modification": "Multiply",
+          "Amount": ".3",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 13 14",
+        },
+        "{{ModId}}_Level15": {
+          "Id": "{{ModId}}_Level15",
+          "Modification": "Multiply",
+          "Amount": ".2",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 15 16",
+        },
+        "{{ModId}}_Level17": {
+          "Id": "{{ModId}}_Level17",
+          "Modification": "Multiply",
+          "Amount": ".1",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 17 18",
+        },
+        "{{ModId}}_Level19": {
+          "Id": "{{ModId}}_Level19",
+          "Modification": "Multiply",
+          "Amount": ".01",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 19",
+        },
+      }
+    },
+  ]
+}

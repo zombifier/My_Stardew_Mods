@@ -1,0 +1,92 @@
+{
+  "Changes": [
+    {
+      "LogName": "Spawnables",
+      "Action": "EditData",
+      "Target": "spacechase0.SpaceCore/SpawnableDefinitions",
+      "Entries": {
+        "{{ModId}}_Nettle": {
+          "Type": "Forageable",
+          "ForageableItemData": [
+            {
+              "Weight": 1.0,
+              "Value": {
+                "ItemId": "(O){{ModId}}_Nettle",
+              }
+            }
+          ],
+        },
+        "{{ModId}}_Silkworm": {
+          "Type": "Forageable",
+          "ForageableItemData": [
+            {
+              "Weight": 1.0,
+              "Value": {
+                "ItemId": "(O){{ModId}}_Silkworm",
+              }
+            }
+          ],
+        },
+        "{{ModId}}_CochinealBeetle": {
+          "Type": "Forageable",
+          "ForageableItemData": [
+            {
+              "Weight": 1.0,
+              "Value": {
+                "ItemId": "(O){{ModId}}_CochinealBeetle",
+              }
+            }
+          ],
+        }
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "spacechase0.SpaceCore/SpawningGroups",
+      "Entries": {
+        "{{ModID}}_Nettle": {
+          "SpawnablesToSpawn": [
+            {
+              "SpawnableIds": [
+                {
+                  "Weight": 1.0,
+                  "Value": "{{ModID}}_Nettle",
+                }
+              ],
+              "Minimum": 1,
+              "Maximum": 1,
+            },
+          ],
+        },
+        "{{ModID}}_Silkworm": {
+          "SpawnablesToSpawn": [
+            {
+              "SpawnableIds": [
+                {
+                  "Weight": 1.0,
+                  "Value": "{{ModID}}_Silkworm",
+                }
+              ],
+              "Minimum": 1,
+              "Maximum": 1,
+            },
+          ],
+        },
+        "{{ModID}}_CochinealBeetle": {
+          "SpawnablesToSpawn": [
+            {
+              "SpawnableIds": [
+                {
+                  "Weight": 1.0,
+                  "Value": "{{ModID}}_CochinealBeetle",
+                }
+              ],
+              "Minimum": 1,
+              "Maximum": 1,
+            },
+          ],
+        },
+      }
+    },
+  ]
+}

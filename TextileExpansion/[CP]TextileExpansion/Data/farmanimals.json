@@ -1,0 +1,41 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add cashmere",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Goat", "ExtraProduceSpawnList"],
+      "Entries": {
+        "{{ModId}}_Cashmere": {
+          "Id": "{{ModId}}_Cashmere",
+          "ProduceItemIds": [
+            {
+              "Id": "{{ModId}}_Cashmere",
+              "ItemId": "{{ModId}}_Cashmere",
+              "MinimumFriendship": 800,
+            },
+          ],
+          "DaysToProduce": 7,
+          "SyncWithMainProduce": false,
+        },
+      },
+      "When": {
+        "HasMod": "selph.ExtraAnimalConfig",
+      },
+    },
+    {
+      "LogName": "Make cashmere drop",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Goat", "AnimalProduceExtensionData"],
+      "Entries": {
+        "(O){{ModId}}_Cashmere": {
+          "HarvestTool": "DropOvernight",
+        },
+      },
+      "When": {
+        "HasMod": "selph.ExtraAnimalConfig",
+      },
+    },
+  ]
+}

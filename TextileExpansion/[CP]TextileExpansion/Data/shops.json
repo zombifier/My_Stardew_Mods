@@ -1,0 +1,197 @@
+{
+  "Changes": [
+    {
+      "LogName": "Adds seeds to Pierre's",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["SeedShop", "Items"],
+      "Entries": {
+        "(O){{ModId}}_FlaxSeeds": {
+          "Condition": "SEASON spring, PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_FlaxSeeds",
+          "ItemId": "(O){{ModId}}_FlaxSeeds",
+        },
+        "(O){{ModId}}_MadderRootsSeeds": {
+          "Condition": "SEASON spring, PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_MadderRootsSeeds",
+          "ItemId": "(O){{ModId}}_MadderRootsSeeds",
+        },
+        "(O){{ModId}}_HempSeeds": {
+          "Condition": "SEASON summer, PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_HempSeeds",
+          "ItemId": "(O){{ModId}}_HempSeeds",
+        },
+        "(O){{ModId}}_CottonBollSeeds": {
+          "Condition": "SEASON summer, PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_CottonBollSeeds",
+          "ItemId": "(O)Cornucopia_CottonBollSeeds",
+          "AvoidRepeat": true,
+        },
+        "(O){{ModId}}_SafflowerSeeds": {
+          "Condition": "SEASON summer, PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_SafflowerSeeds",
+          "ItemId": "(O){{ModId}}_SafflowerSeeds",
+        },
+        "(O){{ModId}}_CottonBollSeeds_Fall": {
+          "Condition": "SEASON fall, PLAYER_BASE_FARMING_LEVEL Current 7, !PLAYER_HAS_MAIL Any PierreStocklist",
+          "Id": "(O){{ModId}}_CottonBollSeeds_Fall",
+          "ItemId": "(O)Cornucopia_CottonBollSeeds",
+          "AvoidRepeat": true,
+        },
+        "(O){{ModId}}_MadderRootsSeeds_Fall": {
+          "Condition": "SEASON fall, PLAYER_BASE_FARMING_LEVEL Current 7, !PLAYER_HAS_MAIL Any PierreStocklist",
+          "Id": "(O){{ModId}}_MadderRootsSeeds_Fall",
+          "ItemId": "(O){{ModId}}_MadderRootsSeeds",
+        },
+        "(O){{ModId}}_DyeWhite": {
+          "Condition": "PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_DyeWhite",
+          "ItemId": "(O){{ModId}}_DyeWhite",
+          "Price": 100,
+        },
+        "(O){{ModId}}_MulberrySapling": {
+          "Id": "(O){{ModId}}_MulberrySapling",
+          "ItemId": "(O){{ModId}}_MulberrySapling",
+        },
+        "(O){{ModId}}_LeafBasket": {
+          "Id": "(BC){{ModId}}_LeafBasket",
+          "ItemId": "(BC){{ModId}}_LeafBasket",
+          "Price": 100,
+        },
+        "(O){{ModId}}_Renderer": {
+          "Id": "(BC){{ModId}}_Renderer",
+          "ItemId": "(BC){{ModId}}_Renderer",
+          "Price": 100,
+        },
+      },
+      "MoveEntries": [
+        { "Id": "(O){{ModId}}_MadderRootsSeeds", "AfterId": "(O)476"},
+        { "Id": "(O){{ModId}}_FlaxSeeds", "AfterId": "(O)476"},
+        { "Id": "(O){{ModId}}_SafflowerSeeds", "AfterId": "(O)485"},
+        { "Id": "(O){{ModId}}_CottonBollSeeds", "AfterId": "(O)485"},
+        { "Id": "(O){{ModId}}_HempSeeds", "AfterId": "(O)485"},
+        { "Id": "(O){{ModId}}_MadderRootsSeeds_Fall", "AfterId": "(O)489"},
+        { "Id": "(O){{ModId}}_CottonBollSeeds_Fall", "AfterId": "(O)489"},
+        { "Id": "(O){{ModId}}_MulberrySapling", "AfterId": "(O)633"},
+        { "Id": "(O){{ModId}}_LeafBasket", "AfterId": "(O){{ModId}}_MulberrySapling"},
+        //{ "Id": "(O){{ModId}}_DyeWhite", "AfterId": "(BC)Dehydrator (Recipe)"},
+      ]
+    },
+    {
+      "LogName": "Adds seeds to Joja's",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["Joja", "Items"],
+      "Entries": {
+        "(O){{ModId}}_FlaxSeeds": {
+          "Condition": "SEASON spring, PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_FlaxSeeds",
+          "ItemId": "(O){{ModId}}_FlaxSeeds",
+        },
+        "(O){{ModId}}_MadderRootsSeeds": {
+          "Condition": "SEASON spring, PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_MadderRootsSeeds",
+          "ItemId": "(O){{ModId}}_MadderRootsSeeds",
+        },
+        "(O){{ModId}}_HempSeeds": {
+          "Condition": "SEASON summer, PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_HempSeeds",
+          "ItemId": "(O){{ModId}}_HempSeeds",
+        },
+        "(O){{ModId}}_CottonBollSeeds": {
+          "Condition": "SEASON summer, PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_CottonBollSeeds",
+          "ItemId": "(O)Cornucopia_CottonBollSeeds",
+          "AvoidRepeat": true,
+        },
+        "(O){{ModId}}_SafflowerSeeds": {
+          "Condition": "SEASON summer, PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_SafflowerSeeds",
+          "ItemId": "(O){{ModId}}_SafflowerSeeds",
+        },
+        "(O){{ModId}}_CottonBollSeeds_Fall": {
+          "Condition": "SEASON fall, PLAYER_BASE_FARMING_LEVEL Current 7, !PLAYER_HAS_MAIL Any PierreStocklist",
+          "Id": "(O){{ModId}}_CottonBollSeeds_Fall",
+          "ItemId": "(O)Cornucopia_CottonBollSeeds",
+          "AvoidRepeat": true,
+        },
+        "(O){{ModId}}_MadderRootsSeeds_Fall": {
+          "Condition": "SEASON fall, PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_MadderRootsSeeds_Fall",
+          "ItemId": "(O){{ModId}}_MadderRootsSeeds",
+        },
+        "(O){{ModId}}_DyeWhite": {
+          "Condition": "PLAYER_BASE_FARMING_LEVEL Current 7",
+          "Id": "(O){{ModId}}_DyeWhite",
+          "ItemId": "(O){{ModId}}_DyeWhite",
+          "Price": 100,
+        },
+        "(O){{ModId}}_Renderer": {
+          "Id": "(BC){{ModId}}_Renderer",
+          "ItemId": "(BC){{ModId}}_Renderer",
+          "Price": 100,
+        },
+      },
+      "MoveEntries": [
+        { "Id": "(O){{ModId}}_MadderRootsSeeds", "AfterId": "(O)477"},
+        { "Id": "(O){{ModId}}_FlaxSeeds", "AfterId": "(O)477"},
+        { "Id": "(O){{ModId}}_SafflowerSeeds", "AfterId": "SunflowerSeeds_Summer"},
+        { "Id": "(O){{ModId}}_CottonBollSeeds", "AfterId": "(O)SunflowerSeeds_Summer"},
+        { "Id": "(O){{ModId}}_HempSeeds", "AfterId": "SunflowerSeeds_Summer"},
+        { "Id": "(O){{ModId}}_MadderRootsSeeds_Fall", "AfterId": "(O)425"},
+        { "Id": "(O){{ModId}}_CottonBollSeeds_Fall", "AfterId": "(O)425"},
+      ]
+    },
+    {
+      "LogName": "Adds rare stuff to traveling merchant",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["Traveler", "Items"],
+      "Entries": {
+        "(O){{ModId}}_Silkworm": {
+          //"Condition": "SYNCED_RANDOM day {{ModId}}_Silkworm 0.2 @addDailyLuck",
+          "Condition": "DAY_OF_WEEK Sunday, PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Current 3",
+          "Id": "(O){{ModId}}_Silkworm",
+          "ItemId": "(O){{ModId}}_Silkworm",
+          "AvailableStock": 1,
+          "Price": 10000,
+        },
+        "(O){{ModId}}_BrazilwoodSeed": {
+          "Condition": "RANDOM 0.5",
+          "Id": "(O){{ModId}}_BrazilwoodSeed",
+          "ItemId": "(O){{ModId}}_BrazilwoodSeed",
+          "AvailableStock": 1,
+          "Price": 200,
+        },
+        "(O){{ModId}}_DyeBlue": {
+          "Condition": "RANDOM 0.5",
+          "Id": "(O){{ModId}}_DyeBlue",
+          "ItemId": "(O){{ModId}}_DyeBlue",
+          "AvailableStock": 5,
+          "Price": 200,
+        },
+      }
+    },
+    {
+      "LogName": "Adds seed to Sandy",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["Sandy", "Items"],
+      "Entries": {
+        "(O){{ModId}}_IndigoSeeds": {
+          "Id": "(O){{ModId}}_IndigoSeeds",
+          "ItemId": "(O){{ModId}}_IndigoSeeds",
+        },
+        "(O){{ModId}}_BrazilwoodSeed": {
+          "Id": "(O){{ModId}}_BrazilwoodSeed",
+          "ItemId": "(O){{ModId}}_BrazilwoodSeed",
+          "Price": 200,
+        },
+      },
+      "MoveEntries": [
+        { "Id": "(O){{ModId}}_BrazilwoodSeed", "AfterId": "(O)494"},
+        { "Id": "(O){{ModId}}_IndigoSeeds", "AfterId": "(O)494"},
+      ],
+    },
+  ]
+}

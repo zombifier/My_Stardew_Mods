@@ -1,0 +1,19 @@
+{
+  // UNUSED!!! This is the old vanilla method
+  "Changes": [
+    {
+      "LogName": "Add {{ItemId}} to {{LocationName}}",
+      "Action": "EditData",
+      "Target": "Data/Locations",
+      "TargetField": ["{{LocationName}}", "Forage"],
+      "Entries": {
+        "(O){{ItemId}}": {
+          "Id": "(O){{ItemId}}",
+          "ItemId": "(O){{ItemId}}",
+          "Chance": "{{Chance}}",
+          "Condition": "{{Condition}}",
+        },
+      },
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add mails",
+      "Action": "EditData",
+      "Target": "Data/mail",
+      "Entries": {
+        "{{ModId}}_PierreNewSeeds": "{{i18n:mail.PierreNewSeeds.body}}[#]{{i18n:mail.PierreNewSeeds.title}}",
+        "{{ModId}}_EmilyDyePotRecipe": "{{i18n:mail.EmilyDyePotRecipe.body}}%item craftingRecipe {{ModId}}_DyePot%%[#]{{i18n:mail.EmilyDyePotRecipe.title}}",
+        "{{ModId}}_EmilyFreeDyes": "{{i18n:mail.EmilyFreeDyes.body}}%item id {{ModId}}_DyeRed 5%%%item quest {{ModId}}_EmilyDyedCloth true%%[#]{{i18n:mail.EmilyFreeDyes.title}}",
+        "{{ModId}}_SandyDyeRare": "{{i18n:mail.SandyDyeRare.body}}[#]{{i18n:mail.SandyDyeRare.title}}",
+      }
+    },
+  ]
+}

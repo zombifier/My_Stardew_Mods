@@ -1,0 +1,60 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add murex snail",
+      "Action": "EditData",
+      "Target": "Data/FishPondData",
+      "Entries": {
+        "{{ModId}}_MurexSnail" :{
+          "Id": "{{ModId}}_MurexSnail",
+          "RequiredTags": [
+            "id_o_{{ModId}}_MurexSnail"
+          ],
+          "Precedence": 0,
+          "MaxPopulation": -1,
+          "SpawnTime": -1,
+          "WaterColor": [
+            {
+              "Id": "Default",
+              "Color": "150 100 200",
+              "MinPopulation": 3,
+              "MinUnlockedPopulationGate": 0,
+              "Condition": null
+            }
+          ],
+          "ProducedItems": [
+            {
+              "RequiredPopulation": 1,
+              "Chance": 0.75,
+              "Condition": null,
+              "Id": "(O){{ModId}}_DyePurple",
+              "ItemId": "(O){{ModId}}_DyePurple",
+            },
+            {
+              "RequiredPopulation": 8,
+              "Chance": 0.05,
+              "Condition": null,
+              "Id": "(O){{ModId}}_DyeRoyalPurple",
+              "ItemId": "(O){{ModId}}_DyeRoyalPurple",
+            },
+          ],
+          "PopulationGates": {
+            "4": [
+              "(O)422",
+              "(O)66",
+            ],
+            "6": [
+              "(O){{ModId}}_DyePurple",
+            ],
+            "8": [
+              "(O){{ModId}}_ClothPurple",
+              "(O){{ModId}}_YarnPurple",
+            ]
+          },
+          "CustomFields": null
+        },
+      }
+    },
+  ]
+}
+

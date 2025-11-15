@@ -1,0 +1,216 @@
+{
+  "Format": "2.8.0",
+  "ConfigSchema": {
+    "DesaturateCloth": {
+      "AllowValues": "true, false",
+      "Default": "true",
+    },
+    "DesaturateYarn": {
+      "AllowValues": "true, false",
+      "Default": "true",
+    },
+    "ReskinRabbitsFoot": {
+      "AllowValues": "true, false",
+      "Default": "false",
+    },
+  },
+  "DynamicTokens": [
+    {
+      "Name": "CodeComponentId",
+      "Value": "selph.TextileExpansionCode"
+    },
+    {
+      "Name": "CanEmbroider",
+      "Value": "false",
+    },
+    {
+      "Name": "CanEmbroider",
+      "Value": "true",
+      "When": {
+        "Query: {{selph.TextileExpansionCode/TextileBaseLevel}} >= 6": true,
+      }
+    },
+    {
+      "Name": "CanJewel",
+      "Value": "false"
+    },
+    {
+      "Name": "CanJewel",
+      "Value": "true",
+      "When": {
+        "Query: {{selph.TextileExpansionCode/TextileBaseLevel}} >= 8": true,
+      }
+    },
+  ],
+  "Changes": [
+    {
+      "LogName": "Include Cornucopia Cotton",
+      "Action": "Include",
+      "FromFile": "Data/cornucopia-cotton.json",
+      "When": {
+        "HasMod |contains=Cornucopia.MoreCrops": "false",
+      }
+    },
+    {
+      "LogName": "Add new crops",
+      "Action": "Include",
+      "FromFile": "Data/crops.json"
+    },
+    {
+      "LogName": "Add new BigCraftables",
+      "Action": "Include",
+      "FromFile": "Data/bigcraftables.json"
+    },
+    {
+      "LogName": "Add Crafting & Unlock",
+      "Action": "Include",
+      "FromFile": "Data/craftingrecipes.json",
+    },
+    {
+      "LogName": "Add Machine rules",
+      "Action": "Include",
+      "FromFile": "Data/machines.json",
+    },
+    {
+      "LogName": "Add mill rules",
+      "Action": "Include",
+      "FromFile": "Data/buildings.json",
+    },
+    {
+      "LogName": "Add wild trees",
+      "Action": "Include",
+      "FromFile": "Data/wildtrees.json",
+    },
+    {
+      "LogName": "Add fruit trees",
+      "Action": "Include",
+      "FromFile": "Data/fruittrees.json",
+    },
+    {
+      "LogName": "Edit shop data",
+      "Action": "Include",
+      "FromFile": "Data/shops.json",
+    },
+    {
+      "LogName": "Edit mail data",
+      "Action": "Include",
+      "FromFile": "Data/mail.json",
+    },
+    {
+      "LogName": "Edit trigger actions",
+      "Action": "Include",
+      "FromFile": "Data/triggeractions.json",
+    },
+    {
+      "LogName": "Add Textures",
+      "Action": "Include",
+      "FromFile": "Data/assets.json",
+    },
+    //{
+    //  "LogName": "Edit location",
+    //  "Action": "Include",
+    //  "FromFile": "Data/locations.json",
+    //},
+    {
+      "LogName": "Add forage definition via SpaceCore",
+      "Action": "Include",
+      "FromFile": "Data/spacecoreforage.json",
+    },
+    {
+      "LogName": "Animate the silk rack via SpaceCore",
+      "Action": "Include",
+      "FromFile": "Data/spacecoreanimations.json",
+    },
+    {
+      "LogName": "Edit gift tastes",
+      "Action": "Include",
+      "FromFile": "Data/npcgifttastes.json",
+    },
+    {
+      "LogName": "add special orders",
+      "Action": "Include",
+      "FromFile": "Data/specialorders.json",
+    },
+    {
+      "LogName": "animal data",
+      "Action": "Include",
+      "FromFile": "Data/farmanimals.json",
+    },
+    {
+      "LogName": "fish data",
+      "Action": "Include",
+      "FromFile": "Data/fish.json",
+    },
+    {
+      "LogName": "Load strings",
+      "Action": "Include",
+      "FromFile": "Data/strings.json",
+    },
+    {
+      "LogName": "Add quests",
+      "Action": "Include",
+      "FromFile": "Data/quests.json",
+    },
+    {
+      "LogName": "Add events",
+      "Action": "Include",
+      "FromFile": "Data/events.json",
+    },
+    {
+      "LogName": "Edit Cactus Bush",
+      "Action": "Include",
+      "FromFile": "Data/bushes.json",
+    },
+    {
+      "LogName": "Add powers",
+      "Action": "Include",
+      "FromFile": "Data/powers.json",
+    },
+    {
+      "LogName": "Baubles compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/baubles.json",
+      "When": {
+        "HasMod |contains=appleseed.BCP": "true",
+      },
+    },
+    {
+      "LogName": "SVE compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/sve.json",
+      "When": {
+        "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+      },
+    },
+    {
+      "LogName": "SBV compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/sunberry.json",
+      "When": {
+        "HasMod |contains=skellady.SBVCP": "true",
+      },
+    },
+    {
+      "LogName": "VMV compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/vapius.json",
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+    },
+    {
+      "LogName": "Camelus compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/camelus.json",
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+      },
+    },
+    // Has to be latest because of changes in the templates (TODO - split those out)
+    {
+      "LogName": "Add new objects",
+      "Action": "Include",
+      "FromFile": "Data/objects.json"
+    },
+  ]
+}

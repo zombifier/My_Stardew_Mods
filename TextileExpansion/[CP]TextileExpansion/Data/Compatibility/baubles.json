@@ -1,0 +1,1980 @@
+{
+  "Changes": [
+    // Cloth
+    {
+      "LogName": "Add tag for cloth - Red",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.RedCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+    },
+    {
+      "LogName": "Add tag for cloth - Orange",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.OrangeCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+    },
+    {
+      "LogName": "Add tag for cloth - Yellow",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.YellowCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+    },
+    {
+      "LogName": "Add tag for cloth - Green",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.GreenCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+    },
+    {
+      "LogName": "Add tag for cloth - Blue",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.BlueCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+    },
+    {
+      "LogName": "Add tag for cloth - Violet",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.VioletCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+    },
+    {
+      "LogName": "Add tag for cloth - Brown",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.BrownCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+    },
+    {
+      "LogName": "Add tag for cloth - Black",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.BlackCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+    },
+    {
+      "LogName": "Add tag for cloth - White",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.WhiteCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+    },
+    {
+      "LogName": "Add tag for cloth - Grey",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.GreyCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+    },
+    {
+      "LogName": "Add tag for cloth - Pink",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.PinkCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+    },
+    // Cloth
+    {
+      "LogName": "Add tag for yarn - Red",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.RedWool", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
+      },
+    },
+    {
+      "LogName": "Add tag for yarn - Orange",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.OrangeWool", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
+      },
+    },
+    {
+      "LogName": "Add tag for yarn - Yellow",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.YellowWool", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
+      },
+    },
+    {
+      "LogName": "Add tag for yarn - Green",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.GreenWool", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
+      },
+    },
+    {
+      "LogName": "Add tag for yarn - Blue",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.BlueWool", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
+      },
+    },
+    {
+      "LogName": "Add tag for yarn - Violet",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.VioletWool", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
+      },
+    },
+    {
+      "LogName": "Add tag for yarn - Brown",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.BrownWool", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
+      },
+    },
+    {
+      "LogName": "Add tag for yarn - Black",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.BlackWool", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
+      },
+    },
+    {
+      "LogName": "Add tag for yarn - White",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.WhiteWool", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
+      },
+    },
+    {
+      "LogName": "Add tag for yarn - Grey",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.GreyWool", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
+      },
+    },
+    {
+      "LogName": "Add tag for yarn - Pink",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["appleseed.BCP.PinkWool", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
+      },
+    },
+    {
+      "LogName": "Add dyer recipes for colored wool",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules"],
+      "Entries": {
+        "{{ModId}}_Wool": {
+          "Id": "{{ModId}}_Wool",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O)440",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "{{ModId}}_RedWool",
+              "ItemId": "appleseed.BCP.RedWool",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeRed",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackRed",
+              },
+            },
+            {
+              "Id": "{{ModId}}_YellowWool",
+              "ItemId": "appleseed.BCP.YellowWool",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeYellow",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackYellow",
+              },
+            },
+            {
+              "Id": "{{ModId}}_BlueWool",
+              "ItemId": "appleseed.BCP.BlueWool",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeBlue",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackBlue",
+              },
+            },
+            {
+              "Id": "{{ModId}}_OrangeWool",
+              "ItemId": "appleseed.BCP.OrangeWool",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeOrange",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackOrange",
+              },
+            },
+            {
+              "Id": "{{ModId}}_GreenWool",
+              "ItemId": "appleseed.BCP.GreenWool",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeGreen",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackGreen",
+              },
+            },
+            {
+              "Id": "{{ModId}}_VioletWool",
+              "ItemId": "appleseed.BCP.VioletWool",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyePurple",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackPurple",
+              },
+            },
+            {
+              "Id": "{{ModId}}_BrownWool",
+              "ItemId": "appleseed.BCP.BrownWool",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeBrown",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackBrown",
+              },
+            },
+            {
+              "Id": "{{ModId}}_BlackWool",
+              "ItemId": "appleseed.BCP.BlackWool",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeBlack",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackBlack",
+              },
+            },
+            {
+              "Id": "{{ModId}}_WhiteWool",
+              "ItemId": "appleseed.BCP.WhiteWool",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeWhite",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackWhite",
+              },
+            },
+            {
+              "Id": "{{ModId}}_GreyWool",
+              "ItemId": "appleseed.BCP.GreyWool",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeGray",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackGray",
+              },
+            },
+            {
+              "Id": "{{ModId}}_PinkWool",
+              "ItemId": "appleseed.BCP.PinkWool",
+              "CustomData": {
+                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyePink",
+                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackPink",
+              },
+            },
+          ]
+        }
+      }
+    },
+    {
+      "LogName": "Flexible recipes that take any cloth or wool/yarn",
+      "Action": "EditData",
+      "Target": "spacechase0.SpaceCore/CraftingRecipeOverrides",
+      "LocalTokens": {
+        "XRed": 0,
+        "XOrange": 48,
+        "XYellow": 16,
+        "XGreen": 64,
+        "XBlue": 32,
+        "XViolet": 80,
+        "XBlack": 112,
+        "XWhite": 128,
+        "XPink": 160,
+        "XBrown": 96,
+        "XGrey": 144,
+      },
+      "Entries": {
+        "appleseed.BCP.FeltSlime": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltSlime",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_green",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GreenWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGreen}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WoodenButtons",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltGrub": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltGrub",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_white",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.WhiteWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XWhite}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WoodenButtons",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltRockCrab": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltRockCrab",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_orange",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.OrangeWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XOrange}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.HardwoodButtons",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltBat": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltBat",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_black",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BlackWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBlack}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.HardwoodButtons",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltDustSprite": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltDustSprite",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_violet",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.VioletWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XViolet}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltGhost": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltGhost",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_blue",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BlueWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBlue}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltSkeleton": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltSkeleton",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_white",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.WhiteWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XWhite}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.GemstoneButtons",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltMetalHead": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltMetalHead",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_grey",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GrayWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGrey}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.GemstoneButtons",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltSquidKid": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltSquidKid",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_pink",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.PinkWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XPink}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.GemstoneButtons",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltHauntedSkull": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltHauntedSkull",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_grey",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GrayWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGrey}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.GemstoneButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)769",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltSerpent": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltSerpent",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_green",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GreenWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGreen}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.GemstoneButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)336",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltMummy": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltMummy",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_brown",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BrownWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBrown}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.GemstoneButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)386",
+              "Amount": 5,
+            },
+          ],
+        },
+        "appleseed.BCP.FeltDinosaur": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FeltDinosaur",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_green",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GreenWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGreen}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.GemstoneButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)60",
+              "Amount": 3,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushChicken": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushChicken",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_blue",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BlueCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBlue}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WoodenButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushCow": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushCow",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_white",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.WhiteCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XWhite}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WoodenButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushCrow": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushCrow",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_black",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BlackCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBlack}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WoodenButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushHorse": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushHorse",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_brown",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BrownCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBrown}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushDog": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushDog",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_yellow",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.YellowCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XYellow}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.HardwoodButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushCat": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushCat",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_orange",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.OrangeCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XOrange}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.HardwoodButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushDuck": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushDuck",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_green",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GreenCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGreen}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.HardwoodButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushGoat": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushGoat",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_yellow",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.YellowCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XYellow}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushFox": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushFox",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_red",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.RedCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XRed}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushPelican": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushPelican",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_white",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.WhiteCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XWhite}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PelicanBell",
+              "Amount": 2,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushBear": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushBear",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_brown",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BrownCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBrown}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WoodenButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushSheep": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushSheep",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_grey",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GrayCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGrey}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.HardwoodButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushBee": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushBee",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_yellow",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.YellowCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XYellow}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_black",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BlackCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBlack}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushRaccoon": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushRaccoon",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_grey",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GrayCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGrey}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushTurtle": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushTurtle",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_violet",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.PurpleCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XViolet}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.GemstoneButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.WindupMouse": {
+          "ProductQualifiedId": "(O)appleseed.BCP.WindupMouse",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_white",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.WhiteCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XWhite}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SmallGears",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WindingKey",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.WindupFrog": {
+          "ProductQualifiedId": "(O)appleseed.BCP.WindupFrog",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_green",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GreenCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGreen}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SmallGears",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WindingKey",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushOstrich": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushOstrich",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_white",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.WhiteCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XWhite}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_yellow",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.YellowCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XYellow}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_brown",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BrownCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBrown}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.HardwoodButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushParrot": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushParrot",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_red",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.RedCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XRed}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_green",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GreenCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGreen}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_orange",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.OrangeCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XOrange}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushJellyfish": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushJellyfish",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_blue",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BlueCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBlue}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_white",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.WhiteCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XWhite}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_pink",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.PinkCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XPink}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 5,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushGoblin": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushGoblin",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_green",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GreenCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGreen}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.GemstoneButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 2,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushSeaMonster": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushSeaMonster",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_green",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GreenCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGreen}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.HardwoodButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 2,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushDwarf": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushDwarf",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_red",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.RedCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XRed}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 2,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushShadowSpirit": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushShadowSpirit",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_black",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BlackCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBlack}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 2,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushWizard": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushWizard",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_violet",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.PurpleCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XViolet}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.HardwoodButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 3,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushWitch": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushWitch",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_black",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BlackCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBlack}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.MetalButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 3,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushElf": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushElf",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_brown",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BrownCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBrown}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.GemstoneButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 2,
+            },
+          ],
+        },
+        "appleseed.BCP.Teacup": {
+          "ProductQualifiedId": "(O)appleseed.BCP.Teacup",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.Porcelain",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.Paint",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_white",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.WhiteCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XWhite}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.Teapot": {
+          "ProductQualifiedId": "(O)appleseed.BCP.Teapot",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.Porcelain",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.Paint",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_white",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.WhiteCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XWhite}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FigurinePrincess": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FigurinePrincess",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.Porcelain",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.Paint",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_yellow",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.YellowWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XYellow}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FigurineOwl": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FigurineOwl",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.Porcelain",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.Paint",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_brown",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BrownWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBrown}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.FigurinePig": {
+          "ProductQualifiedId": "(O)appleseed.BCP.FigurinePig",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.Porcelain",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.Paint",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_red",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.RedWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XRed}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.JunimoShaker": {
+          "ProductQualifiedId": "(O)appleseed.BCP.JunimoShaker",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_green",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GreenCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGreen}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PearlButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)486",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)709",
+              "Amount": 5,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PetrichorHeart",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.WindupHare": {
+          "ProductQualifiedId": "(O)appleseed.BCP.WindupHare",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_yarn_item,color_black",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BlackWoolOrYarn.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBlack}}", "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 3,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PearlButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)446",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SmallGears",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WindingKey",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PetrichorHeart",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushTrashBear": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushTrashBear",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_brown",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BrownCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBrown}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.HardwoodButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PimaCotton",
+              "Amount": 5,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 3,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)259",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PetrichorHeart",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushFairy": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushFairy",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_pink",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.PinkCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XPink}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PearlButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)872",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PelicanBell",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PetrichorHeart",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushUnseelie": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushUnseelie",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_grey",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GrayCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGrey}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PearlButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)872",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.BatFlower",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PetrichorHeart",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.PlushMermaid": {
+          "ProductQualifiedId": "(O)appleseed.BCP.PlushMermaid",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_blue",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BlueCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBlue}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_green",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.GreenCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XGreen}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_violet",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.PurpleCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XViolet}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PearlButtons",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)394",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.SpoolOfThread",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PetrichorHeart",
+              "Amount": 1,
+            },
+          ],
+        },
+        "appleseed.BCP.Chessboard": {
+          "ProductQualifiedId": "(O)appleseed.BCP.Chessboard",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WhitePawn",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WhiteRook",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WhiteKnight",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WhiteBishop",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WhiteQueen",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.WhiteKing",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.BlackPawn",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.BlackRook",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.BlackKnight",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.BlackBishop",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.BlackQueen",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.BlackKing",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_white",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.WhiteCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XWhite}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "{{ModId}}_dyed_cloth_item,color_black",
+              "ContextTagsRequireAll": true,
+              "OverrideText": "{{i18n: item.BlackCloth.name}}",
+              "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
+              "OverrideTextureRect": {"X": "{{XBlack}}", "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)709",
+              "Amount": 5,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)appleseed.BCP.PetrichorHeart",
+              "Amount": 1,
+            },
+          ],
+        },
+      }
+
+    },
+  ]
+}
+

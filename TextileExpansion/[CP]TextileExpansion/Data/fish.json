@@ -1,0 +1,13 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add murex",
+      "Action": "EditData",
+      "Target": "Data/Fish",
+      "Entries": {
+        "{{ModId}}_MurexSnail": "{{ModId}}_MurexSnail/trap/.05/UNUSED/ocean/1/5/false",
+      }
+    },
+  ]
+}
+

@@ -1,0 +1,195 @@
+{
+  "Changes": [
+    {
+      "LogName": "Allow yarn spinner to spin camelus wool",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_YarnSpinner", "OutputRules"],
+      "Entries": {
+        "ZoeyHoshi.Camelus_CamelHairYarn_Albino": {
+          "Id": "ZoeyHoshi.Camelus_CamelHairYarn_Albino",
+          "Triggers": [
+            {
+              "Id": "Camelus_CamelHair_Albino",
+              "RequiredItemId": "(O)ZoeyHoshi.Camelus_CamelHair_Albino",
+              "Trigger": "ItemPlacedInMachine"
+            }
+          ],
+          "OutputItem": [
+            {
+              "Id": "Camelus_CamelHairYarn_Albino",
+              "ItemId": "(O)ZoeyHoshi.Camelus_CamelHairYarn_Albino"
+            }
+          ],
+          "MinutesUntilReady": 120
+        },
+        "ZoeyHoshi.Camelus_CamelHairYarn_Ash": {
+          "Id": "ZoeyHoshi.Camelus_CamelHairYarn_Ash",
+          "Triggers": [
+            {
+              "Id": "Camelus_CamelHair_Ash",
+              "RequiredItemId": "(O)ZoeyHoshi.Camelus_CamelHair_Ash",
+              "Trigger": "ItemPlacedInMachine"
+            }
+          ],
+          "OutputItem": [
+            {
+              "Id": "Camelus_CamelHairYarn_Ash",
+              "ItemId": "(O)ZoeyHoshi.Camelus_CamelHairYarn_Ash"
+            }
+          ],
+          "MinutesUntilReady": 120
+        },
+        "ZoeyHoshi.Camelus_CamelHairYarn_Black": {
+          "Id": "ZoeyHoshi.Camelus_CamelHairYarn_Black",
+          "Triggers": [
+            {
+              "Id": "Camelus_CamelHair_Black",
+              "RequiredItemId": "(O)ZoeyHoshi.Camelus_CamelHair_Black",
+              "Trigger": "ItemPlacedInMachine"
+            }
+          ],
+          "OutputItem": [
+            {
+              "Id": "Camelus_CamelHairYarn_Black",
+              "ItemId": "(O)ZoeyHoshi.Camelus_CamelHairYarn_Black"
+            }
+          ],
+          "MinutesUntilReady": 120
+        },
+        "ZoeyHoshi.Camelus_CamelHairYarn_BlackPiedbald": {
+          "Id": "ZoeyHoshi.Camelus_CamelHairYarn_BlackPiedbald",
+          "Triggers": [
+            {
+              "Id": "Camelus_CamelHair_BlackPiedbald",
+              "RequiredItemId": "(O)ZoeyHoshi.Camelus_CamelHair_BlackPiedbald",
+              "Trigger": "ItemPlacedInMachine"
+            }
+          ],
+          "OutputItem": [
+            {
+              "Id": "Camelus_CamelHairYarn_BlackPiedbald",
+              "ItemId": "(O)ZoeyHoshi.Camelus_CamelHairYarn_BlackPiedbald"
+            }
+          ],
+          "MinutesUntilReady": 120
+        },
+        "ZoeyHoshi.Camelus_CamelHairYarn_Blonde": {
+          "Id": "ZoeyHoshi.Camelus_CamelHairYarn_Blonde",
+          "Triggers": [
+            {
+              "Id": "Camelus_CamelHair_Blonde",
+              "RequiredItemId": "(O)ZoeyHoshi.Camelus_CamelHair_Blonde",
+              "Trigger": "ItemPlacedInMachine"
+            }
+          ],
+          "OutputItem": [
+            {
+              "Id": "Camelus_CamelHairYarn_Blonde",
+              "ItemId": "(O)ZoeyHoshi.Camelus_CamelHairYarn_Blonde"
+            }
+          ],
+          "MinutesUntilReady": 120
+        },
+        "ZoeyHoshi.Camelus_CamelHairYarn_BrownPiedbald": {
+          "Id": "ZoeyHoshi.Camelus_CamelHairYarn_BrownPiedbald",
+          "Triggers": [
+            {
+              "Id": "Camelus_CamelHair_BrownPiedbald",
+              "RequiredItemId": "(O)ZoeyHoshi.Camelus_CamelHair_BrownPiedbald",
+              "Trigger": "ItemPlacedInMachine"
+            }
+          ],
+          "OutputItem": [
+            {
+              "Id": "Camelus_CamelHairYarn_BrownPiedbald",
+              "ItemId": "(O)ZoeyHoshi.Camelus_CamelHairYarn_BrownPiedbald"
+            }
+          ],
+          "MinutesUntilReady": 120
+        },
+        "ZoeyHoshi.Camelus_CamelHairYarn_Chestnut": {
+          "Id": "ZoeyHoshi.Camelus_CamelHairYarn_Chestnut",
+          "Triggers": [
+            {
+              "Id": "Camelus_CamelHair_Chestnut",
+              "RequiredItemId": "(O)ZoeyHoshi.Camelus_CamelHair_Chestnut",
+              "Trigger": "ItemPlacedInMachine"
+            }
+          ],
+          "OutputItem": [
+            {
+              "Id": "Camelus_CamelHairYarn_Chestnut",
+              "ItemId": "(O)ZoeyHoshi.Camelus_CamelHairYarn_Chestnut"
+            }
+          ],
+          "MinutesUntilReady": 120
+        },
+        "ZoeyHoshi.Camelus_CamelHairYarn_Cinnamon": {
+          "Id": "ZoeyHoshi.Camelus_CamelHairYarn_Cinnamon",
+          "Triggers": [
+            {
+              "Id": "Camelus_CamelHair_Cinnamon",
+              "RequiredItemId": "(O)ZoeyHoshi.Camelus_CamelHair_Cinnamon",
+              "Trigger": "ItemPlacedInMachine"
+            }
+          ],
+          "OutputItem": [
+            {
+              "Id": "Camelus_CamelHairYarn_Cinnamon",
+              "ItemId": "(O)ZoeyHoshi.Camelus_CamelHairYarn_Cinnamon"
+            }
+          ],
+          "MinutesUntilReady": 120
+        },
+        "ZoeyHoshi.Camelus_CamelHairYarn_Void": {
+          "Id": "ZoeyHoshi.Camelus_CamelHairYarn_Void",
+          "Triggers": [
+            {
+              "Id": "Camelus_CamelHair_Void",
+              "RequiredItemId": "(O)ZoeyHoshi.Camelus_CamelHair_Void",
+              "Trigger": "ItemPlacedInMachine"
+            }
+          ],
+          "OutputItem": [
+            {
+              "Id": "Camelus_CamelHairYarn_Void",
+              "ItemId": "(O)ZoeyHoshi.Camelus_CamelHairYarn_Void"
+            }
+          ],
+          "MinutesUntilReady": 120
+        },
+        "ZoeyHoshi.Camelus_CamelHairYarn_White": {
+          "Id": "ZoeyHoshi.Camelus_CamelHairYarn_White",
+          "Triggers": [
+            {
+              "Id": "Camelus_CamelHair_White",
+              "RequiredItemId": "(O)ZoeyHoshi.Camelus_CamelHair_White",
+              "Trigger": "ItemPlacedInMachine"
+            }
+          ],
+          "OutputItem": [
+            {
+              "Id": "Camelus_CamelHairYarn_White",
+              "ItemId": "(O)ZoeyHoshi.Camelus_CamelHairYarn_White"
+            }
+          ],
+          "MinutesUntilReady": 120
+        },
+      }
+    },
+    {
+      "LogName": "Allow dye pot to dye camelus camel yarn",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "SVECamelYarn", "Triggers"],
+      "Entries": {
+        "CamelusYarn": {
+          "Id": "CamelusYarn",
+          "Trigger": "ItemPlacedInMachine",
+          "Condition": "ITEM_ID_PREFIX Input ZoeyHoshi.Camelus_CamelHairYarn",
+        },
+      },
+    },
+  ]
+}
