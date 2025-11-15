@@ -892,6 +892,7 @@
                   "Trigger": "ItemPlacedInMachine",
                   "RequiredItemId": "(O)684",
                   "RequiredCount": 20,
+                  "RequiredTags": ["!{{ModId}}_rendered"],
                 },
               ],
               "OutputItem": [
