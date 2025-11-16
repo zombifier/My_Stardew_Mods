@@ -37,6 +37,8 @@ internal sealed class ModEntry : Mod {
   static string ClothingRandomImageId = null!;
   static string ObjAlreadyGrantedExp = null!;
 
+  static string MigratedFrom100 = null!;
+
   public const string ContentPackId = "selph.TextileExpansion";
 
   public override void Entry(IModHelper helper) {
@@ -54,11 +56,14 @@ internal sealed class ModEntry : Mod {
 
     ObjAlreadyGrantedExp = $"{UniqueId}_ObjAlreadyGrantedExp";
 
+    MigratedFrom100 = $"{UniqueId}_MigratedFrom100";
+
     helper.Events.Content.AssetRequested += OnAssetRequested;
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
     helper.Events.GameLoop.DayStarted += OnDayStartedResetTailorCount;
     helper.Events.GameLoop.DayStarted += OnDayStartedHandleCouturier;
     helper.Events.GameLoop.DayEnding += OnDayEnding;
+    helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
     GameStateQuery.Register($"{UniqueId}_HAS_WEAVER", HAS_WEAVER);
     GameStateQuery.Register($"{UniqueId}_HAS_DYER", HAS_DYER);
     GameStateQuery.Register($"{UniqueId}_HAS_SERICULTURIST", HAS_SERICULTURIST);
@@ -447,9 +452,9 @@ internal sealed class ModEntry : Mod {
     if (ItemContextTagManager.HasBaseTag(item.QualifiedItemId, $"{ContentPackId}_textile_xp")) {
       var multiplier = 1f;
       if (ItemContextTagManager.HasBaseTag(item.QualifiedItemId, $"{ContentPackId}_half_textile_xp")) {
-        multiplier = 0.5f;
+        multiplier = 0.25f;
       }
-      var exp = (int)(obj.Price * obj.Stack * multiplier);
+      var exp = (int)(obj.Price * obj.Stack * multiplier) / 20;
       __instance.AddCustomSkillExperience(TextileSkill.SkillId, exp);
       ModEntry.StaticMonitor.Log($"Granting {exp} Sewing experience for {__instance.displayName}");
     }
@@ -469,13 +474,13 @@ internal sealed class ModEntry : Mod {
     if (ItemContextTagManager.HasBaseTag(__instance.QualifiedItemId, $"{ContentPackId}_textile_xp")) {
       var multiplier = 1f;
       if (ItemContextTagManager.HasBaseTag(__instance.QualifiedItemId, $"{ContentPackId}_half_textile_xp")) {
-        multiplier = 0.5f;
+        multiplier = 0.25f;
       }
       var activeFarmers = Game1.getAllFarmers().Where(f => f.isActive());
       var playerXpModifier = new float[] { 1f, 0.7f, 0.6f, 0.5f }[Math.Clamp(activeFarmers.Count() - 1, 0, 3)];
       multiplier *= playerXpModifier;
       foreach (Farmer farmer in activeFarmers) {
-        var exp = (int)(obj.Price * obj.Stack * multiplier);
+        var exp = (int)(obj.Price * obj.Stack * multiplier) / 20;
         farmer.AddCustomSkillExperience(TextileSkill.SkillId, exp);
         ModEntry.StaticMonitor.Log($"Granting {exp} Sewing experience for {farmer.displayName}");
       }
@@ -611,6 +616,21 @@ internal sealed class ModEntry : Mod {
     var chest = Game1.player.team.GetOrCreateGlobalInventory(CouturierInventoryId);
     if (chest is not null) {
       Game1.activeClickableMenu = new ItemGrabMenu(chest);
+    }
+  }
+
+  // Normalize the XP curve from 1.0.0
+  [EventPriority(EventPriority.Low)]
+  static void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
+    if (!Game1.player.modData.ContainsKey(MigratedFrom100)) {
+      //var level = Game1.player.GetCustomSkillLevel(TextileSkill.SkillId);
+      var exp = Game1.player.GetCustomSkillExperience(TextileSkill.SkillId);
+      if (exp > 0) {
+        var newExp = exp / 20;
+        ModEntry.StaticMonitor.Log($"Save from 1.0.0 detected; migrating to smaller EXP curve by subtracting {-(newExp - exp)} experience points. If this is causing unintended effects in your game, file a bug report.", LogLevel.Alert);
+        Game1.player.AddCustomSkillExperience(TextileSkill.SkillId, newExp - exp);
+      }
+      Game1.player.modData[MigratedFrom100] = "true";
     }
   }
 }

@@ -30,16 +30,16 @@ class TextileSkill : SpaceCore.Skills.Skill {
     this.SkillsPageIcon = Game1.content.Load<Texture2D>(SkillPageIconTexture);
     this.ExperienceBarColor = new Microsoft.Xna.Framework.Color(214, 214, 214);
     this.ExperienceCurve = [
-      CLOTH_PRICE * 5,
-      CLOTH_PRICE * 10,
-      CLOTH_PRICE * 20,
-      CLOTH_PRICE * 40,
-      CLOTH_PRICE * 80,
-      CLOTH_PRICE * 150,
-      CLOTH_PRICE * 220,
-      CLOTH_PRICE * 300,
-      CLOTH_PRICE * 400,
-      CLOTH_PRICE * 600,
+      CLOTH_PRICE * 5 / 20,
+      CLOTH_PRICE * 10 / 20,
+      CLOTH_PRICE * 20 / 20,
+      CLOTH_PRICE * 40 / 20,
+      CLOTH_PRICE * 80 / 20,
+      CLOTH_PRICE * 150 / 20,
+      CLOTH_PRICE * 220 / 20,
+      CLOTH_PRICE * 300 / 20,
+      CLOTH_PRICE * 400 / 20,
+      CLOTH_PRICE * 600 / 20,
     ];
     Weaver = new TextileProfession(this, TextileProfessionEnum.WEAVER);
     Tailor = new TextileProfession(this, TextileProfessionEnum.TAILOR);
