@@ -1167,7 +1167,89 @@ other fields
 
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
-| `selph.ExtraMachineConfig.CopyMachineRulesFrom` | The ID of the `Data/Machines` entry to copy and replace this entry. Useful if, for example, you want a machine with a different texture that can accept all keg rules.<br>EMC will edit the `Data/Machines` asset (and also `selph.ExtraMachineConfig/ExtraMachineData`) to copy and replace the *entire* the entry with `Late+10` priority. You can add an even later CP patch (e.g. `Late+11`) if you wish to fine tune the behavior further.|
+| `selph.ExtraMachineConfig.CopyMachineRulesFrom` | The ID of the `Data/Machines` entry to copy and replace this entry. Useful if, for example, you want a machine with a different texture that can accept all keg rules, albeit with faster processing speed (via `ReadyTimeModifiers`) or better output quantity and quality (see below).|
+
+Additionally, if you want to globally apply a stack count modifier/quality modifier/copy quality
+attribute to every output item (for, say, making an upgraded version of other machines), you can
+write the following fields to `selph.ExtraMachineConfig/OutputRulesGlobalModifiers`, a custom asset where where the key is the
+qualified item ID of the machine (like `Data/Machines`):
+
+| Field Name                         | Type              | Description              |
+| ---------------------------------- | ------------------------ | ----------------- |
+| `GlobalStackModifiers` | List of stack modifiers like the field `StackModifiers` | A list of extra stack count modifiers to apply to every of this machine's rule. |
+| `GlobalQualityModifiers` | List of quality modifiers like the field `QualityModifiers` | A list of extra quality modifiers to apply to every of this machine's rule. |
+| `GlobalCopyQuality` | bool | If set, every rule will have `CopyQuality` set to true.|
+
+IMPORTANT NOTES:
+* How this works is that EMC will edit the `Data/Machines` asset (and also
+  `selph.ExtraMachineConfig/ExtraMachineData`) to copy and *replace* the entire entry with `Late+10`
+  priority to ensure it catches most modded changes. Should you wish to further fine tune things,  add
+  a later patch (e.g. `Late+11`).
+
+* An extremely useful resource to working with duplicated rules is running `patch export
+  Data/Machines` on the SMAPI console.
+
+#### Example
+
+This example creates a new machine, UpgradedLoom, that copies every Loom rules but set the output quality
+to Iridium and doubles the output count (does not include the `Data/BigCraftables` definition, since
+it is unimportant)
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```
+{
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "Entries": {
+        "(BC)UpgradedLoom": {
+          "CustomFields": {
+            "selph.ExtraMachineConfig.CopyMachineRulesFrom": "(BC)17",
+          }
+        },
+      }
+    },
+    {
+      "LogName": "Set iridium quality and double stack for upgraded loom",
+      "Action": "EditData",
+      "Target": "selph.ExtraMachineConfig/OutputRulesGlobalModifiers",
+      "Entries": {
+        "(BC)UpgradedLoom": {
+          "GlobalStackModifiers": [
+            {
+              "Id": "Double",
+              "Modification": "Multiply",
+              "Amount": 2,
+            }
+          ],
+          "GlobalQualityModifiers": [
+            {
+              "Id": "Iridium",
+              "Modification": "Set",
+              "Amount": 4,
+            }
+          ],
+        }
+      }
+    },
+    {
+      "LogName": "Example edit on the upgraded loom that will apply after the replacements",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)UpgradedLoom"],
+      "Entries": {
+        "WobbleWhileWorking": true,
+      },
+      "Priority": "Late + 11",
+    },
+  ]
+}
+```
+
+</details>
 
 ## Crafting/Cooking Features
 

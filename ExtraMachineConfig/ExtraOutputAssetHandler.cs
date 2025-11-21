@@ -1,5 +1,6 @@
 using Force.DeepCloner;
 using StardewValley.GameData.Machines;
+using StardewValley.GameData;
 using Selph.StardewMods.Common;
 using System.Collections.Generic;
 using StardewModdingAPI.Events;
@@ -59,4 +60,14 @@ public sealed class ExtraMachineDataAssetHandler : DictAssetHandler<ExtraMachine
       }, AssetEditPriority.Late + 10);
     }
   }
+}
+
+public class OutputRulesGlobalModifiers {
+  public List<QuantityModifier>? GlobalStackModifiers;
+  public List<QuantityModifier>? GlobalQualityModifiers;
+  public bool GlobalCopyQuality = false;
+}
+
+public sealed class OutputRulesGlobalModifiersAssetHandler : DictAssetHandler<OutputRulesGlobalModifiers> {
+  public OutputRulesGlobalModifiersAssetHandler() : base($"{ModEntry.UniqueId}/OutputRulesGlobalModifiers", ModEntry.StaticMonitor) { }
 }

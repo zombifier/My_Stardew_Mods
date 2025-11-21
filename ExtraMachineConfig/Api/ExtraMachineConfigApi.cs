@@ -3,6 +3,7 @@ using StardewValley;
 using StardewValley.Inventories;
 using StardewValley.GameData.Machines;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 using SObject = StardewValley.Object;
 
@@ -48,5 +49,14 @@ public class ExtraMachineConfigApi : IExtraMachineConfigApi {
 
   public IList<Item>? GetFuelsForThisRecipe(MachineItemOutput outputData, Item inputItem, IInventory inventory) {
     return Utils.GetFuelsForThisRecipe(outputData, inputItem, inventory)?.Select(e => e.Item1).ToList();
+  }
+
+  // Get the color override
+  public Color? GetColorOverride(string unqualifiedItemId) {
+    if (Game1.objectData.TryGetValue(unqualifiedItemId, out var objectData)
+        && objectData.CustomFields?.TryGetValue(MachineHarmonyPatcher.DyeColorOverride, out var dyeColorStr) is true) {
+      return Utils.stringToColor(dyeColorStr);
+    }
+    return null;
   }
 }

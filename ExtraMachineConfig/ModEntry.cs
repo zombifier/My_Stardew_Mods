@@ -33,6 +33,7 @@ internal sealed class ModEntry : Mod {
   internal static ExtraOutputAssetHandler extraOutputAssetHandler = null!;
   internal static ExtraCraftingConfigAssetHandler extraCraftingConfigAssetHandler = null!;
   internal static ExtraMachineDataAssetHandler extraMachineDataAssetHandler = null!;
+  internal static OutputRulesGlobalModifiersAssetHandler outputRulesGlobalModifiersAssetHandler = null!;
   internal static string UniqueId = null!;
 
   internal static string JunimoLovedItemContextTag = "junimo_loved_item";
@@ -62,6 +63,7 @@ internal sealed class ModEntry : Mod {
     extraOutputAssetHandler = new ExtraOutputAssetHandler();
     extraCraftingConfigAssetHandler = new ExtraCraftingConfigAssetHandler();
     extraMachineDataAssetHandler = new ExtraMachineDataAssetHandler();
+    outputRulesGlobalModifiersAssetHandler = new OutputRulesGlobalModifiersAssetHandler();
 
     var harmony = new Harmony(this.ModManifest.UniqueID);
 
@@ -73,6 +75,7 @@ internal sealed class ModEntry : Mod {
     extraOutputAssetHandler.RegisterEvents(Helper);
     extraCraftingConfigAssetHandler.RegisterEvents(Helper);
     extraMachineDataAssetHandler.RegisterEvents(Helper);
+    outputRulesGlobalModifiersAssetHandler.RegisterEvents(Helper);
 
     Helper.Events.GameLoop.DayStarted += OnDayStartedJunimoHut;
     Helper.Events.GameLoop.GameLaunched += OnGameLaunchedBetterCrafting;
@@ -282,6 +285,27 @@ internal sealed class ModEntry : Mod {
           if (value.CustomFields?.TryGetValue(CopyMachineRulesFromKey, out var copyKey) ?? false) {
             if (data.ContainsKey(copyKey)) {
               data[key] = data[copyKey].DeepClone();
+              if (outputRulesGlobalModifiersAssetHandler.data.TryGetValue(key, out var globalModifiersData)) {
+                if (globalModifiersData.GlobalCopyQuality
+                    || globalModifiersData.GlobalQualityModifiers is not null
+                    || globalModifiersData.GlobalStackModifiers is not null) {
+                  foreach (var outputRule in data[key].OutputRules ?? []) {
+                    foreach (var outputItem in outputRule.OutputItem ?? []) {
+                      if (globalModifiersData.GlobalCopyQuality) {
+                        outputItem.CopyQuality = true;
+                      }
+                      if (globalModifiersData.GlobalQualityModifiers is not null) {
+                        outputItem.QualityModifiers ??= [];
+                        outputItem.QualityModifiers.AddRange(globalModifiersData.GlobalQualityModifiers.Select(m => m.DeepClone()));
+                      }
+                      if (globalModifiersData.GlobalStackModifiers is not null) {
+                        outputItem.StackModifiers ??= [];
+                        outputItem.StackModifiers.AddRange(globalModifiersData.GlobalStackModifiers.Select(m => m.DeepClone()));
+                      }
+                    }
+                  }
+                }
+              }
             } else {
               StaticMonitor.Log($"Error while handling CopyMachineRulesFrom for {key}: {copyKey} does not exist in machine data", LogLevel.Error);
             }

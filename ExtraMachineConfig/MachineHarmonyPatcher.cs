@@ -85,7 +85,7 @@ sealed class MachineHarmonyPatcher {
   internal static string SlingshotExplosiveRadius = $"{ModEntry.UniqueId}.SlingshotExplosiveRadius";
   internal static string SlingshotExplosiveDamage = $"{ModEntry.UniqueId}.SlingshotExplosiveDamage";
   internal static string SlimeColorToHatch = $"{ModEntry.UniqueId}.SlimeColorToHatch";
-  internal static string DyeColorOverride = $"{ModEntry.UniqueId}.DyeColorOverride";
+  public static string DyeColorOverride = $"{ModEntry.UniqueId}.DyeColorOverride";
 
   // The ID of the holder item to get around the `Object` only limitation.
   internal static string HolderId = $"{ModEntry.UniqueId}.Holder";
@@ -1087,13 +1087,10 @@ sealed class MachineHarmonyPatcher {
   }
 
   static bool ItemContextTagManager_GetColorFromTags_Prefix(Item item, ref Color? __result) {
-    if (Game1.objectData.TryGetValue(item.ItemId, out var objectData)
-        && objectData.CustomFields?.TryGetValue(DyeColorOverride, out var dyeColorStr) is true) {
-      var color = Utils.stringToColor(dyeColorStr);
-      if (color is not null) {
-        __result = color;
-        return false;
-      }
+    var color = ModEntry.ModApi.GetColorOverride(item.ItemId);
+    if (color is not null) {
+      __result = color;
+      return false;
     }
     return true;
   }
