@@ -36,8 +36,8 @@
               "MinSize": "Tree",
               "MaxSize": null,
               "ForStump": false,
-              "Id": "(O){{ModId}}_LogWoodSeed",
-              "ItemId": "(O){{ModId}}_LogWoodSeed",
+              "Id": "(O){{ModId}}_LogwoodSeed",
+              "ItemId": "(O){{ModId}}_LogwoodSeed",
               "Chance": 0.1,
               "MinStack": 1,
             },
@@ -65,8 +65,8 @@
               "MinSize": "Tree",
               "MaxSize": null,
               "ForStump": false,
-              "Id": "(O){{ModId}}_LogWoodSeed",
-              "ItemId": "(O){{ModId}}_LogWoodSeed",
+              "Id": "(O){{ModId}}_LogwoodSeed",
+              "ItemId": "(O){{ModId}}_LogwoodSeed",
               "Chance": 0.1,
               "MinStack": 1,
             },
@@ -83,7 +83,7 @@
           "CustomFields": {
 						"UIInfoSuite.ExtendedData/DisplayName": "{{i18n:tree.Brazilwood.name}}",
 					},
-          "GrowsMoss": true,
+          "GrowsMoss": false,
         },
         "{{ModId}}_LogwoodTree": {
           "Textures": [
@@ -148,7 +148,7 @@
           "CustomFields": {
 						"UIInfoSuite.ExtendedData/DisplayName": "{{i18n:tree.Logwood.name}}",
 					},
-          "GrowsMoss": true,
+          "GrowsMoss": false,
         },
       },
     },

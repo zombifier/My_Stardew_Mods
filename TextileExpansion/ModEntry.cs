@@ -454,7 +454,7 @@ internal sealed class ModEntry : Mod {
       if (ItemContextTagManager.HasBaseTag(item.QualifiedItemId, $"{ContentPackId}_half_textile_xp")) {
         multiplier = 0.25f;
       }
-      var exp = (int)(obj.Price * obj.Stack * multiplier) / 20;
+      var exp = (int)(obj.Price * obj.Stack * multiplier) / 30;
       __instance.AddCustomSkillExperience(TextileSkill.SkillId, exp);
       ModEntry.StaticMonitor.Log($"Granting {exp} Sewing experience for {__instance.displayName}");
     }

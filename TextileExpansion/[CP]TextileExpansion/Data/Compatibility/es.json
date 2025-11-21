@@ -1,0 +1,92 @@
+{
+  "Changes": [
+    {
+      "LogName": "Allow yarn spinner to spin black wool",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_YarnSpinner", "OutputRules"],
+      "Entries": {
+        "EastScarp.BlackWool": {
+          "Id": "EastScarp.BlackWool",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine_Default",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O)EastScarp_Black_Wool",
+              "RequiredCount": 1,
+            },
+          ],
+          "UseFirstValidOutput": false,
+          "OutputItem": [
+            {
+              "Id": "(O){{ModId}}_Yarn",
+              "ItemId": "(O){{ModId}}_Yarn",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Yarn {0}",
+              "ObjectColor": "#555555",
+              "MinStack": 2,
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 2.0,
+                },
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "BlackWoolModifier",
+                  "Modification": "Set",
+                  "Amount": 290,
+                },
+              ],
+            },
+          ],
+          "MinutesUntilReady": 240,
+        }
+      }
+    },
+    {
+      "LogName": "Add weaver bonus to black cloth",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)17", "OutputRules", "EastScarp.BlackWoolLoom", "OutputItem" , "EastScarp.BlackWooltoCloth", "StackModifiers"],
+      "Entries": {
+        "{{ModId}}_Weaver" :{
+          "Id": "{{ModId}}_Weaver",
+          "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+          "Modification": "Add",
+          "Amount": 2.0,
+        },
+      }
+    },
+    {
+      "LogName": "Allow dye pot to dye black cloth",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules"],
+      "Entries": {
+        "ESBlackCloth": {
+          "Id": "ESBlackCloth",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O)EastScarp_Black_Cloth",
+            },
+          ],
+          // Output items are in dyed-objects-template.json
+          "OutputItem": [],
+          "MinutesUntilReady": 480,
+        },
+      },
+    },
+  ]
+}

@@ -206,6 +206,23 @@
         "HasMod |contains=ZoeyHoshi.Camelus": "true",
       },
     },
+    {
+      "LogName": "East Scarp compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/es.json",
+      "When": {
+        "HasMod |contains=Lemurkat.EastScarp": "true",
+      },
+    },
+    {
+      "LogName": "MPS compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/mps.json",
+      "When": {
+        "HasMod |contains=nachonline.mps": "true",
+//        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
     // Has to be latest because of changes in the templates (TODO - split those out)
     {
       "LogName": "Add new objects",

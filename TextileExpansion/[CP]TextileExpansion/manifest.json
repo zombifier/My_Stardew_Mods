@@ -17,6 +17,9 @@
     {"UniqueID": "skellady.SBVCP", "IsRequired": false},
     {"UniqueID": "Lumisteria.MtVapius", "IsRequired": false},
     {"UniqueID": "ZoeyHoshi.Camelus", "IsRequired": false},
+    {"UniqueID": "Lemurkat.EastScarp", "IsRequired": false},
+    {"UniqueID": "nachonline.mps", "IsRequired": false},
+    {"UniqueID": "Spiderbuttons.CMCT", "IsRequired": false},
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"

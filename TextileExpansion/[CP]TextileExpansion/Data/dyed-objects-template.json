@@ -39,7 +39,8 @@
           ],
           "CustomFields": {
             "{{ModId}}_Dye": "{{ModId}}_Dye{{Color}}",
-          }
+          },
+          //"ExcludeFromShippingCollection": "{{ExcludeFromShipping}}",
         },
         "{{ModId}}_Cloth{{Color}}": {
           "Name": "{{ModId}}_Cloth{{Color}}",
@@ -59,7 +60,8 @@
           ],
           "CustomFields": {
             "{{ModId}}_Dye": "{{ModId}}_Dye{{Color}}",
-          }
+          },
+          //"ExcludeFromShippingCollection": "{{ExcludeFromShipping}}",
         },
       }
     },
@@ -242,14 +244,76 @@
       },
     },
     {
+      "LogName": "Adds dye black wool cloth machine rules",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "ESBlackCloth", "OutputItem"],
+      "Entries": {
+        "(O){{ModId}}_Cloth{{Color}}": {
+          "Id": "(O){{ModId}}_Cloth{{Color}}",
+          "ItemId": "(O){{ModId}}_Cloth{{Color}}",
+          "PreserveId": "EastScarp_Black_Wool",
+          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Cloth %PRESERVED_DISPLAY_NAME]",
+          "ObjectInternalName": "{{ModId}}_Yarn{{Color}} {0}",
+          "CopyPrice": true,
+          "PriceModifiers": [
+            {
+              "Id": "Color",
+              "Modification": "Multiply",
+              "Amount": "{{PriceMultiplier}}",
+            },
+          ],
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
+          },
+        }
+      },
+      "When": {
+        "HasMod |contains=Lemurkat.EastScarp": "true",
+      },
+    },
+    {
+      "LogName": "Adds dye luxury cloth machine rules",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "MPSLuxuryWool", "OutputItem"],
+      "Entries": {
+        "(O){{ModId}}_Cloth{{Color}}": {
+          "Id": "(O){{ModId}}_Cloth{{Color}}",
+          "ItemId": "(O){{ModId}}_Cloth{{Color}}",
+          "PreserveId": "nachonline.mps_LuxuryWool",
+          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Cloth %PRESERVED_DISPLAY_NAME]",
+          "ObjectInternalName": "{{ModId}}_Yarn{{Color}} {0}",
+          "CopyPrice": true,
+          "PriceModifiers": [
+            {
+              "Id": "Color",
+              "Modification": "Multiply",
+              "Amount": "{{PriceMultiplier}}",
+            },
+          ],
+          "CustomData": {
+            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
+            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
+          },
+        }
+      },
+      "When": {
+        "HasMod |contains=nachonline.mps": "true",
+      },
+    },
+    {
       "LogName": "Load strings for TokenizedText",
       "Action": "EditData",
       "Target": "Strings/Objects",
       "Entries": {
         "{{ModId}}_{{Color}}Yarn": "{{i18n:item.{{Color}}Yarn.name.flavored}}",
         "{{ModId}}_{{Color}}Cloth": "{{i18n:item.{{Color}}Cloth.name.flavored}}",
-        "selph.ExtraMachineConfig_FlavorNameOverride_(O){{Color}}Cloth/0": "{{i18n:item.{{Color}}Cloth.name}}",
-        "selph.ExtraMachineConfig_FlavorNameOverride_(O){{Color}}Yarn/0": "{{i18n:item.{{Color}}Yarn.name}}",
+        "selph.ExtraMachineConfig_FlavorNameOverride_(O)Cloth{{Color}}/0": "{{i18n:item.{{Color}}Cloth.name}}",
+        "selph.ExtraMachineConfig_FlavorNameOverride_(O)Yarn{{Color}}/0": "{{i18n:item.{{Color}}Yarn.name}}",
       }
     },
     {

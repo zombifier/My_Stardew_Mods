@@ -208,8 +208,8 @@
         },
         "{{ModId}}_Logwood": {
           "Name": "{{ModId}}_Logwood",
-          "DisplayName": "{{i18n: item.Logwood.name}}",
-          "Description": "{{i18n: item.Logwood.description}}",
+          "DisplayName": "{{i18n: item.LogWood.name}}",
+          "Description": "{{i18n: item.LogWood.description}}",
           "Type": "Basic",
           "Category": -16,
           "Price": 200,
@@ -223,8 +223,8 @@
         },
         "{{ModId}}_LogwoodSeed": {
           "Name": "{{ModId}}_LogwoodSeed",
-          "DisplayName": "{{i18n: item.LogwoodSeed.name}}",
-          "Description": "{{i18n: item.LogwoodSeed.description}}",
+          "DisplayName": "{{i18n: item.LogWoodSeed.name}}",
+          "Description": "{{i18n: item.LogWoodSeed.description}}",
           "Type": "Crafting",
           "Category": -74,
           "Price": 200,

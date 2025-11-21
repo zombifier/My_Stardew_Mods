@@ -311,8 +311,8 @@
   "item.Clothing.description.dynamic5": "It has been expertly decorated with valuable {0} gems.",
   // Quests
   "quest.EmilyDyedCloth.name": "Bring Emily Dyed Cloth",
-  "quest.EmilyDyedCloth.description": "Emily has requested that you bring her cloth dyed with a Dye Pot and the dyes she sent.",
-  "quest.EmilyDyedCloth.objective": "Bring a bolt of red cloth to Emily.",
+  "quest.EmilyDyedCloth.description": "Emily has requested that you meet her at her house with a bolt of cloth dyed using a Dye Pot and the dyes she sent.",
+  "quest.EmilyDyedCloth.objective": "Bring a bolt of red cloth to Emily's house.",
   // Events
   "event.Emily.dialogue1": "Oh hey, you brought the dyed cloth!$h#$b#Put it on the table so I can have a look.",
   "event.Emily.dialogue2": "Hmm, the dye is very strong and vibrant. The coloring is even - no blotches anywhere - and fast too...#$b#You're a natural, @! I know my intuition about you was correct.$h",

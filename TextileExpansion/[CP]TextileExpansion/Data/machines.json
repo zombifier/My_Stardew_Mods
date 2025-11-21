@@ -261,18 +261,6 @@
         },
       }
     },
-    //{
-    //  "LogName": "Edit Cornucopia Cotton Input Count",
-    //  "Action": "EditData",
-    //  "Target": "Data/Machines",
-    //  "TargetField": ["(BC)17", "OutputRules", "Cornucopia_CottonCloth", "Triggers", "#0"],
-    //  "Entries": {
-    //    "RequiredItemCount": 2,
-    //  },
-    //  "When": {
-    //    "HasMod": "Cornucopia.MoreCrops"
-    //  },
-    //},
     {
       "LogName": "Edit Wool Output",
       "Action": "EditData",

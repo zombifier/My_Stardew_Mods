@@ -200,125 +200,125 @@
         "{{ModId}}_dyed_yarn_item": "{{ModId}}_dyed_yarn_item",
       },
     },
-    {
-      "LogName": "Add dyer recipes for colored wool",
-      "Action": "EditData",
-      "Target": "Data/Machines",
-      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules"],
-      "Entries": {
-        "{{ModId}}_Wool": {
-          "Id": "{{ModId}}_Wool",
-          "Triggers": [
-            {
-              "Id": "ItemPlacedInMachine",
-              "Trigger": "ItemPlacedInMachine",
-              "RequiredItemId": "(O)440",
-            },
-          ],
-          "OutputItem": [
-            {
-              "Id": "{{ModId}}_RedWool",
-              "ItemId": "appleseed.BCP.RedWool",
-              "CustomData": {
-                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeRed",
-                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackRed",
-              },
-            },
-            {
-              "Id": "{{ModId}}_YellowWool",
-              "ItemId": "appleseed.BCP.YellowWool",
-              "CustomData": {
-                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeYellow",
-                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackYellow",
-              },
-            },
-            {
-              "Id": "{{ModId}}_BlueWool",
-              "ItemId": "appleseed.BCP.BlueWool",
-              "CustomData": {
-                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeBlue",
-                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackBlue",
-              },
-            },
-            {
-              "Id": "{{ModId}}_OrangeWool",
-              "ItemId": "appleseed.BCP.OrangeWool",
-              "CustomData": {
-                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeOrange",
-                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackOrange",
-              },
-            },
-            {
-              "Id": "{{ModId}}_GreenWool",
-              "ItemId": "appleseed.BCP.GreenWool",
-              "CustomData": {
-                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeGreen",
-                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackGreen",
-              },
-            },
-            {
-              "Id": "{{ModId}}_VioletWool",
-              "ItemId": "appleseed.BCP.VioletWool",
-              "CustomData": {
-                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyePurple",
-                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackPurple",
-              },
-            },
-            {
-              "Id": "{{ModId}}_BrownWool",
-              "ItemId": "appleseed.BCP.BrownWool",
-              "CustomData": {
-                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeBrown",
-                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackBrown",
-              },
-            },
-            {
-              "Id": "{{ModId}}_BlackWool",
-              "ItemId": "appleseed.BCP.BlackWool",
-              "CustomData": {
-                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeBlack",
-                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackBlack",
-              },
-            },
-            {
-              "Id": "{{ModId}}_WhiteWool",
-              "ItemId": "appleseed.BCP.WhiteWool",
-              "CustomData": {
-                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeWhite",
-                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackWhite",
-              },
-            },
-            {
-              "Id": "{{ModId}}_GreyWool",
-              "ItemId": "appleseed.BCP.GreyWool",
-              "CustomData": {
-                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeGray",
-                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackGray",
-              },
-            },
-            {
-              "Id": "{{ModId}}_PinkWool",
-              "ItemId": "appleseed.BCP.PinkWool",
-              "CustomData": {
-                "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyePink",
-                "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackPink",
-              },
-            },
-          ]
-        }
-      }
-    },
+    //{
+    //  "LogName": "Add dyer recipes for colored wool",
+    //  "Action": "EditData",
+    //  "Target": "Data/Machines",
+    //  "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules"],
+    //  "Entries": {
+    //    "{{ModId}}_Wool": {
+    //      "Id": "{{ModId}}_Wool",
+    //      "Triggers": [
+    //        {
+    //          "Id": "ItemPlacedInMachine",
+    //          "Trigger": "ItemPlacedInMachine",
+    //          "RequiredItemId": "(O)440",
+    //        },
+    //      ],
+    //      "OutputItem": [
+    //        {
+    //          "Id": "{{ModId}}_RedWool",
+    //          "ItemId": "appleseed.BCP.RedWool",
+    //          "CustomData": {
+    //            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeRed",
+    //            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+    //            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackRed",
+    //          },
+    //        },
+    //        {
+    //          "Id": "{{ModId}}_YellowWool",
+    //          "ItemId": "appleseed.BCP.YellowWool",
+    //          "CustomData": {
+    //            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeYellow",
+    //            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+    //            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackYellow",
+    //          },
+    //        },
+    //        {
+    //          "Id": "{{ModId}}_BlueWool",
+    //          "ItemId": "appleseed.BCP.BlueWool",
+    //          "CustomData": {
+    //            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeBlue",
+    //            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+    //            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackBlue",
+    //          },
+    //        },
+    //        {
+    //          "Id": "{{ModId}}_OrangeWool",
+    //          "ItemId": "appleseed.BCP.OrangeWool",
+    //          "CustomData": {
+    //            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeOrange",
+    //            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+    //            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackOrange",
+    //          },
+    //        },
+    //        {
+    //          "Id": "{{ModId}}_GreenWool",
+    //          "ItemId": "appleseed.BCP.GreenWool",
+    //          "CustomData": {
+    //            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeGreen",
+    //            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+    //            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackGreen",
+    //          },
+    //        },
+    //        {
+    //          "Id": "{{ModId}}_VioletWool",
+    //          "ItemId": "appleseed.BCP.VioletWool",
+    //          "CustomData": {
+    //            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyePurple",
+    //            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+    //            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackPurple",
+    //          },
+    //        },
+    //        {
+    //          "Id": "{{ModId}}_BrownWool",
+    //          "ItemId": "appleseed.BCP.BrownWool",
+    //          "CustomData": {
+    //            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeBrown",
+    //            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+    //            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackBrown",
+    //          },
+    //        },
+    //        {
+    //          "Id": "{{ModId}}_BlackWool",
+    //          "ItemId": "appleseed.BCP.BlackWool",
+    //          "CustomData": {
+    //            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeBlack",
+    //            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+    //            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackBlack",
+    //          },
+    //        },
+    //        {
+    //          "Id": "{{ModId}}_WhiteWool",
+    //          "ItemId": "appleseed.BCP.WhiteWool",
+    //          "CustomData": {
+    //            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeWhite",
+    //            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+    //            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackWhite",
+    //          },
+    //        },
+    //        {
+    //          "Id": "{{ModId}}_GreyWool",
+    //          "ItemId": "appleseed.BCP.GreyWool",
+    //          "CustomData": {
+    //            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyeGray",
+    //            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+    //            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackGray",
+    //          },
+    //        },
+    //        {
+    //          "Id": "{{ModId}}_PinkWool",
+    //          "ItemId": "appleseed.BCP.PinkWool",
+    //          "CustomData": {
+    //            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_DyePink",
+    //            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
+    //            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBackPink",
+    //          },
+    //        },
+    //      ]
+    //    }
+    //  }
+    //},
     {
       "LogName": "Flexible recipes that take any cloth or wool/yarn",
       "Action": "EditData",

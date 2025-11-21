@@ -326,7 +326,7 @@
             {
               "Id": "(O){{ModId}}_DyeBlue",
               "ItemId": "(O){{ModId}}_DyeBlue",
-              "MinStack": 4,
+              "MinStack": 3,
             }
           ],
         },
@@ -343,7 +343,7 @@
             {
               "Id": "(O){{ModId}}_DyeBlue",
               "ItemId": "(O){{ModId}}_DyeBlue",
-              "MinStack": 2,
+              "MinStack": 1,
             }
           ],
         },
@@ -394,7 +394,7 @@
             {
               "Id": "(O){{ModId}}_DyeBlack",
               "ItemId": "(O){{ModId}}_DyeBlack",
-              "MinStack": 2,
+              "MinStack": 1,
             }
           ],
         },
@@ -476,6 +476,40 @@
             {
               "Id": "(O){{ModId}}_DyePitchBlack",
               "ItemId": "(O){{ModId}}_DyePitchBlack",
+            }
+          ],
+        },
+        "{{ModId}}_Malachite": {
+          "Id": "{{ModId}}_Malachite",
+          "RequiredTags": [
+            "id_o_552"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyeGreen",
+              "ItemId": "(O){{ModId}}_DyeGreen",
+              "MinStack": 2,
+            }
+          ],
+        },
+        "{{ModId}}_Hematite": {
+          "Id": "{{ModId}}_Hematite",
+          "RequiredTags": [
+            "id_o_573"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyePink",
+              "ItemId": "(O){{ModId}}_DyePink",
+              "MinStack": 2,
             }
           ],
         },

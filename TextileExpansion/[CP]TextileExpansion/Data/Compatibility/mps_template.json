@@ -1,0 +1,679 @@
+{
+  "Changes": [
+    {
+      "LogName": "Edit {{MachineId}}",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{MachineId}}", "OutputRules"],
+      "Entries": {
+        "{{ModId}}_Flax": {
+          "Id": "{{ModId}}_Flax",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_Flax",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "{{ModId}}_Linen",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#B6D1FF",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+                {
+									"Id": "100RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "100SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "FlaxModifier",
+                  "Modification": "Set",
+                  "Amount": 330,
+                },
+              ],
+              //"MinStack": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quantity}}",
+							//"CopyQuality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Copy Quality}}",
+							//"Quality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quality}}",
+							"Quality": "{{OutputQuality}}",
+            },
+          ],
+          //"MinutesUntilReady": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Production Time}}",
+          "MinutesUntilReady": "{{ReadyTime}}",
+        },
+        "{{ModId}}_Hemp": {
+          "Id": "{{ModId}}_Hemp",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_Hemp",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#B9FFC3",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+                {
+									"Id": "100RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "100SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "HempModifier",
+                  "Modification": "Set",
+                  "Amount": 260,
+                },
+              ],
+              //"MinStack": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quantity}}",
+							//"CopyQuality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Copy Quality}}",
+							//"Quality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quality}}",
+							"Quality": "{{OutputQuality}}",
+            },
+          ],
+          //"MinutesUntilReady": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Production Time}}",
+          "MinutesUntilReady": "{{ReadyTime}}",
+        },
+        "{{ModId}}_Nettle": {
+          "Id": "{{ModId}}_Nettle",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_Nettle",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#D0FFBC",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+                {
+									"Id": "100RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "100SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "NettleModifier",
+                  "Modification": "Set",
+                  "Amount": 350,
+                },
+              ],
+              //"MinStack": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quantity}}",
+							//"CopyQuality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Copy Quality}}",
+							//"Quality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quality}}",
+							"Quality": "{{OutputQuality}}",
+              "CustomData": {
+                "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_NettleRoots",
+              },
+            },
+          ],
+          //"MinutesUntilReady": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Production Time}}",
+          "MinutesUntilReady": "{{ReadyTime}}",
+        },
+        "{{ModId}}_Cashmere": {
+          "Id": "{{ModId}}_Cashmere",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_Cashmere",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#FFF8CD",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+                {
+									"Id": "100RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "100SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "CashmereModifier",
+                  "Modification": "Set",
+                  "Amount": 700,
+                },
+              ],
+              //"MinStack": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quantity}}",
+							//"CopyQuality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Copy Quality}}",
+							//"Quality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quality}}",
+							"Quality": "{{OutputQuality}}",
+            },
+          ],
+          //"MinutesUntilReady": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Production Time}}",
+          "MinutesUntilReady": "{{ReadyTime}}",
+        },
+        "{{ModId}}_Silk": {
+          "Id": "{{ModId}}_Silk",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_SilkCocoon",
+              "RequiredCount": 3,
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "{{ModId}}_Silk",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#FFFFFF",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+                {
+									"Id": "100RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "100SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "SilkModifier",
+                  "Modification": "Multiply",
+                  "Amount": 2,
+                },
+              ],
+              //"MinStack": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quantity}}",
+							//"CopyQuality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Copy Quality}}",
+							//"Quality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quality}}",
+							"Quality": "{{OutputQuality}}",
+            },
+          ],
+          //"MinutesUntilReady": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Production Time}}",
+          "MinutesUntilReady": "{{ReadyTime}}",
+					"InvalidCountMessage": "{{i18n: machine.Loom.invalidCountSilkCocoons}}"
+        },
+      }
+    },
+    {
+      "LogName": "Edit Wool Output",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{MachineId}}", "OutputRules", "Default", "OutputItem", "(O)428"],
+      "Entries": {
+        "PreserveId": "DROP_IN",
+        "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+        "ObjectInternalName": "{{ModId}}_Cloth {0}",
+        "ObjectColor": "#FFEBCB",
+      },
+    },
+    {
+      "LogName": "Edit Wool Output - Weaver",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{MachineId}}", "OutputRules", "Default", "OutputItem", "(O)428", "StackModifiers"],
+      "Entries": {
+        "{{ModId}}_Weaver": {
+          "Id": "{{ModId}}_Weaver",
+          "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+          "Modification": "Add",
+          "Amount": 1.0,
+        },
+      },
+    },
+		{
+      "LogName": "Add Cornucopia Cotton if not present",
+			"Action": "EditData",
+			"Target": "Data/Machines",
+			"TargetField": [
+				"(BC){{MachineId}}",
+				"OutputRules"
+			],
+			"Entries": {
+				"Cornucopia_CottonCloth": {
+					"Id": "Cornucopia_CottonCloth",
+					"Triggers": [
+						{
+							"RequiredItemId": "(O)Cornucopia_CottonBoll",
+							"RequiredCount": 3
+						}
+					],
+					"OutputItem": [
+						{
+							"ItemId": "(O)428",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+                {
+									"Id": "100RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "100SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+              ],
+							"Quality": "{{OutputQuality}}",
+						}
+					],
+					"MinutesUntilReady": "{{ReadyTime}}",
+					"InvalidCountMessage": "{{i18n: machine.YarnSpinner.invalidCountCotton}}"
+				}
+			},
+			"When": {
+				"HasMod |contains=Cornucopia.MoreCrops": false,
+			},
+		},
+    {
+      "LogName": "Edit Cornucopia Cotton Output Item",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{MachineId}}", "OutputRules", "Cornucopia_CottonCloth", "OutputItem", "#0"],
+      "Entries": {
+        "PreserveId": "{{ModId}}_Cotton",
+        "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+        "ObjectInternalName": "{{ModId}}_Cloth {0}",
+        "ObjectColor": "#B5E4FF",
+        "PriceModifiers": [
+          {
+            "Id": "CottonModifier",
+            "Modification": "Set",
+            "Amount": 240,
+          },
+        ],
+      },
+    },
+    {
+      "LogName": "Edit Cornucopia Cotton Output Item - Weaver",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{MachineId}}", "OutputRules", "Cornucopia_CottonCloth", "OutputItem", "#0", "StackModifiers"],
+      "Entries": {
+        "{{ModId}}_Weaver": {
+          "Id": "{{ModId}}_Weaver",
+          "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+          "Modification": "Add",
+          "Amount": 1.0,
+        },
+      },
+    },
+    {
+      "LogName": "Edit Loom for Angora",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{MachineId}}", "OutputRules"],
+      "Entries": {
+        "{{ModId}}_Angora": {
+          "Id": "{{ModId}}_Angora",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O)446",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)428",
+              "ItemId": "(O)428",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Cloth %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Cloth {0}",
+              "ObjectColor": "#EBEBEB",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 1.0,
+                },
+                {
+									"Id": "100RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300RabbitWoolProduced",
+									"Condition": "PLAYER_STAT Current rabbitWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Rabbit Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "100SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 100",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 100 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+								{
+									"Id": "300SheepWoolProduced",
+									"Condition": "PLAYER_STAT Current sheepWoolProduced 300",
+									"Modification": "Add",
+									//"Amount": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} 300 Sheep Wool Produced Bonus}}"
+									"Amount": 1,
+								},
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "AngoraModifier",
+                  "Modification": "Set",
+                  "Amount": 820,
+                },
+              ],
+              //"MinStack": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quantity}}",
+							//"CopyQuality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Copy Quality}}",
+							//"Quality": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Quality}}",
+							"Quality": "{{OutputQuality}}",
+            },
+          ],
+          //"MinutesUntilReady": "{{Spiderbuttons.CMCT/Config: nachonline.mps, {{MachineConfigValue}} Production Time}}",
+          "MinutesUntilReady": "{{ReadyTime}}",
+        },
+      },
+      "When": {
+        "ReskinRabbitsFoot": "true",
+      },
+    },
+    {
+      "LogName": "Edit Loom Ready Time For Skill",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{MachineId}}", "ReadyTimeModifiers"],
+      "Entries": {
+        "{{ModId}}_Level1": {
+          //"Amount": "{{Query: 1 - ({{{{CodeComponentId}}/TextileLevel}} + 1) / 2 * 0.05 }}",
+          "Id": "{{ModId}}_Level1",
+          "Modification": "Multiply",
+          "Amount": ".9",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 1 2",
+        },
+        "{{ModId}}_Level3": {
+          "Id": "{{ModId}}_Level3",
+          "Modification": "Multiply",
+          "Amount": ".8",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 3 4",
+        },
+        "{{ModId}}_Level5": {
+          "Id": "{{ModId}}_Level5",
+          "Modification": "Multiply",
+          "Amount": ".7",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 5 6",
+        },
+        "{{ModId}}_Level7": {
+          "Id": "{{ModId}}_Level7",
+          "Modification": "Multiply",
+          "Amount": ".6",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 7 8",
+        },
+        "{{ModId}}_Level9": {
+          "Id": "{{ModId}}_Level9",
+          "Modification": "Multiply",
+          "Amount": ".5",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 9 10",
+        },
+        "{{ModId}}_Level11": {
+          "Id": "{{ModId}}_Level11",
+          "Modification": "Multiply",
+          "Amount": ".4",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 11 12",
+        },
+        "{{ModId}}_Level13": {
+          "Id": "{{ModId}}_Level13",
+          "Modification": "Multiply",
+          "Amount": ".3",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 13 14",
+        },
+        "{{ModId}}_Level15": {
+          "Id": "{{ModId}}_Level15",
+          "Modification": "Multiply",
+          "Amount": ".2",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 15 16",
+        },
+        "{{ModId}}_Level17": {
+          "Id": "{{ModId}}_Level17",
+          "Modification": "Multiply",
+          "Amount": ".1",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 17 18",
+        },
+        "{{ModId}}_Level19": {
+          "Id": "{{ModId}}_Level19",
+          "Modification": "Multiply",
+          "Amount": ".01",
+          "Condition": "{{CodeComponentId}}_PLAYER_BUFFED_TEXTILE_LEVEL Target 19",
+        },
+      }
+    },
+  ]
+}

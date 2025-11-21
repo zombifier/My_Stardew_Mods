@@ -1,0 +1,159 @@
+{
+  "Changes": [
+    {
+      "LogName": "Allow yarn spinner to spin luxury wool",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_YarnSpinner", "OutputRules"],
+      "Entries": {
+        "MPSLuxuryWool": {
+          "Id": "MPSLuxuryWool",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine_Default",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O)nachonline.mps_LuxuryWool",
+              "RequiredCount": 1,
+            },
+          ],
+          "UseFirstValidOutput": false,
+          "OutputItem": [
+            {
+              "Id": "(O){{ModId}}_Yarn",
+              "ItemId": "(O){{ModId}}_Yarn",
+              "PreserveId": "DROP_IN",
+              "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
+              "ObjectInternalName": "{{ModId}}_Yarn {0}",
+              "ObjectColor": "#FFEBCB",
+              "MinStack": 2,
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 2.0,
+                },
+              ],
+              "PriceModifiers": [
+                {
+                  "Id": "LuxuryWoolModifier",
+                  "Modification": "Set",
+                  "Amount": 640,
+                },
+              ],
+            },
+          ],
+          "MinutesUntilReady": 240,
+        }
+      }
+    },
+    // Nach'll probably add it on his side...?
+    //{
+    //  "LogName": "Add weaver bonus to luxury cloth",
+    //  "Action": "EditData",
+    //  "Target": "Data/Machines",
+    //  "TargetField": ["(BC)17", "OutputRules", "EastScarp.BlackWoolLoom", "OutputItem" , "EastScarp.BlackWooltoCloth", "StackModifiers"],
+    //  "Entries": {
+    //    "{{ModId}}_Weaver" :{
+    //      "Id": "{{ModId}}_Weaver",
+    //      "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+    //      "Modification": "Add",
+    //      "Amount": 2.0,
+    //    },
+    //  }
+    //},
+    {
+      "LogName": "Allow dye pot to dye luxury cloth",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules"],
+      "Entries": {
+        "MPSLuxuryWool": {
+          "Id": "MPSLuxuryWool",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O)nachonline.mps_LuxuryCloth",
+            },
+          ],
+          // Output items are in dyed-objects-template.json
+          "OutputItem": [],
+          "MinutesUntilReady": 480,
+        },
+      },
+    },
+    {
+      "LogName": "MPS Config - Steel",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/mps_template.json",
+      "LocalTokens": {
+        "MachineId": "nachonline.mps_SteelLoom",
+        "OutputQuality": "0",
+        "ReadyTime": "180",
+        //"MachineConfigValue": "S.L",
+      },
+    },
+    {
+      "LogName": "MPS Config - Gold",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/mps_template.json",
+      "LocalTokens": {
+        "MachineId": "nachonline.mps_GoldLoom",
+        "OutputQuality": "1",
+        "ReadyTime": "180",
+        //"MachineConfigValue": "G.L",
+      },
+    },
+    {
+      "LogName": "MPS Config - Diamond",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/mps_template.json",
+      "LocalTokens": {
+        "MachineId": "nachonline.mps_DiamondLoom",
+        "OutputQuality": "1",
+        "ReadyTime": "120",
+        //"MachineConfigValue": "D.L",
+      },
+    },
+    {
+      "LogName": "MPS Config - Iridium",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/mps_template.json",
+      "LocalTokens": {
+        "MachineId": "nachonline.mps_IridiumLoom",
+        "OutputQuality": "2",
+        "ReadyTime": "120",
+        //"MachineConfigValue": "I.L",
+      },
+    },
+    {
+      "LogName": "MPS Config - Radioactive",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/mps_template.json",
+      "LocalTokens": {
+        "MachineId": "nachonline.mps_RadioactiveLoom",
+        "OutputQuality": "2",
+        "ReadyTime": "60",
+        //"MachineConfigValue": "R.L",
+      },
+    },
+    {
+      "LogName": "MPS Config - Prismatic",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/mps_template.json",
+      "LocalTokens": {
+        "MachineId": "nachonline.mps_PrismaticLoom",
+        "OutputQuality": "4",
+        "ReadyTime": "60",
+        //"MachineConfigValue": "P.L",
+      },
+    },
+  ]
+}
