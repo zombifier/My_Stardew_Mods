@@ -28,20 +28,25 @@ public class AutomatePatcher {
           if (item is not null) {
             __result = ModEntry.Helper.Reflection.GetMethod(__instance, "GetTracked")
               .Invoke<object>(item, (object trackedStacks, Item _) => {
-                bool empty = ModEntry.Helper.Reflection.GetProperty<int>(trackedStacks, "Count").GetValue() <= 0;
-                if (empty) {
-                  chest.Items.Remove(item);
-                  if (chest.Items.Count == 0) {
-                    machine.heldObject.Value.heldObject.Value = null;
-                    if (machine.heldObject.Value.QualifiedItemId == MachineHarmonyPatcher.HolderQualifiedId) {
-                      var item = machine.heldObject.Value;
-                      machine.heldObject.Value = null;
-                      machine.readyForHarvest.Value = false;
-                      machine.showNextIndex.Value = false;
-                      machine.ResetParentSheetIndex();
-                      ModEntry.Helper.Reflection.GetMethod(__instance, "OnOutputCollected").Invoke(item);
+                try {
+                  bool empty = ModEntry.Helper.Reflection.GetProperty<int>(trackedStacks, "Count").GetValue() <= 0;
+                  if (empty) {
+                    chest.Items.Remove(item);
+                    if (chest.Items.Count == 0) {
+                      machine.heldObject.Value.heldObject.Value = null;
+                      if (machine.heldObject.Value.QualifiedItemId == MachineHarmonyPatcher.HolderQualifiedId) {
+                        var item = machine.heldObject.Value;
+                        machine.heldObject.Value = null;
+                        machine.readyForHarvest.Value = false;
+                        machine.showNextIndex.Value = false;
+                        machine.ResetParentSheetIndex();
+                        ModEntry.Helper.Reflection.GetMethod(__instance, "OnOutputCollected").Invoke(trackedStacks, item);
+                      }
                     }
                   }
+                }
+                catch (Exception e) {
+                  ModEntry.StaticMonitor.Log(e.Message, LogLevel.Error);
                 }
               }, null);
             return;
