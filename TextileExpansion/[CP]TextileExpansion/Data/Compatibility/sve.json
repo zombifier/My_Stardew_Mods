@@ -45,24 +45,13 @@
       }
     },
     {
-      "LogName": "Allow dye pot to dye camel yarn",
-      "Action": "EditData",
-      "Target": "Data/Machines",
-      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules"],
-      "Entries": {
-        "SVECamelYarn": {
-          "Id": "SVECamelYarn",
-          "Triggers": [
-            {
-              "Id": "ItemPlacedInMachine",
-              "Trigger": "ItemPlacedInMachine",
-              "RequiredItemId": "(O)FlashShifter.StardewValleyExpandedCP_Yarn",
-            },
-          ],
-          // Output items are in dyed-objects-template.json
-          "OutputItem": [],
-          "MinutesUntilReady": 480,
-        },
+      "LogName": "Make camel yarn dyeable",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "FlashShifter.StardewValleyExpandedCP_Yarn",
+        "SourceItemId": "FlashShifter.StardewValleyExpandedCP_Camel_Wool",
       },
     },
   ]

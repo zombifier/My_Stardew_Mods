@@ -1,0 +1,22 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add dyeable tag for {{ItemId}}",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["{{ItemId}}", "ContextTags"],
+      "Entries": {
+        "dyeable_{{Type}}_item": "dyeable_{{Type}}_item",
+      }
+    },
+    {
+      "LogName": "Add source item for {{ItemId}}",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["{{ItemId}}", "CustomFields"],
+      "Entries": {
+        "selph.TextileExpansionCode_SourceItemId": "{{SourceItemId}}",
+      }
+    },
+  ]
+}

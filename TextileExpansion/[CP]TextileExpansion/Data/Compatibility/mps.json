@@ -69,24 +69,13 @@
     //  }
     //},
     {
-      "LogName": "Allow dye pot to dye luxury cloth",
-      "Action": "EditData",
-      "Target": "Data/Machines",
-      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules"],
-      "Entries": {
-        "MPSLuxuryWool": {
-          "Id": "MPSLuxuryWool",
-          "Triggers": [
-            {
-              "Id": "ItemPlacedInMachine",
-              "Trigger": "ItemPlacedInMachine",
-              "RequiredItemId": "(O)nachonline.mps_LuxuryCloth",
-            },
-          ],
-          // Output items are in dyed-objects-template.json
-          "OutputItem": [],
-          "MinutesUntilReady": 480,
-        },
+      "LogName": "Make luxury cloth dyeable",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "cloth",
+        "ItemId": "nachonline.mps_LuxuryCloth",
+        "SourceItemId": "nachonline.mps_LuxuryWool",
       },
     },
     {

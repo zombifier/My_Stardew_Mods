@@ -161,19 +161,18 @@
       }
     },
     {
-      "LogName": "Adds dye camel yarn machine rules",
+      "LogName": "Adds modded dye cloth machine rules",
       "Action": "EditData",
       "Target": "Data/Machines",
-      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "SVECamelYarn", "OutputItem"],
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "ModdedCloth", "OutputItem"],
       "Entries": {
-        "(O){{ModId}}_Yarn{{Color}}_Void": {
-          "Id": "(O){{ModId}}_Yarn{{Color}}_Void",
-          "ItemId": "(O){{ModId}}_Yarn{{Color}}",
-          "PreserveId": "ZoeyHoshi.Camelus_CamelHair_Void",
-          "Condition": "ITEM_ID Input ZoeyHoshi.Camelus_CamelHairYarn_Void",
-          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Yarn %PRESERVED_DISPLAY_NAME]",
-          "ObjectInternalName": "{{ModId}}_YarnCloth{{Color}} {0}",
+        "(O){{ModId}}_{{Color}}Cloth": {
+          "Id": "(O){{ModId}}_Cloth{{Color}}",
+          "ItemId": "selph.TextileExpansionCode_FLAVORED_CLOTH_YARN (O){{ModId}}_Cloth{{Color}} DROP_IN_ID",
+          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Cloth %PRESERVED_DISPLAY_NAME]",
+          "ObjectInternalName": "{{ModId}}_Cloth{{Color}} {0}",
           "CopyPrice": true,
+          "CopyQuality": true,
           "PriceModifiers": [
             {
               "Id": "Color",
@@ -186,11 +185,19 @@
             "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
             "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
           },
-        },
+          "Condition": "{{DyeCondition}}",
+        }
+      }
+    },
+    {
+      "LogName": "Adds modded dye yarn machine rules",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "ModdedYarn", "OutputItem"],
+      "Entries": {
         "(O){{ModId}}_Yarn{{Color}}": {
           "Id": "(O){{ModId}}_Yarn{{Color}}",
-          "ItemId": "(O){{ModId}}_Yarn{{Color}}",
-          "PreserveId": "FlashShifter.StardewValleyExpandedCP_Camel_Wool",
+          "ItemId": "selph.TextileExpansionCode_FLAVORED_CLOTH_YARN (O){{ModId}}_Yarn{{Color}} DROP_IN_ID",
           "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Yarn %PRESERVED_DISPLAY_NAME]",
           "ObjectInternalName": "{{ModId}}_YarnCloth{{Color}} {0}",
           "CopyPrice": true,
@@ -201,109 +208,14 @@
               "Amount": "{{PriceMultiplier}}",
             },
           ],
+          "MinStack": 2,
           "CustomData": {
             "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
             "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
             "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
           },
         }
-      },
-      "When": {
-        "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
-      },
-    },
-    {
-      "LogName": "Adds dye llama cloth machine rules",
-      "Action": "EditData",
-      "Target": "Data/Machines",
-      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "SBVLlamaCloth", "OutputItem"],
-      "Entries": {
-        "(O){{ModId}}_Cloth{{Color}}": {
-          "Id": "(O){{ModId}}_Cloth{{Color}}",
-          "ItemId": "(O){{ModId}}_Cloth{{Color}}",
-          "PreserveId": "skellady.SBVCP_AlpacaWool",
-          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Cloth %PRESERVED_DISPLAY_NAME]",
-          "ObjectInternalName": "{{ModId}}_Yarn{{Color}} {0}",
-          "CopyPrice": true,
-          "PriceModifiers": [
-            {
-              "Id": "Color",
-              "Modification": "Multiply",
-              "Amount": "{{PriceMultiplier}}",
-            },
-          ],
-          "CustomData": {
-            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
-            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
-          },
-        }
-      },
-      "When": {
-        "HasMod |contains=skellady.SBVCP": "true",
-      },
-    },
-    {
-      "LogName": "Adds dye black wool cloth machine rules",
-      "Action": "EditData",
-      "Target": "Data/Machines",
-      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "ESBlackCloth", "OutputItem"],
-      "Entries": {
-        "(O){{ModId}}_Cloth{{Color}}": {
-          "Id": "(O){{ModId}}_Cloth{{Color}}",
-          "ItemId": "(O){{ModId}}_Cloth{{Color}}",
-          "PreserveId": "EastScarp_Black_Wool",
-          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Cloth %PRESERVED_DISPLAY_NAME]",
-          "ObjectInternalName": "{{ModId}}_Yarn{{Color}} {0}",
-          "CopyPrice": true,
-          "PriceModifiers": [
-            {
-              "Id": "Color",
-              "Modification": "Multiply",
-              "Amount": "{{PriceMultiplier}}",
-            },
-          ],
-          "CustomData": {
-            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
-            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
-          },
-        }
-      },
-      "When": {
-        "HasMod |contains=Lemurkat.EastScarp": "true",
-      },
-    },
-    {
-      "LogName": "Adds dye luxury cloth machine rules",
-      "Action": "EditData",
-      "Target": "Data/Machines",
-      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "MPSLuxuryWool", "OutputItem"],
-      "Entries": {
-        "(O){{ModId}}_Cloth{{Color}}": {
-          "Id": "(O){{ModId}}_Cloth{{Color}}",
-          "ItemId": "(O){{ModId}}_Cloth{{Color}}",
-          "PreserveId": "nachonline.mps_LuxuryWool",
-          "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_{{Color}}Cloth %PRESERVED_DISPLAY_NAME]",
-          "ObjectInternalName": "{{ModId}}_Yarn{{Color}} {0}",
-          "CopyPrice": true,
-          "PriceModifiers": [
-            {
-              "Id": "Color",
-              "Modification": "Multiply",
-              "Amount": "{{PriceMultiplier}}",
-            },
-          ],
-          "CustomData": {
-            "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
-            "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
-            "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
-          },
-        }
-      },
-      "When": {
-        "HasMod |contains=nachonline.mps": "true",
-      },
+      }
     },
     {
       "LogName": "Load strings for TokenizedText",
@@ -312,6 +224,7 @@
       "Entries": {
         "{{ModId}}_{{Color}}Yarn": "{{i18n:item.{{Color}}Yarn.name.flavored}}",
         "{{ModId}}_{{Color}}Cloth": "{{i18n:item.{{Color}}Cloth.name.flavored}}",
+        "{{ModId}}_{{Color}}": "{{i18n:item.{{Color}}.name}}",
         "selph.ExtraMachineConfig_FlavorNameOverride_(O)Cloth{{Color}}/0": "{{i18n:item.{{Color}}Cloth.name}}",
         "selph.ExtraMachineConfig_FlavorNameOverride_(O)Yarn{{Color}}/0": "{{i18n:item.{{Color}}Yarn.name}}",
       }

@@ -68,24 +68,13 @@
       }
     },
     {
-      "LogName": "Allow dye pot to dye black cloth",
-      "Action": "EditData",
-      "Target": "Data/Machines",
-      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules"],
-      "Entries": {
-        "ESBlackCloth": {
-          "Id": "ESBlackCloth",
-          "Triggers": [
-            {
-              "Id": "ItemPlacedInMachine",
-              "Trigger": "ItemPlacedInMachine",
-              "RequiredItemId": "(O)EastScarp_Black_Cloth",
-            },
-          ],
-          // Output items are in dyed-objects-template.json
-          "OutputItem": [],
-          "MinutesUntilReady": 480,
-        },
+      "LogName": "Make black cloth dyeable",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "cloth",
+        "ItemId": "EastScarp_Black_Cloth",
+        "SourceItemId": "EastScarp_Black_Wool",
       },
     },
   ]

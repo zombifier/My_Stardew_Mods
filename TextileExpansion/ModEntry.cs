@@ -16,9 +16,12 @@ using StardewValley.Objects;
 using StardewValley.Delegates;
 using StardewValley.Menus;
 using StardewValley.Internal;
+using StardewValley.GameData.Objects;
 using SpaceCore;
 
+using ItemQueryResolver = StardewValley.Internal.ItemQueryResolver;
 using SObject = StardewValley.Object;
+using Helpers = StardewValley.Internal.ItemQueryResolver.Helpers;
 
 namespace Selph.StardewMods.TextileExpansion;
 
@@ -27,7 +30,7 @@ internal sealed class ModEntry : Mod {
   internal static IMonitor StaticMonitor { get; set; } = null!;
   internal static string UniqueId = null!;
   static ContentPatcher.IContentPatcherAPI cpApi = null!;
-  static bool HasWOL = false;
+  //static bool HasWOL = false;
 
   static string CouturierInventoryId = null!;
   static string CouturierModDataAgeKey = null!;
@@ -38,6 +41,8 @@ internal sealed class ModEntry : Mod {
   static string ObjAlreadyGrantedExp = null!;
 
   static string MigratedFrom100 = null!;
+
+  static string SourceItemId = null!;
 
   public const string ContentPackId = "selph.TextileExpansion";
 
@@ -56,6 +61,8 @@ internal sealed class ModEntry : Mod {
 
     ObjAlreadyGrantedExp = $"{UniqueId}_ObjAlreadyGrantedExp";
 
+    SourceItemId = $"{UniqueId}_SourceItemId";
+
     MigratedFrom100 = $"{UniqueId}_MigratedFrom100";
 
     helper.Events.Content.AssetRequested += OnAssetRequested;
@@ -70,7 +77,9 @@ internal sealed class ModEntry : Mod {
     GameStateQuery.Register($"{UniqueId}_PLAYER_BUFFED_TEXTILE_LEVEL", PLAYER_BUFFED_TEXTILE_LEVEL);
     TokenParser.RegisterParser($"{UniqueId}_CouturierName", CouturierName);
     TokenParser.RegisterParser($"{UniqueId}_CouturierDescription", CouturierDescription);
-    HasWOL = Helper.ModRegistry.IsLoaded("DaLion.Professions");
+    //HasWOL = Helper.ModRegistry.IsLoaded("DaLion.Professions");
+
+    ItemQueryResolver.Register($"{UniqueId}_FLAVORED_CLOTH_YARN", FLAVORED_CLOTH_YARN);
 
     // Harmony!
     var harmony = new Harmony(this.ModManifest.UniqueID);
@@ -632,5 +641,22 @@ internal sealed class ModEntry : Mod {
       }
       Game1.player.modData[MigratedFrom100] = "true";
     }
+  }
+
+  static IEnumerable<ItemQueryResult> FLAVORED_CLOTH_YARN(string key, string arguments, ItemQueryContext context, bool avoidRepeat, HashSet<string> avoidItemIds, Action<string, string> logError) {
+    var args = Helpers.SplitArguments(arguments);
+    if (!ArgUtility.TryGet(args, 0, out var outputId, out var error, allowBlank: false, "outputId")
+        || !ArgUtility.TryGet(args, 1, out var inputId, out error, allowBlank: false, "inputId")
+        ) {
+      return Helpers.ErrorResult(key, arguments, logError, error);
+    }
+    var outputItem = ItemRegistry.Create<SObject>(outputId);
+    if (ItemRegistry.GetDataOrErrorItem(inputId).RawData is ObjectData inputItemData
+        && inputItemData.CustomFields?.TryGetValue(SourceItemId, out var sourceItemId) is true) {
+      outputItem.preservedParentSheetIndex.Value = sourceItemId;
+    } else {
+      outputItem.preservedParentSheetIndex.Value = inputId;
+    }
+    return [new(outputItem)];
   }
 }

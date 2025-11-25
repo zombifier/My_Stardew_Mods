@@ -179,16 +179,103 @@
       }
     },
     {
-      "LogName": "Allow dye pot to dye camelus camel yarn",
-      "Action": "EditData",
-      "Target": "Data/Machines",
-      "TargetField": ["(BC){{ModId}}_DyePot", "OutputRules", "SVECamelYarn", "Triggers"],
-      "Entries": {
-        "CamelusYarn": {
-          "Id": "CamelusYarn",
-          "Trigger": "ItemPlacedInMachine",
-          "Condition": "ITEM_ID_PREFIX Input ZoeyHoshi.Camelus_CamelHairYarn",
-        },
+      "LogName": "Make Camelus camel yarn dyeable - Albino",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "ZoeyHoshi.Camelus_CamelHairYarn_Albino",
+        "SourceItemId": "ZoeyHoshi.Camelus_CamelHair_Albino",
+      },
+    },
+    {
+      "LogName": "Make Camelus camel yarn dyeable - Ash",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "ZoeyHoshi.Camelus_CamelHairYarn_Ash",
+        "SourceItemId": "ZoeyHoshi.Camelus_CamelHair_Ash",
+      },
+    },
+    {
+      "LogName": "Make Camelus camel yarn dyeable - Black",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "ZoeyHoshi.Camelus_CamelHairYarn_Black",
+        "SourceItemId": "ZoeyHoshi.Camelus_CamelHair_Black",
+      },
+    },
+    {
+      "LogName": "Make Camelus camel yarn dyeable - BlackPiedbald",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "ZoeyHoshi.Camelus_CamelHairYarn_BlackPiedbald",
+        "SourceItemId": "ZoeyHoshi.Camelus_CamelHair_BlackPiedbald",
+      },
+    },
+    {
+      "LogName": "Make Camelus camel yarn dyeable - Blonde",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "ZoeyHoshi.Camelus_CamelHairYarn_Blonde",
+        "SourceItemId": "ZoeyHoshi.Camelus_CamelHair_Blonde",
+      },
+    },
+    {
+      "LogName": "Make Camelus camel yarn dyeable - BrownPiedbald",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "ZoeyHoshi.Camelus_CamelHairYarn_BrownPiedbald",
+        "SourceItemId": "ZoeyHoshi.Camelus_CamelHair_BrownPiedbald",
+      },
+    },
+    {
+      "LogName": "Make Camelus camel yarn dyeable - Chestnut",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "ZoeyHoshi.Camelus_CamelHairYarn_Chestnut",
+        "SourceItemId": "ZoeyHoshi.Camelus_CamelHair_Chestnut",
+      },
+    },
+    {
+      "LogName": "Make Camelus camel yarn dyeable - Cinnamon",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "ZoeyHoshi.Camelus_CamelHairYarn_Cinnamon",
+        "SourceItemId": "ZoeyHoshi.Camelus_CamelHair_Cinnamon",
+      },
+    },
+    {
+      "LogName": "Make Camelus camel yarn dyeable - Void",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "ZoeyHoshi.Camelus_CamelHairYarn_Void",
+        "SourceItemId": "ZoeyHoshi.Camelus_CamelHair_Void",
+      },
+    },
+    {
+      "LogName": "Make Camelus camel yarn dyeable - White",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "ZoeyHoshi.Camelus_CamelHairYarn_White",
+        "SourceItemId": "ZoeyHoshi.Camelus_CamelHair_White",
       },
     },
   ]
