@@ -931,7 +931,7 @@
                 {
                   "Id": "ItemPlacedInMachine",
                   "Trigger": "ItemPlacedInMachine",
-                  "RequiredTags": ["dyeable_cloth_item"],
+                  "RequiredTags": ["{{ModId}}_dyeable_cloth_item"],
                 },
               ],
               // Output items are in dyed-objects-template.json
@@ -960,7 +960,7 @@
                 {
                   "Id": "ItemPlacedInMachine",
                   "Trigger": "ItemPlacedInMachine",
-                  "RequiredTags": ["dyeable_yarn_item"],
+                  "RequiredTags": ["{{ModId}}_dyeable_yarn_item"],
                   "RequiredCount": 2,
                 },
               ],

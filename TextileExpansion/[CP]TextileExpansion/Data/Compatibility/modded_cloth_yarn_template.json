@@ -6,7 +6,7 @@
       "Target": "Data/Objects",
       "TargetField": ["{{ItemId}}", "ContextTags"],
       "Entries": {
-        "dyeable_{{Type}}_item": "dyeable_{{Type}}_item",
+        "{{ModId}}_dyeable_{{Type}}_item": "{{ModId}}_dyeable_{{Type}}_item",
       }
     },
     {
@@ -15,7 +15,7 @@
       "Target": "Data/Objects",
       "TargetField": ["{{ItemId}}", "CustomFields"],
       "Entries": {
-        "selph.TextileExpansionCode_SourceItemId": "{{SourceItemId}}",
+        "selph.TextileExpansion_SourceItemId": "{{SourceItemId}}",
       }
     },
   ]

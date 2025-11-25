@@ -61,7 +61,7 @@ internal sealed class ModEntry : Mod {
 
     ObjAlreadyGrantedExp = $"{UniqueId}_ObjAlreadyGrantedExp";
 
-    SourceItemId = $"{UniqueId}_SourceItemId";
+    SourceItemId = $"{ContentPackId}_SourceItemId";
 
     MigratedFrom100 = $"{UniqueId}_MigratedFrom100";
 
