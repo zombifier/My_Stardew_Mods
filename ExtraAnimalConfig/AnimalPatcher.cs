@@ -254,11 +254,11 @@ sealed class AnimalDataPatcher {
   }
 
   static void FarmAnimal_GetTexturePath_Postfix(FarmAnimal __instance, ref string __result, FarmAnimalData data) {
-    if (__instance.currentProduce.Value != null &&
-        Game1.farmAnimalData.TryGetValue(__instance.type.Value, out var animalData) &&
+    if (Game1.farmAnimalData.TryGetValue(__instance.type.Value, out var animalData) &&
         ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData)) {
       // old deprecated method, via produce texture override
-      if (animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value) ?? __instance.currentProduce.Value, out var animalProduceExtensionData)) {
+      if (__instance.currentProduce.Value is not null
+          && animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(__instance.currentProduce.Value) ?? __instance.currentProduce.Value, out var animalProduceExtensionData)) {
         if (animalProduceExtensionData.ProduceTexture != null) {
           __result = animalProduceExtensionData.ProduceTexture;
         }
@@ -277,7 +277,7 @@ sealed class AnimalDataPatcher {
       }
       // new method, via dedicated field
       foreach (var appearanceData in animalExtensionData.TextureOverrides) {
-        if ((appearanceData.Produce is not null && __instance.currentProduce.Value != appearanceData.Produce) ||
+        if ((appearanceData.Produce is not null && __instance.currentProduce.Value is not null && __instance.currentProduce.Value != appearanceData.Produce) ||
             (appearanceData.Skin is not null && __instance.skinID.Value != appearanceData.Skin) ||
             (appearanceData.Condition is not null && !GameStateQuery.CheckConditions(appearanceData.Condition, __instance.currentLocation, null, null, AnimalUtils.GetGoldenAnimalCracker(__instance)))) {
           continue;
@@ -431,6 +431,9 @@ sealed class AnimalDataPatcher {
         new CodeMatch(OpCodes.Ldstr, "Trough"),
         new CodeMatch(OpCodes.Ldstr, "Back"),
         new CodeMatch(OpCodes.Ldc_I4_0),
+#if SDV1616
+        new CodeMatch(OpCodes.Ldc_I4_0),
+#endif
         new CodeMatch(OpCodes.Callvirt),
         new CodeMatch(OpCodes.Brfalse_S)
         )
@@ -453,6 +456,9 @@ sealed class AnimalDataPatcher {
         new CodeMatch(OpCodes.Ldstr, "Trough"),
         new CodeMatch(OpCodes.Ldstr, "Back"),
         new CodeMatch(OpCodes.Ldc_I4_0),
+#if SDV1616
+        new CodeMatch(OpCodes.Ldc_I4_0),
+#endif
         new CodeMatch(OpCodes.Callvirt),
         new CodeMatch(OpCodes.Brfalse_S)
         )
