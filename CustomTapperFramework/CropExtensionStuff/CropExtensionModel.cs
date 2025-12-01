@@ -6,6 +6,9 @@ using StardewValley;
 using System.Linq;
 using System.Collections.Generic;
 using Selph.StardewMods.Common;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using StardewValley.Delegates;
 
 namespace Selph.StardewMods.MachineTerrainFramework;
 
@@ -13,6 +16,43 @@ public class HarvestSpawnData : GenericSpawnItemDataWithCondition {
   public bool CopyColor = false;
   public bool OverrideQuality = false;
   public bool OverrideStack = false;
+}
+
+public class CropTextureOverride {
+  public string? Id;
+  public bool? RequiredFullyGrown;
+  public int? RequiredPhase;
+  public string? RequiredTintColor;
+  public string? RequiredCondition;
+  public string? Texture;
+  public List<int>? SpriteIndexList;
+  public List<int>? ColoredSpriteIndexList;
+
+  private Color? reqTintColor;
+  internal bool Matches(Crop crop) {
+    if (string.IsNullOrEmpty(Texture)) {
+      return false;
+    }
+    if (!Game1.content.DoesAssetExist<Texture2D>(Texture)) {
+      Texture = null;
+      return false;
+    }
+    if (RequiredFullyGrown != null && RequiredFullyGrown != crop.fullyGrown.Value)
+      return false;
+    if (RequiredTintColor != null) {
+      reqTintColor ??= Utility.StringToColor(RequiredTintColor);
+      if (crop.tintColor.Value != reqTintColor) {
+        return false;
+      }
+    }
+    if (RequiredPhase != null && crop.currentPhase.Value != RequiredPhase) {
+      return false;
+    }
+    if (RequiredCondition != null && !GameStateQuery.CheckConditions(RequiredCondition, location: crop.currentLocation)) {
+      return false;
+    }
+    return true;
+  }
 }
 
 public class CropExtensionData {
@@ -32,6 +72,7 @@ public class CropExtensionData {
   public List<string>? DayStartTriggers;
   public List<string>? HarvestedTriggers;
   public List<int>? HarvestablePhases;
+  public List<CropTextureOverride>? CropTextureOverrides;
 }
 
 public class CropExtensionDataAssetHandler : DictAssetHandler<CropExtensionData> {
