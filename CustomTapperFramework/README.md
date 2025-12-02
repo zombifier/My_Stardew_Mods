@@ -464,8 +464,8 @@ The `CropTextureOverride` model has the following fields:
 | `RequiredTintColor` | [Color as a string](https://stardewvalleywiki.com/Modding:Common_data_field_types#Color) | If set, the crop must be of this color. |
 | `RequiredCondition` | string | If set, the crop must satisfy this condition. TODO: THIS DOESN'T WORK WITH THE SPECIAL CROP-BASED GSQS YET.|
 | `Texture` | string | The texture to use.|
-| `SpriteIndexList` | List of numbers | A list of possible sprite indicies to use within the texture. One will be used at random.|
-| `ColoredSpriteIndexList` | List of numbers | If set, a list of possible sprite indicies to use for the colored overlay (for crops with color variations). One will be used at random.|
+| `SpriteIndexList` | List of numbers | A list of possible sprite indicies to use within the texture. One will be used at random. The sprite size is 16x32.|
+| `ColoredSpriteIndexList` | List of numbers | If set, a list of possible sprite indicies to use for the colored overlay (for crops with color variations). One will be used at random.. The sprite size is 16x32.|
 
 ### Trigger actions
 The following special actions can only be used in `PlantTriggers` and `DayStartTriggers`. Their main
