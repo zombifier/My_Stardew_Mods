@@ -432,7 +432,6 @@ static class CropExtensionHandler {
     Random random = Utility.CreateRandom(tileLocation.X * 1000.0, tileLocation.Y, Game1.dayOfMonth);
     CropTextureOverride matchedOverride = random.ChooseFrom(matchingOverrides);
     ____drawnTexture = Game1.content.Load<Texture2D>(matchedOverride.Texture);
-    __instance.overrideTexturePath.Value = matchedOverride.Texture;
     if (matchedOverride.SpriteIndexList is List<int> indexList) {
       __instance.sourceRect = GetSourceRectForIndex(____drawnTexture.Width, random.ChooseFrom(indexList));
     }

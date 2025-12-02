@@ -19,8 +19,11 @@ public class HarvestSpawnData : GenericSpawnItemDataWithCondition {
 }
 
 public class CropTextureOverride {
-  public string? Id;
-  public bool? RequiredFullyGrown;
+  private string? IdImpl = null;
+  public string Id {
+    get => IdImpl ??= $"{RequiredPhase}-{RequiredTintColor ?? "N"}-{RequiredCondition ?? "N"}-{Texture}";
+    set => IdImpl = value;
+  }
   public int? RequiredPhase;
   public string? RequiredTintColor;
   public string? RequiredCondition;
@@ -37,8 +40,6 @@ public class CropTextureOverride {
       Texture = null;
       return false;
     }
-    if (RequiredFullyGrown != null && RequiredFullyGrown != crop.fullyGrown.Value)
-      return false;
     if (RequiredTintColor != null) {
       reqTintColor ??= Utility.StringToColor(RequiredTintColor);
       if (crop.tintColor.Value != reqTintColor) {
