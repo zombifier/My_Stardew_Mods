@@ -453,6 +453,19 @@ The value being the following data model:
 | `HarvestedTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run on harvesting. This accepts the regular actions, plus some special actions that are only usable in this field listed below.<br>IMPORTANT NOTE: This will only run for crops that have grown at least one day (ie. it will not run for seeds spread by the `PlantCrop` trigger).|
 | `DayStartTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run on day start for this empty dirt/crop, after the daily logic (growth, etc.). This accepts the regular actions, plus some special actions that are only usable in this field listed below.<br>IMPORTANT NOTE: This will only run for crops that have grown at least one day (ie. it will not run for seeds spread by the `PlantCrop` trigger).|
 | `HarvestablePhases` | List of numbers | A list of phases that this crop is harvestable from, not just the final phase.|
+| `CropTextureOverrides`  (NOT RELEASED ON NEXUS YET) | Dictionary of unique keys to `CropTextureOverride` models | A list of texture overrides for this crop; this can be used to override a crop's appearance based on conditions, or even have crop appearance variation. |
+
+The `CropTextureOverride` model has the following fields:
+
+| Field Name | Type | Description |
+| ---------- | ---- | ----------- |
+| `OverrideGroupKey` | string | If set, if there are multiple textures with the same group key and one appearance is chosen, the next time the crop's texture is reloaded on day start, only other textures with the same group key will be considered.|
+| `RequiredPhase` | int | If set, the crop must be of this phase. |
+| `RequiredTintColor` | [Color as a string](https://stardewvalleywiki.com/Modding:Common_data_field_types#Color) | If set, the crop must be of this color. |
+| `RequiredCondition` | string | If set, the crop must satisfy this condition. TODO: THIS DOESN'T WORK WITH THE SPECIAL CROP-BASED GSQS YET.|
+| `Texture` | string | The texture to use.|
+| `SpriteIndexList` | List of numbers | A list of possible sprite indicies to use within the texture. One will be used at random.|
+| `ColoredSpriteIndexList` | List of numbers | If set, a list of possible sprite indicies to use for the colored overlay (for crops with color variations). One will be used at random.|
 
 ### Trigger actions
 The following special actions can only be used in `PlantTriggers` and `DayStartTriggers`. Their main
