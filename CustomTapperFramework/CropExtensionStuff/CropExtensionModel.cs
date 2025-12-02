@@ -19,11 +19,7 @@ public class HarvestSpawnData : GenericSpawnItemDataWithCondition {
 }
 
 public class CropTextureOverride {
-  private string? IdImpl = null;
-  public string Id {
-    get => IdImpl ??= $"{RequiredPhase}-{RequiredTintColor ?? "N"}-{RequiredCondition ?? "N"}-{Texture}";
-    set => IdImpl = value;
-  }
+  public string OverrideGroupKey = "Default";
   public int? RequiredPhase;
   public string? RequiredTintColor;
   public string? RequiredCondition;
@@ -73,7 +69,7 @@ public class CropExtensionData {
   public List<string>? DayStartTriggers;
   public List<string>? HarvestedTriggers;
   public List<int>? HarvestablePhases;
-  public List<CropTextureOverride>? CropTextureOverrides;
+  public Dictionary<string, CropTextureOverride>? CropTextureOverrides;
 }
 
 public class CropExtensionDataAssetHandler : DictAssetHandler<CropExtensionData> {

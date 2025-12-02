@@ -416,22 +416,44 @@ static class CropExtensionHandler {
     return matcher.InstructionEnumeration();
   }
 
+  static readonly string ModData_TextureOverrideGroupKey = $"{ModEntry.UniqueId}/TextureOverrideGroupKey";
   static Rectangle GetSourceRectForIndex(int width, int index) => new(index * 16 % width, index * 16 / width * 32, 16, 32);
   static void Crop_updateDrawMath_Postfix(Crop __instance, Vector2 tileLocation, ref Texture2D ____drawnTexture) {
     if (tileLocation.Equals(Vector2.Zero) || __instance.forageCrop.Value || __instance.IsErrorCrop()) {
       return;
     }
 
-    if (!GetCropDataFor(__instance, out var data, out _) || data?.CropTextureOverrides is not List<CropTextureOverride> textureOverrides) {
+    if (!GetCropDataFor(__instance, out var data, out _) || data?.CropTextureOverrides is not Dictionary<string, CropTextureOverride> textureOverrides) {
       return;
     }
-    List<CropTextureOverride> matchingOverrides = textureOverrides.Where(txOverride => txOverride.Matches(__instance)).ToList();
-    if (!matchingOverrides.Any())
-      return;
+    if (!__instance.modData.TryGetValue(ModData_TextureOverrideGroupKey, out string? groupKey)) {
+      groupKey = null;
+    }
+    List<CropTextureOverride> matchingOverrides = [];
+    List<CropTextureOverride> matchingOverridesGroupless = [];
+    foreach (CropTextureOverride txOverride in textureOverrides.Values) {
+      if (txOverride.Matches(__instance)) {
+        if (groupKey == null || txOverride.OverrideGroupKey == groupKey) {
+          matchingOverrides.Add(txOverride);
+        } else {
+          matchingOverridesGroupless.Add(txOverride);
+        }
+      }
+    }
+    if (matchingOverrides.Count == 0) {
+      if (matchingOverridesGroupless.Count == 0) {
+        if (groupKey != null) {
+          __instance.modData.Remove(ModData_TextureOverrideGroupKey);
+        }
+        return;
+      }
+      matchingOverrides = matchingOverridesGroupless;
+    }
 
     Random random = Utility.CreateRandom(tileLocation.X * 1000.0, tileLocation.Y, Game1.dayOfMonth);
     CropTextureOverride matchedOverride = random.ChooseFrom(matchingOverrides);
     ____drawnTexture = Game1.content.Load<Texture2D>(matchedOverride.Texture);
+    __instance.modData[ModData_TextureOverrideGroupKey] = matchedOverride.OverrideGroupKey ?? "Default";
     if (matchedOverride.SpriteIndexList is List<int> indexList) {
       __instance.sourceRect = GetSourceRectForIndex(____drawnTexture.Width, random.ChooseFrom(indexList));
     }
