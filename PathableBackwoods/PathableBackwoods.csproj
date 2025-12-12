@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <SDV>1615</SDV>
+  </PropertyGroup>
+  <Import Project="../Common.csproj" Label="SharedCsproj" />
+</Project>
