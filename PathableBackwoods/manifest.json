@@ -1,7 +1,7 @@
 {
   "Name": "NPC Pathable Backwoods",
   "Author": "selph",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Unblocks the backwoods for NPC pathing by adding the shortcut stairs.",
   "UniqueID": "selph.PathableBackwoods",
   "EntryDll": "PathableBackwoods.dll",
