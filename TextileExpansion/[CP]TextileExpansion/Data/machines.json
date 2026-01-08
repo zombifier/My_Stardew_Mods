@@ -1307,5 +1307,65 @@
         },
       }
     },
+    {
+      "LogName": "Edit Wood Chipper",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)211", "OutputRules"],
+      "Entries": {
+        "{{ModId}}_Brazilwood": {
+          "Id": "{{ModId}}_Brazilwood",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_Brazilwood",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)388",
+              "ItemId": "(O)388",
+              "MinStack": 5,
+              "MaxStack": 10,
+            },
+            {
+              "Id": "(O)388_Extra",
+              "ItemId": "(O)388",
+              "MinStack": 15,
+              "MaxStack": 20,
+              "Condition": "RANDOM .1",
+            },
+          ],
+          "MinutesUntilReady": 180,
+        },
+        "{{ModId}}_Logwood": {
+          "Id": "{{ModId}}_Logwood",
+          "Triggers": [
+            {
+              "Id": "ItemPlacedInMachine",
+              "Trigger": "ItemPlacedInMachine",
+              "RequiredItemId": "(O){{ModId}}_Logwood",
+            },
+          ],
+          "OutputItem": [
+            {
+              "Id": "(O)388",
+              "ItemId": "(O)388",
+              "MinStack": 5,
+              "MaxStack": 10,
+            },
+            {
+              "Id": "(O)388_Extra",
+              "ItemId": "(O)388",
+              "MinStack": 15,
+              "MaxStack": 20,
+              "Condition": "RANDOM .1",
+            },
+          ],
+          "MinutesUntilReady": 180,
+        },
+      }
+    },
   ]
 }

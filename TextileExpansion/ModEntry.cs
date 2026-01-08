@@ -313,12 +313,12 @@ internal sealed class ModEntry : Mod {
     if (ItemContextTagManager.HasBaseTag(__result.QualifiedItemId, $"{ContentPackId}_base_clothing_item")
         && left_item is SObject cloth
         && ColoredObject.TrySetColor(__result, TailoringMenu.GetDyeColor(left_item) ?? Color.White, out var coloredClothing)) {
-      coloredClothing.Price = (int)(cloth.Price * (cloth.QualifiedItemId == "(O)428" ? 1.5 : 2));
+      coloredClothing.Price = (int)(cloth.Price * (cloth.QualifiedItemId == "(O)428" ? 1.2 : 1.5));
       coloredClothing.preservedParentSheetIndex.Value = cloth.GetPreservedItemId() ?? cloth.ItemId; //"440";
       coloredClothing.Name += $" {coloredClothing.preservedParentSheetIndex.Value}";
       coloredClothing.displayNameFormat = $"[LocalizedText Strings/Objects:{ContentPackId}_ClothingDynamicName %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]";
       if (Game1.objectData.TryGetValue(cloth.ItemId, out var objectData)) {
-        coloredClothing.modData[ClothingDyeUsedCloth] = objectData.CustomFields.GetValueOrDefault($"{ContentPackId}_Dye", "");
+        coloredClothing.modData[ClothingDyeUsedCloth] = objectData.CustomFields?.GetValueOrDefault($"{ContentPackId}_Dye", "") ?? "";
       }
       coloredClothing.Quality = left_item.Quality;
       SetTailoringQuality(coloredClothing);
@@ -329,7 +329,7 @@ internal sealed class ModEntry : Mod {
         && right_item is SObject yarn
         && ColoredObject.TrySetColor(__result, TailoringMenu.GetDyeColor(left_item) ?? Color.White, out var embroideredClothing)) {
       embroideredClothing.Quality = clothing.Quality;
-      embroideredClothing.Price = (int)(clothing.Price * 1.2) + (int)(yarn.Price * 1.2);
+      embroideredClothing.Price = (int)(clothing.Price * 1) + (int)(yarn.Price * 1.5);
       embroideredClothing.preservedParentSheetIndex.Value = clothing.preservedParentSheetIndex.Value;
       embroideredClothing.modData.CopyFrom(clothing.modData);
       embroideredClothing.modData["selph.ExtraMachineConfig.ExtraPreserveId.1"] = yarn.GetPreservedItemId() ?? yarn.ItemId; // "440";
@@ -340,7 +340,7 @@ internal sealed class ModEntry : Mod {
       embroideredClothing.Name = clothing.Name + $" {yarn.ItemId} {yarn.GetPreservedItemId() ?? yarn.ItemId} {imageType} {imageId}";
       embroideredClothing.displayNameFormat = $"[LocalizedText Strings/Objects:{ContentPackId}_EmbroideredClothingDynamicName %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]";
       if (Game1.objectData.TryGetValue(yarn.ItemId, out var objectData)) {
-        embroideredClothing.modData[ClothingDyeUsedEmbroidery] = objectData.CustomFields.GetValueOrDefault($"{ContentPackId}_Dye", "");
+        embroideredClothing.modData[ClothingDyeUsedEmbroidery] = objectData.CustomFields?.GetValueOrDefault($"{ContentPackId}_Dye", "") ?? "";
       }
       embroideredClothing.Quality = left_item.Quality;
       SetTailoringQuality(embroideredClothing);
@@ -351,7 +351,7 @@ internal sealed class ModEntry : Mod {
         && right_item is SObject gem
         && ColoredObject.TrySetColor(__result, TailoringMenu.GetDyeColor(left_item) ?? Color.White, out var jeweledClothing)) {
       jeweledClothing.Quality = clothing2.Quality;
-      jeweledClothing.Price = (int)(clothing2.Price * 1.2) + (int)(gem.Price * 2);
+      jeweledClothing.Price = (int)(clothing2.Price * 1) + (int)(gem.Price * 2);
       jeweledClothing.preservedParentSheetIndex.Value = clothing2.preservedParentSheetIndex.Value;
       jeweledClothing.modData.CopyFrom(clothing2.modData);
       jeweledClothing.modData["selph.ExtraMachineConfig.ExtraPreserveId.2"] = gem.ItemId;
