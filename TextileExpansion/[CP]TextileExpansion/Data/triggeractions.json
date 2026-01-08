@@ -36,11 +36,11 @@
           "MarkActionApplied": false,
           "Condition": "!SEASON winter",
           "Actions": [
-            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Town",
-            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Mountain",
-            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle BusStop",
-            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Railroad",
-            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Backwoods",
+            "If RANDOM 0.35 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Town",
+            "If RANDOM 0.35 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Mountain",
+            "If RANDOM 0.35 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle BusStop",
+            "If RANDOM 0.35 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Railroad",
+            "If RANDOM 0.35 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Backwoods",
             //"If RANDOM 0.15, {{HasMod |contains=LemurKat.EastScarpe.CP}} ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle EastScarp_Village",
           ],
         },
@@ -51,11 +51,11 @@
           "MarkActionApplied": false,
           "Condition": "!SEASON winter, DAY_OF_WEEK Sunday",
           "Actions": [
-            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Town",
-            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Mountain",
-            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle BusStop",
-            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Railroad",
-            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Backwoods",
+            "If RANDOM 0.4 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Town",
+            "If RANDOM 0.4 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Mountain",
+            "If RANDOM 0.4 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle BusStop",
+            "If RANDOM 0.4 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Railroad",
+            "If RANDOM 0.4 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle Backwoods",
             //"If RANDOM 0.15, {{HasMod |contains=LemurKat.EastScarpe.CP}} ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Nettle EastScarp_Village",
           ],
         },
@@ -66,8 +66,8 @@
           "MarkActionApplied": false,
           "Condition": "!SEASON winter, PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Any 3",
           "Actions": [
-            "If RANDOM 0.15, {{HasMod |contains=FlashShifter.StardewValleyExpandedCP}} ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Custom_ForestWest",
-            "If RANDOM 0.15 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Forest",
+            "If RANDOM 0.35, {{HasMod |contains=FlashShifter.StardewValleyExpandedCP}} ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Custom_ForestWest",
+            "If RANDOM 0.35 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Forest",
           ],
         },
         "{{ModId}}_SpawnSilkwormSunday": {
@@ -77,8 +77,8 @@
           "MarkActionApplied": false,
           "Condition": "!SEASON winter, DAY_OF_WEEK Sunday, PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Any 3",
           "Actions": [
-            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Forest",
-            "If RANDOM 0.2, {{HasMod |contains=FlashShifter.StardewValleyExpandedCP}} ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Custom_ForestWest",
+            "If RANDOM 0.4 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Forest",
+            "If RANDOM 0.4, {{HasMod |contains=FlashShifter.StardewValleyExpandedCP}} ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_Silkworm Custom_ForestWest",
           ],
         },
         "{{ModId}}_SpawnCochinealBeetles": {
@@ -87,7 +87,7 @@
           "HostOnly": true,
           "MarkActionApplied": false,
           "Actions": [
-            "If RANDOM 0.2 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_CochinealBeetle Desert",
+            "If RANDOM 0.4 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_CochinealBeetle Desert",
           ],
         },
         "{{ModId}}_SpawnCochinealBeetlesSunday": {
@@ -97,7 +97,7 @@
           "MarkActionApplied": false,
           "Condition": "DAY_OF_WEEK Sunday",
           "Actions": [
-            "If RANDOM 0.25 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_CochinealBeetle Desert",
+            "If RANDOM 0.45 ## spacechase0.SpaceCore_TriggerSpawnGroup {{ModId}}_CochinealBeetle Desert",
           ],
         },
       }
