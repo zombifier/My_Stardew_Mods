@@ -182,6 +182,23 @@ public static class AnimalUtils {
     return qualifiedItemId;
   }
 
+  public static HashSet<string> GetAllCustomFeedForThisAnimalHouse(AnimalHouse animalHouse) {
+    HashSet<string> itemIds = new();
+    for (int i = 0; i < animalHouse.map.Layers[0].LayerWidth; i++) {
+      for (int j = 0; j < animalHouse.map.Layers[0].LayerHeight; j++) {
+        var itemId = AnimalUtils.GetCustomFeedForTile(animalHouse, i, j);
+        if (itemId is not null && !animalHouse.objects.ContainsKey(new Vector2(i, j))) {
+          itemIds.Add(itemId);
+        }
+      }
+    }
+    var feedOverride = ModEntry.ModApi.GetFeedOverride(animalHouse.ParentBuilding?.buildingType.Value);
+    if (feedOverride is not null) {
+      itemIds.Add(feedOverride);
+    }
+    return itemIds;
+  }
+
   public static string? GetCustomFeedThisAnimalCanEat(FarmAnimal animal, GameLocation animalHouse) {
     string? qualifiedItemId = null;
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData)) {
@@ -455,13 +472,16 @@ public static class ExtraProduceUtils {
     }
     if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
         animalExtensionData.AnimalProduceExtensionData.TryGetValue(ItemRegistry.QualifyItemId(produceId) ?? produceId ?? "", out var animalProduceExtensionData)) {
+      if (animalProduceExtensionData.IgnoreAnimalQuality) {
+        animal.modData[CachedProduceQualityKey] = animal.produceQuality.ToString();
+        animal.produceQuality.Value = 0;
+      }
       var context = new ItemQueryContext(animal.currentLocation, Game1.GetPlayer(animal.ownerID.Value), Game1.random, "ExtraAnimalConfig animal " + animal.type.Value + " producing");
       var gsqContext = AnimalUtils.GetGsqContext(animal, animal.currentLocation);
       if (animalProduceExtensionData.ItemQuery != null) {
         var item = ItemQueryResolver.TryResolveRandomItem(animalProduceExtensionData.ItemQuery, context);
         if (item is SObject obj) {
           if (animalProduceExtensionData.IgnoreAnimalQuality) {
-            animal.modData[CachedProduceQualityKey] = animal.produceQuality.ToString();
             animal.produceQuality.Value = obj.Quality;
           }
           ModEntry.ModApi.RunAnimalProduceCreatedEvents(animal, ref obj, produceMethod, tool);
@@ -476,7 +496,6 @@ public static class ExtraProduceUtils {
           var item = ItemQueryResolver.TryResolveRandomItem(itemQuery, context);
           if (item is SObject obj) {
             if (animalProduceExtensionData.IgnoreAnimalQuality) {
-              animal.modData[CachedProduceQualityKey] = animal.produceQuality.ToString();
               animal.produceQuality.Value = obj.Quality;
             }
             ModEntry.ModApi.RunAnimalProduceCreatedEvents(animal, ref obj, produceMethod, tool);

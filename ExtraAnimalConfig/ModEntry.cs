@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using xTile.Dimensions;
 using VanillaPlusProfessions.Compatibility;
 using LeFauxMods.Common.Integrations.CustomBush;
+using Pathoschild.Stardew.Automate;
 
 namespace Selph.StardewMods.ExtraAnimalConfig;
 
@@ -59,6 +60,7 @@ internal sealed class ModEntry : Mod {
     helper.Events.GameLoop.DayEnding += OnDayEnding;
     helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
     helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+    helper.Events.GameLoop.GameLaunched += OnGameLaunched;
     helper.Events.World.LocationListChanged += OnLocationListChanged;
     if (!Helper.ModRegistry.IsLoaded("selph.AnimalSqueezeThrough")) {
       helper.Events.GameLoop.SaveLoaded += OnSaveLoadedSqueeze;
@@ -66,6 +68,10 @@ internal sealed class ModEntry : Mod {
     }
     helper.Events.Display.RenderingHud += OnRenderingHud;
     helper.Events.Player.Warped += OnWarped;
+
+    //if (ModEntry.Helper.ModRegistry.IsLoaded("Pathoschild.Automate")) {
+    //  helper.Events.World.BuildingListChanged += OnBuildingListChanged;
+    //}
   }
 
   public override object GetApi() {
@@ -85,6 +91,15 @@ internal sealed class ModEntry : Mod {
     catch (Exception exception) {
       Monitor.Log($"Error registering the Custom Bush API: {exception.ToString()}", LogLevel.Warn);
     }
+    //try {
+    //  IAutomateAPI? automate = ModEntry.Helper.ModRegistry.GetApi<IAutomateAPI>("Pathoschild.Automate");
+    //  if (automate != null) {
+    //    automate.AddFactory(new ModdedSiloFactory());
+    //  }
+    //}
+    //catch (Exception exception) {
+    //  Monitor.Log($"Error registering the Automate API: {exception.ToString()}", LogLevel.Warn);
+    //}
   }
 
   // Set animal override speed, and clear the attack dictionaries
@@ -301,5 +316,9 @@ internal sealed class ModEntry : Mod {
         }
       }
     }
+  }
+
+  static void OnBuildingListChanged(object? sender, BuildingListChangedEventArgs e) {
+    ModdedSiloFactory.ClearBuildings(e.Location);
   }
 }

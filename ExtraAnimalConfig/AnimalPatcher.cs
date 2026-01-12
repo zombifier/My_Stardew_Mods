@@ -277,7 +277,7 @@ sealed class AnimalDataPatcher {
       }
       // new method, via dedicated field
       foreach (var appearanceData in animalExtensionData.TextureOverrides) {
-        if ((appearanceData.Produce is not null && __instance.currentProduce.Value is not null && __instance.currentProduce.Value != appearanceData.Produce) ||
+        if ((appearanceData.Produce is not null /*&& __instance.currentProduce.Value is not null*/ && __instance.currentProduce.Value != appearanceData.Produce) ||
             (appearanceData.Skin is not null && __instance.skinID.Value != appearanceData.Skin) ||
             (appearanceData.Condition is not null && !GameStateQuery.CheckConditions(appearanceData.Condition, __instance.currentLocation, null, null, AnimalUtils.GetGoldenAnimalCracker(__instance)))) {
           continue;

@@ -66,6 +66,9 @@ public class ExtraAnimalConfigApi : IExtraAnimalConfigApi {
     }
     return feedInfo;
   }
+  public IFeedInfo GetModdedFeedInfo(string qualifiedItemId) {
+    return new FeedInfo(qualifiedItemId);
+  }
 
   public string? GetFeedOverride(string? buildingId) {
     if (buildingId is not null && Game1.buildingData.TryGetValue(buildingId, out var buildingData)) {

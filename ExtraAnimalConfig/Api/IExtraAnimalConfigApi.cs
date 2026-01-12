@@ -26,6 +26,7 @@ public interface IExtraAnimalConfigApi {
   // to an IFeedInfo object that can be used to get the capacity and modify count.
   // The IFeedInfo object is stateless so you can save it if you want.
   public IDictionary<string, IFeedInfo> GetModdedFeedInfo();
+  public IFeedInfo GetModdedFeedInfo(string qualifiedItemId);
   // Get the qualified id of the feed override for this building type that replaces hay, if any.
   // Does not get any custom troughs placed alongside vanilla hay troughs in buildings
   public string? GetFeedOverride(string? buildingId);
