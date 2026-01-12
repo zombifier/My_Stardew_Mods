@@ -24,9 +24,9 @@ class ObjectiveEntryModel {
     this.Data = ItemRegistry.GetDataOrErrorItem(ItemId);
   }
 
-  public int TotalPoints { get => objective.GetThresholdFor(entry);  }
-  public bool HasThreshold { get => TotalPoints <= 1000000;  }
-  public int Points { get => objective.GetPointsFor(entry);  }
+  public int TotalPoints { get => objective.GetThresholdFor(entry); }
+  public bool HasThreshold { get => TotalPoints <= 1000000; }
+  public int Points { get => objective.GetPointsFor(entry); }
   public ParsedItemData Data { get; }
   public string ItemName { get => Data.DisplayName; }
   public Color PointsColor { get => Points >= TotalPoints ? Color.Black : Color.Green; }
@@ -67,7 +67,7 @@ class ObjectiveModel {
     }
   }
   public ObjectiveEntryModel[] Entries { get; }
-  public string BarPercentage { get => $"{(float)Points/TotalPoints*100}% stretch"; }
+  public string BarPercentage { get => $"{(float)Points / TotalPoints * 100}% stretch"; }
   public Texture2D BarTexture { get => Game1.staminaRect; }
 
   public ObjectiveModel(ShipPointsObjective objective) {
@@ -80,10 +80,13 @@ class ObjectiveModel {
 
 class CompetitionTrackerViewModel {
   public string FameBanner { get => ModEntry.Helper.Translation.Get("FameBanner", new { fame = Utils.GetFame() }); }
-  public string FameBannerTooltip { get => ModEntry.Helper.Translation.Get("FameBanner.tooltip",
+  public string FameBannerTooltip {
+    get => ModEntry.Helper.Translation.Get("FameBanner.tooltip",
       new {
-      sellPriceIncrease = Math.Round(Utils.GetFameSellPriceModifier() * 100 - 100, 1),
-      difficultyIncrease = Math.Round(Utils.GetFameDifficultyModifier() * 100 - 100, 1)}); }
+        sellPriceIncrease = Math.Round(Utils.GetFameSellPriceModifier() * 100 - 100, 1),
+        difficultyIncrease = Math.Round(Utils.GetFameDifficultyModifier() * 100 - 100, 1)
+      });
+  }
   public string HeaderText = ModEntry.Helper.Translation.Get("CompetitionName");
   public ObjectiveModel[] Objectives;
   public string PresetName;

@@ -45,15 +45,14 @@ public class ShipPointsObjective : ShipObjective {
   // including accumulated points and list of unique flavors shipped
   public NetStringDictionary<ShippedItemEntry, NetRef<ShippedItemEntry>> shippedItems = new();
 
-	public override void InitializeNetFields()
-	{
-		base.InitializeNetFields();
-		base.NetFields
-      .AddField(this.Id, "Id")
-      .AddField(this.shippedItems, "shippedItems");
-	}
+  public override void InitializeNetFields() {
+    base.InitializeNetFields();
+    base.NetFields
+  .AddField(this.Id, "Id")
+  .AddField(this.shippedItems, "shippedItems");
+  }
 
-  public ShipPointsObjective() {}
+  public ShipPointsObjective() { }
   public ShipPointsObjective(string id, bool useSalePrice = false) : base() {
     if (ModEntry.competitionDataAssetHandler.data.Categories.TryGetValue(id, out var categoryData)) {
       this.Id.Value = id;
@@ -120,7 +119,7 @@ public class ShipPointsObjective : ShipObjective {
           this.shippedItems.Values.Sum(item => GetPointsFor(item)));
     }
   }
-  
+
   public bool CanAcceptThisItem(Item shippedItem, Farmer farmer) {
     if (ModEntry.competitionDataAssetHandler.data.Categories.TryGetValue(this.Id.Value, out var categoryData)) {
       return (categoryData.ItemCriterias is null) ||

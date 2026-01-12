@@ -39,7 +39,7 @@ class AdSpotPhoneHandler : IPhoneHandler {
         return true;
       }
       if (Utils.GetFame() < fameRequirement) {
-        Game1.addHUDMessage(new HUDMessage(ModEntry.Helper.Translation.Get("PhoneAdPurchase.notEnoughFame", new {fame = fameRequirement})) {
+        Game1.addHUDMessage(new HUDMessage(ModEntry.Helper.Translation.Get("PhoneAdPurchase.notEnoughFame", new { fame = fameRequirement })) {
           noIcon = true,
         });
         return true;
@@ -53,7 +53,7 @@ class AdSpotPhoneHandler : IPhoneHandler {
           (who, whichAnswer) => {
             if (whichAnswer == "selph.FreshFarmProduce.YesPhoneAd") {
               who.Money -= goldCost;
-              Game1.addHUDMessage(new HUDMessage(ModEntry.Helper.Translation.Get("PhoneAdPurchase.adPurchased", new {fame = fameRequirement})) {
+              Game1.addHUDMessage(new HUDMessage(ModEntry.Helper.Translation.Get("PhoneAdPurchase.adPurchased", new { fame = fameRequirement })) {
                 noIcon = true,
               });
               Game1.playSound("newRecord");

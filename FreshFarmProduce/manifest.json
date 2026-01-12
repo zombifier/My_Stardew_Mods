@@ -1,7 +1,7 @@
-﻿{
+{
   "Name": "Fresh Farm Produce",
   "Author": "selph",
-  "Version": "2.0.5",
+  "Version": "2.0.8",
   "Description": "Increase sell price of high quality fresh produce, and adds a month-long competition that encourages selling diverse produce.",
   "UniqueID": "selph.FreshFarmProduce",
   "EntryDll": "FreshFarmProduce.dll",

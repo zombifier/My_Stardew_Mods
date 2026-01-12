@@ -34,11 +34,11 @@ static class Utils {
 
   public static bool IsSpoilable(Item? item) {
     if (item is null) return false;
-    bool hasSpoilableTag = 
+    bool hasSpoilableTag =
         ItemContextTagManager.DoAnyTagsMatch(
           ModEntry.competitionDataAssetHandler.data.SpoilableContextTags,
           ItemContextTagManager.GetBaseContextTags(item.QualifiedItemId));
-    bool hasNonSpoilableTag = 
+    bool hasNonSpoilableTag =
         ItemContextTagManager.DoAnyTagsMatch(
           ModEntry.competitionDataAssetHandler.data.NonSpoilableContextTags,
           ItemContextTagManager.GetBaseContextTags(item.QualifiedItemId));
@@ -125,7 +125,8 @@ static class Utils {
     int width = 0;
     try {
       width = ModEntry.Helper.Reflection.GetMethod(obj, "getDescriptionWidth").Invoke<int>();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       ModEntry.StaticMonitor.Log($"Error reflecting into getDescription: {e.Message}");
       // Stop doing it lol
       obj.modData[CachedDescriptionKey] = "";

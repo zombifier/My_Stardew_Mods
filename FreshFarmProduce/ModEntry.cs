@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -38,9 +38,11 @@ internal sealed class ModEntry : Mod {
   public static ModConfig Config = null!;
 
   public static string FarmCompetitionSpecialOrderId { get => $"{UniqueId}.FarmCompetition"; }
-  
+
   // Api integrations
   //public static ItemBags.IItemBagsAPI? itemBagsApi;
+  // Don't spoil items in hoppers if filter
+  static bool hasFilteredHopperMod = false;
 
   // Utils
   public static SpecialOrder? GetCompetitionSpecialOrder() {
@@ -164,7 +166,7 @@ internal sealed class ModEntry : Mod {
           nameof(SpecialOrder.HostHandleQuestEnd)),
         postfix: new HarmonyMethod(typeof(ModEntry),
           nameof(ModEntry.SpecialOrder_HostHandleQuestEnd_Postfix)));
-    
+
     // usable objects
     harmony.Patch(
         original: AccessTools.Method(typeof(SObject),
@@ -187,7 +189,7 @@ internal sealed class ModEntry : Mod {
           nameof(ModEntry.Item_addToStack_Postfix)));
 
   }
-  
+
   void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
     SpaceCore.IApi? scApi = Helper.ModRegistry.GetApi<SpaceCore.IApi>("spacechase0.SpaceCore");
     if (scApi is null) {
@@ -213,6 +215,32 @@ internal sealed class ModEntry : Mod {
     //} catch (Exception ex) {
     //  ModEntry.StaticMonitor.Log($"Error fetching item bags' API.: {ex.ToString()}", LogLevel.Error);
     //}
+    try {
+      hasFilteredHopperMod = Helper.ModRegistry.IsLoaded("shivion.FilteredChestHopper");
+      var iconicFrameworkApi = Helper.ModRegistry.GetApi<LeFauxMods.Common.Integrations.IconicFramework.IIconicFrameworkApi>
+        ("furyx639.ToolbarIcons");
+      if (iconicFrameworkApi is not null) {
+        ModEntry.StaticMonitor.Log("Registering icon with Iconic Framework", LogLevel.Info);
+        iconicFrameworkApi.AddToolbarIcon(
+            texturePath: "TileSheets/Craftables",
+            sourceRect: new(64, 448, 16, 32),
+            getTitle: () => ModEntry.Helper.Translation.Get("CompetitionName"),
+            getDescription: null,
+            onClick: () => {
+              if (Game1.player.team.specialOrders.Any((SpecialOrder? so) => so?.questKey.Value == ModEntry.FarmCompetitionSpecialOrderId)) {
+                Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
+                    $"Mods/{UniqueId}/Views/CompetitionTracker",
+                    new CompetitionTrackerViewModel());
+              } else {
+                Game1.showRedMessage(ModEntry.Helper.Translation.Get("CompetitionNotActive"));
+              }
+            }
+            );
+      }
+    }
+    catch (Exception ex) {
+      ModEntry.StaticMonitor.Log($"Error when using Iconic Framework: {ex.ToString()}", LogLevel.Error);
+    }
   }
 
   // Increase price of fresh items
@@ -220,7 +248,7 @@ internal sealed class ModEntry : Mod {
     if (!Config.DisableFreshPriceIncrease && Utils.IsFreshItem(__instance, out var _)) {
       bool notHasBook =
         (Game1.GetPlayer(specificPlayerID) ?? Game1.player).stats.Get("selph.FreshFarmProduceCP.FreshBook") == 0;
-      float modifier =  __instance.Quality switch {
+      float modifier = __instance.Quality switch {
         // Default settings in comments
         // 1 -> 1.05 (5% more)
         // 1 -> 1.25 (25% more)
@@ -294,9 +322,11 @@ internal sealed class ModEntry : Mod {
       foreach (SObject obj in location.objects.Values) {
         if (obj != fridge) {
           if (obj is Chest chest &&
-              chest.specialChestType.Value != Chest.SpecialChestTypes.MiniShippingBin &&
-              chest.specialChestType.Value != Chest.SpecialChestTypes.JunimoChest) {
-            Utils.SpoilItemInChest(chest, obj.QualifiedItemId ==  "(BC)216");
+              obj.QualifiedItemId != "(BC)256" &&
+              chest.SpecialChestType != Chest.SpecialChestTypes.MiniShippingBin &&
+              chest.SpecialChestType != Chest.SpecialChestTypes.JunimoChest &&
+              (!hasFilteredHopperMod || chest.SpecialChestType != Chest.SpecialChestTypes.AutoLoader)) {
+            Utils.SpoilItemInChest(chest, obj.QualifiedItemId == "(BC)216");
           }
           // Auto grabbers
           else if (obj.heldObject.Value is Chest chest2) {
@@ -305,7 +335,7 @@ internal sealed class ModEntry : Mod {
         }
       }
       foreach (Furniture furniture in location.furniture) {
-      // Don't spoil fish inside fish tanks lmaooooo
+        // Don't spoil fish inside fish tanks lmaooooo
         if (furniture is not FishTankFurniture) {
           furniture.ForEachItem((in ForEachItemContext context) => {
             Utils.SpoilItem(context.Item);
@@ -404,18 +434,17 @@ internal sealed class ModEntry : Mod {
           competitionDataAssetHandler.data.Presets.TryGetValue(Config.ForcedPreset, out var presetData)) {
         categoryIds = presetData.Categories;
         Game1.getFarm().modData[FarmCompetitionSpecialOrderId] = Config.ForcedPreset;
-      }
-      else if (!Config.EnableRandomPresets) {
+      } else if (!Config.EnableRandomPresets) {
         categoryIds = defaultPreset.Categories;
         Game1.getFarm().modData[FarmCompetitionSpecialOrderId] = "Default";
       } else {
         List<string> possiblePresets = new();
         foreach (var (presetId, presetData2) in competitionDataAssetHandler.data.Presets) {
-            if (!Config.DisabledPresets.Contains(presetId) &&
-                (presetData2.Condition is null ||
-                GameStateQuery.CheckConditions(presetData2.Condition))) {
-              possiblePresets.Add(presetId);
-            }
+          if (!Config.DisabledPresets.Contains(presetId) &&
+              (presetData2.Condition is null ||
+              GameStateQuery.CheckConditions(presetData2.Condition))) {
+            possiblePresets.Add(presetId);
+          }
         }
         if (possiblePresets.Count == 0) {
           categoryIds = defaultPreset.Categories;
@@ -454,7 +483,7 @@ internal sealed class ModEntry : Mod {
       }
       return point * ((objective as ShipPointsObjective)?.GetCompletionModifier() ?? 1);
     }).Sum();
-    var totalPoints = __instance.objectives.Select((OrderObjective objective) => 
+    var totalPoints = __instance.objectives.Select((OrderObjective objective) =>
         (objective as ShipPointsObjective)?.GetCompletionModifier() ?? 1).Sum();
     var completionRate = completedPoints / totalPoints;
     if (completionRate < 0.25) {
@@ -510,17 +539,17 @@ internal sealed class ModEntry : Mod {
             continue;
           }
           ObjectData? objectData = allDatum.RawData as ObjectData;
-          var isUncaughtFish = 
+          var isUncaughtFish =
             allDatum.ObjectType == "Fish" &&
             !(objectData?.ExcludeFromFishingCollection ?? false) &&
             !Game1.player.fishCaught.ContainsKey(qualifiedItemId) &&
             !(objectData?.ContextTags.Contains("fish_legendary") ?? false);
           // Technically we want to iterate over cookingRecipes for each item and determine whether the item is actually cookable, but ehhh
           // this is good enough
-          var isUncookedDish = 
+          var isUncookedDish =
             allDatum.ObjectType == "Cooking" &&
             !Game1.player.recipesCooked.ContainsKey(itemId) &&
-            !(new List<string>{"217", "772", "773", "279", "873"}).Contains(itemId);
+            !(new List<string> { "217", "772", "773", "279", "873" }).Contains(itemId);
           var isUnshippedItem =
             SObject.isPotentialBasicShipped(itemId, allDatum.Category, allDatum.ObjectType) &&
             !Game1.player.basicShipped.ContainsKey(itemId);
@@ -572,7 +601,8 @@ internal sealed class ModEntry : Mod {
             new CompetitionTrackerViewModel());
         Game1.nextClickableMenu.Add(__instance);
       }
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       StaticMonitor.Log($"Error showing custom competition window: {e.Message}", LogLevel.Warn);
     }
   }
@@ -629,7 +659,7 @@ internal sealed class ModEntry : Mod {
     ]);
   }
 
-  static bool AddGlobalFriendshipPoints(string[] args, TriggerActionContext context, out string error){
+  static bool AddGlobalFriendshipPoints(string[] args, TriggerActionContext context, out string error) {
     if (!ArgUtility.TryGetInt(args, 1, out var points, out error, "int points")) {
       return false;
     }
@@ -678,8 +708,9 @@ internal sealed class ModEntry : Mod {
   static bool FameDescriptionToken(string[] query, out string replacement, Random random, Farmer player) {
     replacement = Helper.Translation.Get("FameBanner.tooltip",
         new {
-      sellPriceIncrease = Math.Round(Utils.GetFameSellPriceModifier() * 100 - 100, 1),
-      difficultyIncrease = Math.Round(Utils.GetFameDifficultyModifier() * 100 - 100, 1)}
+          sellPriceIncrease = Math.Round(Utils.GetFameSellPriceModifier() * 100 - 100, 1),
+          difficultyIncrease = Math.Round(Utils.GetFameDifficultyModifier() * 100 - 100, 1)
+        }
       );
     return true;
   }
@@ -727,7 +758,7 @@ internal sealed class ModEntry : Mod {
   static void RegisterGmcm(IManifest manifest) {
     // get Generic Mod Config Menu's API (if it's installed)
     var configMenu = Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-    if (configMenu is null) 
+    if (configMenu is null)
       return;
 
     configMenu.Unregister(manifest);
@@ -885,7 +916,7 @@ internal sealed class ModEntry : Mod {
     configMenu.AddNumberOption(
         mod: manifest,
         name: () => Helper.Translation.Get("Config.regularQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierRegular }),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new { multiplier = ModConfig.DefaultEarlyFreshModifierRegular }),
         getValue: () => Config.EarlyFreshModifierRegular,
         setValue: value => Config.EarlyFreshModifierRegular = value,
         min: 1
@@ -893,7 +924,7 @@ internal sealed class ModEntry : Mod {
     configMenu.AddNumberOption(
         mod: manifest,
         name: () => Helper.Translation.Get("Config.silverQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierSilver }),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new { multiplier = ModConfig.DefaultEarlyFreshModifierSilver }),
         getValue: () => Config.EarlyFreshModifierSilver,
         setValue: value => Config.EarlyFreshModifierSilver = value,
         min: 1
@@ -901,7 +932,7 @@ internal sealed class ModEntry : Mod {
     configMenu.AddNumberOption(
         mod: manifest,
         name: () => Helper.Translation.Get("Config.goldQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierGold }),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new { multiplier = ModConfig.DefaultEarlyFreshModifierGold }),
         getValue: () => Config.EarlyFreshModifierGold,
         setValue: value => Config.EarlyFreshModifierGold = value,
         min: 1
@@ -909,7 +940,7 @@ internal sealed class ModEntry : Mod {
     configMenu.AddNumberOption(
         mod: manifest,
         name: () => Helper.Translation.Get("Config.iridiumQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultEarlyFreshModifierIridium }),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new { multiplier = ModConfig.DefaultEarlyFreshModifierIridium }),
         getValue: () => Config.EarlyFreshModifierIridium,
         setValue: value => Config.EarlyFreshModifierIridium = value,
         min: 1
@@ -921,7 +952,7 @@ internal sealed class ModEntry : Mod {
     configMenu.AddNumberOption(
         mod: manifest,
         name: () => Helper.Translation.Get("Config.regularQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierRegular }),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new { multiplier = ModConfig.DefaultLateFreshModifierRegular }),
         getValue: () => Config.LateFreshModifierRegular,
         setValue: value => Config.LateFreshModifierRegular = value,
         min: 1
@@ -929,7 +960,7 @@ internal sealed class ModEntry : Mod {
     configMenu.AddNumberOption(
         mod: manifest,
         name: () => Helper.Translation.Get("Config.silverQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierSilver }),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new { multiplier = ModConfig.DefaultLateFreshModifierSilver }),
         getValue: () => Config.LateFreshModifierSilver,
         setValue: value => Config.LateFreshModifierSilver = value,
         min: 1
@@ -937,7 +968,7 @@ internal sealed class ModEntry : Mod {
     configMenu.AddNumberOption(
         mod: manifest,
         name: () => Helper.Translation.Get("Config.goldQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierGold }),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new { multiplier = ModConfig.DefaultLateFreshModifierGold }),
         getValue: () => Config.LateFreshModifierGold,
         setValue: value => Config.LateFreshModifierGold = value,
         min: 1
@@ -945,7 +976,7 @@ internal sealed class ModEntry : Mod {
     configMenu.AddNumberOption(
         mod: manifest,
         name: () => Helper.Translation.Get("Config.iridiumQuality"),
-        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new {multiplier = ModConfig.DefaultLateFreshModifierIridium }),
+        tooltip: () => Helper.Translation.Get("Config.defaultMultiplier", new { multiplier = ModConfig.DefaultLateFreshModifierIridium }),
         getValue: () => Config.LateFreshModifierIridium,
         setValue: value => Config.LateFreshModifierIridium = value,
         min: 1
@@ -986,7 +1017,7 @@ internal sealed class ModEntry : Mod {
         mod: manifest,
         text: () => Helper.Translation.Get("Config.forcedPreset.description"));
 
-    var presetList = new List<string>{""};
+    var presetList = new List<string> { "" };
     presetList.AddRange(competitionDataAssetHandler.data.Presets.Keys);
     configMenu.AddTextOption(
         mod: manifest,

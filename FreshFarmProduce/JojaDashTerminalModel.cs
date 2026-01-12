@@ -44,7 +44,7 @@ partial class JojaDashTerminalModel : INotifyPropertyChanged {
   public string OrderTooltip =>
     SelectedItem == null ?
     ModEntry.Helper.Translation.Get("JojaDash.orderTooltipNotSelected") :
-    ModEntry.Helper.Translation.Get("JojaDash.orderTooltip", new {foodName = SelectedItem.Item.DisplayName});
+    ModEntry.Helper.Translation.Get("JojaDash.orderTooltip", new { foodName = SelectedItem.Item.DisplayName });
   public string LuckyTooltip = ModEntry.Helper.Translation.Get("JojaDash.luckyTooltip");
 
   public FoodItemModel[] FoodItems;
@@ -54,7 +54,7 @@ partial class JojaDashTerminalModel : INotifyPropertyChanged {
 
   public JojaDashTerminalModel() {
     // Ban magic rock candy, life elixir and oil of garlic
-    string[] bannedItems = {"217", "772", "773", "279"};
+    string[] bannedItems = { "217", "772", "773", "279" };
     this.FoodItems =
       ItemRegistry.GetObjectTypeDefinition().GetAllData()
       .Where(data => data.Category == SObject.CookingCategory && !bannedItems.Contains(data.ItemId))
@@ -64,7 +64,7 @@ partial class JojaDashTerminalModel : INotifyPropertyChanged {
 
   private void OnFilterChanged() {
     foreach (var foodItem in FoodItems) {
-      foodItem.UpdateVisibility(Filter.Length == 0 || foodItem.Data.DisplayName.Contains(Filter, StringComparison.CurrentCultureIgnoreCase));;
+      foodItem.UpdateVisibility(Filter.Length == 0 || foodItem.Data.DisplayName.Contains(Filter, StringComparison.CurrentCultureIgnoreCase)); ;
     }
   }
 

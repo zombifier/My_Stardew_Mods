@@ -86,4 +86,5 @@
   "Config.swagBagItemCount.name": "Swag Bag Cheat Item Count",
   "Config.swagBagItemCount.description": "How many perfection cheating items each swag bag gives. Set to 0 for none. The other prizes (Qi Seasoning, Magic Bait, Tea Set) are unaffected.",
   "PresetUI": "Preset:  {{presetName}}",
+  "CompetitionNotActive": "There's no active competition.",
 }
