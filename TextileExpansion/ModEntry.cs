@@ -313,7 +313,7 @@ internal sealed class ModEntry : Mod {
     if (ItemContextTagManager.HasBaseTag(__result.QualifiedItemId, $"{ContentPackId}_base_clothing_item")
         && left_item is SObject cloth
         && ColoredObject.TrySetColor(__result, TailoringMenu.GetDyeColor(left_item) ?? Color.White, out var coloredClothing)) {
-      coloredClothing.Price = (int)(cloth.Price * (cloth.QualifiedItemId == "(O)428" ? 1.2 : 1.5));
+      coloredClothing.Price = (int)(cloth.Price * (ItemContextTagManager.HasBaseTag(cloth.QualifiedItemId, $"{ContentPackId}_dyed_cloth_item") ? 1.25 : 2));
       coloredClothing.preservedParentSheetIndex.Value = cloth.GetPreservedItemId() ?? cloth.ItemId; //"440";
       coloredClothing.Name += $" {coloredClothing.preservedParentSheetIndex.Value}";
       coloredClothing.displayNameFormat = $"[LocalizedText Strings/Objects:{ContentPackId}_ClothingDynamicName %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]";

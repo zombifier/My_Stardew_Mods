@@ -1,0 +1,70 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add profession stack modifiers",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)17", "OutputRules", "birdb.CP.Alpaca_AlpacaYarn", "OutputItem", "#0", "StackModifiers"],
+      "Entries": {
+        "{{ModId}}_DoubleQuality": {
+          "Id": "{{ModId}}_DoubleQuality",
+          "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+          "Modification": "Multiply",
+          "Amount": 2.0,
+        },
+        "{{ModId}}_Weaver": {
+          "Id": "{{ModId}}_Weaver",
+          "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+          "Modification": "Add",
+          "Amount": 2.0,
+        },
+      },
+    },
+    {
+      "LogName": "Add rule to yarn spinner",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_YarnSpinner", "OutputRules"],
+      "Entries": {
+				"birdb.CP.Alpaca_AlpacaYarn": {
+					"Id": "birdb.CP.Alpaca_AlpacaYarn",
+					"Triggers": [
+							{
+								"RequiredItemId": "(O)birdb.CP.Alpaca_AlpacaWool"
+							}
+						],
+					"OutputItem": [
+							{
+								"ItemId": "(O)birdb.CP.Alpaca_AlpacaYarn",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 2.0,
+                },
+              ],
+							}
+						],
+					"MinutesUntilReady": 720
+				}
+      },
+    },
+    {
+      "LogName": "Make alpaca yarn dyeable",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "birdb.CP.Alpaca_AlpacaYarn",
+        "SourceItemId": "birdb.CP.Alpaca_AlpacaWool",
+      },
+    },
+  ]
+}

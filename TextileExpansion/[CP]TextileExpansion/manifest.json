@@ -20,6 +20,9 @@
     {"UniqueID": "Lemurkat.EastScarp", "IsRequired": false},
     {"UniqueID": "nachonline.mps", "IsRequired": false},
     {"UniqueID": "Spiderbuttons.CMCT", "IsRequired": false},
+    {"UniqueID": "birdb.CP.Alpaca", "IsRequired": false},
+    {"UniqueID": "cantabileChaos.BFAVYaks", "IsRequired": false},
+    {"UniqueID": "radsilver.yaks", "IsRequired": false},
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"

@@ -223,6 +223,30 @@
 //        "HasMod |contains=Spiderbuttons.CMCT": "true",
       },
     },
+    {
+      "LogName": "MPS compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/birdb_alpaca.json",
+      "When": {
+        "HasMod |contains=birdb.CP.Alpaca": "true",
+      },
+    },
+    {
+      "LogName": "Yak compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/yak.json",
+      "When": {
+        "HasMod |contains=cantabileChaos.BFAVYaks": "true",
+      },
+    },
+    {
+      "LogName": "Hairy Yak compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/hairy_yak.json",
+      "When": {
+        "HasMod |contains=radsilver.yaks": "true",
+      },
+    },
     // Has to be latest because of changes in the templates (TODO - split those out)
     {
       "LogName": "Add new objects",

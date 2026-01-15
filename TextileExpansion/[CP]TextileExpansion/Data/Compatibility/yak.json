@@ -1,0 +1,80 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add profession stack modifiers",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)17", "OutputRules", "cantabilechaos.BFAVYaks_FiberWeft", "OutputItem", "#0", "StackModifiers"],
+      "Entries": {
+        "{{ModId}}_DoubleQuality": {
+          "Id": "{{ModId}}_DoubleQuality",
+          "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+          "Modification": "Multiply",
+          "Amount": 2.0,
+        },
+        "{{ModId}}_Weaver": {
+          "Id": "{{ModId}}_Weaver",
+          "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+          "Modification": "Add",
+          "Amount": 2.0,
+        },
+      },
+    },
+    {
+      "LogName": "Add rule to yarn spinner",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC){{ModId}}_YarnSpinner", "OutputRules"],
+      "Entries": {
+        "cantabilechaos.BFAVYaks_FiberWeft": {
+          "Id": "cantabilechaos.BFAVYaks_FiberWeft",
+          "Triggers": [
+            {
+              "RequiredItemId": "cantabilechaos.BFAVYaks_YakFiber",
+            }
+          ],
+          "OutputItem": [
+            {
+              "ItemId": "cantabilechaos.BFAVYaks_FiberWeft",
+              "StackModifiers": [
+                {
+                  "Id": "DoubleQuality",
+                  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
+                  "Modification": "Multiply",
+                  "Amount": 2.0,
+                },
+                {
+                  "Id": "{{ModId}}_Weaver",
+                  "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+                  "Modification": "Add",
+                  "Amount": 2.0,
+                },
+              ],
+            }
+          ],
+          "MinutesUntilReady": 720
+        }
+      },
+    },
+    {
+      "LogName": "Make yak weft dyeable",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "cantabilechaos.BFAVYaks_FiberWeft",
+        "SourceItemId": "cantabilechaos.BFAVYaks_YakFiber",
+      },
+    },
+    {
+      "LogName": "Nerf weft price",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Fields": {
+        "cantabilechaos.BFAVYaks_FiberWeft": {
+          "Price": 1000,
+        }
+      },
+    },
+  ]
+}
