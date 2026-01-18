@@ -453,7 +453,7 @@ The value being the following data model:
 | `HarvestedTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run on harvesting. This accepts the regular actions, plus some special actions that are only usable in this field listed below.<br>IMPORTANT NOTE: This will only run for crops that have grown at least one day (ie. it will not run for seeds spread by the `PlantCrop` trigger).|
 | `DayStartTriggers` | List of [trigger action action strings](https://stardewvalleywiki.com/Modding:Trigger_actions#Actions) | A list of trigger actions that should be run on day start for this empty dirt/crop, after the daily logic (growth, etc.). This accepts the regular actions, plus some special actions that are only usable in this field listed below.<br>IMPORTANT NOTE: This will only run for crops that have grown at least one day (ie. it will not run for seeds spread by the `PlantCrop` trigger).|
 | `HarvestablePhases` | List of numbers | A list of phases that this crop is harvestable from, not just the final phase.|
-| `CropTextureOverrides`  (NOT RELEASED ON NEXUS YET) | Dictionary of unique keys to `CropTextureOverride` models | A list of texture overrides for this crop; this can be used to override a crop's appearance based on conditions, or even have crop appearance variation. |
+| `CropTextureOverrides` | Dictionary of unique keys to `CropTextureOverride` models | A list of texture overrides for this crop; this can be used to override a crop's appearance based on conditions, or even have crop appearance variation. |
 
 The `CropTextureOverride` model has the following fields:
 
@@ -515,6 +515,7 @@ Additionally, the following GSQs can be used in (and only in) the asset above:
 | `selph.CustomTapperFramework_IS_FULLY_GROWN` | Whether the crop is fully grown.|
 | `selph.CustomTapperFramework_CURRENT_CROP_PHASE <phase>` | Whether the crop's current phase is the target value.|
 | `selph.CustomTapperFramework_IS_PADDY_CROP_NEAR_PADDY` | Whether the crop is a paddy crop and is near water for the paddy bonus.|
+| `selph.CustomTapperFramework_APPEARANCE_OVERRIDE_GROUP_KEY <key>` | Whether the crop is using an appearance override with the specified group key.|
 
 ### Example
 

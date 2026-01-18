@@ -45,7 +45,7 @@ public class CropTextureOverride {
     if (RequiredPhase != null && crop.currentPhase.Value != RequiredPhase) {
       return false;
     }
-    if (RequiredCondition != null && !GameStateQuery.CheckConditions(RequiredCondition, location: crop.currentLocation)) {
+    if (RequiredCondition != null && !GameStateQuery.CheckConditions(RequiredCondition, CropExtensionHandler.GetGsqContext(crop, Game1.player))) {
       return false;
     }
     return true;

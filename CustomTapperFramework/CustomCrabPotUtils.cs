@@ -255,7 +255,11 @@ public static class CustomCrabPotUtils {
         return true;
       }
       if (Game1.didPlayerJustClickAtAll(ignoreNonMouseHeldInput: true)) {
+#if SDV1616
+        if (Game1.player.TryAddToInventory(obj.getOne()).FullyAdded) {
+#else
         if (Game1.player.addItemToInventoryBool(obj.getOne())) {
+#endif
           if (who.isMoving()) {
             Game1.haltAfterCheck = false;
           }

@@ -267,14 +267,13 @@ static class CropExtensionHandler {
     // Insert MaybeAddDays(hoeDirt, daysToRemove) at the end
     matcher
       .End();
-    var labels = matcher.Labels;
+    var labels = matcher.Instruction.ExtractLabels();
     matcher
-      .RemoveInstruction()
+      //      .RemoveInstruction()
       .InsertAndAdvance(
         new CodeInstruction(OpCodes.Ldarg_0).WithLabels(labels),
         new CodeInstruction(OpCodes.Ldloc_S, daysToRemoveVar),
-        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(CropExtensionHandler), nameof(CropExtensionHandler.MaybeAddDays))),
-        new CodeInstruction(OpCodes.Ret)
+        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(CropExtensionHandler), nameof(CropExtensionHandler.MaybeAddDays)))
         );
     //foreach (var i in matcher.InstructionEnumeration()) {
     //  ModEntry.StaticMonitor.Log($"{i.opcode} {i.operand}", LogLevel.Alert);
@@ -416,7 +415,7 @@ static class CropExtensionHandler {
     return matcher.InstructionEnumeration();
   }
 
-  static readonly string ModData_TextureOverrideGroupKey = $"{ModEntry.UniqueId}/TextureOverrideGroupKey";
+  public static readonly string ModData_TextureOverrideGroupKey = $"{ModEntry.UniqueId}/TextureOverrideGroupKey";
   static Rectangle GetSourceRectForIndex(int width, int index) => new(index * 16 % width, index * 16 / width * 32, 16, 32);
   static void Crop_updateDrawMath_Postfix(Crop __instance, Vector2 tileLocation, ref Texture2D ____drawnTexture) {
     if (tileLocation.Equals(Vector2.Zero) || __instance.forageCrop.Value || __instance.IsErrorCrop()) {
