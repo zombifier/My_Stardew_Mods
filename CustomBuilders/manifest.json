@@ -1,7 +1,7 @@
 {
   "Name": "Carpentry Catalogue (and Blacksmith Bulletin)",
   "Author": "selph",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Adds a button that allows scrolling through buildings in a convenient list, and allows specifying custom carpenters/blacksmith NPCs with their own menus and costs.",
   "UniqueID": "selph.CustomBuilders",
   "EntryDll": "CustomBuilders.dll",

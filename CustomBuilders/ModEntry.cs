@@ -36,8 +36,8 @@ internal sealed class ModEntry : Mod {
     Carpenters.RegisterCustomTriggers();
     Carpenters.ApplyPatches(harmony);
     // Blacksmiths stuff
-    //Blacksmiths.RegisterEvents(helper);
-    //Blacksmiths.RegisterCustomTriggers();
-    //Blacksmiths.ApplyPatches(harmony);
+    Blacksmiths.RegisterEvents(helper);
+    Blacksmiths.RegisterCustomTriggers();
+    Blacksmiths.ApplyPatches(harmony);
   }
 }
