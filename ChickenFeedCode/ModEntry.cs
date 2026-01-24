@@ -51,8 +51,12 @@ internal sealed class ModEntry : Mod {
     if (e.NameWithoutLocale.IsEquivalentTo("selph.ExtraAnimalConfig/AnimalExtensionData")) {
       e.Edit(asset => {
           var farmAnimalExtensionData = asset.AsDictionary<string, ExtraAnimalConfig.AnimalExtensionData>();
-          foreach (var pair in DataLoader.FarmAnimals(Game1.content) ?? new Dictionary<string, FarmAnimalData>()) {
-            if (pair.Value.House == "Coop" || pair.Value.House == "mytigio.dwarven_expansion_CaveCoop") {
+          foreach (var pair in farmAnimalExtensionData.Data) {
+            var house = "";
+            if (Game1.farmAnimalData.TryGetValue(pair.Key, out var vanillaData)) {
+              house = vanillaData.House;
+            }
+            if (house == "Coop" || house == "mytigio.dwarven_expansion_CaveCoop" || pair.Value.ExtraHouses.Contains("Coop")) {
               if (!farmAnimalExtensionData.Data.ContainsKey(pair.Key)) {
                 farmAnimalExtensionData.Data[pair.Key] = new();
               }

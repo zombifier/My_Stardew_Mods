@@ -1,0 +1,38 @@
+{
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["{{Building}}", "CustomFields"],
+      "Entries": {
+        "selph.ExtraAnimalConfig.SiloCapacity.(O){{ModId}}.ChickenFeed": "{{Round: {{Query: {{FeedCapacity}} * {{Multiplier}}}}}}",
+      },
+      "When": {
+        "HasMod": "{{Mod}}",
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["{{Building}}"],
+      "Entries": {
+        "DefaultAction": "selph.ExtraAnimalConfig.CustomFeedSilo",
+      },
+      "When": {
+        "HasMod": "{{Mod}}",
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["{{Building}}"],
+      "Entries": {
+        "HayCapacity": "{{Round: {{Query: {{HayCapacity}} * {{Multiplier}}}}}}",
+      },
+      "When": {
+        "HasMod": "{{Mod}}",
+        "SiloResize": "true",
+      },
+    },
+  ]
+}

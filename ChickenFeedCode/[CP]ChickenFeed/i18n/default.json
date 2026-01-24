@@ -41,4 +41,6 @@
   "config.FeedCapacity.description": "If Poultry Feed Silos are disabled, this is the feed capacity of regular mixed silos; otherwise this is used as the feed capacity of poultry feed silos. Recommended settings: 120 if using the default mixed silos, 240 if poultry feed silos are enabled.",
   "config.FeedStyle.name": "Feed Style",
   "config.FeedStyle.description": "Change the color of poultry feed.",
+  "config.ScytheGivesFeed.name": "Scything Grass Gives Feed",
+  "config.ScytheGivesFeed.description": "Whether scything grass can have a small chance to give chicken feed.",
 }

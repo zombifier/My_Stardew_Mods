@@ -51,6 +51,9 @@
           "EnterInventoryIfSilosFull": true,
         },
       },
+      "When": {
+        "ScytheGivesFeed": "true"
+      }
     },
   ]
 }

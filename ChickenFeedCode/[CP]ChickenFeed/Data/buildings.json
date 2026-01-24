@@ -355,5 +355,79 @@
         },
       },
     },
+    {
+      "LogName": "Big silo compat",
+      "Action": "Include",
+      "FromFile": "Data/modded-silo-compat.json",
+      "LocalTokens": {
+        "Building": "Amichwan.More.upgrades_BigSilo",
+        "Mod": "Amichwan.More.upgrades",
+        "Multiplier": "2",
+      }
+    },
+    {
+      "LogName": "Deluxe silo compat",
+      "Action": "Include",
+      "FromFile": "Data/modded-silo-compat.json",
+      "LocalTokens": {
+        "Building": "Amichwan.More.upgrades_DeluxeSilo",
+        "Mod": "Amichwan.More.upgrades",
+        "Multiplier": "3",
+      }
+    },
+    {
+      "LogName": "Super Coop compat",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Amichwan.More.upgrades_SuperCoop", "CustomFields"],
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+      "When": {
+        "HasMod |contains=Amichwan.More.upgrades": "true",
+      },
+    },
+    {
+      "LogName": "Premium Coop compat",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Amichwan.More.upgrades_PremiumCoop", "CustomFields"],
+      "Entries": {
+        "selph.ExtraAnimalConfig.BuildingFeedOverrideId": "(O){{ModId}}.ChickenFeed",
+      },
+      "When": {
+        "HasMod |contains=Amichwan.More.upgrades": "true",
+      },
+    },
+    {
+      "LogName": "Hay bale compat",
+      "Action": "Include",
+      "FromFile": "Data/modded-silo-compat.json",
+      "LocalTokens": {
+        "Building": "MBO_HayBale",
+        "Mod": "ASLane.MBO1",
+        "Multiplier": "0.1",
+      }
+    },
+    {
+      "LogName": "Hay shed compat",
+      "Action": "Include",
+      "FromFile": "Data/modded-silo-compat.json",
+      "LocalTokens": {
+        "Building": "MBO_HayShed",
+        "Mod": "ASLane.MBO1",
+        "Multiplier": "0.333333333333333",
+      }
+    },
+    {
+      "LogName": "Hay shelter compat",
+      "Action": "Include",
+      "FromFile": "Data/modded-silo-compat.json",
+      "LocalTokens": {
+        "Building": "MBO_HayShelter",
+        "Mod": "ASLane.MBO1",
+        "Multiplier": "3",
+      }
+    },
   ]
 }

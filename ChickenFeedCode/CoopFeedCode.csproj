@@ -1,19 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <SDV>1615</SDV>
     <Version>1.0.0</Version>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <EnableHarmony>false</EnableHarmony>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="manifest.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    <ContentPacks Include="[CP]ChickenFeed" Version="$(Version)" />
   </ItemGroup>
   <ItemGroup>
   <Reference Include="Selph.ExtraAnimalConfig" HintPath="$(GameModsPath)/ExtraAnimalConfig/ExtraAnimalConfig.dll" Private="False" />
 </ItemGroup>
+  <Import Project="../Common.csproj" Label="SharedCsproj" />
 </Project>

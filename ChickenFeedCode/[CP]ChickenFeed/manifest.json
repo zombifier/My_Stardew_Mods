@@ -1,0 +1,22 @@
+{
+  "Name": "Chicken Feed",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Rework chickens and other coop animals to resemble their Harvest Moon counterpart - eats chicken feed made from corn and can forage from dirt.",
+  "UniqueID": "selph.CoopFeed",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {"UniqueID": "selph.ExtraAnimalConfig", "IsRequired": true, "MinimumVersion": "1.4.0"},
+    {"UniqueID": "selph.CoopFeedCode", "IsRequired": true},
+    {"UniqueID": "Cornucopia.ArtisanMachines", "IsRequired": false},
+    {"UniqueID": "Lumisteria.MtVapius", "IsRequired": false},
+    {"UniqueID": "jenf1.megacoopbarn", "IsRequired": false},
+    {"UniqueID": "UncleArya.ResourceChickens", "IsRequired": false},
+    {"UniqueID": "Amichwan.More.upgrades", "IsRequired": false},
+    {"UniqueID": "ASLane.MBO1", "IsRequired": false},
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "UpdateKeys": [ "Nexus:???" ],
+}
