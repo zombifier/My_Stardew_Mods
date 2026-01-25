@@ -606,6 +606,7 @@ public static class ExtraProduceUtils {
       foreach (var key in keysToRemove) {
         animal.modData.Remove(key);
       }
+      animal.ReloadTextureIfNeeded();
     }
   }
 
@@ -625,6 +626,7 @@ public static class ExtraProduceUtils {
     foreach (var key in keysToRemove) {
       animal.modData.Remove(key);
     }
+    animal.ReloadTextureIfNeeded();
   }
 
   public static void ReplaceCurrentProduceWithMatching(FarmAnimal animal, FarmAnimalHarvestType harvestMethod, string? tool = null) {
