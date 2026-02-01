@@ -24,6 +24,7 @@ internal sealed class ModEntry : Mod {
   internal static string UniqueId = null!;
   //internal static BuilderDataAssetHandler builderDataAssetHandler = null!;
   internal static BuildingOverrideManager buildingOverrideManager = null!;
+  public static bool HasCssm = false;
 
   public override void Entry(IModHelper helper) {
     Helper = helper;
@@ -39,5 +40,15 @@ internal sealed class ModEntry : Mod {
     Blacksmiths.RegisterEvents(helper);
     Blacksmiths.RegisterCustomTriggers();
     Blacksmiths.ApplyPatches(harmony);
+    // Geode breaker stuff
+    GeodeBreakers.RegisterEvents(helper);
+    GeodeBreakers.RegisterCustomTriggers();
+    GeodeBreakers.ApplyPatches(harmony);
+    // Question dialogues stuff
+    QuestionDialogue.RegisterEvents(helper);
+    QuestionDialogue.RegisterCustomTriggers();
+    QuestionDialogue.ApplyPatches(harmony);
+
+    HasCssm = Helper.ModRegistry.IsLoaded("mushymato.CompactSearchableShopMenu");
   }
 }

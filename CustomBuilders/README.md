@@ -14,6 +14,11 @@ from the link above.
   + [Additional eligible builders for a building](#additional-eligible-builders-for-a-building)
   + [Allow upgrades to be directly built with custom costs](#allow-upgrades-to-be-directly-built-with-custom-costs)
 - [Custom Blacksmiths](#custom-blacksmiths)
+- [Custom Geode Crackers](#custom-geode-crackers)
+- [Extra Trade Items](#extra-trade-items)
+- [Custom Map Question Dialogues](#custom-map-menu)
+
+NOTE: Unless otherwise specified, all tile actions are on the `Building` layer.
 
 ## Custom Carpenters
 
@@ -174,7 +179,7 @@ or a galaxy sword to an infinity blade, or 20 preserves jar, each requiring 2 pr
 
 <summary>Content Patcher definition</summary>
 
-```
+```json
 {
   "LogName": "Custom Crafting Shop",
   "Action": "EditData",
@@ -220,5 +225,140 @@ or a galaxy sword to an infinity blade, or 20 preserves jar, each requiring 2 pr
   },
   },
 },
+```
+</details>
+
+## Custom Geode Breakers
+
+Use the following new tile action that opens a special shop menu with special handling:
+
+`selph.CustomBuilders_OpenGeodeBreaker <NpcName> [from direction] [open time] [close time] [owner tile area]`
+
+The custom geode breaker animation will try to use one of the following spritesheets if they exist, in
+order:
+
+* The NPC's current spritesheet, if using the Appearances system, with `_GeodeBreaker` appended to the
+end of the name.
+* `Characters/<NpcName>_GeodeBreaker`.
+* The NPC's current spritesheet.
+* `Characters/Clint`.
+
+The geode animation must be positioned exactly like Clint's spritesheet (sprite index 8 to 12, with
+width 32 and height 48). You can use a separate spritesheet from the NPC's regular sheet if you want
+(see above).
+
+Additionally, you can add the following strings to `Strings/UI` for custom dialogue:
+
+| Key                         |  Description              |
+| ---------------------------------- | ------------------------ |
+| `GeodeMenu_Description_<NpcId>` | The regular description. |
+| `GeodeMenu_Description_NotEnoughMoney_<NpcId>` | The player doesn't have enough money. |
+| `GeodeMenu_InventoryFull_<NpcId>` | The player's inventory is full. |
+
+## Extra trade items
+
+Add this key to a shop item's `ModData` field: `selph.CustomBuilders_ExtraTradeItems`.
+The value is a space-separated list of item IDs followed by their quantity; for example, this would
+make the item also need 100 Wood and 50 Stone, in addition to the gold/main trade item price:
+
+```json
+"ModData" : {
+  "selph.CustomBuilders_ExtraTradeItems": "388 100 390 50",
+}
+```
+
+## Custom Map Question Dialogues
+
+This mod supports opening question dialogues, allowing for a tile to serve multiple shops (ie. like
+Robin having both construct and carpenter shop, or Clint having blacksmith services, supply shop and
+geode breaking).
+
+To start, add the following new tile action to open a question dialogue:
+
+`selph.CustomBuilders_QuestionDialogue <QuestionId> [from direction] [open time] [close time] [owner tile area]`
+
+Then, edit the asset `selph.CustomBuilders/QuestionDialogues` to add a new entry; the asset is a
+dictionary of string to data model where the key is an ID corresponding to a `QuestionId` value, and
+the value being a model with the following fields:
+
+| Key | Type |  Description              |
+| --- | ---- | ------------------------- |
+| `Question` | string | The question to display; can accept tokenizable strings. |
+| `RequiredNpcs` | List of strings | If owner area is specified and this list is not empty, one of these NPCs must be in the owner area for the question to activate. |
+| `DialogueEntries` | List of `DialogueEntryData` models | A list of answers.|
+
+The `DialogueEntryData` model has the following fields:
+
+| Key | Type |  Description              |
+| --- | ---- | ------------------------- |
+| `Id` | string | The unique ID of this entry. Need to be unique within the list.|
+| `Name` | string | The display name of this entry. Accepts tokenizable strings.|
+| `Action` | string | The map action to run when this entry is selected (e.g. open shop, carpenter menu. etc.). If no action is specified, simply exits the menu. |
+| `MessageIfFalse` | string | If the map action doesn't run (e.g. because no NPC is within range), the message to show. |
+
+See this example for a question dialogue entry that offers four in one services (filling in valid NPC/shop IDs is an exercise left for the reader):
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```json
+{
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "selph.CustomBuilders/QuestionDialogues",
+      "Entries": {
+        "SampleQuestionDialogue": {
+          "Question": "Choose a service below!",
+          "RequiredNpcs": ["NPC1", "NPC2", "NPC3"],
+          "DialogueEntries": [
+            {
+              "Id": "Carpenter",
+              "Name": "Carpentry Service",
+              "Action": "selph.CustomBuilders_ShowConstruct NPC1 none 700 2200 19 19 5 5",
+              "MessageIfFalse": "NPC1 ain't here right now!",
+            },
+            {
+              "Id": "Blacksmith",
+              "Name": "Smithing Service",
+              "Action": "selph.CustomBuilders_OpenBlacksmithShop NPC2 none 600 2300 19 19 5 5",
+              "MessageIfFalse": "NPC2 ain't here right now!",
+            },
+            {
+              "Id": "GeodeBreaker",
+              "Name": "Geode Breaking Service",
+              "Action": "selph.CustomBuilders_OpenGeodeBreaker NPC3 none 600 2300 19 19 5 5",
+              "MessageIfFalse": "NPC3 ain't here right now!",
+            },
+            {
+              "Id": "Shop",
+              "Name": "Supplies Shop",
+              "Action": "OpenShop ShopId",
+            },
+            {
+              "Id": "Leave",
+              "Name": "Leave",
+            },
+          ],
+        },
+      }
+    },
+    {
+      "LogName": "Add action to bus stop for testing",
+      "Action": "EditMap",
+      "Target": "Maps/BusStop",
+      "MapTiles": [
+        {
+          "Position": { "X": 20, "Y": 21 },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "selph.CustomBuilders_QuestionDialogue SampleQuestionDialogue none 700 2200 19 19 5 5",
+          }
+        },
+      ]
+    },
+  ]
+}
 ```
 </details>
