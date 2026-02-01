@@ -34,7 +34,7 @@
               "Text": "[{{ModId}}_QiFabric_Objective]",
               "RequiredCount": "100",
               "Data": {
-                "AcceptedContextTags": "item_o_{{ModId}}_MysteryBlueCloth/item_o_{{ModId}}_MysteryBlueYarn",
+                "AcceptedContextTags": "id_o_{{ModId}}_ClothMysteryBlue/id_o_{{ModId}}_YarnMysteryBlue",
               }
             }
           ],

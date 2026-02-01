@@ -124,6 +124,11 @@ internal sealed class ModEntry : Mod {
           nameof(NPC.getGiftTasteForThisItem)),
         prefix: new HarmonyMethod(typeof(ModEntry),
           nameof(NPC_getGiftTasteForThisItem_Prefix)));
+    harmony.Patch(
+        original: AccessTools.Method(typeof(FarmerTeam),
+          nameof(FarmerTeam.SpecialOrderActive)),
+        postfix: new HarmonyMethod(typeof(ModEntry),
+          nameof(FarmerTeam_SpecialOrderActive_Postfix)));
     // Disabled for now because it breaks Better Crafting bulk craft :((((
     //harmony.Patch(
     //    original: AccessTools.DeclaredConstructor(typeof(CraftingRecipe), new[] { typeof(string), typeof(bool) }),
@@ -658,5 +663,11 @@ internal sealed class ModEntry : Mod {
       outputItem.preservedParentSheetIndex.Value = inputId;
     }
     return [new(outputItem)];
+  }
+
+  static void FarmerTeam_SpecialOrderActive_Postfix(ref bool __result, string special_order_key) {
+    if (special_order_key == "QiChallenge2") {
+      __result = Game1.player.team.SpecialOrderRuleActive("DROP_QI_BEANS");
+    }
   }
 }
