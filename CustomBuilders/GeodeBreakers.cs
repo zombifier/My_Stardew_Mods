@@ -90,7 +90,7 @@ static class GeodeBreakers {
   static void GeodeMenu_receiveLeftClick_Postfix(GeodeMenu __instance) {
     if (geodeBreaker.Value is null) return;
     if (__instance.wiggleWordsTimer == 500 && __instance.alertTimer == 1500) {
-      __instance.descriptionText = Game1.content.LoadStringReturnNullIfNotFound($"Strings/UI:GeodeMenu_InventoryFull_{geodeBreaker.Value}") ?? __instance.descriptionText;
+      __instance.descriptionText = Game1.content.LoadStringReturnNullIfNotFound($"Strings/UI:GeodeMenu_InventoryFull_{geodeBreaker.Value.Name}") ?? __instance.descriptionText;
     }
   }
 }
