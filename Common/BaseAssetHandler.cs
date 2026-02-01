@@ -10,7 +10,7 @@ using SObject = StardewValley.Object;
 namespace Selph.StardewMods.Common;
 
 public abstract class AssetHandler<AssetType> where AssetType : class, new() {
-  protected string dataPath;
+  public string dataPath;
   protected IMonitor monitor;
 
   protected AssetType? privateData = null!;
@@ -73,4 +73,24 @@ public abstract class DictAssetHandler<AssetType> : AssetHandler<Dictionary<stri
       e.LoadFrom(() => dict, AssetLoadPriority.Exclusive);
     }
   }
+}
+
+public abstract class ListAssetHandler<AssetType> : AssetHandler<List<AssetType>> where AssetType : new() {
+  //private Func<IEnumerable<string>>? getKeysToFillDelegate;
+
+  public ListAssetHandler(string dataPath, IMonitor monitor) : base(dataPath, monitor) {
+  }
+
+  //public override void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
+  //  if (e.NameWithoutLocale.IsEquivalentTo(this.dataPath)) {
+  //    var dict = new Dictionary<string, AssetType>();
+  //    IEnumerable<string>? keysToFill = getKeysToFillDelegate?.Invoke() ?? null;
+  //    if (keysToFill is not null) {
+  //      foreach (string key in keysToFill) {
+  //        dict[key] = new AssetType();
+  //      }
+  //    }
+  //    e.LoadFrom(() => dict, AssetLoadPriority.Exclusive);
+  //  }
+  //}
 }
