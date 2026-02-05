@@ -483,7 +483,7 @@
           "Ingredients": [
             {
               "Type": "ContextTag",
-              "Value": "{{ModId}}_dyed_yarn_item,color_grey",
+              "Value": "{{ModId}}_dyed_yarn_item,color_gray",
               "ContextTagsRequireAll": true,
               "OverrideText": "{{i18n: item.GrayWoolOrYarn.name}}",
               "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
@@ -523,7 +523,7 @@
           "Ingredients": [
             {
               "Type": "ContextTag",
-              "Value": "{{ModId}}_dyed_yarn_item,color_grey",
+              "Value": "{{ModId}}_dyed_yarn_item,color_gray",
               "ContextTagsRequireAll": true,
               "OverrideText": "{{i18n: item.GrayWoolOrYarn.name}}",
               "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
@@ -958,7 +958,7 @@
           "Ingredients": [
             {
               "Type": "ContextTag",
-              "Value": "{{ModId}}_dyed_cloth_item,color_grey",
+              "Value": "{{ModId}}_dyed_cloth_item,color_gray",
               "ContextTagsRequireAll": true,
               "OverrideText": "{{i18n: item.GrayCloth.name}}",
               "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
@@ -1027,7 +1027,7 @@
           "Ingredients": [
             {
               "Type": "ContextTag",
-              "Value": "{{ModId}}_dyed_cloth_item,color_grey",
+              "Value": "{{ModId}}_dyed_cloth_item,color_gray",
               "ContextTagsRequireAll": true,
               "OverrideText": "{{i18n: item.GrayCloth.name}}",
               "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
@@ -1791,7 +1791,7 @@
           "Ingredients": [
             {
               "Type": "ContextTag",
-              "Value": "{{ModId}}_dyed_cloth_item,color_grey",
+              "Value": "{{ModId}}_dyed_cloth_item,color_gray",
               "ContextTagsRequireAll": true,
               "OverrideText": "{{i18n: item.GrayCloth.name}}",
               "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
