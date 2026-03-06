@@ -1,0 +1,57 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add track",
+      "Action": "EditData",
+      "Target": "Data/FloorsAndPaths",
+      "Entries": {
+        "{{ModId}}_TrackClassic": {
+          "Id": "{{ModId}}_TrackClassic",
+          "ItemId": "{{ModId}}_TrackClassic",
+          "Texture": "{{ModId}}/Floors",
+          "Corner": {
+            "X": 0,
+            "Y": 0
+          },
+          "WinterTexture": "{{ModId}}/Floors",
+          "WinterCorner": {
+            "X": 0,
+            "Y": 0
+          },
+          "PlacementSound": "woodyStep",
+          "RemovalSound": "axchop",
+          "RemovalDebrisType": 12,
+          "FootstepSound": "thudStep",
+          "ConnectType": "Path",
+          "ShadowType": "None",
+          "CornerSize": 4,
+          "FarmSpeedBuff": -1.0
+        },
+      },
+      "Entries": {
+        "{{ModId}}_TrackModern": {
+          "Id": "{{ModId}}_TrackModern",
+          "ItemId": "{{ModId}}_TrackModern",
+          "Texture": "{{ModId}}/Floors",
+          "Corner": {
+            "X": 64,
+            "Y": 0
+          },
+          "WinterTexture": "{{ModId}}/Floors",
+          "WinterCorner": {
+            "X": 64,
+            "Y": 0
+          },
+          "PlacementSound": "thudStep",
+          "RemovalSound": "hammer",
+          "RemovalDebrisType": 14,
+          "FootstepSound": "thudStep",
+          "ConnectType": "Path",
+          "ShadowType": "None",
+          "CornerSize": 4,
+          "FarmSpeedBuff": -1.0
+        },
+      },
+    },
+  ]
+}

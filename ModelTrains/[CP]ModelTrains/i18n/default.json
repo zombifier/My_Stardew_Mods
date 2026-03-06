@@ -1,0 +1,47 @@
+{
+  // Items
+  "Track.description": "Place on the ground, or on top of other floors, to make paths for your model trains!",
+  "Engine.description": "Place this engine on tracks and watch it move around!",
+  "Wagon.description": "Attach to a locomotive and watch it move around!",
+  "Bridge_N.description": "Place on top of tracks opposite a Bridge Head (South) to allow trains to cross impassable tiles.",
+  "Bridge_S.description": "Place on top of tracks opposite a Bridge Head (North) to allow trains to cross impassable tiles.",
+  "Bridge_W.description": "Place on top of tracks opposite a Bridge Head (East) to allow trains to cross impassable tiles.",
+  "Bridge_E.description": "Place on top of tracks opposite a Bridge Head (West) to allow trains to cross impassable tiles.",
+  "Tunnel_N.description": "Place on top of tracks opposite a Tunnel Head (South) to allow trains to cross impassable tiles.",
+  "Tunnel_S.description": "Place on top of tracks opposite a Tunnel Head (North) to allow trains to cross impassable tiles.",
+  "Tunnel_W.description": "Place on top of tracks opposite a Tunnel Head (East) to allow trains to cross impassable tiles.",
+  "Tunnel_E.description": "Place on top of tracks opposite a Tunnel Head (West) to allow trains to cross impassable tiles.",
+
+  "TrackClassic.name": "Railway Tracks (Classic)",
+  "TrackModern.name": "Railway Tracks (Modern)",
+  "BridgeWood_N.name": "Wooden Bridge Head (North)",
+  "BridgeWood_S.name": "Wooden Bridge Head (South)",
+  "BridgeWood_W.name": "Wooden Bridge Head (West)",
+  "BridgeWood_E.name": "Wooden Bridge Head (East)",
+  "BridgeStone_N.name": "Stone Bridge Head (North)",
+  "BridgeStone_S.name": "Stone Bridge Head (South)",
+  "BridgeStone_W.name": "Stone Bridge Head (West)",
+  "BridgeStone_E.name": "Stone Bridge Head (East)",
+  "Tunnel_N.name": "Tunnel Entrance (North)",
+  "Tunnel_S.name": "Tunnel Entrance (South)",
+  "Tunnel_W.name": "Tunnel Entrance (West)",
+  "Tunnel_E.name": "Tunnel Entrance (East)",
+
+  "EngineLocomotive.name": "Steam Locomotive",
+  "EngineDiesel.name": "Diesel Locomotive",
+  "EngineHighSpeed.name": "High Speed Engine",
+
+  "WagonCoal.name": "Coal Wagon",
+  "WagonPassenger.name": "Passenger Carriage",
+  "WagonTank.name": "Fluid Tanker",
+  "WagonCovered.name": "Covered Wagon",
+  "WagonHighSpeed.name": "High Speed Carriage",
+
+  "Collector.name": "Locomotive Collector",
+  "Collector.description": "Activate to remove all locomotives on the current map and give you the items back. Useful for quick cleanups, especially if derailments happen.",
+  "Catalogue.name": "Model Train Catalogue",
+  "Catalogue.description": "Your one stop shop to decorating your farms with model locomotives!",
+
+  "CarRemover.name": "Locomotive Adjuster",
+  "CarRemover.description": "Use this tool to reverse or removed placed trains and wagons. Left mouse/controller X to remove cars, right mouse/controller Y to reverse trains.",
+}

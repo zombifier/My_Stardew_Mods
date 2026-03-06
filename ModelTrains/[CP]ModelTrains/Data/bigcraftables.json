@@ -1,0 +1,184 @@
+
+{
+  "Changes": [
+    {
+      "LogName": "Add Items",
+      "Action": "EditData",
+      "Target": "Data/BigCraftables",
+      "Entries": {
+        "{{ModId}}_BridgeWood_N": {
+          "Name": "{{ModId}}_BridgeWood_N",
+          "SpriteIndex": 0,
+          "DisplayName": "{{i18n:BridgeWood_N.name}}",
+          "Description": "{{i18n:Bridge_N.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_n",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "0",
+          },
+        },
+        "{{ModId}}_BridgeWood_S": {
+          "Name": "{{ModId}}_BridgeWood_S",
+          "SpriteIndex": 1,
+          "DisplayName": "{{i18n:BridgeWood_S.name}}",
+          "Description": "{{i18n:Bridge_S.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_s",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "0",
+          },
+        },
+        "{{ModId}}_BridgeWood_W": {
+          "Name": "{{ModId}}_BridgeWood_W",
+          "SpriteIndex": 2,
+          "DisplayName": "{{i18n:BridgeWood_W.name}}",
+          "Description": "{{i18n:Bridge_W.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_w",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "0",
+          },
+        },
+        "{{ModId}}_BridgeWood_E": {
+          "Name": "{{ModId}}_BridgeWood_E",
+          "SpriteIndex": 3,
+          "DisplayName": "{{i18n:BridgeWood_E.name}}",
+          "Description": "{{i18n:Bridge_E.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_e",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "0",
+          },
+        },
+        "{{ModId}}_BridgeStone_N": {
+          "Name": "{{ModId}}_BridgeStone_N",
+          "SpriteIndex": 4,
+          "DisplayName": "{{i18n:BridgeStone_N.name}}",
+          "Description": "{{i18n:Bridge_N.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_n",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "1",
+          },
+        },
+        "{{ModId}}_BridgeStone_S": {
+          "Name": "{{ModId}}_BridgeStone_S",
+          "SpriteIndex": 5,
+          "DisplayName": "{{i18n:BridgeStone_S.name}}",
+          "Description": "{{i18n:Bridge_S.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_s",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "1",
+          },
+        },
+        "{{ModId}}_BridgeStone_W": {
+          "Name": "{{ModId}}_BridgeStone_W",
+          "SpriteIndex": 6,
+          "DisplayName": "{{i18n:BridgeStone_W.name}}",
+          "Description": "{{i18n:Bridge_W.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_w",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "1",
+          },
+        },
+        "{{ModId}}_BridgeStone_E": {
+          "Name": "{{ModId}}_BridgeStone_E",
+          "SpriteIndex": 7,
+          "DisplayName": "{{i18n:BridgeStone_E.name}}",
+          "Description": "{{i18n:Bridge_E.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_e",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "1",
+          },
+        },
+        "{{ModId}}_Tunnel_N": {
+          "Name": "{{ModId}}_Tunnel_N",
+          "SpriteIndex": 8,
+          "DisplayName": "{{i18n:Tunnel_N.name}}",
+          "Description": "{{i18n:Tunnel_N.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_n",
+						"{{ModId}}_tunnel",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "1",
+          },
+        },
+        "{{ModId}}_Tunnel_S": {
+          "Name": "{{ModId}}_Tunnel_S",
+          "SpriteIndex": 9,
+          "DisplayName": "{{i18n:Tunnel_S.name}}",
+          "Description": "{{i18n:Tunnel_S.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_s",
+						"{{ModId}}_tunnel",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "1",
+          },
+        },
+        "{{ModId}}_Tunnel_W": {
+          "Name": "{{ModId}}_Tunnel_W",
+          "SpriteIndex": 10,
+          "DisplayName": "{{i18n:Tunnel_W.name}}",
+          "Description": "{{i18n:Tunnel_W.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_w",
+						"{{ModId}}_tunnel",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "1",
+          },
+        },
+        "{{ModId}}_Tunnel_E": {
+          "Name": "{{ModId}}_Tunnel_E",
+          "SpriteIndex": 11,
+          "DisplayName": "{{i18n:Tunnel_E.name}}",
+          "Description": "{{i18n:Tunnel_E.description}}",
+          "Texture": "{{ModId}}/Bridges",
+          "Price": 0,
+          "ContextTags": [
+						"{{ModId}}_bridge_e",
+						"{{ModId}}_tunnel",
+          ],
+          "CustomFields": {
+            "{{ModId}}_BasePath": "1",
+          },
+        },
+      },
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "Name": "Model Trains and Locomotives (CP Component)",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Add fully functional model trains and layable tracks to decorate your farms!",
+  "UniqueID": "selph.ModelTrains",
+  "MinimumApiVersion": "4.0.0",
+  "Dependencies": [
+    {"UniqueID": "selph.ModelTrainsCode", "IsRequired": true},
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher",
+  },
+  "UpdateKeys": [ "Nexus:???" ],
+}

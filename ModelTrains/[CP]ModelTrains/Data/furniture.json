@@ -1,0 +1,23 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add Items",
+      "Action": "EditData",
+      "Target": "Data/Furniture",
+      "Entries": {
+        "{{ModId}}_Collector": "{{ModId}}_Collector/decor/1 2/1 1/1/0/2/{{i18n:Collector.name}}/0/{{ModId}}\\Furniture/true",
+        "{{ModId}}_Catalogue": "{{ModId}}_Catalogue/decor/1 2/1 1/1/100000/2/{{i18n:Catalogue.name}}/1/{{ModId}}\\Furniture/true",
+      }
+    },
+    {
+      "LogName": "Add descriptions for the C# component",
+      "Action": "EditData",
+      "Target": "Strings/Objects",
+      "Entries": {
+        "{{ModId}}_Collector": "{{i18n: Collector.description}}",
+        "{{ModId}}_Catalogue": "{{i18n: Catalogue.description}}",
+      }
+    },
+  ]
+}
+

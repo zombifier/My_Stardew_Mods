@@ -1,0 +1,45 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add catalogue shop",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "Entries": {
+        "{{ModId}}_Catalogue": {
+          "Owners": [
+            {
+              "Condition": null,
+              "Portrait": "",
+              "Dialogues": [],
+              "RandomizeDialogueOnOpen": true,
+              "ClosedMessage": null,
+              "Id": "AnyOrNone",
+              "Name": "AnyOrNone"
+            }
+          ],
+          "Items": [
+            {
+              "Id": "AllItems",
+              "ItemId": "ALL_ITEMS",
+              "PerItemCondition": "ITEM_ID_PREFIX Target {{ModId}}, !ITEM_ID Target {{ModId}}_Catalogue",
+              "Price": 0,
+            },
+          ],
+        },
+      },
+    },
+    {
+      "LogName": "Add catalogue to Robin",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["Carpenter", "Items"],
+      "Entries": {
+        "(F){{ModId}}_Catalogue": {
+          "Id": "(F){{ModId}}_Catalogue",
+          "ItemId": "(F){{ModId}}_Catalogue",
+          "Price": 100000,
+        },
+      },
+    },
+  ]
+}

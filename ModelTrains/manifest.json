@@ -1,0 +1,12 @@
+{
+  "Name": "Model Trains and Locomotives",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Add fully functional model trains and layable tracks to decorate your farms!",
+  "UniqueID": "selph.ModelTrainsCode",
+  "EntryDll": "ModelTrains.dll",
+  //"Dependencies": [
+  //],
+  "MinimumApiVersion": "4.0.9",
+  "UpdateKeys": ["Nexus:43156"],
+}

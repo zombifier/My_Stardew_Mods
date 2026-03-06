@@ -1,0 +1,126 @@
+{
+  "Format": "2.0.0",
+  "Changes": [
+    //{
+    //  "LogName": "Add Crafting",
+    //  "Action": "Include",
+    //  "FromFile": "Data/craftingrecipes.json",
+    //},
+    {
+      "LogName": "Objects changes",
+      "Action": "Include",
+      "FromFile": "Data/objects.json",
+    },
+    {
+      "LogName": "BC changes",
+      "Action": "Include",
+      "FromFile": "Data/bigcraftables.json",
+    },
+    {
+      "LogName": "Floors changes",
+      "Action": "Include",
+      "FromFile": "Data/floorsandpaths.json",
+    },
+    {
+      "LogName": "Shop changes",
+      "Action": "Include",
+      "FromFile": "Data/shops.json",
+    },
+    {
+      "LogName": "Furniture changes",
+      "Action": "Include",
+      "FromFile": "Data/furniture.json",
+    },
+    // Assets
+    {
+      "Action": "Load",
+      "Target": "{{ModId}}/TrackObjects,{{ModId}}/Floors,{{ModId}}/CarObjects,{{ModId}}/Furniture,{{ModId}}/Bridges,{{ModId}}/Bridges_Front,{{ModId}}/Bridges_Back",
+      "FromFile": "assets/{{TargetWithoutPath}}.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_EngineHighSpeedRed",
+      "FromFile": "assets/EngineHighSpeedRed.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_EngineHighSpeedBlue",
+      "FromFile": "assets/EngineHighSpeedBlue.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_EngineDieselGray",
+      "FromFile": "assets/EngineDieselGray.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_EngineDieselBlueYellow",
+      "FromFile": "assets/EngineDieselBlueYellow.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_EngineDieselRedOrange",
+      "FromFile": "assets/EngineDieselRedOrange.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_EngineDieselGreenRed",
+      "FromFile": "assets/EngineDieselGreenRed.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_EngineLocomotiveGray",
+      "FromFile": "assets/EngineLocomotiveGray.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_EngineLocomotiveRed",
+      "FromFile": "assets/EngineLocomotiveRed.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_WagonCoal",
+      "FromFile": "assets/WagonCoal.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_WagonCovered",
+      "FromFile": "assets/WagonCovered.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_WagonPassenger",
+      "FromFile": "assets/WagonPassenger.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_WagonPassengerModern",
+      "FromFile": "assets/WagonPassengerModern.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_WagonHighSpeedRed",
+      "FromFile": "assets/WagonHighSpeedRed.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_WagonHighSpeedNoDoorRed",
+      "FromFile": "assets/WagonHighSpeedNoDoorRed.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_WagonHighSpeedBlue",
+      "FromFile": "assets/WagonHighSpeedBlue.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_WagonHighSpeedNoDoorBlue",
+      "FromFile": "assets/WagonHighSpeedNoDoorBlue.png"
+    },
+    {
+      "Action": "Load",
+      "Target": "Characters/{{ModId}}_WagonTank",
+      "FromFile": "assets/WagonTank.png"
+    },
+  ]
+}
