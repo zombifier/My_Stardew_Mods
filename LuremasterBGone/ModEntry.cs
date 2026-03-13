@@ -45,7 +45,7 @@ internal sealed class ModEntry : Mod {
       return;
     }
     var chest = __instance.heldObject.Value.heldObject.Value as Chest ?? new Chest(false);
-    if (__instance.heldObject.Value.heldObject.Value is not Chest) {
+    if (__instance.heldObject.Value.heldObject.Value is { } obj && obj is not Chest) {
       StaticMonitor.Log($"{__instance.heldObject.Value.QualifiedItemId} already has non-chest held object? This should not be possible.", LogLevel.Warn);
     }
     __instance.heldObject.Value.heldObject.Value ??= chest;

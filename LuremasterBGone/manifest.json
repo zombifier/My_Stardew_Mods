@@ -1,7 +1,7 @@
 {
   "Name": "Luremaster B Gone",
   "Author": "selph",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Changes the Luremaster profession to Crab Pots still needing bait, but give the bait back upon collection. This allows you to benefit from the effects of putting in good bait.",
   "UniqueID": "selph.LuremasterBGone",
   "EntryDll": "LuremasterBGone.dll",
