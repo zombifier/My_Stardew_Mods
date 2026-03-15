@@ -14,7 +14,7 @@ and associated track data in `Data/FloorsAndPaths`.
 To add new cars, first add them as a new object in `Data/Objects` with the context tag
 `selph.ModelTrains_locomotive` for engines, or `selph.ModelTrains_wagon` for wagons.
 
-Next, you need to load their world sprites into `Character/<the unqualified ID of the base item
+Next, you need to load their world sprites into `Characters/<the unqualified ID of the base item
 here>`. The spritesheet's sprite size is 32x32 and is laid out similarly to an NPC's spritesheet;
 you want four rows for down/right/up/left idling and moving sprites.
 
