@@ -1,0 +1,8 @@
+{
+  // TL courtesy of Shenyifan
+  "ShowBuildingList": "显示建造目录",
+  "GenericBlacksmithNotReady": "你的{{displayName}}将在{{readyDay}}天后完成。",
+  "GenericBlacksmithNotReadyOneDay": "你的{{displayName}}将在一天后完成。",
+  "ToolReady": "你的{{displayName}}已完成，请前往{{blacksmithName}}领取。",
+  "ToggleDirectBuildMode": "切换直接建造模式"
+}
