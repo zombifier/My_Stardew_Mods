@@ -517,23 +517,23 @@ static class Carpenters {
     showListButton = new ClickableTextureComponent(
         ModEntry.Helper.Translation.Get("ShowBuildingList"),
         new Microsoft.Xna.Framework.Rectangle(
-          __instance.xPositionOnScreen + __instance.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 320 - 20 - (16 * 8) - 4,
+          __instance.xPositionOnScreen + __instance.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 320 - 20 - (16 * 8) - 4 - (ModEntry.HasFlipBuildings ? 16 * 4 : 0),
           __instance.yPositionOnScreen + __instance.maxHeightOfBuildingViewer + 64, 64, 64),
-        null, null, Game1.mouseCursors_1_6, new Microsoft.Xna.Framework.Rectangle(6, 260, 15, 15), 4f) {
+        null, null, Game1.mouseCursors_1_6, new Rectangle(6, 260, 15, 15), 4f) {
       myID = 999,
-      rightNeighborID = -99998,
-      leftNeighborID = -99998,
+      rightNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+      leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
       upNeighborID = 109,
     };
     toggleDirectBuildModeButton = new ClickableTextureComponent(
         ModEntry.Helper.Translation.Get("ToggleDirectBuildMode"),
         new Microsoft.Xna.Framework.Rectangle(
-          __instance.xPositionOnScreen + __instance.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 320 - 20 - (16 * 4) - 4,
+          __instance.xPositionOnScreen + __instance.width - IClickableMenu.borderWidth - IClickableMenu.spaceToClearSideBorder - 320 - 20 - (16 * 4) - 4 - (ModEntry.HasFlipBuildings ? 16 * 4 : 0),
           __instance.yPositionOnScreen + __instance.maxHeightOfBuildingViewer + 64, 64, 64),
-        null, null, Game1.mouseCursors2, new Microsoft.Xna.Framework.Rectangle(48, 208, 16, 16), 4f) {
+        null, null, Game1.mouseCursors2, new Rectangle(48, 208, 16, 16), 4f) {
       myID = 998,
-      rightNeighborID = -99998,
-      leftNeighborID = -99998,
+      rightNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+      leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
       upNeighborID = 109,
     };
   }
@@ -628,6 +628,15 @@ static class Carpenters {
   static void CarpenterMenu_UpdateAppearanceButtonVisibility_Postfix(CarpenterMenu __instance) {
     if (toggleDirectBuildModeButton is not null && __instance.Blueprint is not null)
       toggleDirectBuildModeButton.visible = GetIsDirectBuildMode(__instance.Blueprint) is not null;
+    // Flip buildings controller compat: make its button snap to our buttons instead of the next
+    // button
+    //if (ModEntry.HasFlipBuildings && __instance.allClickableComponents is not null) {
+    //  foreach (var button in __instance.allClickableComponents) {
+    //    if (button.myID == 110) {
+    //      button.leftNeighborID = ClickableComponent.SNAP_AUTOMATIC;
+    //    }
+    //  }
+    //}
   }
 
   static void SObject_maximumStackSize_Postfix(SObject __instance, ref int __result) {

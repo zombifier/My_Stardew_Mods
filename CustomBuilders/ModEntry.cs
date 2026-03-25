@@ -25,6 +25,8 @@ internal sealed class ModEntry : Mod {
   //internal static BuilderDataAssetHandler builderDataAssetHandler = null!;
   internal static BuildingOverrideManager buildingOverrideManager = null!;
   public static bool HasCssm = false;
+  public static bool HasFlipBuildings = false;
+  public const string FlipBuildingsId = "mouahrara.FlipBuildings";
 
   public override void Entry(IModHelper helper) {
     Helper = helper;
@@ -50,5 +52,6 @@ internal sealed class ModEntry : Mod {
     QuestionDialogue.ApplyPatches(harmony);
 
     HasCssm = Helper.ModRegistry.IsLoaded("mushymato.CompactSearchableShopMenu");
+    HasFlipBuildings = Helper.ModRegistry.IsLoaded(FlipBuildingsId);
   }
 }
