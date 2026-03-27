@@ -483,8 +483,9 @@ Unless otherwise stated, they have the following common fields:
 | `selph.CustomTapperFramework_DestroyCrop <radius> [exclude main crop] [GSQ]` | Destroy crops in a radius, removing them entirely.|
 | `selph.CustomTapperFramework_TransformCrop <cropId> <radius> [exclude main crop] [GSQ]` | Transform crops in a radius to the specified `cropId`.|
 | `selph.CustomTapperFramework_SetCropPhase <newPhase> <radius> [exclude main crop] [GSQ]` | Sets the phase of crops in a radius to a new value.|
-| `selph.CustomTapperFramework_PlantCrop <cropId> <maxCount> <radius> [chance]` | Plants the specified crop/seed ID in empty tilled dirt (not pots) in a radius. Chance is optional, a number between 0 and 1 for a chance the crop is planted.|
+| `selph.CustomTapperFramework_PlantCrop <cropId> <radius> [chance] [max count] [tills if needed]` | Plants the specified crop/seed ID in empty tilled dirt (not pots) in a radius. Chance is optional, a number between 0 and 1 for a chance the crop is planted. "tills if needed" is also optional; if set to "true" will also till the dirt if the spot is unhoed. WARNING: planted crops will also run their own planted crop triggers. Be careful when making crops that plant themselves.|
 | `selph.CustomTapperFramework_IfCrop <query> ## <action if true> ## <action if false>` | A special version of the `If` action that works in crop trigger actions.|
+| `selph.CustomTapperFramework_PlantItem <item> <radius> [chance] [max count] [clears dirt if needed]` | Plants the specified item (fruit tree or bush sapling) in empty dirt in a radius. Chance is optional, a number between 0 and 1 for a chance the item is planted. "clears dirt if needed" is optional; if set to "true" will also clear hoed dirt if the spot is hoed.|
 
 Need even moar power? You can use Cloudy Skies's brilliant [trigger
 actions](https://github.com/KhloeLeclair/StardewMods/blob/main/CloudySkies/author-guide.md#trigger-actions)

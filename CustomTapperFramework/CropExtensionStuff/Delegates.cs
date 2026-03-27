@@ -11,6 +11,8 @@ using StardewValley.Triggers;
 
 namespace Selph.StardewMods.MachineTerrainFramework;
 
+using SObject = StardewValley.Object;
+
 static class CropExtensionDelegates {
   public static void Register() {
     GameStateQuery.Register($"{ModEntry.UniqueId}_NEARBY_CROPS", NEARBY_CROPS);
@@ -26,6 +28,7 @@ static class CropExtensionDelegates {
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_SetCropPhase", SetCropPhase);
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_PlantCrop", PlantCrop);
     TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_IfCrop", IfCrop);
+    TriggerActionManager.RegisterAction($"{ModEntry.UniqueId}_PlantItem", PlantItem);
   }
 
   static bool NEARBY_CROPS(string[] query, GameStateQueryContext context) {
@@ -260,6 +263,7 @@ static class CropExtensionDelegates {
         || !ArgUtility.TryGetInt(args, 2, out var radius, out error, "int radius")
         || !ArgUtility.TryGetOptionalFloat(args, 3, out var chance, out error, 1, "float chance")
         || !ArgUtility.TryGetOptionalInt(args, 4, out var maxCount, out error, Int32.MaxValue, "int maxCount")
+        || !ArgUtility.TryGetOptionalBool(args, 5, out var tillsDirt, out error, false, "bool tillsDirt")
         ) {
       return false;
     }
@@ -275,6 +279,9 @@ static class CropExtensionDelegates {
     var count = 0;
     for (var x = hoeDirt.Tile.X - radius; x <= hoeDirt.Tile.X + radius; x++) {
       for (var y = hoeDirt.Tile.Y - radius; y <= hoeDirt.Tile.Y + radius; y++) {
+        if (tillsDirt) {
+          hoeDirt.Location.makeHoeDirt(new(x, y));
+        }
         if (hoeDirt.Location.terrainFeatures.TryGetValue(new(x, y), out var t)
             && t is HoeDirt hd
             && hd.crop is null
@@ -353,5 +360,44 @@ static class CropExtensionDelegates {
       outError = "invalid format: expected a string in the form 'If <game state query> ## <do if true>' or 'If <game state query> ## <do if true> ## <do if false>'";
       return false;
     }
+  }
+
+  static bool PlantItem(string[] args, TriggerActionContext context, out string? error) {
+    if (!ArgUtility.TryGet(args, 1, out var itemId, out error, false, "string itemId")
+        || !ArgUtility.TryGetInt(args, 2, out var radius, out error, "int radius")
+        || !ArgUtility.TryGetOptionalFloat(args, 3, out var chance, out error, 1, "float chance")
+        || !ArgUtility.TryGetOptionalInt(args, 4, out var maxCount, out error, Int32.MaxValue, "int maxCount")
+        || !ArgUtility.TryGetOptionalBool(args, 5, out var clearsDirt, out error, false, "bool clearsDirt")
+        ) {
+      return false;
+    }
+    if (context.TriggerArgs.Length < 2
+        || context.TriggerArgs[0] is not HoeDirt hoeDirt
+        || context.TriggerArgs[1] is not Farmer who) {
+      error = "Error running trigger action - ran outside of crop extension data?";
+      return false;
+    }
+    // Aquaponics hack - ignore out of bounds crops
+    if (hoeDirt.Tile.X < 0 || hoeDirt.Tile.Y < 0) return true;
+
+    var count = 0;
+    for (var x = hoeDirt.Tile.X - radius; x <= hoeDirt.Tile.X + radius; x++) {
+      for (var y = hoeDirt.Tile.Y - radius; y <= hoeDirt.Tile.Y + radius; y++) {
+        var obj = ItemRegistry.Create<SObject>(itemId);
+        if (obj is null) {
+          error = "Error running trigger action - object is invalid?";
+          return false;
+        }
+        if (clearsDirt && hoeDirt.Location.terrainFeatures.TryGetValue(new(x, y), out var t)
+            && t is HoeDirt hd && hd.crop == null) {
+          hoeDirt.Location.terrainFeatures.Remove(new(x, y));
+        }
+        if (obj.placementAction(hoeDirt.Location, (int)x * 64, (int)y * 64, who)) {
+          count++;
+          if (count >= maxCount) return true;
+        }
+      }
+    }
+    return true;
   }
 }
