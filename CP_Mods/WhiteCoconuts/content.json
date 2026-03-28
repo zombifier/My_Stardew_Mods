@@ -1,0 +1,14 @@
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Edit Coconut Colors",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["88", "ContextTags"],
+      "Entries": {
+        "color_dark_brown": "color_white",
+      },
+    },
+  ]
+}

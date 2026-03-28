@@ -1,0 +1,12 @@
+{
+  "Name": "Simple Flower Mead",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Allows honey to be turned into flavored meads.",
+  "UniqueID": "selph.SimpleFlowerMead",
+  "MinimumApiVersion": "4.0.0",
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "UpdateKeys": [ "Nexus:39814" ]
+}

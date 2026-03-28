@@ -1,0 +1,12 @@
+{
+  "Name": "[CP] White Coconuts",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Make coconuts white.",
+  "UniqueID": "selph.WhiteCoconuts",
+  "MinimumApiVersion": "4.0.0",
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "UpdateKeys": [ "Nexus:33266" ],
+}

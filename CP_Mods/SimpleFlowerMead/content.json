@@ -1,0 +1,15 @@
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Machine Rules",
+      "Action": "Include",
+      "FromFile": "Data/machines.json"
+    },
+    {
+      "LogName": "String Tokens",
+      "Action": "Include",
+      "FromFile": "Data/strings.json"
+    },
+  ]
+}

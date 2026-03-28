@@ -1,0 +1,13 @@
+{
+  "Changes": [
+    {
+      "LogName":"Add String Tokens",
+      "Action": "EditData",
+      "Target": "Strings/Objects",
+      "Entries": {
+        "selph.FlavoredMead.name": "{{i18n: selph.FlavoredMead.name}}",
+        "selph.FlavoredMead.WildMead.name": "{{i18n: selph.FlavoredMead.WildMead.name}}",
+      }
+    },
+  ]
+}

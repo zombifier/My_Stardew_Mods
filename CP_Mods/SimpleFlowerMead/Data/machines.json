@@ -1,0 +1,30 @@
+{
+  "Changes": [
+    {
+      "LogName": "Modify Mead Rules",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)12", "OutputRules", "Default_Honey", "OutputItem", "(O)459"],
+      "Entries": {
+        "PreserveId": "DROP_IN_PRESERVE",
+        "CopyPrice": true,
+        "ObjectInternalName": "Mead {0}",
+        "ObjectDisplayName": "[LocalizedText Strings\\Objects:selph.FlavoredMead.name %PRESERVED_DISPLAY_NAME]",
+        "PriceModifiers":
+        [
+          {
+            "Modification": "Multiply",
+            "Amount": 1.5,
+          },
+          {
+            "Modification": "Add",
+            "Amount": 150,
+          },
+        ],
+        "CustomData": {
+          "selph.ExtraMachineConfig.UnflavoredDisplayNameOverride": "[LocalizedText Strings\\Objects:selph.FlavoredMead.WildMead.name]"
+        },
+      },
+    },
+  ]
+}
