@@ -37,6 +37,8 @@ static class Carpenters {
   // maybe one day when i'm feeling less lazy/have a better design
   //public static string AdditionalUpgradesKey = $"{ModEntry.UniqueId}_AdditionalUpgrades";
   public static string CanBeDirectBuild = $"{ModEntry.UniqueId}_CanBeDirectBuild";
+  static string DummyEntryKey = $"{ModEntry.UniqueId}_DummyBuilding";
+  static string DummyTexture = $"{ModEntry.UniqueId}/DummyTexture";
 
   public static void RegisterCustomTriggers() {
     GameLocation.RegisterTileAction($"{ModEntry.UniqueId}_ShowConstruct", ShowConstruct);
@@ -44,6 +46,7 @@ static class Carpenters {
   }
 
   public static void RegisterEvents(IModHelper helper) {
+    helper.Events.Content.AssetRequested += OnAssetRequested;
     helper.Events.Content.AssetsInvalidated += OnAssetsInvalidated;
     helper.Events.Input.ButtonPressed += OnButtonPressed;
     helper.Events.Input.MouseWheelScrolled += OnMouseWheelScrolled;
@@ -65,7 +68,15 @@ static class Carpenters {
     harmony.Patch(
         original: AccessTools.Constructor(typeof(CarpenterMenu), new Type[] { typeof(string), typeof(GameLocation) }),
         transpiler: new HarmonyMethod(typeof(Carpenters),
-          nameof(Carpenters.CarpenterMenu_Constructor_Transpiler)));
+          nameof(Carpenters.CarpenterMenu_Constructor_Transpiler)),
+        postfix: new HarmonyMethod(typeof(Carpenters),
+          nameof(Carpenters.CarpenterMenu_Constructor_Postfix)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(CarpenterMenu),
+          nameof(CarpenterMenu.CanBuildCurrentBlueprint)),
+        postfix: new HarmonyMethod(typeof(Carpenters),
+          nameof(CarpenterMenu_CanBuildCurrentBlueprint_Postfix)));
 
     harmony.Patch(
         original: AccessTools.Method(typeof(NPC),
@@ -183,12 +194,33 @@ static class Carpenters {
     }
   }
 
-  static string currentBuilder => ModEntry.Helper.Reflection.GetField<string>(Game1.currentLocation, "_constructLocationBuilderName").GetValue();
+  static string currentBuilder => (Game1.activeClickableMenu as CarpenterMenu)?.Builder ?? ModEntry.Helper.Reflection.GetField<string>(Game1.currentLocation, "_constructLocationBuilderName").GetValue();
 
   static void OnAssetsInvalidated(object? sender, AssetsInvalidatedEventArgs e) {
     if (e.NamesWithoutLocale.Any(name => name.Name == "Data/Buildings")) {
       buildingOverrideManager.Value.Clear();
       isDirectBuildModeManager.Value.Clear();
+    }
+  }
+
+  static void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
+    if (e.NameWithoutLocale.IsEquivalentTo(DummyTexture)) {
+      e.LoadFromModFile<Texture2D>("assets/Dummy.png", AssetLoadPriority.Medium);
+    }
+    if (e.NameWithoutLocale.IsEquivalentTo("Data/Buildings")) {
+      e.Edit(asset => {
+        var data = asset.AsDictionary<string, BuildingData>().Data;
+        data[DummyEntryKey] = new() {
+          Name = ModEntry.Helper.Translation.Get("DummyEntry.name"),
+          Description = ModEntry.Helper.Translation.Get("DummyEntry.description"),
+          Texture = DummyTexture,
+          DrawShadow = false,
+          Size = {
+            X = 1,
+            Y = 1,
+          },
+        };
+      }, AssetEditPriority.Late + 10000);
     }
   }
 
@@ -254,7 +286,7 @@ static class Carpenters {
           __instance.position.X += 16f;
           __instance.position.Y -= 32f;
         }
-        //__instance.isPlayingRobinHammerAnimation = false;
+        __instance.isPlayingRobinHammerAnimation = false;
         __instance.shouldPlayRobinHammerAnimation.Value = true;
         return;
       }
@@ -285,7 +317,7 @@ static class Carpenters {
     __instance.exitThisMenu();
     Game1.player.forceCanMove();
     string dialogueKeySuffix =
-        __instance.Blueprint.BuildDays <= 0 ? "_Instant" :
+        __instance.Blueprint.BuildDays <= 0 ? "Instant" :
       (((__instance.Action == CarpenterMenu.CarpentryAction.Upgrade) ? "UpgradeConstruction" : "NewConstruction") +
        (Utility.isFestivalDay(Game1.dayOfMonth + 1, Game1.season) ? "_Festival" : ""));
     string displayName = __instance.Blueprint.DisplayName;
@@ -299,7 +331,10 @@ static class Carpenters {
     return false;
   }
 
-  static bool IsEligibleBuilder(BuildingData buildingData, string builder) {
+  static bool IsEligibleBuilder(string id, BuildingData buildingData, string builder) {
+    if (id == DummyEntryKey) {
+      return true;
+    }
     var result = new HashSet<string>();
     if (buildingData.Builder == builder) {
       return true;
@@ -370,7 +405,7 @@ static class Carpenters {
   static IEnumerable<CodeInstruction> CarpenterMenu_Constructor_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
     CodeMatcher matcher = new(instructions, generator);
     // Old: buildingDatum.Value.Builder != builder
-    // New: !IsEligibleBuilder(buildingDatum.Value, builder)
+    // New: !IsEligibleBuilder(buildingDatum.Key, buildingDatum.Value, builder)
     matcher.MatchStartForward(
       new CodeMatch(OpCodes.Ldloca_S), // buildingDatum
       new CodeMatch(OpCodes.Call),
@@ -387,6 +422,8 @@ static class Carpenters {
     var labelToJumpTo = matcher.Operand;
     matcher.Advance(-5)
     .InsertAndAdvance(
+      new CodeInstruction(OpCodes.Ldloca_S, buildingDatumVar),
+      new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(KeyValuePair<string, BuildingData>), nameof(KeyValuePair<string, BuildingData>.Key))),
       new CodeInstruction(OpCodes.Ldloca_S, buildingDatumVar),
       new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(KeyValuePair<string, BuildingData>), nameof(KeyValuePair<string, BuildingData>.Value))),
       new CodeInstruction(OpCodes.Ldarg_1),
@@ -438,6 +475,27 @@ static class Carpenters {
     //  StaticMonitor.Log($"{m.opcode} {m.operand}", LogLevel.Info);
     //}
     return matcher.InstructionEnumeration();
+  }
+
+  static void CarpenterMenu_Constructor_Postfix(CarpenterMenu __instance) {
+    var count = __instance.Blueprints.Count;
+    if (count > 1) {
+      if (__instance.Blueprints[count - 1].Id != DummyEntryKey) {
+        ModEntry.StaticMonitor.Log("Dummy entry is not the last entry? This ideally should not happen.", LogLevel.Warn);
+        var indexOfDummy = __instance.Blueprints.FindIndex(blueprint => blueprint.Id == DummyEntryKey);
+        if (indexOfDummy == -1) {
+          ModEntry.StaticMonitor.Log("Dummy entry not found at all? This ideally should not happen.", LogLevel.Warn);
+          return;
+        }
+        for (int i = indexOfDummy; i < count - 1; i++) {
+          var nextBlueprint = __instance.Blueprints[i + 1];
+          __instance.Blueprints[i] = new BlueprintEntry(i, nextBlueprint.Id, nextBlueprint.Data, nextBlueprint.Skin?.Id);
+        }
+        __instance.Blueprints.RemoveAt(count - 1);
+      } else {
+        __instance.Blueprints.RemoveAt(count - 1);
+      }
+    }
   }
 
   // Copypastaed from base game
@@ -675,6 +733,12 @@ static class Carpenters {
           parentBuilding = null;
         }
       }
+    }
+  }
+
+  static void CarpenterMenu_CanBuildCurrentBlueprint_Postfix(CarpenterMenu __instance, ref bool __result) {
+    if (__instance.Blueprint.Id == DummyEntryKey) {
+      __result = false;
     }
   }
 

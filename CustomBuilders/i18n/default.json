@@ -4,4 +4,6 @@
   "GenericBlacksmithNotReadyOneDay": "Your {{displayName}} will be ready in one day.",
   "ToolReady": "Your {{displayName}} is ready to be collected from {{blacksmithName}}.",
   "ToggleDirectBuildMode": "Toggle Direct Build",
+  "DummyEntry.name": "No Buildings Available",
+  "DummyEntry.description": "This builder currently does not have any buildings available for construction.",
 }

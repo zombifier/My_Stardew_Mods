@@ -2,5 +2,14 @@
   <PropertyGroup>
     <SDV>1615</SDV>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Publicize Include="Stardew Valley:StardewValley.NPC.isPlayingRobinHammerAnimation" />
+  </ItemGroup>
   <Import Project="../Common.csproj" Label="SharedCsproj" />
 </Project>

@@ -294,6 +294,7 @@ The `DialogueEntryData` model has the following fields:
 | `Id` | string | The unique ID of this entry. Need to be unique within the list.|
 | `Name` | string | The display name of this entry. Accepts tokenizable strings.|
 | `Action` | string | The map action to run when this entry is selected (e.g. open shop, carpenter menu. etc.). If no action is specified, simply exits the menu. |
+| `Condition` | string | Optional; a Game State Query that controls whether this menu item shows up.|
 | `MessageIfFalse` | string | If the map action doesn't run (e.g. because no NPC is within range), the message to show. |
 
 See this example for a question dialogue entry that offers four in one services (filling in valid NPC/shop IDs is an exercise left for the reader):

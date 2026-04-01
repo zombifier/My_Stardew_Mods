@@ -26,6 +26,7 @@ class DialogueEntryData {
   public string Name = "";
   public string Action = "";
   public string MessageIfFalse = "";
+  public string Condition = "";
 }
 
 sealed class QuestionDialogueDataAssetHandler : DictAssetHandler<QuestionDialogueData> {
@@ -71,7 +72,9 @@ static class QuestionDialogue {
     }
     location.createQuestionDialogue(
         questionDialogueData.Question,
-        questionDialogueData.DialogueEntries.Select(dialogueEntry => new Response(dialogueEntry.Id, TokenParser.ParseText(dialogueEntry.Name))).ToArray(),
+        questionDialogueData.DialogueEntries
+        .Where(dialogueEntry => GameStateQuery.CheckConditions(dialogueEntry.Condition, location, farmer))
+        .Select(dialogueEntry => new Response(dialogueEntry.Id, TokenParser.ParseText(dialogueEntry.Name))).ToArray(),
         (who, whichAnswer) => {
           var dialogueEntry = questionDialogueData.DialogueEntries.FirstOrDefault(entry => entry.Id == whichAnswer);
           if (dialogueEntry is null) {
