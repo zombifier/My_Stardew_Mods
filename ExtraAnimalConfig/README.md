@@ -77,6 +77,8 @@ to edit it.
 ```
 </details>
 
+----
+
 ### Change a produce's harvest method, actual returned item, and other settings
 Set this field in custom animal data:
 
@@ -124,6 +126,8 @@ Set this field in custom animal data:
 </details>
 
 See the section below for another example that integrates with the multiproduce feature.
+
+----
 
 ### Animals that can make multiple different products in the same day
 By default, an animal only makes one type of produce per day. To change this limit, set this field
@@ -200,6 +204,8 @@ Want to override the extra produce's harvest method, or apply an item query? Set
 ```
 </details>
 
+----
+
 ### Animals that can forage in dirt (ala Harvest Moon chickens)
 
 | Field Name                         | Type             | Description              |
@@ -227,6 +233,8 @@ Want to override the extra produce's harvest method, or apply an item query? Set
 }
 ```
 </details>
+
+----
 
 ### Setting up animals that eat alternate feed
 
@@ -289,6 +297,8 @@ Important notes:
   full happiness from eating their modded feed. If they are not a grass eater,
   they will get full happiness from their modded feed.
 
+----
+
 ### Extra drops from scything grass
 
 You can define extra drops from scything grass by writing to the
@@ -301,6 +311,8 @@ asset `selph.ExtraAnimalConfig/GrassDropExtensionData`, which is a map of
 | `EnterInventoryIfSilosFull` | `bool` | If there are no silos to add this item to, whether to try adding to the farmer inventory. If you want this for hay, there are mods on Nexus for that functionality. |
 
 NOTE: This is compatible with [Scythe Tool Enchantments](https://www.nexusmods.com/stardewvalley/mods/26217)!
+
+----
 
 ### Multiple possible animals from one egg
 
@@ -346,6 +358,8 @@ item IDs to a model that currently only has the following field:
 ```
 </details>
 
+----
+
 ### Animals that can give birth to other animal types
 
 Set this field in `selph.ExtraAnimalConfig/AnimalExtensionData`:
@@ -387,6 +401,8 @@ Set this field in `selph.ExtraAnimalConfig/AnimalExtensionData`:
 ```
 </details>
 
+----
+
 ### Animal spawn data reference
 `AnimalSpawnData` is a model with the following fields:
 
@@ -395,6 +411,8 @@ Set this field in `selph.ExtraAnimalConfig/AnimalExtensionData`:
 | `Id`          | `string`            | The unique Id for this model within the current list.|
 | `AnimalId`    | `string`            | The animal to spawn.<br>KNOWN ISSUE: The overnight pop up (X has given birth to a Y) will still show the parent species in Y. This is very hardcoded and difficult to untangle, so let me know if you're interested in this being changed.|
 | `Condition`   | `string`            | A [game state query](https://stardewvalleywiki.com/Modding:Game_state_queries) determining whether this animal should be spawned. The `Target` location will refer to the animal house that belongs to the animal/incubator being checked.|
+
+----
 
 ### Animals that can go outside in rain or winter
 
@@ -413,11 +431,15 @@ Alternatively set these fields in a building's `CustomFields` in its `Data/Build
 | `selph.ExtraAnimalConfig.InhabitantsIgnoreRain` | If set to any value, this building type's inhabitants can go out in rainy days.|
 | `selph.ExtraAnimalConfig.InhabitantsIgnoreWinter` | If set to any value, this building type's inhabitants can go out in winter.|
 
+----
+
 ### Multiple possible house types for an animal
 
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
 | `ExtraHouses`           | `List<string>` | A list of extra houses that can house this animal aside from the primary one defined in its animal data.|
+
+----
 
 ### Animals that can glow in the dark
 
@@ -426,10 +448,14 @@ Alternatively set these fields in a building's `CustomFields` in its `Data/Build
 | `GlowColor` | `string` | If set to a [color](https://stardewvalleywiki.com/Modding:Common_data_field_types#Color), this animal will glow with said color like a light source. NOTE: `patch reload`-ing your mod will only update lights when the animal switches location (ie. when it goes out to eat or goes back in).|
 | `GlowRadius` | `float` | The radius of the light glow, if color is set above. 10 = 1 tile.|
 
+----
+
 ### Animals that are faster (or slower) than normal
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
 | `SpeedOverride` | `int` | This animal's speed, instead of the default 2.|
+
+----
 
 ### Conditioned texture overrides
 By default an animal only has 3 possible textures - baby, adult, and adult with no produce (e.g.
@@ -450,6 +476,8 @@ Sheep). This field allows for more possible textures with conditions associated.
 | `TextureToUse`          | `string`| The texture path to use for this animal. Ignored if `DefaultTextureToUse` is set. |
 | `DefaultTextureToUse`          | One of `"Texture"`, `"HarvestedTexture"`, or `"BabyTexture"`| If set, use the equivalent field in vanilla animal data. Will take skins into account.|
 
+----
+
 ### Animals that chase and attack (or heal) the farmer on contact
 
 | Field Name                         | Type             | Description              |
@@ -461,12 +489,16 @@ Sheep). This field allows for more possible textures with conditions associated.
 | `AttackMaxChaseTimeMs` | `int` | How long to chase before the animal gets bored (default 10000 aka 10 seconds).|
 | `AttackCondition` | `string` | A game state query to control whether this animal will attack. Player-based conditions can be used here, and is checked for each victim.|
 
+----
+
 ### Animals that can harvest crops
 | Field Name                         | Type             | Description              |
 | ---------------------------------- | ---------------- | ------------------------ |
 | `IsHarvester` | `bool` | Whether this animal can harvest crops.|
 | `HarvestInterval` | `int` | The minimum interval between consecutive harvests in milliseconds (default 1000 aka 1 second).|
 | `HarvestRange` | `int` | The maximum crop harvest range starting from the animal door (default 5 tiles).|
+
+----
 
 ## Game state queries
 
