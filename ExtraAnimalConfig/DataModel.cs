@@ -43,6 +43,7 @@ public class AnimalExtensionData {
   public int HarvestRange = 5;
 
   public bool IsHeater = false;
+  public string? SwimCondition = null;
 }
 
 public class EggExtensionData {

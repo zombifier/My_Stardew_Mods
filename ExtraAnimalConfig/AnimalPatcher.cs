@@ -243,6 +243,11 @@ sealed class AnimalDataPatcher {
     //harmony.Patch(
     //    original: AccessTools.Method(typeof(Character), nameof(Character.GetSpriteWidthForPositioning)),
     //    postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalDataPatcher.Character_GetSpriteWidthForPositioning_Postfix)));
+
+    harmony.Patch(
+        original: AccessTools.Method(typeof(FarmAnimal),
+          nameof(FarmAnimal.CanSwim)),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(FarmAnimal_CanSwim_Postfix)));
   }
 
   static void FarmAnimal_isMale_Postfix(FarmAnimal __instance, ref bool __result) {
@@ -1118,6 +1123,15 @@ sealed class AnimalDataPatcher {
       // Just increase by 1, no need to run extra logic for an accurate count since the game
       // doesn't care
       __result += 1;
+    }
+  }
+
+  static void FarmAnimal_CanSwim_Postfix(FarmAnimal __instance, ref bool __result) {
+    if (!__result) return;
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(__instance.type.Value, out var animalExtensionData) &&
+        animalExtensionData.SwimCondition is not null) {
+      var context = AnimalUtils.GetGsqContext(__instance, __instance.currentLocation);
+      __result = GameStateQuery.CheckConditions(animalExtensionData.SwimCondition, context);
     }
   }
 }

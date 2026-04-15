@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.GameData;
@@ -75,6 +76,43 @@ public class ExtraAnimalConfigApi : IExtraAnimalConfigApi {
       return buildingData.CustomFields?.GetValueOrDefault(AnimalUtils.BuildingFeedOverrideIdKey);
     }
     return null;
+  }
+
+  public List<Item> CreateProduceFor(FarmAnimal animal, bool excludeExtraDrops = false) {
+    var animalData = animal.GetAnimalData();
+    var isDeluxe = false;
+    List<Item> items = new();
+    float modifier = (animal.happiness.Value > 200) ? (animal.happiness.Value * 1.5f) : ((animal.happiness.Value <= 100) ? (animal.happiness.Value - 100) : 0);
+    if (animalData?.DeluxeProduceCareDivisor >= 0f is true
+        && animal.friendshipTowardFarmer.Value >= animalData.DeluxeProduceMinimumFriendship
+        && Game1.random.NextDouble() < ((animal.friendshipTowardFarmer.Value + modifier) / animalData.DeluxeProduceCareDivisor) + Game1.player.team.AverageDailyLuck() * animalData.DeluxeProduceLuckMultiplier) {
+      isDeluxe = true;
+    }
+    var produceId = animal.GetProduceID(Game1.random, isDeluxe);
+    if (produceId is not null) {
+      items.Add(ExtraProduceUtils.CreateProduce(produceId, animal, ProduceMethod.Debris));
+    }
+    // Get extra produce
+    items.RemoveAll(i => i is null);
+    if (ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData) &&
+        animalExtensionData.ExtraProduceSpawnList is not null &&
+        animalExtensionData.ExtraProduceSpawnList.Count > 0) {
+      foreach (var slotData in animalExtensionData.ExtraProduceSpawnList) {
+        foreach (var produceData in slotData.ProduceItemIds ?? []) {
+          // Per produce conditions
+          if (animal.friendshipTowardFarmer.Value < produceData.MinimumFriendship ||
+              produceData.Condition != null && !GameStateQuery.CheckConditions(produceData.Condition, animal.currentLocation, null, null, AnimalUtils.GetGoldenAnimalCracker(animal))) {
+            continue;
+          }
+          var extraProduceId = produceData.ItemId ?? "330";
+          items.Add(ExtraProduceUtils.CreateProduce(extraProduceId, animal, ProduceMethod.Debris));
+        }
+      }
+    }
+    return items;
+  }
+  public void DecrementExtraProduceDays(FarmAnimal animal, int amount = 1) {
+    ExtraProduceUtils.DecrementProduceDays(animal, amount);
   }
 }
 

@@ -404,10 +404,10 @@ public static class ExtraProduceUtils {
   static string ProduceDaysSinceLastLayKeyPrefix = $"${ModEntry.UniqueId}.ProduceDaysSinceLastLay";
   static string CurrentProduceIdKeyPrefix = $"${ModEntry.UniqueId}.CurrentProduceId";
 
-  public static void DecrementProduceDays(FarmAnimal animal) {
+  public static void DecrementProduceDays(FarmAnimal animal, int amount = 1) {
     foreach (var key in animal.modData.Keys) {
       if (key.StartsWith(ProduceDaysSinceLastLayKeyPrefix) && Int32.TryParse(animal.modData[key], out var days)) {
-        animal.modData[key] = (days + 1).ToString();
+        animal.modData[key] = (days + amount).ToString();
       }
     }
   }
@@ -463,6 +463,7 @@ public static class ExtraProduceUtils {
 
   public static string CachedProduceQualityKey = $"${ModEntry.UniqueId}.CachedProduceQuality";
 
+  // TODO: Move the events to where the items actually get added into the autograbber/etc.
   public static SObject CreateProduce(string produceId, FarmAnimal animal, ProduceMethod produceMethod, Tool? tool = null) {
     // Restore cached quality if set
     if (animal.modData.TryGetValue(CachedProduceQualityKey, out var cachedProduceQualityStr) &&

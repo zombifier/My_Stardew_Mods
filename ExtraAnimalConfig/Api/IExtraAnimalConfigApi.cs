@@ -13,7 +13,7 @@ public interface IExtraAnimalConfigApi {
   // produceId: the qualified or unqualified ID of the base produce (ie. the value in (Deluxe)ProduceItemIds)
   public List<GenericSpawnItemDataWithCondition> GetItemQueryOverrides(string animalType, string produceId);
   // Events that will fire when a produce is created. You can register an event here to listen for animal produce events, and potentially even change the output item.
-  // WARNING: Because of a quirk in vanilla code, this will fire if an autograbber was unable to grab the produce from a tool harvested animal because it is full and doing nothing afterwards!
+  // WARNING: Because of a quirk in vanilla code (that will be fixed in 1.6.16), this will fire if an autograbber was unable to grab the produce from a tool harvested animal because it is full and doing nothing afterwards!
   // Drop overnight animals are safe from this event double firing.
   public event Action<IAnimalProduceCreatedEvent>? AnimalProduceCreated;
   // Get a list of extra custom drops associated with this animal using EAC's feature (ie not in Data/FarmAnimals).
@@ -30,6 +30,13 @@ public interface IExtraAnimalConfigApi {
   // Get the qualified id of the feed override for this building type that replaces hay, if any.
   // Does not get any custom troughs placed alongside vanilla hay troughs in buildings
   public string? GetFeedOverride(string? buildingId);
+
+  // Create a produce/produces (if they use EAC multidrops) from this animal if possible, simulating all necessary logic.
+  // Days since produce is ignored, but mood/friendship/maturity is checked.
+  public List<Item> CreateProduceFor(FarmAnimal animal, bool excludeExtraDrops = false);
+
+  // Decrement the produce days for EAC's extra produce. Can be used to apply a "faster producing" effect to specific animals.
+  public void DecrementExtraProduceDays(FarmAnimal animal, int amount = 1);
 }
 
 // The harvest method associated with this animal. Note that (aside from method Tool and null tool) this is not an indicator of whether the produce was autograbbed.

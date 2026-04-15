@@ -46,6 +46,7 @@ internal sealed class ModEntry : Mod {
     grassDropExtensionDataAssetHandler.RegisterEvents(Helper);
 
     AnimalDataPatcher.ApplyPatches(harmony);
+    HorsePatcher.ApplyPatches(harmony, helper);
 
     GameLocation.RegisterTileAction($"{UniqueId}.CustomFeedSilo", CustomFeedSilo);
     GameLocation.RegisterTileAction($"{UniqueId}.CustomFeedHopper", CustomFeedHopper);

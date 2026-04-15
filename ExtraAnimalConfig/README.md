@@ -28,7 +28,11 @@ content packs. For users, install the mod as usual from the link above.
       + [Conditioned texture overrides](#conditioned-texture-overrides)
       + [Animals that chase and attack (or heal) the farmer on contact](#animals-that-chase-and-attack-or-heal-the-farmer-on-contact)
       + [Animals that can harvest crops](#animals-that-can-harvest-crops)
+      + [Animals that can act as heaters during winter](#animals-that-can-harvest-crops)
+      + [Animals that swim only on certain conditions](#animals-that-swim-only-on-certain-conditions)
    * [Game state queries](#game-state-queries)
+   * [Horse features](#horse-features)
+      + [Extra food aside from carrots](#extra-food-aside-from-carrots)
 
 ## Passive Changes
 * Large animals can now squeeze through doors smaller than them. This is essentially the C#
@@ -513,6 +517,14 @@ Sheep). This field allows for more possible textures with conditions associated.
 
 ----
 
+### Animals that swim only on certain conditions
+
+| Field Name                         | Type             | Description              |
+| ---------------------------------- | ---------------- | ------------------------ |
+| `SwimCondition`          | `string` | A game state query that, if true, allows this animal to swim. Requires `CanSwim` in animal data to be true.|
+
+---
+
 ## Game state queries
 
 | GSQ                          |  Description              |
@@ -529,3 +541,57 @@ Additionally, this mod enhances the `Condition` field in the animal data's
 item if not. This allows specifying produce that the animal will only make if
 it has been fed a golden animal cracker. This also works for the condition in
 the `ProduceData` object above.
+
+---
+
+## Horse features
+
+### Extra food aside from carrots
+
+Objects with the context tag `selph.ExtraAnimalConfig_IsHorseFood` can be fed to horses to increase
+its speed for the day, like the vanilla Carrot. Optionally, set the context tag
+`selph.ExtraAnimalConfig_IsNotCarrot` to make the horse not play the carrot eating animation; useful
+if the item you're feeding the horse is not a carrot.
+
+Want the item to be even better than the carrot? Set the key
+`selph.ExtraAnimalConfig_HorseSpeedBuff` in the object data's `CustomFields` dictionary; the value
+is the value of the speed buff (e.g. `"0.5"`). For reference, carrots provide a 0.4 speed buff.
+
+This does not apply to custom horses added by [Custom
+Mounts](https://www.nexusmods.com/stardewvalley/mods/35810), so no need to worry about your Horse
+Chow being feedable to a Dire Wolf/etc. Works with horse reskins obviously.
+
+#### Example
+
+<details>
+
+<summary>Content Patcher definition</summary>
+
+```json
+{
+  "Changes": [
+    {
+      "LogName": "Joja Cola drinkable by hors",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["167", "ContextTags"],
+      "Entries": {
+        "selph.ExtraAnimalConfig_IsHorseFood": "selph.ExtraAnimalConfig_IsHorseFood",
+        "selph.ExtraAnimalConfig_IsNotCarrot": "selph.ExtraAnimalConfig_IsNotCarrot",
+      },
+    },
+    {
+      "LogName": "Joja Cola zoomies",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["167", "CustomFields"],
+      "Entries": {
+        "selph.ExtraAnimalConfig_HorseSpeedBuff": "5",
+      },
+    },
+  ]
+}
+```
+</details>
+
+----
