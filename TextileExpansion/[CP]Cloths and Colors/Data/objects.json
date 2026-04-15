@@ -289,7 +289,7 @@
           "Description": "{{i18n: item.MulberrySapling.description}}",
           "Type": "Basic",
           "Category": -74,
-          "Price": 3000,
+          "Price": 2500,
           "Texture": "{{ModId}}/Objects2",
           "SpriteIndex": 20,
           "ContextTags": [

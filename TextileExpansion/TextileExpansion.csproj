@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <SDV>1615</SDV>
+    <ModFolderName>Cloths and Colors</ModFolderName>
   </PropertyGroup>
   <ItemGroup>
-    <ContentPacks Include="[CP]TextileExpansion" Version="$(Version)" />
+    <ContentPacks Include="[CP]Cloths and Colors" Version="$(Version)" />
   </ItemGroup>
   <Import Project="../Common.csproj" Label="SharedCsproj" />
   <ItemGroup>

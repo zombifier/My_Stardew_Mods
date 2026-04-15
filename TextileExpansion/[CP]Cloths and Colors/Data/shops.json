@@ -52,7 +52,7 @@
         "(O){{ModId}}_MulberrySapling": {
           "Id": "(O){{ModId}}_MulberrySapling",
           "ItemId": "(O){{ModId}}_MulberrySapling",
-          "Price": 6000,
+          "Price": 5000,
         },
         "(O){{ModId}}_LeafBasket": {
           "Id": "(BC){{ModId}}_LeafBasket",
@@ -203,7 +203,7 @@
         "(O){{ModId}}_Cashmere": {
           "Id": "(O){{ModId}}_Cashmere",
           "ItemId": "(O){{ModId}}_Cashmere",
-          "Price": 1500,
+          "Price": 1000,
         },
       },
       "When": {
