@@ -259,6 +259,14 @@
         "HasMod |contains=radsilver.yaks": "true",
       },
     },
+    {
+      "LogName": "Mizu's Deers compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/mizus_deers.json",
+      "When": {
+        "HasMod |contains=Mizu.Deer,Mizu.Reindeer": "true",
+      },
+    },
     // Has to be latest because of changes in the templates (TODO - split those out)
     {
       "LogName": "Add new objects",

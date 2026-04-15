@@ -421,6 +421,15 @@
           //"Texture": "{{ModId}}/Objects2",
           "SpriteIndex": 0,
         },
+        "{{ModId}}_Velvet": {
+          "Name": "{{ModId}}_Velvet",
+          "DisplayName": "{{i18n: item.Velvet.name}}",
+          "Description": "{{i18n: item.Velvet.description}}",
+          "Type": "Litter",
+          "Category": -999,
+          //"Texture": "{{ModId}}/Objects2",
+          "SpriteIndex": 0,
+        },
       },
     },
     {
