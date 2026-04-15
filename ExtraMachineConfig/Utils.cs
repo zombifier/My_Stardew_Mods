@@ -307,4 +307,15 @@ static class Utils {
       }
     }
   }
+
+  public static bool IsPrismatic(Item item) {
+    return ItemContextTagManager.DoAnyTagsMatch(["color_prismatic", SmokedItemHarmonyPatcher.DrawPrismaticLayerTag], item.GetContextTags());
+  }
+
+  public static string colorToStringIncludingPrismatic(Item item) {
+    if (IsPrismatic(item)) {
+      return SmokedItemHarmonyPatcher.PrismaticExtraColor;
+    }
+    return colorToString(TailoringMenu.GetDyeColor(item) ?? Color.White);
+  }
 }

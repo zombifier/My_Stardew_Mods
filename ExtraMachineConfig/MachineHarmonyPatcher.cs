@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.ItemTypeDefinitions;
 using StardewValley.Extensions;
 using StardewValley.Monsters;
 using StardewValley.Triggers;
@@ -238,6 +239,53 @@ sealed class MachineHarmonyPatcher {
         original: AccessTools.DeclaredMethod(typeof(GreenSlime),
           nameof(GreenSlime.getExtraDropItems)),
         postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(MachineHarmonyPatcher.GreenSlime_getExtraDropItems_Postfix)));
+
+    // Patch all vanilla colored object makers to support our prismatic stuff
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ObjectDataDefinition),
+          nameof(ObjectDataDefinition.CreateFlavoredAgedRoe)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(CreateFlavoredItem_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ObjectDataDefinition),
+          nameof(ObjectDataDefinition.CreateFlavoredBait)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(CreateFlavoredItem_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ObjectDataDefinition),
+          nameof(ObjectDataDefinition.CreateFlavoredDriedFruit)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(CreateFlavoredItem_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ObjectDataDefinition),
+          nameof(ObjectDataDefinition.CreateFlavoredDriedMushroom)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(CreateFlavoredItem_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ObjectDataDefinition),
+          nameof(ObjectDataDefinition.CreateFlavoredHoney)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(CreateFlavoredItem_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ObjectDataDefinition),
+          nameof(ObjectDataDefinition.CreateFlavoredJelly)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(CreateFlavoredItem_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ObjectDataDefinition),
+          nameof(ObjectDataDefinition.CreateFlavoredJuice)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(CreateFlavoredItem_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ObjectDataDefinition),
+          nameof(ObjectDataDefinition.CreateFlavoredPickle)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(CreateFlavoredItem_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ObjectDataDefinition),
+          nameof(ObjectDataDefinition.CreateFlavoredRoe)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(CreateFlavoredItem_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ObjectDataDefinition),
+          nameof(ObjectDataDefinition.CreateFlavoredSmokedFish)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(CreateFlavoredItem_Postfix)));
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(ObjectDataDefinition),
+          nameof(ObjectDataDefinition.CreateFlavoredWine)),
+        postfix: new HarmonyMethod(typeof(MachineHarmonyPatcher), nameof(CreateFlavoredItem_Postfix)));
+
 
     // Transpilers go here
     // Allow non-Object input (by turning them into weeds if necessary to satisfy the non-machine code branches)
@@ -484,7 +532,7 @@ sealed class MachineHarmonyPatcher {
         if (dropInIdMatch.Success) {
           string idToCheck = dropInIdMatch.Groups[1].Value;
           if (usedFuels.TryGetValue(idToCheck, out var fuelItem)) {
-            __result.modData[$"{ExtraColorKeyPrefix}.{i}"] = Utils.colorToString(TailoringMenu.GetDyeColor(fuelItem) ?? Color.White);
+            __result.modData[$"{ExtraColorKeyPrefix}.{i}"] = Utils.colorToStringIncludingPrismatic(fuelItem);
           }
         }
         var dropIdPreserveMatch = DropInPreserveRegex.Match(val);
@@ -492,7 +540,7 @@ sealed class MachineHarmonyPatcher {
           string idToCheck = dropIdPreserveMatch.Groups[1].Value;
           if (usedFuels.TryGetValue(idToCheck, out var fuelItem)) {
             var preservedIdItem = ItemRegistry.Create((fuelItem as SObject)?.preservedParentSheetIndex.Value);
-            __result.modData[$"{ExtraColorKeyPrefix}.{i}"] = Utils.colorToString(TailoringMenu.GetDyeColor(preservedIdItem) ?? Color.White);
+            __result.modData[$"{ExtraColorKeyPrefix}.{i}"] = Utils.colorToStringIncludingPrismatic(preservedIdItem);
           }
         }
         var inputExtraPreserveIdMatch = InputExtraIdRegex.Match(val);
@@ -556,6 +604,13 @@ sealed class MachineHarmonyPatcher {
         outputData.CustomData.TryGetValue(InputEdibilityMultiplierKey, out var inputEdiblityMultiplierStr) &&
         Double.TryParse(inputEdiblityMultiplierStr, out var inputEdibilityMultiplier)) {
       resultObject.Edibility = (int)(inputObject.Edibility * inputEdibilityMultiplier);
+    }
+
+    // If input item is prismatic, enable the output item's prismatic layer
+    if ((outputData.CustomData.ContainsKey(CopyColorKey) || outputData.CopyColor)
+         && Utils.IsPrismatic(inputItem)) {
+      __result.modData[ExtraContextTagsKey] = __result.modData.GetValueOrDefault(ExtraContextTagsKey, "") + "," + SmokedItemHarmonyPatcher.DrawPrismaticLayerTag;
+      __result.MarkContextTagsDirty();
     }
   }
 
@@ -952,7 +1007,6 @@ sealed class MachineHarmonyPatcher {
       }
     }
   }
-
   public static void SObject_draw_Postfix(SObject __instance, SpriteBatch spriteBatch, int x, int y, float alpha, int ____machineAnimationFrame, MachineEffects ____machineAnimation) {
     if (__instance.isTemporarilyInvisible || !__instance.bigCraftable.Value || __instance.heldObject.Value is null) return;
     if ((__instance.GetMachineData()?.CustomFields?.TryGetValue(DrawLayerTexture, out var drawLayerTexture) ?? false)) {
@@ -962,7 +1016,7 @@ sealed class MachineHarmonyPatcher {
         drawLayerTextureIndex = 0;
       }
       var offset = __instance.ParentSheetIndex - ItemRegistry.GetDataOrErrorItem(__instance.QualifiedItemId).SpriteIndex;
-      var color = TailoringMenu.GetDyeColor(__instance.heldObject.Value) ?? Color.White;
+      var color = (Utils.IsPrismatic(__instance.heldObject.Value) ? Utility.GetPrismaticColor() : TailoringMenu.GetDyeColor(__instance.heldObject.Value)) ?? Color.White;
       int animationOffset = 0;
       if (__instance.showNextIndex.Value) {
         animationOffset = 1;
@@ -1097,5 +1151,11 @@ sealed class MachineHarmonyPatcher {
 
   static void Item_CopyFieldsFrom_Postfix(Item __instance, Item source) {
     __instance.Stack = source.Stack;
+  }
+
+  static void CreateFlavoredItem_Postfix(SObject ingredient, ref SObject __result) {
+    if (__result is ColoredObject && Utils.IsPrismatic(ingredient)) {
+      __result.modData[ExtraContextTagsKey] = __result.modData.GetValueOrDefault(ExtraContextTagsKey, "") + "," + SmokedItemHarmonyPatcher.DrawPrismaticLayerTag;
+    }
   }
 }

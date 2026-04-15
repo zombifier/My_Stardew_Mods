@@ -61,8 +61,9 @@ hidden. This is a passive change.
 
 ### Draw smoke/steam particles around item
 
-Items with the context tag `smoked_item` will have its sprite darkened and
-have smoke particles drawn around it like smoked fish.
+Items with the context tag `smoked_item` will have its sprite darkened and have smoke particles
+drawn around it like smoked fish. `smoked_item_no_darken` only draws the smoke particles without
+darkening the sprite.
 
 Items with the context tag `steamed_item` will have steam particles drawn around it (aka smoke
 particles but white). Its sprite won't be darkened.
@@ -225,6 +226,21 @@ Set this in object data `CustomFields`:
 | Field Name                         | Description              |
 | ---------------------------------- | ------------------------ |
 | `selph.ExtraMachineConfig.DyeColorOverride` | A string that corresponds to a vanilla [Color](https://stardewvalleywiki.com/Modding:Common_data_field_types#Color), or a comma-separated RGB values (e.g. `"255,128,64"`). This color will be used as the item color (such as when making juice or jelly) instead of the color from its `color_` tag. It's still highly recommended you set a `color_` tag, ideally the nearest vanilla color.|
+
+---
+
+### Prismatic items (items that cycle through every color automagically)
+
+Items with the `draw_prismatic_layer` tag will have a prismatic colored overlay on top, using the
+monochrome sprite next to its main sprite as the overlay. Don't forget to also set
+`color_prismatic`! (see below)
+
+Additionally, this mod passively makes it so that machine output items with `CopyColor` set will get
+this tag (via the [extra context tag](#append-extra-context-tags-to-shop-and-machine-item-queries)
+feature) if the input has the `color_prismatic` tag. This only works for new items created after
+this mod is installed.
+
+Want your extra colors to be prismatic? Set their value in `modData` to the string `PRISMATIC`.
 
 ---
 
