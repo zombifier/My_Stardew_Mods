@@ -32,7 +32,7 @@ internal sealed class ModEntry : Mod {
 
   static void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
     if (e.NameWithoutLocale.IsEquivalentTo("Data/Locations")) {
-      e.Edit(asset => {
+      e.Edit(static asset => {
         var data = asset.AsDictionary<string, LocationData>().Data;
         if (data.TryGetValue("Backwoods", out var backwoodsData)) {
           backwoodsData.ExcludeFromNpcPathfinding = false;
@@ -42,7 +42,7 @@ internal sealed class ModEntry : Mod {
       });
     }
     if (e.NameWithoutLocale.IsEquivalentTo("Maps/Backwoods")) {
-      e.Edit(asset => {
+      e.Edit(static asset => {
         Map targetMap = asset.AsMap().Data;
 
         Map sourceMap = Game1.content.Load<Map>("Maps/Backwoods_Staircase");
@@ -56,10 +56,21 @@ internal sealed class ModEntry : Mod {
             targetMap.Properties["Warp"] = RemoveWarps(warps, "Mountain");
           }
         }
+        // YEET THAT FUCKING BUSH THAT I HATE
+        // To explain, this bush sits on top of a warp between Mountains and Backwoods, breaking the
+        // NPC scheduler. Yeet it both here and in game (see below) for existing saves.
+        var layer = targetMap.GetLayer("Paths");
+        if (layer is null) {
+          StaticMonitor.Log("Paths layer not found? This should not happen.", LogLevel.Error);
+        } else if (layer?.Tiles[49, 10] is null) {
+          StaticMonitor.Log("Accursed bush not found? Strange.", LogLevel.Info);
+        } else {
+          layer?.Tiles[49, 10] = null;
+        }
       }, Priority.Last);
     }
     if (HasDownhill && e.NameWithoutLocale.IsEquivalentTo("Maps/Mountain")) {
-      e.Edit(asset => {
+      e.Edit(static asset => {
         Map targetMap = asset.AsMap().Data;
         if (targetMap.Properties.TryGetValue("Warp", out var warps)) {
           targetMap.Properties["Warp"] = RemoveWarps(warps, "Backwoods");
@@ -74,11 +85,16 @@ internal sealed class ModEntry : Mod {
       StaticMonitor.Log("Backwoods not found? This should not happen.", LogLevel.Error);
       return;
     }
+    var bushToYeet = new List<LargeTerrainFeature>();
     foreach (LargeTerrainFeature largeTerrainFeature in backwoods.largeTerrainFeatures) {
-      if (largeTerrainFeature.Tile == new Vector2(37f, 16f)) {
-        backwoods.largeTerrainFeatures.Remove(largeTerrainFeature);
-        break;
+      if (largeTerrainFeature.Tile == new Vector2(37f, 16f)
+          // YEET THAT FUCKING BUSH THAT I HATE
+          || largeTerrainFeature.Tile == new Vector2(49f, 10f)) {
+        bushToYeet.Add(largeTerrainFeature);
       }
+    }
+    foreach (var bush in bushToYeet) {
+      backwoods.largeTerrainFeatures.Remove(bush);
     }
     //AddStairs(backwoods);
   }
