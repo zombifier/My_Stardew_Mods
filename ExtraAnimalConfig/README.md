@@ -158,6 +158,11 @@ in custom animal data:
 Want to override the extra produce's harvest method, or apply an item query? Set produce-specific extra data per the
 [above section](#change-a-produces-harvest-method-actual-returned-item,-and-other-settings)!
 
+NOTE REGARDING ANIMAL HUSBANDRY COMPATIBILITY: AHM will not be able to see the extra items for the
+purpose of determining items that can be used to impregnate an animal. A workaround is to also add
+the extra produce into the vanilla data's `(Deluxe)ProduceItemId` field, but with `Condition` set to
+`FALSE` so it never gets selected over the item you *do* want to drop in the animal's vanilla slot.
+
 #### Example
 
 
