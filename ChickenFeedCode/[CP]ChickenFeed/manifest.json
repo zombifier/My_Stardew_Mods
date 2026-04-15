@@ -14,6 +14,7 @@
     {"UniqueID": "UncleArya.ResourceChickens", "IsRequired": false},
     {"UniqueID": "Amichwan.More.upgrades", "IsRequired": false},
     {"UniqueID": "ASLane.MBO1", "IsRequired": false},
+    {"UniqueID": "vypr.expandedSilos", "IsRequired": false},
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"

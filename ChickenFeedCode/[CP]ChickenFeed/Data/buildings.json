@@ -429,5 +429,25 @@
         "Multiplier": "3",
       }
     },
+    {
+      "LogName": "Expanded silos compat",
+      "Action": "Include",
+      "FromFile": "Data/modded-silo-compat.json",
+      "LocalTokens": {
+        "Building": "BigSilo",
+        "Mod": "vypr.expandedSilos",
+        "Multiplier": "2",
+      }
+    },
+    {
+      "LogName": "Expanded silos compat",
+      "Action": "Include",
+      "FromFile": "Data/modded-silo-compat.json",
+      "LocalTokens": {
+        "Building": "DeluxeSilo",
+        "Mod": "vypr.expandedSilos",
+        "Multiplier": "4",
+      }
+    },
   ]
 }
