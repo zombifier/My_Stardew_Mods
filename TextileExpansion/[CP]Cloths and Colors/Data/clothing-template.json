@@ -180,5 +180,18 @@
         "selph.TextileExpansionCode/PlayerHasOutfitter": true,
       },
     },
+    {
+      "LogName": "Add gift tastes",
+      "Action": "EditData",
+      "Target": "Data/NPCGiftTastes",
+      "TextOperations": [
+        {
+          "Operation": "Append",
+          "Target": ["Entries", "Universal_Like"],
+          "Value": "{{ModId}}_Clothing{{Clothing}} {{ModId}}_Clothing{{Clothing}}Embroidered {{ModId}}_Clothing{{Clothing}}Jeweled",
+          "Delimiter": " "
+        },
+      ]
+    },
   ]
 }
