@@ -327,7 +327,7 @@ sealed class MachineHarmonyPatcher {
       return;
     }
     string? invalidMessage = null;
-    IInventory inventory = SObject.autoLoadFrom ?? who.Items;
+    IInventory inventory = SObject.autoLoadFrom ?? who?.Items ?? Game1.player.Items;
     List<MachineItemOutput> newOutputs = new List<MachineItemOutput>();
     foreach (MachineItemOutput output in outputs) {
       if (output.CustomData == null) {
@@ -389,8 +389,8 @@ sealed class MachineHarmonyPatcher {
   // * Saves extra flavor and color info if specified
   // * Set the automatic produce count, if this comes from `PlaceInMachine` and it's not set.
   private static void MachineDataUtility_GetOutputItem_postfix(ref Item __result, SObject machine,
-      MachineItemOutput outputData, Item inputItem,
-      Farmer who, bool probe,
+      MachineItemOutput? outputData, Item? inputItem,
+      Farmer? who, bool probe,
       ref int? overrideMinutesUntilReady) {
     if (__result == null || outputData == null) {
       return;
@@ -419,7 +419,7 @@ sealed class MachineHarmonyPatcher {
       }
     }
 
-    IInventory inventory = SObject.autoLoadFrom ?? who.Items;
+    IInventory inventory = SObject.autoLoadFrom ?? who?.Items ?? Game1.player.Items;
     // Inherit preserve ID
     if ((outputData.PreserveId == "INHERIT" ||
           (outputData.CustomData != null &&
