@@ -435,7 +435,7 @@ public static class ExtraProduceUtils {
       return harvestMethodOverride == moddedHarvestToolString;
     }
     var vanillaTool = animal.GetAnimalData()?.HarvestTool;
-    return animal.GetHarvestType() == harvestMethod && (tool is null || vanillaTool == tool);
+    return animal.GetAnimalData()?.HarvestType == harvestMethod && (tool is null || vanillaTool == tool);
   }
 
   // Returns whether the animal's current produce is hardcoded to drop instead of harvested by tool
@@ -444,8 +444,8 @@ public static class ExtraProduceUtils {
   }
 
   public static void DropOrAddToGrabber(FarmAnimal animal, string? produceId, out bool drop, out bool addToGrabber, out bool debris) {
-    drop = animal.GetHarvestType() == FarmAnimalHarvestType.DropOvernight;
-    addToGrabber = animal.GetHarvestType() != FarmAnimalHarvestType.DigUp;
+    drop = animal.GetAnimalData()?.HarvestType == FarmAnimalHarvestType.DropOvernight;
+    addToGrabber = animal.GetAnimalData()?.HarvestType != FarmAnimalHarvestType.DigUp;
     debris = false;
     if (GetHarvestMethodOverride(animal, produceId, out var harvestMethod)) {
       drop = harvestMethod == "DropOvernight";
