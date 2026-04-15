@@ -47,7 +47,7 @@
     },
     {
       "Name": "PlantFiberFlavorContextTags",
-      "Value": "preserve_sheet_index_{{ModId}}_Hemp/preserve_sheet_index_{{ModId}}_Linen/preserve_sheet_index_Cornucopia_Cotton/preserve_sheet_index_{{ModId}}_Nettle",
+      "Value": "preserve_sheet_index_{{ModId}}_Hemp/preserve_sheet_index_{{ModId}}_Linen/preserve_sheet_index_{{ModId}}_Cotton/preserve_sheet_index_{{ModId}}_Nettle",
     },
     {
       "Name": "AnimalFiberFlavorContextTags",
@@ -55,7 +55,7 @@
     },
     {
       "Name": "PlantFiberEmbroiderFlavorContextTags",
-      "Value": "extra_preserve_sheet_index_1_{{ModId}}_Hemp/extra_preserve_sheet_index_1_{{ModId}}_Linen/extra_preserve_sheet_index_1_Cornucopia_Cotton/extra_preserve_sheet_index_1_{{ModId}}_Nettle",
+      "Value": "extra_preserve_sheet_index_1_{{ModId}}_Hemp/extra_preserve_sheet_index_1_{{ModId}}_Linen/extra_preserve_sheet_index_1_{{ModId}}_Cotton/extra_preserve_sheet_index_1_{{ModId}}_Nettle",
     },
   ],
   "Changes": [
@@ -241,11 +241,10 @@
       "FromFile": "Data/Compatibility/mps.json",
       "When": {
         "HasMod |contains=nachonline.mps": "true",
-//        "HasMod |contains=Spiderbuttons.CMCT": "true",
       },
     },
     {
-      "LogName": "MPS compat",
+      "LogName": "Alpaca compat",
       "Action": "Include",
       "FromFile": "Data/Compatibility/birdb_alpaca.json",
       "When": {

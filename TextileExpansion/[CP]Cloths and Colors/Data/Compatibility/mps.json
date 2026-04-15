@@ -53,21 +53,6 @@
         }
       }
     },
-    // Nach'll probably add it on his side...?
-    //{
-    //  "LogName": "Add weaver bonus to luxury cloth",
-    //  "Action": "EditData",
-    //  "Target": "Data/Machines",
-    //  "TargetField": ["(BC)17", "OutputRules", "EastScarp.BlackWoolLoom", "OutputItem" , "EastScarp.BlackWooltoCloth", "StackModifiers"],
-    //  "Entries": {
-    //    "{{ModId}}_Weaver" :{
-    //      "Id": "{{ModId}}_Weaver",
-    //      "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
-    //      "Modification": "Add",
-    //      "Amount": 2.0,
-    //    },
-    //  }
-    //},
     {
       "LogName": "Make luxury cloth dyeable",
       "Action": "Include",
@@ -76,72 +61,6 @@
         "Type": "cloth",
         "ItemId": "nachonline.mps_LuxuryCloth",
         "SourceItemId": "nachonline.mps_LuxuryWool",
-      },
-    },
-    {
-      "LogName": "MPS Config - Steel",
-      "Action": "Include",
-      "FromFile": "Data/Compatibility/mps_template.json",
-      "LocalTokens": {
-        "MachineId": "nachonline.mps_SteelLoom",
-        "OutputQuality": "0",
-        "ReadyTime": "180",
-        //"MachineConfigValue": "S.L",
-      },
-    },
-    {
-      "LogName": "MPS Config - Gold",
-      "Action": "Include",
-      "FromFile": "Data/Compatibility/mps_template.json",
-      "LocalTokens": {
-        "MachineId": "nachonline.mps_GoldLoom",
-        "OutputQuality": "1",
-        "ReadyTime": "180",
-        //"MachineConfigValue": "G.L",
-      },
-    },
-    {
-      "LogName": "MPS Config - Diamond",
-      "Action": "Include",
-      "FromFile": "Data/Compatibility/mps_template.json",
-      "LocalTokens": {
-        "MachineId": "nachonline.mps_DiamondLoom",
-        "OutputQuality": "1",
-        "ReadyTime": "120",
-        //"MachineConfigValue": "D.L",
-      },
-    },
-    {
-      "LogName": "MPS Config - Iridium",
-      "Action": "Include",
-      "FromFile": "Data/Compatibility/mps_template.json",
-      "LocalTokens": {
-        "MachineId": "nachonline.mps_IridiumLoom",
-        "OutputQuality": "2",
-        "ReadyTime": "120",
-        //"MachineConfigValue": "I.L",
-      },
-    },
-    {
-      "LogName": "MPS Config - Radioactive",
-      "Action": "Include",
-      "FromFile": "Data/Compatibility/mps_template.json",
-      "LocalTokens": {
-        "MachineId": "nachonline.mps_RadioactiveLoom",
-        "OutputQuality": "2",
-        "ReadyTime": "60",
-        //"MachineConfigValue": "R.L",
-      },
-    },
-    {
-      "LogName": "MPS Config - Prismatic",
-      "Action": "Include",
-      "FromFile": "Data/Compatibility/mps_template.json",
-      "LocalTokens": {
-        "MachineId": "nachonline.mps_PrismaticLoom",
-        "OutputQuality": "4",
-        "ReadyTime": "60",
-        //"MachineConfigValue": "P.L",
       },
     },
   ]
