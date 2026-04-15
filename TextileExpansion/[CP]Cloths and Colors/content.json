@@ -13,6 +13,10 @@
       "AllowValues": "true, false",
       "Default": "false",
     },
+    "NeedleStyle": {
+      "AllowValues": "Needle, Template",
+      "Default": "Needle",
+    },
   },
   "DynamicTokens": [
     {

@@ -16,7 +16,7 @@
         "{{ModId}}_Template{{Clothing}}": {
           "Name": "{{ModId}}_Template{{Clothing}}",
           "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Template{{Ingredient}} {{i18n:item.{{Clothing}}.name}}]",
-          "Description": "{{i18n: item.ClothingNeedle.description.{{ClothOrYarnBase}}}}",
+          "Description": "{{i18n: item.Clothing{{NeedleStyle}}.description.{{ClothOrYarnBase}}}}",
           "Type": "Basic",
           "Category": 0,
           "Price": 0,
@@ -54,8 +54,8 @@
         },
         "{{ModId}}_Clothing{{Clothing}}Embroidered": {
           "Name": "{{ModId}}_Clothing{{Clothing}}Embroidered",
-          "DisplayName": "{{i18n: item.{{Clothing}}.name}}",
-          //"DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_EmbroideredClothing {{i18n:item.{{Clothing}}.name}}]",
+          //"DisplayName": "{{i18n: item.{{Clothing}}.name}}",
+          "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_EmbroideredClothing {{i18n:item.{{Clothing}}.name}}]",
           "Description": "{{i18n: item.EmbroideredClothing.description.canJewel.{{CanJewel}}}}",
           "Type": "Basic",
           "Category": -26,
@@ -77,8 +77,8 @@
         },
         "{{ModId}}_Clothing{{Clothing}}Jeweled": {
           "Name": "{{ModId}}_Clothing{{Clothing}}Jeweled",
-          "DisplayName": "{{i18n: item.{{Clothing}}.name}}",
-          //"DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_JeweledClothing {{i18n:item.{{Clothing}}.name}}]",
+          //"DisplayName": "{{i18n: item.{{Clothing}}.name}}",
+          "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_JeweledClothing {{i18n:item.{{Clothing}}.name}}]",
           "Description": "{{i18n: item.JeweledClothing.description}}",
           "Type": "Basic",
           "Category": -26,

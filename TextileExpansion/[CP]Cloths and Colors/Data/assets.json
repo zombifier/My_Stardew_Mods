@@ -2,8 +2,13 @@
   "Changes": [
     {
       "Action": "Load",
-      "Target": "{{ModId}}/Objects,{{ModId}}/Objects2,{{ModId}}/Objects3,{{ModId}}/BigCraftables,{{ModId}}/Crops,{{ModId}}/FruitTrees",
+      "Target": "{{ModId}}/Objects,{{ModId}}/Objects2,{{ModId}}/BigCraftables,{{ModId}}/Crops,{{ModId}}/FruitTrees",
       "FromFile": "Assets/{{TargetWithoutPath}}.png",
+    },
+    {
+      "Action": "Load",
+      "Target": "{{ModId}}/Objects3",
+      "FromFile": "Assets/{{TargetWithoutPath}}_{{NeedleStyle}}.png",
     },
     {
       "Action": "Load",

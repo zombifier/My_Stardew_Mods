@@ -415,4 +415,9 @@
   "item.Heavy.description": "This is a fake item created so cloth/yarn made from Bison Wool show as \"Heavy\".",
   "item.Fine.name": "Fine",
   "item.Fine.description": "This is a fake item created so cloth/yarn made from Fine Thread show as \"Fine\".",
+  // Config options new in 1.3.11
+  "config.NeedleStyle.name": "Clothing Template Style",
+  "config.NeedleStyle.description": "Switches the style of clothing templates between Needles and Templates. Cosmetic only.",
+  "config.NeedleStyle.values.Needle": "Needles",
+  "config.NeedleStyle.values.Template": "Templates",
 }

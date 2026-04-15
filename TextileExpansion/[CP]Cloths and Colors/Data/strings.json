@@ -29,6 +29,20 @@
       },
     },
     {
+      "LogName": "Add strings",
+      "Action": "EditData",
+      "Target": "Strings/Objects",
+      "Entries": {
+        "{{ModId}}_Template334": "{{i18n:item.ClothingTemplate.name}}",
+        "{{ModId}}_Template335": "{{i18n:item.ClothingTemplate.name}}",
+        "{{ModId}}_Template336": "{{i18n:item.ClothingTemplate.name}}",
+        "{{ModId}}_Template337": "{{i18n:item.ClothingTemplate.name}}",
+      },
+      "When": {
+        "NeedleStyle": "Template",
+      }
+    },
+    {
       "LogName": "Edit Rabbit's Foot name/desc",
       "Action": "EditData",
       "Target": "Strings/Objects",
