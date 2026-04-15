@@ -280,6 +280,10 @@ internal sealed class ModEntry : Mod {
       ModEntry.StaticMonitor.Log($"Squeezing the big {animal.type.Value} through the {animal.home.buildingType.Value}'s teeny door", LogLevel.Info);
       var rectForAnimalDoor = animal.home.getRectForAnimalDoor();
       animal.Position = new Vector2(rectForAnimalDoor.X - 32, rectForAnimalDoor.Y);
+      // Moar fixes for 24px animals weh
+      if (widthPixels > 16 && widthPixels < 32 && doorWidth == 1) {
+        animal.Position += new Vector2(32 - widthPixels, 0);
+      }
       return;
     }
   }
