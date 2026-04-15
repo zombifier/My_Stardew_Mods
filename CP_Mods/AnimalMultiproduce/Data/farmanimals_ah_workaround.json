@@ -868,6 +868,11 @@
       "Entries": {
         "ZoeyHoshi.Camelus_CamelHair_Void": null,
       },
+      "When": {
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "Spiderbuttons.CMCT/Config: ZoeyHoshi.Camelus, DisableVoidCamel": "false",
+      },
     },
     {
       "LogName": "Add hair as extra drops from void camel",
@@ -890,7 +895,8 @@
       },
       "When": {
         "HasMod |contains=Spiderbuttons.CMCT": "true",
-        "Spiderbuttons.CMCT/Config: ZoeyHoshi.Camelus, MatchingProductColours": "false",
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "Spiderbuttons.CMCT/Config: ZoeyHoshi.Camelus, DisableVoidCamel": "false",
       },
     },
     // Mizu's Goose
