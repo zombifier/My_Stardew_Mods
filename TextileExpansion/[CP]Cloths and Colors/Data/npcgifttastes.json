@@ -148,7 +148,7 @@
       "Action": "EditData",
       "Target": "Characters/Dialogue/Sandy",
       "Entries": {
-        "AcceptGift_(O){{ModId}}_CochinealBeetle": "{{i18n: gift.Sandy.GreenSap}}",
+        "AcceptGift_(O){{ModId}}_CochinealBeetle": "{{i18n: gift.Sandy.CochinealBeetle}}",
       }
     },
   ]

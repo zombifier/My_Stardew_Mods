@@ -72,7 +72,7 @@ internal sealed class ModEntry : Mod {
 
     helper.Events.Content.AssetRequested += OnAssetRequested;
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-    helper.Events.GameLoop.DayStarted += OnDayStartedResetTailorCount;
+    helper.Events.GameLoop.DayEnding += OnDayEndingResetTailorCount;
     helper.Events.GameLoop.DayStarted += OnDayStartedHandleCouturier;
     helper.Events.GameLoop.DayEnding += OnDayEnding;
     helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
@@ -271,8 +271,8 @@ internal sealed class ModEntry : Mod {
   }
 
   static PerScreen<int> DailyTailor = new();
-  public void OnDayStartedResetTailorCount(object? sender, DayStartedEventArgs e) {
-    DailyTailor.Value = 0;
+  public void OnDayEndingResetTailorCount(object? sender, DayEndingEventArgs e) {
+    DailyTailor.ResetAllScreens();
     CachedDescriptions.Clear();
   }
 
@@ -324,7 +324,8 @@ internal sealed class ModEntry : Mod {
   }
 
   // Sewing!
-  static void TailoringMenu_CraftItem_Postfix(ref Item __result, Item left_item, Item right_item) {
+  static void TailoringMenu_CraftItem_Postfix(ref Item? __result, Item? left_item, Item? right_item) {
+    if (__result is null || left_item is null || right_item is null) return;
     if (ItemContextTagManager.HasBaseTag(__result.QualifiedItemId, $"{ContentPackId}_base_clothing_item")
         && left_item is SObject cloth
         && ColoredObject.TrySetColor(__result, TailoringMenu.GetDyeColor(left_item) ?? Color.White, out var coloredClothing)) {
@@ -510,6 +511,7 @@ internal sealed class ModEntry : Mod {
 
   // Grant XP for ready machines
   static void SObject_onReadyForHarvest_Postfix(SObject __instance) {
+    if (!Context.IsMainPlayer) return;
     if (__instance.heldObject.Value is not SObject obj || obj.modData.ContainsKey(ObjAlreadyGrantedExp)) return;
     if (ItemContextTagManager.HasBaseTag(__instance.QualifiedItemId, $"{ContentPackId}_textile_xp")) {
       var multiplier = 1f;

@@ -14,13 +14,13 @@
         "{{ModId}}_EmilyDyePotRecipe": {
           "Id": "{{ModId}}_EmilyDyePotRecipe",
           "Trigger": "DayStarted",
-          "Condition": "PLAYER_HAS_SEEN_EVENT Current 992559",
+          "Condition": "PLAYER_HAS_SEEN_EVENT Any 992559",
           "Action": "AddMail Current {{ModId}}_EmilyDyePotRecipe Now",
         },
         "{{ModId}}_EmilyFreeDyes": {
           "Id": "{{ModId}}_EmilyFreeDyes",
           "Trigger": "DayStarted",
-          "Condition": "PLAYER_HAS_SEEN_EVENT Current 992559",
+          "Condition": "PLAYER_HAS_SEEN_EVENT Any 992559",
           "Action": "AddMail Current {{ModId}}_EmilyFreeDyes Now",
         },
         "{{ModId}}_SandyDyeRare": {
