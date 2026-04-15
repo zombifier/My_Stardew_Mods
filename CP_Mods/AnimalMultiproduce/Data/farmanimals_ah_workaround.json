@@ -35,9 +35,9 @@
               "ItemId": "446",
               "MinimumFriendship": 600,
               "Condition": "RANDOM 0.33 @addDailyLuck",
-            }
+            },
           ]
-        }
+        },
       },
     },
     {
@@ -56,9 +56,9 @@
               "Id": "{{ModId}}.DuckFeather",
               "ItemId": "444",
               "MinimumFriendship": 200,
-            }
+            },
           ]
-        }
+        },
       },
     },
     {
@@ -94,7 +94,7 @@
       "When": {
         "HasMod |contains=radm.milkdasheep": "true",
         "Query: NOT {{HasMod |contains=Lumisteria.MtVapius}} OR '{{SheepMilkToUse}}' = 'MilkableSheep'": true,
-      }
+      },
     },
     {
       "LogName": "Remove milk from sheep",
@@ -149,9 +149,9 @@
               "Id": "{{ModId}}.SheepMilk",
               "ItemId": "radm.milkdasheep_SheepMilk",
               "MinimumFriendship": 0,
-            }
+            },
           ]
-        }
+        },
       },
     },
     // Mt Vapius compat
@@ -159,24 +159,24 @@
       "LogName": "Remove feather from goose",
       "Action": "EditData",
       "Target": "Data/FarmAnimals",
-      "TargetField": ["Lumisteria.MtVapius_Goose", "DeluxeProduceItemIds"],
+      "TargetField": ["Lumisteria.MtVapius_Goose", "DeluxeProduceItemIds", "#1"],
       "When": {
         "HasMod |contains=Lumisteria.MtVapius": "true",
       },
       "Entries": {
-        "Lumisteria.MtVapius_GooseDown": null,
+        "Condition": "FALSE",
       },
     },
     {
       "LogName": "Remove egg from stellar goose",
       "Action": "EditData",
       "Target": "Data/FarmAnimals",
-      "TargetField": ["Lumisteria.MtVapius_StellarGoose", "DeluxeProduceItemIds"],
+      "TargetField": ["Lumisteria.MtVapius_StellarGoose", "DeluxeProduceItemIds", "#2"],
       "When": {
         "HasMod |contains=Lumisteria.MtVapius": "true",
       },
       "Entries": {
-        "Lumisteria.MtVapius_StellarGooseEgg": null,
+        "Condition": "FALSE",
       },
     },
     {
@@ -250,7 +250,7 @@
               "MinimumFriendship": 0,
             },
           ]
-        }
+        },
       },
     },
     {
@@ -272,9 +272,9 @@
               "Id": "Lumisteria.MtVapius_GooseDown",
               "ItemId": "Lumisteria.MtVapius_GooseDown",
               "MinimumFriendship": 200,
-            }
+            },
           ]
-        }
+        },
       },
     },
     {
@@ -296,9 +296,9 @@
               "Id": "Lumisteria.MtVapius_StellarGooseEgg",
               "ItemId": "Lumisteria.MtVapius_StellarGooseEgg",
               "MinimumFriendship": 200,
-            }
+            },
           ]
-        }
+        },
       },
     },
     {
@@ -320,9 +320,9 @@
               "Id": "Lumisteria.MtVapius_SpeckledFowlFeather",
               "ItemId": "Lumisteria.MtVapius_SpeckledFowlFeather",
               "MinimumFriendship": 200,
-            }
+            },
           ]
-        }
+        },
       },
     },
     {
@@ -350,17 +350,17 @@
               "Id": "Lumisteria.MtVapius_VoidFeather",
               "ItemId": "Lumisteria.MtVapius_VoidFeather",
               "MinimumFriendship": 200,
-            }
+            },
           ]
-        }
+        },
       },
     },
     // Mizu's Turkeys
     {
-      "LogName": "Remove feather from brown turkeys",
+      "LogName": "Remove feather from turkeys",
       "Action": "EditData",
       "Target": "Data/FarmAnimals",
-      "TargetField": ["Mizu.Turkey_BrownTurkey", "DeluxeProduceItemIds"],
+      "TargetField": ["Mizu.Turkey_Turkey", "DeluxeProduceItemIds"],
       "Entries": {
         "Default": null,
       },
@@ -369,49 +369,10 @@
       },
     },
     {
-      "LogName": "Remove feather from white turkeys",
-      "Action": "EditData",
-      "Target": "Data/FarmAnimals",
-      "TargetField": ["Mizu.Turkey_WhiteTurkey", "DeluxeProduceItemIds"],
-      "Entries": {
-        "Default": null,
-      },
-      "When": {
-        "HasMod |contains=Mizu.Turkey": "true",
-      },
-    },
-    {
-      "LogName": "Remove feather from gray turkeys",
-      "Action": "EditData",
-      "Target": "Data/FarmAnimals",
-      "TargetField": ["Mizu.Turkey_GrayTurkey", "DeluxeProduceItemIds"],
-      "Entries": {
-        "Default": null,
-      },
-      "When": {
-        "HasMod |contains=Mizu.Turkey": "true",
-        "HasMod |contains=Spiderbuttons.CMCT": "false",
-      },
-    },
-    {
-      "LogName": "Remove feather from gray turkeys - CMCT",
-      "Action": "EditData",
-      "Target": "Data/FarmAnimals",
-      "TargetField": ["Mizu.Turkey_GrayTurkey", "DeluxeProduceItemIds"],
-      "Entries": {
-        "Default": null,
-      },
-      "When": {
-        "HasMod |contains=Mizu.Turkey": "true",
-        "HasMod |contains=Spiderbuttons.CMCT": "true",
-        "Spiderbuttons.CMCT/Config: Mizu.Turkey, Enable Gray Turkey": "true",
-      },
-    },
-    {
-      "LogName": "Make brown turkey drop feather as additional item",
+      "LogName": "Make turkey drop feather as additional item",
       "Action": "EditData",
       "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
-      "TargetField": ["Mizu.Turkey_BrownTurkey", "ExtraProduceSpawnList"],
+      "TargetField": ["Mizu.Turkey_Turkey", "ExtraProduceSpawnList"],
       "Priority": "Late",
       "Entries": {
         "{{ModId}}.TurkeyFeather": {
@@ -423,87 +384,12 @@
               "Id": "{{ModId}}.TurkeyFeather",
               "ItemId": "Mizu.Turkey_TurkeyFeather",
               "MinimumFriendship": 200,
-            }
+            },
           ]
-        }
+        },
       },
       "When": {
         "HasMod |contains=Mizu.Turkey": "true",
-      },
-    },
-    {
-      "LogName": "Make white turkey drop feather as additional item",
-      "Action": "EditData",
-      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
-      "TargetField": ["Mizu.Turkey_WhiteTurkey", "ExtraProduceSpawnList"],
-      "Priority": "Late",
-      "Entries": {
-        "{{ModId}}.TurkeyFeather": {
-          "Id": "{{ModId}}.TurkeyFeather",
-          "DaysToProduce": 6,
-          "SyncWithMainProduce": true,
-          "ProduceItemIds": [
-            {
-              "Id": "{{ModId}}.TurkeyFeather",
-              "ItemId": "Mizu.Turkey_TurkeyFeather",
-              "MinimumFriendship": 200,
-            }
-          ]
-        }
-      },
-      "When": {
-        "HasMod |contains=Mizu.Turkey": "true",
-      },
-    },
-    {
-      "LogName": "Make gray turkey drop feather as additional item",
-      "Action": "EditData",
-      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
-      "TargetField": ["Mizu.Turkey_GrayTurkey", "ExtraProduceSpawnList"],
-      "Priority": "Late",
-      "Entries": {
-        "{{ModId}}.TurkeyFeather": {
-          "Id": "{{ModId}}.TurkeyFeather",
-          "DaysToProduce": 6,
-          "SyncWithMainProduce": true,
-          "ProduceItemIds": [
-            {
-              "Id": "{{ModId}}.TurkeyFeather",
-              "ItemId": "Mizu.Turkey_TurkeyFeather",
-              "MinimumFriendship": 200,
-            }
-          ]
-        }
-      },
-      "When": {
-        "HasMod |contains=Mizu.Turkey": "true",
-        "HasMod |contains=Spiderbuttons.CMCT": "false",
-      },
-    },
-    {
-      "LogName": "Make gray turkey drop feather as additional item - CMCT",
-      "Action": "EditData",
-      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
-      "TargetField": ["Mizu.Turkey_GrayTurkey", "ExtraProduceSpawnList"],
-      "Priority": "Late",
-      "Entries": {
-        "{{ModId}}.TurkeyFeather": {
-          "Id": "{{ModId}}.TurkeyFeather",
-          "DaysToProduce": 6,
-          "SyncWithMainProduce": true,
-          "ProduceItemIds": [
-            {
-              "Id": "{{ModId}}.TurkeyFeather",
-              "ItemId": "Mizu.Turkey_TurkeyFeather",
-              "MinimumFriendship": 200,
-            }
-          ]
-        }
-      },
-      "When": {
-        "HasMod |contains=Mizu.Turkey": "true",
-        "HasMod |contains=Spiderbuttons.CMCT": "true",
-        "Spiderbuttons.CMCT/Config: Mizu.Turkey, Enable Gray Turkey": "true",
       },
     },
     // Birdb's Geese
@@ -559,9 +445,9 @@
               "Id": "{{ModId}}.GooseDown",
               "ItemId": "GooseDown",
               "MinimumFriendship": 250,
-            }
+            },
           ]
-        }
+        },
       },
       "When": {
         "HasMod |contains=birdb.Goose": "true",
@@ -583,9 +469,9 @@
               "Id": "{{ModId}}.GooseDown",
               "ItemId": "GooseDown",
               "MinimumFriendship": 250,
-            }
+            },
           ]
-        }
+        },
       },
       "When": {
         "HasMod |contains=birdb.Goose": "true",
@@ -607,9 +493,9 @@
               "Id": "{{ModId}}.GooseDown",
               "ItemId": "GooseDown",
               "MinimumFriendship": 250,
-            }
+            },
           ]
-        }
+        },
       },
       "When": {
         "HasMod |contains=birdb.Goose": "true",
@@ -710,9 +596,9 @@
             {
               "Id": "{{ModId}}.Manure",
               "ItemId": "pigeonManure",
-            }
+            },
           ]
-        }
+        },
       },
       "When": {
         "HasMod |contains=birdb.CP.Pigeons": "true",
@@ -733,9 +619,9 @@
             {
               "Id": "{{ModId}}.Manure",
               "ItemId": "pigeonManure",
-            }
+            },
           ]
-        }
+        },
       },
       "When": {
         "HasMod |contains=birdb.CP.Pigeons": "true",
@@ -756,9 +642,9 @@
             {
               "Id": "{{ModId}}.Manure",
               "ItemId": "pigeonManure",
-            }
+            },
           ]
-        }
+        },
       },
       "When": {
         "HasMod |contains=birdb.CP.Pigeons": "true",
@@ -779,9 +665,9 @@
             {
               "Id": "{{ModId}}.Manure",
               "ItemId": "pigeonManure",
-            }
+            },
           ]
-        }
+        },
       },
       "When": {
         "HasMod |contains=birdb.CP.Pigeons": "true",
@@ -802,9 +688,9 @@
             {
               "Id": "{{ModId}}.Manure",
               "ItemId": "pigeonManure",
-            }
+            },
           ]
-        }
+        },
       },
       "When": {
         "HasMod |contains=birdb.CP.Pigeons": "true",
@@ -825,12 +711,223 @@
             {
               "Id": "{{ModId}}.Manure",
               "ItemId": "pigeonManure",
-            }
+            },
           ]
-        }
+        },
       },
       "When": {
         "HasMod |contains=birdb.CP.Pigeons": "true",
+      },
+    },
+    // Camelus
+    {
+      "LogName": "Bay camel",
+      "Action": "Include",
+      "FromFile": "Data/camelus.json",
+      "LocalTokens": {
+        "CamelId": "FlashShifter.StardewValleyExpandedCP_Camel",
+        "HairId": "FlashShifter.StardewValleyExpandedCP_Camel_Wool",
+        "Color": "Bay",
+      },
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
+    {
+      "LogName": "Albino camel",
+      "Action": "Include",
+      "FromFile": "Data/camelus.json",
+      "LocalTokens": {
+        "CamelId": "ZoeyHoshi.Camelus_Albino",
+        "HairId": "ZoeyHoshi.Camelus_CamelHair_Albino",
+        "Color": "Albino",
+      },
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
+    {
+      "LogName": "Ash camel",
+      "Action": "Include",
+      "FromFile": "Data/camelus.json",
+      "LocalTokens": {
+        "CamelId": "ZoeyHoshi.Camelus_Ash",
+        "HairId": "ZoeyHoshi.Camelus_CamelHair_Ash",
+        "Color": "Ash",
+      },
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
+    {
+      "LogName": "Black camel",
+      "Action": "Include",
+      "FromFile": "Data/camelus.json",
+      "LocalTokens": {
+        "CamelId": "ZoeyHoshi.Camelus_Black",
+        "HairId": "ZoeyHoshi.Camelus_CamelHair_Black",
+        "Color": "Black",
+      },
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
+    {
+      "LogName": "BlackPiedbald camel",
+      "Action": "Include",
+      "FromFile": "Data/camelus.json",
+      "LocalTokens": {
+        "CamelId": "ZoeyHoshi.Camelus_BlackPiedbald",
+        "HairId": "ZoeyHoshi.Camelus_CamelHair_BlackPiedbald",
+        "Color": "BlackPiedbald",
+      },
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
+    {
+      "LogName": "Blonde camel",
+      "Action": "Include",
+      "FromFile": "Data/camelus.json",
+      "LocalTokens": {
+        "CamelId": "ZoeyHoshi.Camelus_Blonde",
+        "HairId": "ZoeyHoshi.Camelus_CamelHair_Blonde",
+        "Color": "Blonde",
+      },
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
+    {
+      "LogName": "BrownPiedbald camel",
+      "Action": "Include",
+      "FromFile": "Data/camelus.json",
+      "LocalTokens": {
+        "CamelId": "ZoeyHoshi.Camelus_BrownPiedbald",
+        "HairId": "ZoeyHoshi.Camelus_CamelHair_BrownPiedbald",
+        "Color": "BrownPiedbald",
+      },
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
+    {
+      "LogName": "Chestnut camel",
+      "Action": "Include",
+      "FromFile": "Data/camelus.json",
+      "LocalTokens": {
+        "CamelId": "ZoeyHoshi.Camelus_Chestnut",
+        "HairId": "ZoeyHoshi.Camelus_CamelHair_Chestnut",
+        "Color": "Chestnut",
+      },
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
+    {
+      "LogName": "Cinnamon camel",
+      "Action": "Include",
+      "FromFile": "Data/camelus.json",
+      "LocalTokens": {
+        "CamelId": "ZoeyHoshi.Camelus_Cinnamon",
+        "HairId": "ZoeyHoshi.Camelus_CamelHair_Cinnamon",
+        "Color": "Cinnamon",
+      },
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
+    {
+      "LogName": "White camel",
+      "Action": "Include",
+      "FromFile": "Data/camelus.json",
+      "LocalTokens": {
+        "CamelId": "ZoeyHoshi.Camelus_White",
+        "HairId": "ZoeyHoshi.Camelus_CamelHair_White",
+        "Color": "White",
+      },
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
+    {
+      "LogName": "Remove hair from void camel",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["ZoeyHoshi.Camelus_Void", "ProduceItemIds"],
+      "Entries": {
+        "ZoeyHoshi.Camelus_CamelHair_Void": null,
+      },
+    },
+    {
+      "LogName": "Add hair as extra drops from void camel",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["ZoeyHoshi.Camelus_Void", "ExtraProduceSpawnList"],
+      "Entries": {
+        "{{ModId}}_CamelHair": {
+          "Id": "{{ModId}}_CamelHair",
+          "DaysToProduce": 6,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "ZoeyHoshi.Camelus_CamelHair",
+              "ItemId": "ZoeyHoshi.Camelus_CamelHair_Void",
+              "MinimumFriendship": 200,
+            },
+          ]
+        },
+      },
+      "When": {
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "Spiderbuttons.CMCT/Config: ZoeyHoshi.Camelus, MatchingProductColours": "false",
+      },
+    },
+    // Mizu's Goose
+    {
+      "LogName": "Remove feather from mizu goose",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Mizu.Goose_Goose", "DeluxeProduceItemIds"],
+      "When": {
+        "HasMod |contains=Mizu.Goose": "true",
+      },
+      "Entries": {
+        "Default": null,
+      },
+    },
+    {
+      "LogName": "Make mizu goose drop down as additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Mizu.Goose_Goose", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "When": {
+        "HasMod |contains=Mizu.Goose": "true",
+      },
+      "Entries": {
+        "{{ModId}}.GooseDown": {
+          "Id": "{{ModId}}.GooseDown",
+          "DaysToProduce": 6,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "Mizu.Goose_GooseDown",
+              "ItemId": "Mizu.Goose_GooseDown",
+              "MinimumFriendship": 200,
+            },
+          ]
+        },
       },
     },
   ]

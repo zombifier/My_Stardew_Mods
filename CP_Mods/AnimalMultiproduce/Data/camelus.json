@@ -1,0 +1,62 @@
+{
+  "Changes": [
+    {
+      "LogName": "Remove hair from camel",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["{{CamelId}}", "ProduceItemIds"],
+      "Entries": {
+        "ZoeyHoshi.Camelus_CamelHair_{{Color}}": null,
+        "ZoeyHoshi.Camelus_CamelHair": null,
+      },
+    },
+    {
+      "LogName": "Add hair as extra drops from camel",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["{{CamelId}}", "ExtraProduceSpawnList"],
+      "Entries": {
+        "{{ModId}}_CamelHair": {
+          "Id": "{{ModId}}_CamelHair",
+          "DaysToProduce": 6,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "ZoeyHoshi.Camelus_CamelHair",
+              "ItemId": "FlashShifter.StardewValleyExpandedCP_Camel_Wool",
+              "MinimumFriendship": 200,
+            }
+          ]
+        },
+      },
+      "When": {
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "Spiderbuttons.CMCT/Config: ZoeyHoshi.Camelus, MatchingProductColours": "false",
+      },
+    },
+    {
+      "LogName": "Add hair as extra drops from camel - matching color enabled",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["{{CamelId}}", "ExtraProduceSpawnList"],
+      "Entries": {
+        "{{ModId}}_CamelHair": {
+          "Id": "{{ModId}}_CamelHair",
+          "DaysToProduce": 6,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "ZoeyHoshi.Camelus_CamelHair",
+              "ItemId": "{{HairId}}",
+              "MinimumFriendship": 200,
+            }
+          ]
+        },
+      },
+      "When": {
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "Spiderbuttons.CMCT/Config: ZoeyHoshi.Camelus, MatchingProductColours": "true",
+      },
+    },
+  ]
+}
