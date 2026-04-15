@@ -364,7 +364,7 @@
           "Texture": "{{ModId}}/Objects2",
           "SpriteIndex": 25,
           "ContextTags": [
-            "color_violet",
+            "color_purple",
             "fish_crab_pot",
             "fish_ocean",
             "{{ModId}}_bug_dye_item",
