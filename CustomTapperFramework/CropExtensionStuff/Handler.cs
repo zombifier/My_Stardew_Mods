@@ -168,7 +168,7 @@ static class CropExtensionHandler {
             }
             if (!e.isExtraDrops && entry.OverrideStack) e.count = newItem.Stack;
             newItem.Stack = 1;
-            if (!e.isExtraDrops && entry.OverrideQuality) newItem.Quality = e.produce.Quality;
+            if (!e.isExtraDrops && !entry.OverrideQuality) newItem.Quality = e.produce.Quality;
             e.produce = newItem;
             break;
           }
@@ -181,11 +181,30 @@ static class CropExtensionHandler {
             if (entry.CopyColor && e.produce is ColoredObject coloredProduce && ColoredObject.TrySetColor(item, coloredProduce.color.Value, out var newColoredItem)) {
               item = newColoredItem;
             }
+            if (e.produce is not null && entry.RollQuality) item.Quality = RollQuality(e.crop.Dirt, entry.HarvestMinQuality, entry.HarvestMaxQuality);
             ExtraDrops.Add(item);
           }
         }
       }
     }
+  }
+
+  static int RollQuality(HoeDirt? soil, int? harvestMinQuality, int? harvestMaxQuality) {
+    if (soil is null) return 0;
+    int fertilizerQualityLevel = soil.GetFertilizerQualityBoostLevel();
+    double chanceForGoldQuality = 0.2 * ((double)Game1.player.FarmingLevel / 10.0) + 0.2 * (double)fertilizerQualityLevel * (((double)Game1.player.FarmingLevel + 2.0) / 12.0) + 0.01;
+    double chanceForSilverQuality = Math.Min(0.75, chanceForGoldQuality * 2.0);
+    Random r2 = Game1.random;
+    int cropQuality = 0;
+    if (fertilizerQualityLevel >= 3 && r2.NextDouble() < chanceForGoldQuality / 2.0) {
+      cropQuality = 4;
+    } else if (r2.NextDouble() < chanceForGoldQuality) {
+      cropQuality = 2;
+    } else if (r2.NextDouble() < chanceForSilverQuality || fertilizerQualityLevel >= 3) {
+      cropQuality = 1;
+    }
+    cropQuality = MathHelper.Clamp(cropQuality, harvestMinQuality ?? 0, harvestMaxQuality ?? cropQuality);
+    return cropQuality;
   }
 
   public static Crop? harvestedCrop = null;

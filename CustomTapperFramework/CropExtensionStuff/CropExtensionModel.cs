@@ -14,8 +14,17 @@ namespace Selph.StardewMods.MachineTerrainFramework;
 
 public class HarvestSpawnData : GenericSpawnItemDataWithCondition {
   public bool CopyColor = false;
+  // These two fields only affects main drop
+  // I should split them off, but I don't want to break ABI, as unlikely as that would be.
+  // Maybe for 1.7?
   public bool OverrideQuality = false;
   public bool OverrideStack = false;
+}
+
+public class ExtraDropSpawnData : HarvestSpawnData {
+  public bool RollQuality = false;
+  public int? HarvestMinQuality = null;
+  public int? HarvestMaxQuality = null;
 }
 
 public class CropTextureOverride {
@@ -63,7 +72,7 @@ public class CropExtensionData {
   public List<QuantityModifier>? CropQuantityModifiers;
   public QuantityModifier.QuantityModifierMode CropQuantityModifierMode;
   public List<HarvestSpawnData>? MainDropOverride;
-  public List<HarvestSpawnData>? ExtraDrops;
+  public List<ExtraDropSpawnData>? ExtraDrops;
   public List<string>? PlantTriggers;
   public List<string>? DestroyedTriggers;
   public List<string>? DayStartTriggers;
