@@ -135,12 +135,11 @@ internal sealed class ModEntry : Mod {
   }
 
   static void OnUpdateTicked(object? sender, UpdateTickedEventArgs e) {
-    Utility.ForEachLocation((GameLocation location) => {
-      foreach (var animal in location.animals.Values) {
-        LightUtils.UpdateLight(animal, location);
+    if (Game1.currentLocation is not null) {
+      foreach (var animal in Game1.currentLocation.animals.Values) {
+        LightUtils.UpdateLight(animal, Game1.currentLocation);
       }
-      return true;
-    });
+    }
   }
 
   static void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
