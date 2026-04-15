@@ -393,7 +393,7 @@ internal sealed class ModEntry : Mod {
       SetTailoringQuality(jeweledClothing);
       __result = jeweledClothing;
     }
-    __result.MarkContextTagsDirty();
+    __result?.MarkContextTagsDirty();
   }
 
   static ConditionalWeakTable<SObject, string> CachedDescriptions = new();
