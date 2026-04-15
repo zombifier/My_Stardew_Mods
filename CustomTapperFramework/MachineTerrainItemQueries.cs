@@ -242,4 +242,36 @@ public static class MachineTerrainItemQueries {
     }
     return new ItemQueryResult[1] { item is not null ? new(item) : new(ItemRegistry.Create(fallbackItemId)) };
   }
+
+  public static IEnumerable<ItemQueryResult> SAPLING_OF(string key, string arguments, ItemQueryContext context, bool avoidRepeat, HashSet<string> avoidItemIds, Action<string, string> logError) {
+    string[] array = ItemQueryResolver.Helpers.SplitArguments(arguments);
+    if (array.Length < 1) {
+      return ItemQueryResolver.Helpers.ErrorResult(key, arguments, logError, "expected at least one itemID argument");
+    }
+    string qualifiedItemId = ItemRegistry.QualifyItemId(array[0]);
+    foreach (var pair in Game1.fruitTreeData) {
+      foreach (var itemQuery in pair.Value.Fruit ?? []) {
+        var items = ItemQueryResolver.TryResolve(itemQuery, context);
+        if (items.Any(i => i.Item.QualifiedItemId == qualifiedItemId)) {
+          return [new(ItemRegistry.Create(pair.Key))];
+        }
+      }
+    }
+    if (qualifiedItemId == "(O)815") {
+      return [new(ItemRegistry.Create("(O)251"))];
+    }
+    if (ModEntry.cbApi is not null) {
+      foreach (var data in ModEntry.cbApi.GetAllBushes()) {
+        if (ModEntry.cbApi.TryGetDrops(data.Id, out var drops)) {
+          foreach (var drop in drops) {
+            var items = ItemQueryResolver.TryResolve(drop, context);
+            if (items.Any(i => i.Item.QualifiedItemId == qualifiedItemId)) {
+              return [new(ItemRegistry.Create(data.Id))];
+            }
+          }
+        }
+      }
+    }
+    return [];
+  }
 }

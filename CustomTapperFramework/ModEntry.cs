@@ -9,6 +9,7 @@ using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
+using LeFauxMods.Common.Integrations.CustomBush;
 
 using SObject = StardewValley.Object;
 
@@ -76,6 +77,8 @@ internal sealed class ModEntry : Mod {
         MachineTerrainGameStateQueries.MACHINE_TILE_HAS_FRUIT_TREE_IN_SEASON);
     GameStateQuery.Register($"{UniqueId}_IS_VALID_FISH_FOR_POND",
         MachineTerrainGameStateQueries.IS_VALID_FISH_FOR_POND);
+    GameStateQuery.Register($"{UniqueId}_IS_CROP_PRODUCE",
+        MachineTerrainGameStateQueries.IS_CROP_PRODUCE);
 
     ItemQueryResolver.Register($"{UniqueId}_MACHINE_CRAB_POT_OUTPUT",
         MachineTerrainItemQueries.MACHINE_CRAB_POT_OUTPUT);
@@ -83,16 +86,30 @@ internal sealed class ModEntry : Mod {
         MachineTerrainItemQueries.MACHINE_FISH_LOCATION);
     ItemQueryResolver.Register($"{UniqueId}_FISH_POND_DROP",
         MachineTerrainItemQueries.FISH_POND_DROP);
+    ItemQueryResolver.Register($"{UniqueId}_SAPLING_OF",
+        MachineTerrainItemQueries.SAPLING_OF);
   }
 
   public override object GetApi() {
     return ModApi;
   }
 
-  static public IATApi? atApi;
+  public static IATApi? atApi;
+  public static ICustomBushApi? cbApi = null;
 
   public void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
-    atApi = Helper.ModRegistry.GetApi<IATApi>("PeacefulEnd.AlternativeTextures");
+    try {
+      atApi = Helper.ModRegistry.GetApi<IATApi>("PeacefulEnd.AlternativeTextures");
+    }
+    catch (Exception exception) {
+      Monitor.Log($"Error registering the AT API: {exception.ToString()}", LogLevel.Warn);
+    }
+    try {
+      cbApi = Helper.ModRegistry.GetApi<ICustomBushApi>("furyx639.CustomBush");
+    }
+    catch (Exception exception) {
+      Monitor.Log($"Error registering the Custom Bush API: {exception.ToString()}", LogLevel.Warn);
+    }
   }
 
   public void OnDayStarted(object? sender, DayStartedEventArgs e) {

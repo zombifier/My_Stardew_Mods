@@ -67,4 +67,19 @@ public static class MachineTerrainGameStateQueries {
     }
     return FishPond.GetRawData(item.ItemId) != null;
   }
+
+  public static bool IS_CROP_PRODUCE(string[] query, GameStateQueryContext context) {
+    if (!Helpers.TryGetItemArg(query, 1, context.TargetItem, context.InputItem, out var item, out var error)) {
+      return Helpers.ErrorResult(query, error);
+    }
+    if (item == null) {
+      return false;
+    }
+    foreach (var cropDatum in Game1.cropData) {
+      if (ItemRegistry.HasItemId(item, cropDatum.Value.HarvestItemId)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
