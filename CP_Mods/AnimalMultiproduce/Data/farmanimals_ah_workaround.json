@@ -89,7 +89,7 @@
       "Target": "Data/FarmAnimals",
       "TargetField": ["Sheep"],
       "Entries": {
-        "DaysToProduce": 2,
+        "DaysToProduce": 3,
       },
       "When": {
         "HasMod |contains=radm.milkdasheep": "true",
