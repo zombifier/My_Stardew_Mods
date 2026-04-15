@@ -423,9 +423,9 @@
           "Ingredients": [
             {
               "Type": "ContextTag",
-              "Value": "{{ModId}}_dyed_yarn_item,color_violet",
+              "Value": "{{ModId}}_dyed_yarn_item,color_purple",
               "ContextTagsRequireAll": true,
-              "OverrideText": "{{i18n: item.VioletWoolOrYarn.name}}",
+              "OverrideText": "{{i18n: item.PurpleWoolOrYarn.name}}",
               "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
               "OverrideTextureRect": {"X": "{{XViolet}}", "Y": 0, "Width": 16, "Height": 16},
               "Amount": 1,
@@ -1057,7 +1057,7 @@
           "Ingredients": [
             {
               "Type": "ContextTag",
-              "Value": "{{ModId}}_dyed_cloth_item,color_violet",
+              "Value": "{{ModId}}_dyed_cloth_item,color_purple",
               "ContextTagsRequireAll": true,
               "OverrideText": "{{i18n: item.PurpleCloth.name}}",
               "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
@@ -1406,7 +1406,7 @@
           "Ingredients": [
             {
               "Type": "ContextTag",
-              "Value": "{{ModId}}_dyed_cloth_item,color_violet",
+              "Value": "{{ModId}}_dyed_cloth_item,color_purple",
               "ContextTagsRequireAll": true,
               "OverrideText": "{{i18n: item.PurpleCloth.name}}",
               "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
@@ -1849,7 +1849,7 @@
             },
             {
               "Type": "ContextTag",
-              "Value": "{{ModId}}_dyed_cloth_item,color_violet",
+              "Value": "{{ModId}}_dyed_cloth_item,color_purple",
               "ContextTagsRequireAll": true,
               "OverrideText": "{{i18n: item.PurpleCloth.name}}",
               "OverrideTexturePath": "Mods/appleseed.BCP/Objects",
