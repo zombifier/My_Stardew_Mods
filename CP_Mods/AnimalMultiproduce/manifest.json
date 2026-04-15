@@ -1,7 +1,7 @@
 {
   "Name": "Animal Multiproduce",
   "Author": "selph",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Make certain animals drop both of their produce at the same time. Affects ducks and rabbits in vanilla, and a small number of feather-dropping modded poultry and milkable sheep.",
   "UniqueID": "selph.AnimalMultiproduce",
   "MinimumApiVersion": "4.0.0",
@@ -11,6 +11,7 @@
     {"UniqueID": "radm.milkdasheep", "IsRequired": false},
     {"UniqueID": "Mizu.Turkey", "IsRequired": false},
     {"UniqueID": "Mizu.Goose", "IsRequired": false},
+    {"UniqueID": "Mizu.Peafowl", "IsRequired": false},
     {"UniqueID": "birdb.CP.Pigeons", "IsRequired": false},
     {"UniqueID": "birdb.Goose", "IsRequired": false},
     {"UniqueID": "ZoeyHoshi.Camelus", "IsRequired": false},

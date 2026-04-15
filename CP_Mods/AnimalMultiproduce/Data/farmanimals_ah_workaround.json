@@ -930,5 +930,42 @@
         },
       },
     },
+    // Mizu's Peafowl
+    {
+      "LogName": "Remove feather from mizu peafowl",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Mizu.Peafowl_Peafowl", "DeluxeProduceItemIds"],
+      "When": {
+        "HasMod |contains=Mizu.Peafowl": "true",
+      },
+      "Entries": {
+        "Default": null,
+      },
+    },
+    {
+      "LogName": "Make mizu peafowl drop feather as additional item",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Mizu.Peafowl_Peafowl", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "When": {
+        "HasMod |contains=Mizu.Peafowl": "true",
+      },
+      "Entries": {
+        "{{ModId}}.PeacockFeather": {
+          "Id": "{{ModId}}.PeacockFeather",
+          "DaysToProduce": 10,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "Mizu.Peafowl_PeacockFeather",
+              "ItemId": "Mizu.Peafowl_PeacockFeather",
+              "MinimumFriendship": 200,
+            },
+          ]
+        },
+      },
+    },
   ]
 }
