@@ -119,6 +119,23 @@
         },
       },
     },
+    // I should refactor this to just be one block with dynamic tokens but wehh
+    {
+      "LogName": "Add extra drops for cactus - No bush",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/CropExtensionData",
+      "TargetField": ["802", "ExtraDrops"],
+      "Entries": {
+        "{{ModId}}_CochinealBeetle": {
+          "Id": "{{ModId}}_CochinealBeetle",
+          "ItemId": "(O){{ModId}}_CochinealBeetle",
+          "Condition": "RANDOM 0.05",
+        },
+      },
+      "When": {
+        "HasMod |contains=Cornucopia.GrowableForage": "false",
+      },
+    },
     {
       "LogName": "Add extra drops for cactus - No CMCT",
       "Action": "EditData",
