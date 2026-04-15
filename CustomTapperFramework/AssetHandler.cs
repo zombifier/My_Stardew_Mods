@@ -17,7 +17,7 @@ public class AssetHandler {
   private string dataPath;
   public Dictionary<string, TapperModel> data { get; private set; }
 
-  public static bool HasAquaticCrops = false;
+  public static bool HasAquaticCrops = true;
 
   public AssetHandler() {
     // "selph.CustomTapperFramework/Data"

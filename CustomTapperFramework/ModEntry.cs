@@ -129,6 +129,7 @@ internal sealed class ModEntry : Mod {
     }
 
     // For existing saves
+    Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPlanterItemId, 0);
     if (Game1.player.eventsSeen.Contains("900553")) {
       Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPotItemId, 0);
     }
@@ -140,12 +141,12 @@ internal sealed class ModEntry : Mod {
 
   // If player saw Evelyn's event, add the garden pot recipe
   public void OnWarped(object? sender, WarpedEventArgs e) {
-    if (Game1.player.craftingRecipes.ContainsKey(WaterIndoorPotUtils.WaterPotItemId)) {
+    if (e.Player is null || e.NewLocation is null || e.Player.craftingRecipes.ContainsKey(WaterIndoorPotUtils.WaterPotItemId)) {
       return;
     }
     // For new saves
-    if (e.Player.eventsSeen.Contains("900553") || e.NewLocation?.currentEvent.id == "900553") {
-      Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPotItemId, 0);
+    if (e.Player.eventsSeen.Contains("900553") || e.NewLocation.currentEvent?.id == "900553") {
+      e.Player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPotItemId, 0);
     }
   }
   private bool IsNormalGameplay() {
