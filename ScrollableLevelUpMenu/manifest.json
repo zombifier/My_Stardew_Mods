@@ -1,0 +1,10 @@
+{
+  "Name": "Scrollable Level Up Menu",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Long level up menu that shows unlocked recipes are now scrollable instead of having extra entries flow off the screen. Also shows where a mod an item's from is Mod Name Tooltip is installed.",
+  "UniqueID": "selph.ScrollableLevelUpMenu",
+  "EntryDll": "ScrollableLevelUpMenu.dll",
+  "MinimumApiVersion": "4.1.0",
+  "UpdateKeys": ["Nexus:51743"],
+}
