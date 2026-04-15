@@ -13,6 +13,7 @@ using StardewValley.Tools;
 using StardewValley.Monsters;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VanillaPlusProfessions.Compatibility;
 
 using SObject = StardewValley.Object;
 
@@ -22,17 +23,21 @@ internal sealed class ModEntry : Mod {
   internal static new IModHelper Helper { get; set; } = null!;
   internal static IMonitor StaticMonitor { get; set; } = null!;
   internal static string UniqueId = null!;
+  internal static IVanillaPlusProfessions? vppApi;
 
   static ModConfig Config = null!;
 
   const string RageBaitQualifiedItemId = "(O)selph.RageBaitCP_RageBait";
   const string IridiumLobsterQualifiedItemId = "(O)selph.RageBaitCP_IridiumLobster";
+  static string IridiumLobsterAliveKey = null!;
 
   public override void Entry(IModHelper helper) {
     Config = helper.ReadConfig<ModConfig>();
     Helper = helper;
     StaticMonitor = this.Monitor;
     UniqueId = this.ModManifest.UniqueID;
+
+    IridiumLobsterAliveKey = $"{UniqueId}_Alive";
 
     helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
@@ -86,6 +91,7 @@ internal sealed class ModEntry : Mod {
     public int dvdTrajectoryY;
     // For SEGMENT mode
     public float lockedBarPosition;
+    public int originalFishCount;
   }
   static readonly PerScreen<RageBaitStateClass?> rageBaitState = new();
   static RageBaitStateClass? RageBaitState {
@@ -136,8 +142,15 @@ internal sealed class ModEntry : Mod {
     catch (Exception ex) {
       StaticMonitor.Log($"Error reading into Fishing Info Overlay's config: {ex.ToString()}. Please report this to Rage Bait.", LogLevel.Warn);
     }
+    try {
+      vppApi = Helper.ModRegistry.GetApi<IVanillaPlusProfessions>("KediDili.VanillaPlusProfessions");
+    }
+    catch (Exception exception) {
+      Monitor.Log($"Error registering the VPP API: {exception.ToString()}", LogLevel.Warn);
+    }
   }
 
+  [EventPriority(EventPriority.Low)]
   static void OnMenuChanged(object? sender, MenuChangedEventArgs e) {
     if (e.NewMenu is not BobberBar bobberBar) {
       RageBaitState = null;
@@ -150,6 +163,10 @@ internal sealed class ModEntry : Mod {
       RageBaitState.isBobberBarShrinking = true;
       RageBaitState.originalBobberBarHeight = bobberBar.bobberBarHeight;
       bobberBar.challengeBaitFishes = 4;
+      if (vppApi?.GetTalentsForPlayer().Contains("OneFishTwoFish") is true) {
+        bobberBar.challengeBaitFishes += 1;
+      }
+      RageBaitState.originalFishCount = bobberBar.challengeBaitFishes;
       RageBaitState.ticksSinceDrain = 0;
       RageBaitState.shouldDrawFish =
         (fioSonarMode?.GetValue() ?? -1) > 1
@@ -275,7 +292,7 @@ internal sealed class ModEntry : Mod {
       }
     }
     if (!RageBaitState.rageBaitModes.Contains(RageBaitMode.CHALLENGE)) {
-      bobberBar.challengeBaitFishes = 4;
+      bobberBar.challengeBaitFishes = RageBaitState.originalFishCount;
     }
   }
 
@@ -390,6 +407,10 @@ internal sealed class ModEntry : Mod {
           if (Game1.random.NextBool(0.005)) {
             crabPot.heldObject.Value = ItemRegistry.Create<SObject>(IridiumLobsterQualifiedItemId);
           }
+          // Do it like this so older versions can migrate safely
+          if (crabPot.heldObject.Value.QualifiedItemId == IridiumLobsterQualifiedItemId) {
+            crabPot.heldObject.Value.modData[IridiumLobsterAliveKey] = "true";
+          }
           crabPot.heldObject.Value.Quality = SObject.bestQuality;
           crabPot.heldObject.Value.Stack = 2;
         }
@@ -402,7 +423,7 @@ internal sealed class ModEntry : Mod {
     int crabCount = 0;
     bool stoleMoney = false;
     foreach (var item in e.Added) {
-      if (item.QualifiedItemId == IridiumLobsterQualifiedItemId) {
+      if (item.QualifiedItemId == IridiumLobsterQualifiedItemId && item.modData.ContainsKey(IridiumLobsterAliveKey)) {
         crabCount += item.Stack;
         for (int i = 0; i < item.Stack; i++) {
           var iridiumLobster = new RockCrab(e.Player.Tile * 64f + new Vector2(Game1.random.Next(-10, 10), Game1.random.Next(-10, 10)), "Lava Crab") {
@@ -420,6 +441,7 @@ internal sealed class ModEntry : Mod {
             }
           }
           iridiumLobster.objectsToDrop.Add("337");
+          iridiumLobster.objectsToDrop.Add(IridiumLobsterQualifiedItemId);
           //Vector2 pos = Utility.recursiveFindOpenTileForCharacter(iridiumLobster, e.Player.currentLocation, iridiumLobster.Tile + new Vector2(0f, 1f), 20, allowOffMap: false);
           //iridiumLobster.setTileLocation(pos);
           e.Player.currentLocation.characters.Add(iridiumLobster);
