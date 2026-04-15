@@ -1,0 +1,13 @@
+{
+  "Name": "Mariner B Better",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Changes Mariner's effects to 'Crab Pots that produce junk will also catch a fish'.",
+  "UniqueID": "selph.MarinerBBetter",
+  "EntryDll": "MarinerBBetter.dll",
+  "MinimumApiVersion": "4.0.9",
+  "UpdateKeys": ["Nexus:48994"],
+  "Dependencies": [
+    {"UniqueID": "selph.ExtraMachineConfig", "IsRequired": true},
+  ],
+}
