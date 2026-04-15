@@ -120,5 +120,37 @@
         "HasMod |contains=selph.ExtraAnimalConfig": "true",
       }
     },
+    {
+      "LogName": "Mizu Goose Changes - Produce",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Mizu.Goose_Goose", "ProduceItemIds"],
+      "Entries": {
+        "{{ModId}}.GooseTotem": {
+          "Id": "{{ModId}}.GooseTotem",
+          "ItemId": "{{ModId}}.GooseTotem",
+          "Condition": "ANY \"RANDOM 0.02\" \"SEASON_DAY fall 27\"",
+        },
+      },
+      "When": {
+        "HasMod |contains=Mizu.Goose": "true",
+      },
+    },
+    {
+      "LogName": "VMV Goose Changes - Custom Asset",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "Fields": {
+        "Mizu.Goose_Goose": {
+          "GlowColor": "White",
+          "GlowRadius": 2,
+          "SpeedOverride": 4,
+          "IsAttackAnimal": "{{EnableAttack}}",
+        }
+      },
+      "When": {
+        "HasMod |contains=Mizu.Goose": "true",
+      }
+    },
   ],
 }
