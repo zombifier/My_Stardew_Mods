@@ -343,7 +343,7 @@ sealed class MachineHarmonyPatcher {
       }
     }
     outputs = newOutputs;
-    if (outputs.Count == 0 && invalidMessage != null && who.IsLocalPlayer &&
+    if (outputs.Count == 0 && invalidMessage != null && (who ?? Game1.player).IsLocalPlayer &&
         SObject.autoLoadFrom == null) {
       Game1.showRedMessage(invalidMessage);
     }
@@ -440,7 +440,6 @@ sealed class MachineHarmonyPatcher {
     }
 
     if (outputData.CustomData == null) {
-      return;
     }
 
     // Set the machine automatic production count
@@ -448,15 +447,15 @@ sealed class MachineHarmonyPatcher {
     // otherwise only set it if it doesn't exist (to help migrate existing machines)
     // (but only if this function is called inside OutputMachine)
     if (!probe && enableOutputMachineSideEffect) {
-      if (outputData.CustomData.TryGetValue(AutomaticProduceCountKey, out var str) &&
+      if (outputData.CustomData?.TryGetValue(AutomaticProduceCountKey, out var str) is true &&
           Int32.TryParse(str, out int automaticProduceCount) &&
           (enableGetOutputItemSideEffect || !machine.modData.ContainsKey(AutomaticProduceCountRemainingKey))) {
         machine.modData[AutomaticProduceCountRemainingKey] = str;
       }
-      if (!outputData.CustomData.ContainsKey(AutomaticProduceCountKey)) {
+      if (!outputData.CustomData?.ContainsKey(AutomaticProduceCountKey) is true) {
         machine.modData.Remove(AutomaticProduceCountRemainingKey);
       }
-      if (outputData.CustomData.TryGetValue(TriggerActionToRunWhenReady, out var action)) {
+      if (outputData.CustomData?.TryGetValue(TriggerActionToRunWhenReady, out var action) is true) {
         machine.modData[TriggerActionToRunWhenReady] = action;
       }
     }
@@ -557,13 +556,13 @@ sealed class MachineHarmonyPatcher {
     }
 
     // Color the item
-    if ((outputData.CustomData.ContainsKey(CopyColorKey)) &&
+    if (outputData.CustomData?.ContainsKey(CopyColorKey) is true &&
         resultObject is not null) {
-      StardewValley.Objects.ColoredObject newColoredObject;
-      if (__result is StardewValley.Objects.ColoredObject coloredObject) {
+      ColoredObject newColoredObject;
+      if (__result is ColoredObject coloredObject) {
         newColoredObject = coloredObject;
       } else {
-        newColoredObject = new StardewValley.Objects.ColoredObject(
+        newColoredObject = new ColoredObject(
             __result.ItemId,
             __result.Stack,
             Color.White
@@ -581,7 +580,7 @@ sealed class MachineHarmonyPatcher {
     }
     // Consume extra input items and replace output stack count
     if (enableGetOutputItemSideEffect && !probe) {
-      if (outputData.CustomData.ContainsKey(RequiredCountMaxKey) &&
+      if (outputData.CustomData?.ContainsKey(RequiredCountMaxKey) is true &&
           Int32.TryParse(outputData.CustomData[RequiredCountMaxKey], out int requiredCountMax) &&
           MachineDataUtility.TryGetMachineOutputRule(machine, machine.GetMachineData(), MachineOutputTrigger.ItemPlacedInMachine, inputItem, who, machine.Location, out var _, out var triggerRule, out var _, out var _)) {
         int requiredCountMin = triggerRule.RequiredCount;
@@ -601,13 +600,13 @@ sealed class MachineHarmonyPatcher {
     }
 
     if (resultObject is not null && inputObject is not null &&
-        outputData.CustomData.TryGetValue(InputEdibilityMultiplierKey, out var inputEdiblityMultiplierStr) &&
+        outputData.CustomData?.TryGetValue(InputEdibilityMultiplierKey, out var inputEdiblityMultiplierStr) is true &&
         Double.TryParse(inputEdiblityMultiplierStr, out var inputEdibilityMultiplier)) {
       resultObject.Edibility = (int)(inputObject.Edibility * inputEdibilityMultiplier);
     }
 
     // If input item is prismatic, enable the output item's prismatic layer
-    if ((outputData.CustomData.ContainsKey(CopyColorKey) || outputData.CopyColor)
+    if ((outputData.CustomData?.ContainsKey(CopyColorKey) is true || outputData.CopyColor)
          && Utils.IsPrismatic(inputItem)) {
       __result.modData[ExtraContextTagsKey] = __result.modData.GetValueOrDefault(ExtraContextTagsKey, "") + "," + SmokedItemHarmonyPatcher.DrawPrismaticLayerTag;
       __result.MarkContextTagsDirty();
