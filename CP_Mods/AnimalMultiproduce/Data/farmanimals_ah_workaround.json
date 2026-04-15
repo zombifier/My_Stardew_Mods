@@ -723,6 +723,15 @@
     {
       "LogName": "Bay camel",
       "Action": "Include",
+      "FromFile": "Data/camelus_void.json",
+      "When": {
+        "HasMod |contains=ZoeyHoshi.Camelus": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+      },
+    },
+    {
+      "LogName": "Bay camel",
+      "Action": "Include",
       "FromFile": "Data/camelus.json",
       "LocalTokens": {
         "CamelId": "FlashShifter.StardewValleyExpandedCP_Camel",
@@ -858,45 +867,6 @@
       "When": {
         "HasMod |contains=ZoeyHoshi.Camelus": "true",
         "HasMod |contains=Spiderbuttons.CMCT": "true",
-      },
-    },
-    {
-      "LogName": "Remove hair from void camel",
-      "Action": "EditData",
-      "Target": "Data/FarmAnimals",
-      "TargetField": ["ZoeyHoshi.Camelus_Void", "ProduceItemIds"],
-      "Entries": {
-        "ZoeyHoshi.Camelus_CamelHair_Void": null,
-      },
-      "When": {
-        "HasMod |contains=Spiderbuttons.CMCT": "true",
-        "HasMod |contains=ZoeyHoshi.Camelus": "true",
-        "Spiderbuttons.CMCT/Config: ZoeyHoshi.Camelus, DisableVoidCamel": "false",
-      },
-    },
-    {
-      "LogName": "Add hair as extra drops from void camel",
-      "Action": "EditData",
-      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
-      "TargetField": ["ZoeyHoshi.Camelus_Void", "ExtraProduceSpawnList"],
-      "Entries": {
-        "{{ModId}}_CamelHair": {
-          "Id": "{{ModId}}_CamelHair",
-          "DaysToProduce": 6,
-          "SyncWithMainProduce": true,
-          "ProduceItemIds": [
-            {
-              "Id": "ZoeyHoshi.Camelus_CamelHair",
-              "ItemId": "ZoeyHoshi.Camelus_CamelHair_Void",
-              "MinimumFriendship": 200,
-            },
-          ]
-        },
-      },
-      "When": {
-        "HasMod |contains=Spiderbuttons.CMCT": "true",
-        "HasMod |contains=ZoeyHoshi.Camelus": "true",
-        "Spiderbuttons.CMCT/Config: ZoeyHoshi.Camelus, DisableVoidCamel": "false",
       },
     },
     // Mizu's Goose
