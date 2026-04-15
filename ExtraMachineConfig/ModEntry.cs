@@ -131,7 +131,8 @@ internal sealed class ModEntry : Mod {
   }
 
   static string GetMultiplierBuffString(float value, string key) {
-    return Game1.content.LoadString(key, $"+{value * 100}%");
+    var sign = value > 0 ? "+" : "";
+    return Game1.content.LoadString(key, $"{sign}{Math.Round(value * 100)}%");
   }
 
   static string GetBuffString(float value, string key) {
@@ -279,17 +280,19 @@ internal sealed class ModEntry : Mod {
     // Duplicate machine rules
     // The extra machine data asset is also duplicated in ExtraOutputAssetHandler
     if (e.NameWithoutLocale.IsEquivalentTo("Data/Machines")) {
-      e.Edit(asset => {
+      e.Edit(static asset => {
         var data = asset.AsDictionary<string, MachineData>().Data;
         foreach (var (key, value) in data) {
           if (value.CustomFields?.TryGetValue(CopyMachineRulesFromKey, out var copyKey) ?? false) {
             if (data.ContainsKey(copyKey)) {
-              data[key] = data[copyKey].DeepClone();
+              //data[key] = data[copyKey].DeepClone();
+              data[key].OutputRules ??= [];
+              var copiedRules = data[copyKey].OutputRules?.DeepClone() ?? [];
               if (outputRulesGlobalModifiersAssetHandler.data.TryGetValue(key, out var globalModifiersData)) {
                 if (globalModifiersData.GlobalCopyQuality
                     || globalModifiersData.GlobalQualityModifiers is not null
                     || globalModifiersData.GlobalStackModifiers is not null) {
-                  foreach (var outputRule in data[key].OutputRules ?? []) {
+                  foreach (var outputRule in copiedRules) {
                     foreach (var outputItem in outputRule.OutputItem ?? []) {
                       if (globalModifiersData.GlobalCopyQuality) {
                         outputItem.CopyQuality = true;
@@ -298,14 +301,21 @@ internal sealed class ModEntry : Mod {
                         outputItem.QualityModifiers ??= [];
                         outputItem.QualityModifiers.AddRange(globalModifiersData.GlobalQualityModifiers.Select(m => m.DeepClone()));
                       }
+                      if (globalModifiersData.GlobalQualityModifierMode is not null) {
+                        outputItem.QualityModifierMode = globalModifiersData.GlobalQualityModifierMode.Value;
+                      }
                       if (globalModifiersData.GlobalStackModifiers is not null) {
                         outputItem.StackModifiers ??= [];
                         outputItem.StackModifiers.AddRange(globalModifiersData.GlobalStackModifiers.Select(m => m.DeepClone()));
+                      }
+                      if (globalModifiersData.GlobalStackModifierMode is not null) {
+                        outputItem.StackModifierMode = globalModifiersData.GlobalStackModifierMode.Value;
                       }
                     }
                   }
                 }
               }
+              data[key].OutputRules.AddRange(copiedRules);
             } else {
               StaticMonitor.Log($"Error while handling CopyMachineRulesFrom for {key}: {copyKey} does not exist in machine data", LogLevel.Error);
             }

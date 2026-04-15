@@ -3,6 +3,7 @@ using StardewModdingAPI;
 using System;
 using System.Linq;
 using StardewValley;
+using StardewValley.Internal;
 using StardewValley.GameData.Objects;
 using StardewValley.Menus;
 using StardewValley.Monsters;
@@ -317,5 +318,27 @@ static class Utils {
       return SmokedItemHarmonyPatcher.PrismaticExtraColor;
     }
     return colorToString(TailoringMenu.GetDyeColor(item) ?? Color.White);
+  }
+
+  // Turns out this doesn't fit MPS, but keeping it around just in case
+  public static Item? OutputSeedOrSapling(SObject machine, Item? inputItem, bool probe, MachineItemOutput outputData, Farmer player, out int? overrideMinutesUntilReady) {
+    overrideMinutesUntilReady = null;
+    if (inputItem is null) return null;
+    var seed = SObject.OutputSeedMaker(machine, inputItem, probe, outputData, player, out overrideMinutesUntilReady);
+    if (seed != null) {
+      return seed;
+    }
+    var tile = machine.TileLocation;
+    Random random = Utility.CreateDaySaveRandom(tile.X, tile.Y * 77f, Game1.timeOfDay);
+    var context = new ItemQueryContext(machine.Location, player, random, "OutputSeedOrSapling");
+    foreach (var pair in Game1.fruitTreeData) {
+      foreach (var itemQuery in pair.Value.Fruit ?? []) {
+        var items = ItemQueryResolver.TryResolve(itemQuery, context);
+        if (items.Any(i => i.Item.QualifiedItemId == inputItem.QualifiedItemId)) {
+          return ItemRegistry.Create(pair.Key);
+        }
+      }
+    }
+    return null;
   }
 }
