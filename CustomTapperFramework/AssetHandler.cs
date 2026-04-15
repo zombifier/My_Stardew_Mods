@@ -17,6 +17,8 @@ public class AssetHandler {
   private string dataPath;
   public Dictionary<string, TapperModel> data { get; private set; }
 
+  public static bool HasAquaticCrops = false;
+
   public AssetHandler() {
     // "selph.CustomTapperFramework/Data"
     dataPath = $"{ModEntry.UniqueId}/Data";
@@ -60,15 +62,16 @@ public class AssetHandler {
       });
     }
 
-    if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes")) {
+    if (HasAquaticCrops && e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes")) {
       e.Edit(asset => {
         var craftingRecipes = asset.AsDictionary<string, string>();
         craftingRecipes.Data[WaterIndoorPotUtils.WaterPlanterItemId] =
         $"388 20/Home/{WaterIndoorPotUtils.WaterPlanterItemId}/true/default";
         craftingRecipes.Data[WaterIndoorPotUtils.WaterPotItemId] =
-        $"(BC)62 1/Home/{WaterIndoorPotUtils.WaterPotItemId}/true/default";
+        $"(BC)62 1/Home/{WaterIndoorPotUtils.WaterPotItemId}/true/none";
       });
     }
+
     if (e.NameWithoutLocale.IsEquivalentTo("rokugin.perfectionexclusions/recipes")) {
       e.Edit(asset => {
         try {

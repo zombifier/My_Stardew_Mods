@@ -38,6 +38,7 @@ internal sealed class ModEntry : Mod {
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
     helper.Events.GameLoop.DayStarted += OnDayStarted;
+    helper.Events.Player.Warped += OnWarped;
     helper.Events.Input.ButtonPressed += OnButtonPressed;
 
     var harmony = new Harmony(ModEntry.UniqueId);
@@ -109,28 +110,44 @@ internal sealed class ModEntry : Mod {
       }
     }
 
-    // Learn the water crop recipes
-    // TODO: Currently disabled until I find a way to add recipes that don't count for perfection
-    //bool hasAquaticCrops = false;
-    //foreach (KeyValuePair<string, CropData> cropData in Game1.cropData) {
-    //  if ((cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsWaterCustomFieldsKey) ?? false)
-    //      || (cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsAmphibiousCustomFieldsKey) ?? false)) {
-    //    hasAquaticCrops = true;
-    //  }
-    //}
-    //if (hasAquaticCrops) {
-    //  Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPlanterItemId, 0);
+    // Toggle the planter/pot recipes depending on whether there are aquatic crops in the game
+    // We do it like this instead of in AssetRequested to avoid the state of an asset being directly dependent on another asset,
+    // potentially causing a destructive loop
+    bool oldHasAquaticCrops = AssetHandler.HasAquaticCrops;
+    bool hasAquaticCrops = false;
+    foreach (KeyValuePair<string, CropData> cropData in Game1.cropData) {
+      if ((cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsWaterCustomFieldsKey) ?? false)
+          || (cropData.Value.CustomFields?.ContainsKey(WaterIndoorPotUtils.CropIsAmphibiousCustomFieldsKey) ?? false)) {
+        hasAquaticCrops = true;
+        break;
+      }
+    }
+    if (oldHasAquaticCrops != hasAquaticCrops) {
+      AssetHandler.HasAquaticCrops = hasAquaticCrops;
+      // AssetHandler.OnAssetRequested will handle the rest
+      Helper.GameContent.InvalidateCache(asset => asset.Name.IsEquivalentTo("Data/CraftingRecipes"));
+    }
 
-    //  if (Game1.player.craftingRecipes.ContainsKey("Garden Pot")) {
-    //    Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPotItemId, 0);
-    //  }
-    //} else {
-    //  Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPlanterItemId);
-    //  Game1.player.craftingRecipes.Remove(WaterIndoorPotUtils.WaterPotItemId);
-    //}
+    // For existing saves
+    if (Game1.player.eventsSeen.Contains("900553")) {
+      Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPotItemId, 0);
+    }
 
+    if (Game1.player.craftingRecipes.ContainsKey(WaterIndoorPotUtils.WaterPotItemId)) {
+      Helper.Events.Player.Warped -= OnWarped;
+    }
   }
 
+  // If player saw Evelyn's event, add the garden pot recipe
+  public void OnWarped(object? sender, WarpedEventArgs e) {
+    if (Game1.player.craftingRecipes.ContainsKey(WaterIndoorPotUtils.WaterPotItemId)) {
+      return;
+    }
+    // For new saves
+    if (e.Player.eventsSeen.Contains("900553") || e.NewLocation?.currentEvent.id == "900553") {
+      Game1.player.craftingRecipes.TryAdd(WaterIndoorPotUtils.WaterPotItemId, 0);
+    }
+  }
   private bool IsNormalGameplay() {
     return StardewModdingAPI.Context.CanPlayerMove
       && Game1.player != null
