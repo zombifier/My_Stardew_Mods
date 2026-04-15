@@ -41,6 +41,8 @@ public class AnimalExtensionData {
   public bool IsHarvester = false;
   public int HarvestInterval = 1000;
   public int HarvestRange = 5;
+
+  public bool IsHeater = false;
 }
 
 public class EggExtensionData {

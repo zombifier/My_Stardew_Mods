@@ -72,6 +72,7 @@ internal sealed class ModEntry : Mod {
     //if (ModEntry.Helper.ModRegistry.IsLoaded("Pathoschild.Automate")) {
     //  helper.Events.World.BuildingListChanged += OnBuildingListChanged;
     //}
+    helper.Events.Content.AssetsInvalidated += OnAssetsInvalidated;
   }
 
   public override object GetApi() {
@@ -320,5 +321,14 @@ internal sealed class ModEntry : Mod {
 
   static void OnBuildingListChanged(object? sender, BuildingListChangedEventArgs e) {
     ModdedSiloFactory.ClearBuildings(e.Location);
+  }
+
+  // Clear heater data in case mods use conditional heater-ness
+  static void OnAssetsInvalidated(object? sender, AssetsInvalidatedEventArgs e) {
+    foreach (var name in e.NamesWithoutLocale) {
+      if (name.IsEquivalentTo("selph.ExtraAnimalConfig/AnimalExtensionData")) {
+        HeaterUtils.ClearAll();
+      }
+    }
   }
 }

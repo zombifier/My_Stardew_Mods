@@ -505,6 +505,14 @@ Sheep). This field allows for more possible textures with conditions associated.
 
 ----
 
+### Animals that can act as heaters during winter
+
+| Field Name                         | Type             | Description              |
+| ---------------------------------- | ---------------- | ------------------------ |
+| `IsHeater`          | `bool` | Whether this animal acts as a heater during the winter for the other animals (mood boost after 6PM). Like vanilla, effects do not stack.|
+
+----
+
 ## Game state queries
 
 | GSQ                          |  Description              |

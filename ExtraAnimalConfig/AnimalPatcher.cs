@@ -223,6 +223,17 @@ sealed class AnimalDataPatcher {
           nameof(FarmAnimal.pet)),
         prefix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(FarmAnimal_pet_Prefix)));
 
+    // Heater stuff
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(AnimalHouse),
+          "initNetFields"),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(AnimalHouse_initNetFields_Postfix)));
+
+    harmony.Patch(
+        original: AccessTools.DeclaredMethod(typeof(GameLocation),
+          nameof(GameLocation.numberOfObjectsWithName)),
+        postfix: new HarmonyMethod(typeof(AnimalDataPatcher), nameof(GameLocation_numberOfObjectsWithName_Postfix)));
+
     // skinny animals
     // this approach is dead, time for teleportation
     //harmony.Patch(
@@ -1096,5 +1107,17 @@ sealed class AnimalDataPatcher {
   static bool FarmAnimal_pet_Prefix(FarmAnimal __instance, Farmer who, bool is_auto_pet) {
     if (is_auto_pet) return true;
     return HarvestUtils.DropHarvestIfAvailable(__instance, who);
+  }
+
+  static void AnimalHouse_initNetFields_Postfix(AnimalHouse __instance) {
+    __instance.animalsThatLiveHere.OnElementChanged += delegate { HeaterUtils.Clear(__instance); };
+  }
+  static void GameLocation_numberOfObjectsWithName_Postfix(GameLocation __instance, ref int __result, string name) {
+    if (__instance is not AnimalHouse animalHouse || name != "Heater" || __result > 0) return;
+    if (HeaterUtils.Get(animalHouse)) {
+      // Just increase by 1, no need to run extra logic for an accurate count since the game
+      // doesn't care
+      __result += 1;
+    }
   }
 }

@@ -729,3 +729,32 @@ public static class LightUtils {
     }
   }
 }
+
+public static class HeaterUtils {
+  class BoolWrapper {
+    public bool Value;
+  }
+  static ConditionalWeakTable<AnimalHouse, BoolWrapper> HouseHasHeater = new();
+
+  public static void Clear(AnimalHouse animalHouse) {
+    HouseHasHeater.Remove(animalHouse);
+  }
+
+  public static bool Get(AnimalHouse animalHouse) {
+    return HouseHasHeater.GetValue(animalHouse, static (ah) => {
+      foreach (var animalId in ah.animalsThatLiveHere) {
+        var animal = Utility.getAnimal(animalId);
+        if (animal is not null
+            && ModEntry.animalExtensionDataAssetHandler.data.TryGetValue(animal.type.Value ?? "", out var animalExtensionData)
+            && animalExtensionData.IsHeater) {
+          return new BoolWrapper { Value = true };
+        }
+      }
+      return new BoolWrapper { Value = false };
+    }).Value;
+  }
+
+  public static void ClearAll() {
+    HouseHasHeater.Clear();
+  }
+}
