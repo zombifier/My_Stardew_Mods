@@ -14,11 +14,11 @@
         "Default": "false",
       },
       "HayCapacity": {
-        "AllowValues": "120,180,240,300,360,420,480",
+        "AllowValues": "120,180,240,300,360,420,480,540,600,660,720",
         "Default": 120,
       },
       "FeedCapacity": {
-        "AllowValues": "120,180,240,300,360,420,480",
+        "AllowValues": "120,180,240,300,360,420,480,540,600,660,720",
         "Default": 120,
     },
     "FeedStyle": {

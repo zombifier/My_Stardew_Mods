@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.GameData.FarmAnimals;
+using StardewValley.GameData.Buildings;
 
 namespace Selph.StardewMods.CoopFeed;
 
@@ -47,25 +47,36 @@ internal sealed class ModEntry : Mod {
     //      }
     //  }, AssetEditPriority.Late);
     //}
+    if (e.NameWithoutLocale.IsEquivalentTo("Data/Buildings")) {
+      e.Edit(asset => {
+        var buildings = asset.AsDictionary<string, BuildingData>();
+        foreach (var (id, data) in buildings.Data) {
+          if (data.ValidOccupantTypes?.Count() == 1 && data.ValidOccupantTypes[0] == "Coop") {
+            data.CustomFields ??= new();
+            data.CustomFields["selph.ExtraAnimalConfig.BuildingFeedOverrideId"] = "(O)selph.CoopFeed.ChickenFeed";
+          }
+        }
+      }, AssetEditPriority.Late);
+    }
 
     if (e.NameWithoutLocale.IsEquivalentTo("selph.ExtraAnimalConfig/AnimalExtensionData")) {
       e.Edit(asset => {
-          var farmAnimalExtensionData = asset.AsDictionary<string, ExtraAnimalConfig.AnimalExtensionData>();
-          foreach (var pair in farmAnimalExtensionData.Data) {
-            var house = "";
-            if (Game1.farmAnimalData.TryGetValue(pair.Key, out var vanillaData)) {
-              house = vanillaData.House;
+        var farmAnimalExtensionData = asset.AsDictionary<string, ExtraAnimalConfig.AnimalExtensionData>();
+        foreach (var pair in farmAnimalExtensionData.Data) {
+          var house = "";
+          if (Game1.farmAnimalData.TryGetValue(pair.Key, out var vanillaData)) {
+            house = vanillaData.House;
+          }
+          if (house == "Coop" || house == "mytigio.dwarven_expansion_CaveCoop" || pair.Value.ExtraHouses.Contains("Coop")) {
+            if (!farmAnimalExtensionData.Data.ContainsKey(pair.Key)) {
+              farmAnimalExtensionData.Data[pair.Key] = new();
             }
-            if (house == "Coop" || house == "mytigio.dwarven_expansion_CaveCoop" || pair.Value.ExtraHouses.Contains("Coop")) {
-              if (!farmAnimalExtensionData.Data.ContainsKey(pair.Key)) {
-                farmAnimalExtensionData.Data[pair.Key] = new();
-              }
-              farmAnimalExtensionData.Data[pair.Key].FeedItemId = "(O)selph.CoopFeed.ChickenFeed";
-              if (IsDirtForager(pair.Key)) {
-                farmAnimalExtensionData.Data[pair.Key].OutsideForager = true;
-              }
+            farmAnimalExtensionData.Data[pair.Key].FeedItemId = "(O)selph.CoopFeed.ChickenFeed";
+            if (IsDirtForager(pair.Key)) {
+              farmAnimalExtensionData.Data[pair.Key].OutsideForager = true;
             }
           }
+        }
       }, AssetEditPriority.Late);
     }
   }
