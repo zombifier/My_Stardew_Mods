@@ -191,18 +191,18 @@
         "Lumisteria.MtVapius_Default": null,
       },
     },
-    {
-      "LogName": "Make speckled fowl always make eggs",
-      "Action": "EditData",
-      "Target": "Data/FarmAnimals",
-      "TargetField": ["Lumisteria.MtVapius_SpeckledFowl", "DeluxeProduceItemIds", "Lumisteria.MtVapius_BaseEgg"],
-      "When": {
-        "HasMod |contains=Lumisteria.MtVapius": "true",
-      },
-      "Entries": {
-        "Condition": null,
-      },
-    },
+    //{
+    //  "LogName": "Make speckled fowl always make eggs",
+    //  "Action": "EditData",
+    //  "Target": "Data/FarmAnimals",
+    //  "TargetField": ["Lumisteria.MtVapius_SpeckledFowl", "DeluxeProduceItemIds", "Lumisteria.MtVapius_BaseEgg"],
+    //  "When": {
+    //    "HasMod |contains=Lumisteria.MtVapius": "true",
+    //  },
+    //  "Entries": {
+    //    "Condition": null,
+    //  },
+    //},
     {
       "LogName": "Remove feathers from void speckled fowl",
       "Action": "EditData",
@@ -390,6 +390,21 @@
       },
       "When": {
         "HasMod |contains=Mizu.Turkey": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "false",
+      },
+    },
+    {
+      "LogName": "Remove feather from gray turkeys - CMCT",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Mizu.Turkey_GrayTurkey", "DeluxeProduceItemIds"],
+      "Entries": {
+        "Default": null,
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "Spiderbuttons.CMCT/Config: Mizu.Turkey, Enable Gray Turkey": "true",
       },
     },
     {
@@ -462,6 +477,33 @@
       },
       "When": {
         "HasMod |contains=Mizu.Turkey": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "false",
+      },
+    },
+    {
+      "LogName": "Make gray turkey drop feather as additional item - CMCT",
+      "Action": "EditData",
+      "Target": "selph.ExtraAnimalConfig/AnimalExtensionData",
+      "TargetField": ["Mizu.Turkey_GrayTurkey", "ExtraProduceSpawnList"],
+      "Priority": "Late",
+      "Entries": {
+        "{{ModId}}.TurkeyFeather": {
+          "Id": "{{ModId}}.TurkeyFeather",
+          "DaysToProduce": 6,
+          "SyncWithMainProduce": true,
+          "ProduceItemIds": [
+            {
+              "Id": "{{ModId}}.TurkeyFeather",
+              "ItemId": "Mizu.Turkey_TurkeyFeather",
+              "MinimumFriendship": 200,
+            }
+          ]
+        }
+      },
+      "When": {
+        "HasMod |contains=Mizu.Turkey": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "Spiderbuttons.CMCT/Config: Mizu.Turkey, Enable Gray Turkey": "true",
       },
     },
     // Birdb's Geese
