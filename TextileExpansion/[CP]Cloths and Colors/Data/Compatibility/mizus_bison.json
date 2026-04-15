@@ -1,0 +1,34 @@
+{
+  "Changes": [
+    {
+      "LogName": "Make heavy cloth rule benefit from profession",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/profession-rule-template.json",
+      "LocalTokens": {
+        "OutputRuleId": "Mizu.Animal_HeavyCloth",
+        "OutputItemId": "#0",
+      },
+    },
+    {
+      "LogName": "Make bison hair spinnable into yarn",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/yarn-rule-template.json",
+      "LocalTokens": {
+        "ItemId": "Mizu.Bison_BisonWool",
+        "FlavorItemId": "{{ModId}}_Heavy",
+        "Price": "275",
+        "Color": "#fcbf90",
+      },
+    },
+    {
+      "LogName": "Make heavy cloth dyeable",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "cloth",
+        "ItemId": "Mizu.Animal_HeavyCloth",
+        "SourceItemId": "{{ModId}}_Heavy",
+      },
+    },
+  ]
+}

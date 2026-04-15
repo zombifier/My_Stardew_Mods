@@ -1,28 +1,28 @@
 {
   "Changes": [
     {
-      "LogName": "Allow yarn spinner to spin llama hair",
+      "LogName": "Allow yarn spinner to spin item",
       "Action": "EditData",
       "Target": "Data/Machines",
       "TargetField": ["(BC){{ModId}}_YarnSpinner", "OutputRules"],
       "Entries": {
-        "skellady.SBVCP_AlpacaWool": {
-          "Id": "skellady.SBVCP_AlpacaWool",
+        "{{ItemId}}": {
+          "Id": "{{ItemId}}",
           "Triggers": [
             {
               "Id": "ItemPlacedInMachine",
               "Trigger": "ItemPlacedInMachine",
-							"RequiredItemId": "(O)skellady.SBVCP_AlpacaWool",
+							"RequiredItemId": "(O){{ItemId}}",
             },
           ],
           "OutputItem": [
             {
               "Id": "(O){{ModId}}_Yarn",
               "ItemId": "(O){{ModId}}_Yarn",
-              "PreserveId": "DROP_IN",
+              "PreserveId": "{{FlavorItemId}}",
               "ObjectDisplayName": "[LocalizedText Strings/Objects:{{ModId}}_Yarn %PRESERVED_DISPLAY_NAME]",
               "ObjectInternalName": "{{ModId}}_Yarn {0}",
-              "ObjectColor": "#f2bb94",
+              "ObjectColor": "{{Color}}",
               "MinStack": 2,
               "StackModifiers": [
                 {
@@ -40,25 +40,15 @@
               ],
               "PriceModifiers": [
                 {
-                  "Id": "AlpacaWoolModifier",
+                  "Id": "Modifier",
                   "Modification": "Set",
-                  "Amount": 360,
+                  "Amount": "{{Price}}",
                 },
               ],
             },
           ],
           "MinutesUntilReady": 240,
         },
-      },
-    },
-    {
-      "LogName": "Make llama cloth dyeable",
-      "Action": "Include",
-      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
-      "LocalTokens": {
-        "Type": "cloth",
-        "ItemId": "skellady.SBVCP_AlpacaWoolFabric",
-        "SourceItemId": "skellady.SBVCP_AlpacaWool",
       },
     },
   ]

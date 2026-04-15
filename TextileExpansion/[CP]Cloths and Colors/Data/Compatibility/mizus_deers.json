@@ -6,12 +6,6 @@
       "Target": "Data/Machines",
       "TargetField": ["(BC)17", "OutputRules", "Mizu.Animal_VelvetCloth", "OutputItem", "#0", "StackModifiers"],
       "Entries": {
-        //"{{ModId}}_DoubleQuality": {
-        //  "Id": "{{ModId}}_DoubleQuality",
-        //  "Condition": "ANY \"ITEM_QUALITY Input 1 1, RANDOM 0.15\" \"ITEM_QUALITY Input 2 2, RANDOM 0.5\" \"ITEM_QUALITY Input 4 4, RANDOM 1\"",
-        //  "Modification": "Multiply",
-        //  "Amount": 2.0,
-        //},
         "{{ModId}}_Weaver": {
           "Id": "{{ModId}}_Weaver",
           "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",

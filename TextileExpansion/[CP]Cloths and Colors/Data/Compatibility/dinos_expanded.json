@@ -1,0 +1,26 @@
+{
+  "Changes": [
+    {
+      "LogName": "Make fine thread spinnable into cloth",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/cloth-rule-template.json",
+      "LocalTokens": {
+        "ItemId": "Amichwan.DinoExpanded_FineThread",
+        "FlavorItemId": "{{ModId}}_Fine",
+        "Price": "250",
+        "Color": "#e5b8ff",
+      },
+    },
+    {
+      "LogName": "Make fine thread spinnable into yarn",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/yarn-rule-template.json",
+      "LocalTokens": {
+        "ItemId": "Amichwan.DinoExpanded_FineThread",
+        "FlavorItemId": "{{ModId}}_Fine",
+        "Price": "125",
+        "Color": "#e5b8ff",
+      },
+    },
+  ]
+}

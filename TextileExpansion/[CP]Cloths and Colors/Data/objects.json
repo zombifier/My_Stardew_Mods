@@ -391,7 +391,6 @@
           "Description": "{{i18n: item.Linen.description}}",
           "Type": "Litter",
           "Category": -999,
-          //"Texture": "{{ModId}}/Objects2",
           "SpriteIndex": 0,
         },
         "{{ModId}}_Silk": {
@@ -400,7 +399,6 @@
           "Description": "{{i18n: item.Silk.description}}",
           "Type": "Litter",
           "Category": -999,
-          //"Texture": "{{ModId}}/Objects2",
           "SpriteIndex": 0,
         },
         "{{ModId}}_Leather": {
@@ -409,7 +407,6 @@
           "Description": "{{i18n: item.Leather.description}}",
           "Type": "Litter",
           "Category": -999,
-          //"Texture": "{{ModId}}/Objects2",
           "SpriteIndex": 0,
         },
         "{{ModId}}_Cotton": {
@@ -418,7 +415,6 @@
           "Description": "{{i18n: item.Cotton.description}}",
           "Type": "Litter",
           "Category": -999,
-          //"Texture": "{{ModId}}/Objects2",
           "SpriteIndex": 0,
         },
         "{{ModId}}_Velvet": {
@@ -427,7 +423,22 @@
           "Description": "{{i18n: item.Velvet.description}}",
           "Type": "Litter",
           "Category": -999,
-          //"Texture": "{{ModId}}/Objects2",
+          "SpriteIndex": 0,
+        },
+        "{{ModId}}_Heavy": {
+          "Name": "{{ModId}}_Heavy",
+          "DisplayName": "{{i18n: item.Heavy.name}}",
+          "Description": "{{i18n: item.Heavy.description}}",
+          "Type": "Litter",
+          "Category": -999,
+          "SpriteIndex": 0,
+        },
+        "{{ModId}}_Fine": {
+          "Name": "{{ModId}}_Fine",
+          "DisplayName": "{{i18n: item.Fine.name}}",
+          "Description": "{{i18n: item.Fine.description}}",
+          "Type": "Litter",
+          "Category": -999,
           "SpriteIndex": 0,
         },
       },

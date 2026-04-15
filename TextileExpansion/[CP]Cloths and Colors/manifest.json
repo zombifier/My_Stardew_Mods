@@ -25,6 +25,8 @@
     {"UniqueID": "radsilver.yaks", "IsRequired": false},
     {"UniqueID": "Mizu.Deer", "IsRequired": false},
     {"UniqueID": "Mizu.Reindeer", "IsRequired": false},
+    {"UniqueID": "Mizu.Bison", "IsRequired": false},
+    {"UniqueID": "Amichwan.DinoExpanded", "IsRequired": false},
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"

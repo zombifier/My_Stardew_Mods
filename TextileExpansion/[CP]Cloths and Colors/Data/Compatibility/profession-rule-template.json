@@ -1,0 +1,18 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add profession stack modifiers",
+      "Action": "EditData",
+      "Target": "Data/Machines",
+      "TargetField": ["(BC)17", "OutputRules", "{{OutputRuleId}}", "OutputItem", "{{OutputItemId}}", "StackModifiers"],
+      "Entries": {
+        "{{ModId}}_Weaver": {
+          "Id": "{{ModId}}_Weaver",
+          "Condition": "{{CodeComponentId}}_HAS_WEAVER Target, RANDOM 0.25",
+          "Modification": "Add",
+          "Amount": 2.0,
+        },
+      },
+    },
+  ]
+}

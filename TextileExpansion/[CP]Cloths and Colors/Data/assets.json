@@ -19,6 +19,7 @@
       "Action": "Load",
       "Target": "Cornucopia.MoreCrops/Objects,Cornucopia.MoreCrops/Crops",
       "FromFile": "Assets/Cornucopia/{{TargetWithoutPath}}.png",
+      "Priority": "Low",
       "When": {
         "HasMod |contains=Cornucopia.MoreCrops": "false",
       }

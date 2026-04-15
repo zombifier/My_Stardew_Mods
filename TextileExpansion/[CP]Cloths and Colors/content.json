@@ -267,6 +267,22 @@
         "HasMod |contains=Mizu.Deer,Mizu.Reindeer": "true",
       },
     },
+    {
+      "LogName": "Mizu's Bison compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/mizus_bison.json",
+      "When": {
+        "HasMod |contains=Mizu.Bison": "true",
+      },
+    },
+    {
+      "LogName": "Dino Expanded compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/dinos_expanded.json",
+      "When": {
+        "HasMod |contains=Amichwan.DinoExpanded": "true",
+      },
+    },
     // Has to be latest because of changes in the templates (TODO - split those out)
     {
       "LogName": "Add new objects",
