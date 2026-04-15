@@ -32,36 +32,6 @@
       "Action": "Include",
       "FromFile": "extra_house_template.json",
       "LocalTokens": {
-        "Animal": "Mizu.Turkey_BrownTurkey",
-      },
-      "When": {
-        "HasMod |contains=Mizu.Turkey": "true",
-      },
-    },
-    {
-      "Action": "Include",
-      "FromFile": "extra_house_template.json",
-      "LocalTokens": {
-        "Animal": "Mizu.Turkey_WhiteTurkey",
-      },
-      "When": {
-        "HasMod |contains=Mizu.Turkey": "true",
-      },
-    },
-    {
-      "Action": "Include",
-      "FromFile": "extra_house_template.json",
-      "LocalTokens": {
-        "Animal": "Mizu.Turkey_GrayTurkey",
-      },
-      "When": {
-        "HasMod |contains=Mizu.Turkey": "true",
-      },
-    },
-    {
-      "Action": "Include",
-      "FromFile": "extra_house_template.json",
-      "LocalTokens": {
         "Animal": "Goose",
       },
       "When": {
