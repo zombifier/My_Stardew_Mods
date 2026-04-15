@@ -226,10 +226,9 @@
             {
               "Id": "ColorAdd",
               "Modification": "Add",
-              "Amount": "{{Query: {{PriceAdd}} / 2}}",
+              "Amount": "{{PriceAdd}}",
             },
           ],
-          "MinStack": 2,
           "CustomData": {
             "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
             "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",

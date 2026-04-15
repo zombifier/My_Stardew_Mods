@@ -1,0 +1,71 @@
+{
+  "Changes": [
+    {
+      "LogName": "Make alpaca yarn rule benefit from profession",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/profession-rule-template.json",
+      "LocalTokens": {
+        "OutputRuleId": "Mizu.AlpacaLlama_AlpacaYarn",
+        "OutputItemId": "#0",
+      },
+      "When": {
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "Spiderbuttons.CMCT/Config: Mizu.AlpacaLlama, Enable Alpaca": "true",
+      },
+    },
+    {
+      "LogName": "Make llama yarn rule benefit from profession",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/profession-rule-template.json",
+      "LocalTokens": {
+        "OutputRuleId": "Mizu.AlpacaLlama_LlamaYarn",
+        "OutputItemId": "#0",
+      },
+      "When": {
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "Spiderbuttons.CMCT/Config: Mizu.AlpacaLlama, Enable Llama": "true",
+      },
+    },
+    {
+      "LogName": "Make alpaca yarn dyeable",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "Mizu.AlpacaLlama_AlpacaYarn",
+        "SourceItemId": "Mizu.AlpacaLlama_AlpacaWool",
+      },
+      "When": {
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "Spiderbuttons.CMCT/Config: Mizu.AlpacaLlama, Enable Alpaca": "true",
+      },
+    },
+    {
+      "LogName": "Make llama yarn dyeable",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/modded_cloth_yarn_template.json",
+      "LocalTokens": {
+        "Type": "yarn",
+        "ItemId": "Mizu.AlpacaLlama_LlamaYarn",
+        "SourceItemId": "Mizu.AlpacaLlama_LlamaWool",
+      },
+      "When": {
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "Spiderbuttons.CMCT/Config: Mizu.AlpacaLlama, Enable Llama": "true",
+      },
+    },
+    {
+      "LogName": "Make Prismatic cloth count as dyed",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["Mizu.AlpacaLlama_PrismaticCloth", "ContextTags"],
+      "Entries": {
+        "{{ModId}}_dyed_cloth_item": "{{ModId}}_dyed_cloth_item",
+      },
+      "When": {
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "Spiderbuttons.CMCT/Config: Mizu.AlpacaLlama, Enable Pushmi-pullyu": "true",
+      },
+    },
+  ]
+}

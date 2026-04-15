@@ -283,6 +283,14 @@
         "HasMod |contains=Amichwan.DinoExpanded": "true",
       },
     },
+    {
+      "LogName": "Mizu's Alpacas and LLamas compat",
+      "Action": "Include",
+      "FromFile": "Data/Compatibility/mizus_alpacas_llamas.json",
+      "When": {
+        "HasMod |contains=Mizu.AlpacaLlama": "true",
+      },
+    },
     // Has to be latest because of changes in the templates (TODO - split those out)
     {
       "LogName": "Add new objects",

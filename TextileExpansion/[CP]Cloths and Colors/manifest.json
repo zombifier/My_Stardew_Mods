@@ -27,6 +27,7 @@
     {"UniqueID": "Mizu.Reindeer", "IsRequired": false},
     {"UniqueID": "Mizu.Bison", "IsRequired": false},
     {"UniqueID": "Amichwan.DinoExpanded", "IsRequired": false},
+    {"UniqueID": "Mizu.AlpacaLlama", "IsRequired": false},
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"
