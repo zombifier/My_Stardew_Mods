@@ -133,43 +133,17 @@
         },
       },
       "When": {
-        "HasMod |contains=Cornucopia.GrowableForage": "false",
+        "Merge: {{HasMod |contains=Cornucopia.GrowableForage}}, {{HasMod |contains=Spiderbuttons.CMCT}}, {{HasMod |contains=furyx639.CustomBush}}": "false",
       },
     },
     {
-      "LogName": "Add extra drops for cactus - No CMCT",
-      "Action": "EditData",
-      "Target": "selph.CustomTapperFramework/CropExtensionData",
-      "TargetField": ["802", "ExtraDrops"],
-      "Entries": {
-        "{{ModId}}_CochinealBeetle": {
-          "Id": "{{ModId}}_CochinealBeetle",
-          "ItemId": "(O){{ModId}}_CochinealBeetle",
-          "Condition": "RANDOM 0.05",
-        },
-      },
+      "Action": "Include",
+      "FromFile": "Data/crops-cmct.json",
       "When": {
-        "HasMod |contains=Spiderbuttons.CMCT": "false",
-      },
-    },
-    {
-      "LogName": "Add extra drops for cactus - CMCT",
-      "Action": "EditData",
-      "Target": "selph.CustomTapperFramework/CropExtensionData",
-      "TargetField": ["802", "ExtraDrops"],
-      "Entries": {
-        "{{ModId}}_CochinealBeetle": {
-          "Id": "{{ModId}}_CochinealBeetle",
-          "ItemId": "(O){{ModId}}_CochinealBeetle",
-          "Condition": "RANDOM 0.05",
-        },
-      },
-      "When": {
-        "HasMod |contains=Spiderbuttons.CMCT": "true",
         "HasMod |contains=furyx639.CustomBush": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
         "HasMod |contains=Cornucopia.GrowableForage": "true",
-        "Spiderbuttons.CMCT/Config: Cornucopia.GrowableForage, Cactus Bush": "false",
-      },
+      }
     },
     {
       "LogName": "Buff cotton a little bit",

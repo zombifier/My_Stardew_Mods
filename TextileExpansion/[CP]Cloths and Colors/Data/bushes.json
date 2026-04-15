@@ -22,26 +22,13 @@
       },
     },
     {
-      "LogName": "Edit cactus bush - CMCT",
-      "Action": "EditData",
-      "Target": "furyx639.CustomBush/Data",
-      "TargetField": ["(O)802", "ItemsProduced"],
-      "Entries": {
-        "{{ModId}}_CochinealBeetle": {
-          "Id": "{{ModId}}_CochinealBeetle",
-          "ItemId": "{{ModId}}_CochinealBeetle",
-					"Condition": "!DAY_OF_MONTH 3 6 9 12 15 18 21 24 27",
-					"Chance": 0.05,
-					"MinStack": 1,
-					"MaxStack": 1,
-        },
-      },
+      "Action": "Include",
+      "FromFile": "Data/bushes-cmct.json",
       "When": {
         "HasMod |contains=furyx639.CustomBush": "true",
         "HasMod |contains=Spiderbuttons.CMCT": "true",
         "HasMod |contains=Cornucopia.GrowableForage": "true",
-        "Spiderbuttons.CMCT/Config: Cornucopia.GrowableForage, Cactus Bush": "true",
-      },
-    }
+      }
+    },
   ]
 }

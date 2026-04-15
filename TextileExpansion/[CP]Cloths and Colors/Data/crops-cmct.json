@@ -1,0 +1,23 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add extra drops for cactus - CMCT",
+      "Action": "EditData",
+      "Target": "selph.CustomTapperFramework/CropExtensionData",
+      "TargetField": ["802", "ExtraDrops"],
+      "Entries": {
+        "{{ModId}}_CochinealBeetle": {
+          "Id": "{{ModId}}_CochinealBeetle",
+          "ItemId": "(O){{ModId}}_CochinealBeetle",
+          "Condition": "RANDOM 0.05",
+        },
+      },
+      "When": {
+        "HasMod |contains=furyx639.CustomBush": "true",
+        "HasMod |contains=Spiderbuttons.CMCT": "true",
+        "HasMod |contains=Cornucopia.GrowableForage": "true",
+        "Spiderbuttons.CMCT/Config: Cornucopia.GrowableForage, Cactus Bush": "false",
+      },
+    },
+  ]
+}
