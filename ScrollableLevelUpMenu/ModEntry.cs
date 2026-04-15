@@ -87,6 +87,7 @@ internal sealed class ModEntry : Mod {
           )
       .ThrowIfNotMatch($"Could not find entry point 0 for {nameof(LevelUpMenu_draw_Transpiler)}");
     var loadRecipePositionVar = matcher.Instruction.StToLd().LdToLda();
+
     // Insert after the variable, prep it and the spritebatch
     matcher
       //.MatchStartForward(
@@ -104,7 +105,8 @@ internal sealed class ModEntry : Mod {
           new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(MaybePrepRecipePositionAndSpriteBatch)))
           );
 
-    // Draw mod the item originates from
+    // Now we enter the recipe draw flow to add the item
+    // First, find the recipe object adjust width of the draw if necessary (the mod name's longer than the item name)
     matcher
       .MatchStartForward(
           new CodeMatch(static inst => inst.IsLdloc()),
@@ -112,6 +114,22 @@ internal sealed class ModEntry : Mod {
           )
       .ThrowIfNotMatch($"Could not find entry point 1 for {nameof(LevelUpMenu_draw_Transpiler)}");
     var loadRecipeVar = matcher.Instruction;
+    // Adjust position of the item draw if necessary (ie. the mod name's longer than the recipe name)
+    // Old: Game1.smallFont.MeasureString(text2)
+    // New: Game1.smallFont.MeasureString(MaybeAdjustTextForMeasureString(text2, recipe))
+    matcher
+      .MatchStartForward(
+          new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.drawMenuView)))
+          )
+      .MatchStartBackwards(
+          new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(SpriteFont), nameof(SpriteFont.MeasureString), [typeof(string)]))
+          )
+      .ThrowIfNotMatch($"Could not find entry point MeasureString for {nameof(LevelUpMenu_draw_Transpiler)}")
+      .InsertAndAdvance(
+          loadRecipeVar,
+          new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(MaybeAdjustTextForMeasureString)))
+          );
+    // Finally, draw mod the item originates from
     matcher
       .MatchStartForward(
           new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.drawMenuView))))
@@ -139,6 +157,20 @@ internal sealed class ModEntry : Mod {
     return matcher.InstructionEnumeration();
   }
 
+  static string MaybeAdjustTextForMeasureString(string recipeText, CraftingRecipe recipe) {
+    try {
+      if (modNameApi?.TryGetModName(recipe, out var modName) is true && modName.ModInfo is not null) {
+        var text = modName.ModName;
+        if (text.Length > recipeText.Length) {
+          return text;
+        }
+      }
+    }
+    catch (Exception e) {
+      StaticMonitor.Log($"Error when drawing level up menu: {e}", LogLevel.Error);
+    }
+    return recipeText;
+  }
   static void MaybePrepRecipePositionAndSpriteBatch(LevelUpMenu menu, SpriteBatch b, ref int recipePosition) {
     try {
       isModifiedDraw.Value = false;
