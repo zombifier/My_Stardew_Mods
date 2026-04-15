@@ -109,6 +109,7 @@
       "(O)wildflour.ateliercrops_mint",
       "(O)Cornucopia_Mint",
       "(O)Wildflour.AtelierGoods_Mint",
+      "(O)Lilybrook.MintLeaf",
     ],
     [
       "(O)wildflour.ateliercrops_basil",
@@ -281,6 +282,7 @@
     [
       "(O)Cornucopia_Onion",
       "(O)BFV.CombinedCrops_YellowOnion",
+      "(O)Lilybrook.Onion",
     ],
     [
       "(O)Cornucopia_Plantain",
@@ -361,10 +363,16 @@
     [
       "(O)Lumisteria.MtVapius_GooseEgg",
       "(O)FlashShifter.StardewValleyExpandedCP_Goose_Egg",
+      "(O)Mizu.Goose_GooseEgg"
     ],
     [
       "(O)Lumisteria.MtVapius_GooseMayonnaise",
       "(O)FlashShifter.StardewValleyExpandedCP_Goose_Mayonnaise",
+      "(O)Mizu.Goose_GooseMayonnaise",
+    ],
+    [
+      "(O)Lumisteria.MtVapius_GooseDown",
+      "(O)Mizu.Goose_GooseDown",
     ],
     // Lumisteria Serene Meadows
     [
@@ -384,6 +392,59 @@
     [
       "(O)Cornucopia_Soybeans",
       "(O)Aimon111.SoyBeanMeats_SoyBean",
+    ],
+    // Simple Tea Expansion
+    [
+      "(O)Wildflour.AtelierGoods_Matcha_Powder",
+      "(O)bb.moreTea_MatchaPowder",
+    ],
+    // Berries Season
+    [
+      "(O)Cornucopia_Gooseberry",
+      "(O)Vanillin.BerriesSeason_Gooseberry",
+    ],
+    [
+      "(O)Cornucopia_JuniperBerries",
+      "(O)Vanillin.BerriesSeason_Juniper",
+    ],
+    [
+      "(O)BFV.CombinedCrops_Cloudberry",
+      "(O)Vanillin.BerriesSeason_Cloudberry",
+    ],
+    [
+      "(O)BFV.CombinedCrops_SeaBuckthorn",
+      "(O)Vanillin.BerriesSeason_SeaBuckthorn",
+    ],
+    // Lilybrook
+    [
+      "(O)Lilybrook.Nettle",
+      "(O)selph.TextileExpansion_Nettle",
+    ],
+    [
+      "(O)Lilybrook.Lettuce",
+      "(O)Cornucopia_Lettuce",
+    ],
+    [
+      "(O)Lilybrook.Turnip",
+      "(O)Cornucopia_Turnip",
+    ],
+    [
+      "(O)Lilybrook.BellPepper",
+      "(O)Cornucopia_BellPepper",
+    ],
+    [
+      "(O)Lilybrook.Sapphire",
+      "(O)Solariaze.RAR.Sapphire",
+    ],
+    // SBV
+    [
+      "(O)skellady.SBVCP_Hyacinth",
+      "(O)Cornucopia_Hyacinth",
+    ],
+    // Vapius
+    [
+      "(O)Lumisteria.MtVapius_WhiteGrape",
+      "(O)Cornucopia_WhiteGrape",
     ],
   ]
 }
