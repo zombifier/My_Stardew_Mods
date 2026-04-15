@@ -1,7 +1,7 @@
 {
   "Name": "Simple Flower Mead",
   "Author": "selph",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Allows honey to be turned into flavored meads.",
   "UniqueID": "selph.SimpleFlowerMead",
   "MinimumApiVersion": "4.0.0",

@@ -13,12 +13,20 @@
         "PriceModifiers":
         [
           {
+            "Id": "Multiply",
             "Modification": "Multiply",
             "Amount": 1.5,
           },
           {
+            "Id": "Add",
             "Modification": "Add",
             "Amount": 150,
+          },
+          {
+            "Id": "SveOrderCompleted",
+            "Modification": "Multiply",
+            "Amount": 1.5,
+            "Condition": "PLAYER_HAS_SEEN_EVENT Any 5407917",
           },
         ],
         "CustomData": {
