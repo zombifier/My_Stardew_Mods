@@ -158,6 +158,11 @@
       "FromFile": "Data/fish.json",
     },
     {
+      "LogName": "fish pond data",
+      "Action": "Include",
+      "FromFile": "Data/fishponddata.json",
+    },
+    {
       "LogName": "Load strings",
       "Action": "Include",
       "FromFile": "Data/strings.json",

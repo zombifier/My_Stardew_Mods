@@ -28,6 +28,7 @@
     {"UniqueID": "Mizu.Bison", "IsRequired": false},
     {"UniqueID": "Amichwan.DinoExpanded", "IsRequired": false},
     {"UniqueID": "Mizu.AlpacaLlama", "IsRequired": false},
+    {"UniqueID": "Cornucopia.GrowableForage", "IsRequired": false},
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"
