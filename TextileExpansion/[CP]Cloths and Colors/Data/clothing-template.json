@@ -54,8 +54,8 @@
         },
         "{{ModId}}_Clothing{{Clothing}}Embroidered": {
           "Name": "{{ModId}}_Clothing{{Clothing}}Embroidered",
-          //"DisplayName": "{{i18n: item.{{Clothing}}.name}}",
-          "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_EmbroideredClothing {{i18n:item.{{Clothing}}.name}}]",
+          "DisplayName": "{{i18n: item.{{Clothing}}.name}}",
+          //"DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_EmbroideredClothing {{i18n:item.{{Clothing}}.name}}]",
           "Description": "{{i18n: item.EmbroideredClothing.description.canJewel.{{CanJewel}}}}",
           "Type": "Basic",
           "Category": -26,
@@ -77,8 +77,8 @@
         },
         "{{ModId}}_Clothing{{Clothing}}Jeweled": {
           "Name": "{{ModId}}_Clothing{{Clothing}}Jeweled",
-          //"DisplayName": "{{i18n: item.{{Clothing}}.name}}",
-          "DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_JeweledClothing {{i18n:item.{{Clothing}}.name}}]",
+          "DisplayName": "{{i18n: item.{{Clothing}}.name}}",
+          //"DisplayName": "[LocalizedText Strings/Objects:{{ModId}}_JeweledClothing {{i18n:item.{{Clothing}}.name}}]",
           "Description": "{{i18n: item.JeweledClothing.description}}",
           "Type": "Basic",
           "Category": -26,
