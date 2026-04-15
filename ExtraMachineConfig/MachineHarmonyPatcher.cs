@@ -1153,8 +1153,8 @@ sealed class MachineHarmonyPatcher {
     __instance.Stack = source.Stack;
   }
 
-  static void CreateFlavoredItem_Postfix(SObject ingredient, ref SObject __result) {
-    if (__result is ColoredObject && Utils.IsPrismatic(ingredient)) {
+  static void CreateFlavoredItem_Postfix(SObject? ingredient, ref SObject __result) {
+    if (ingredient is not null && __result is ColoredObject && Utils.IsPrismatic(ingredient)) {
       __result.modData[ExtraContextTagsKey] = __result.modData.GetValueOrDefault(ExtraContextTagsKey, "") + "," + SmokedItemHarmonyPatcher.DrawPrismaticLayerTag;
     }
   }
