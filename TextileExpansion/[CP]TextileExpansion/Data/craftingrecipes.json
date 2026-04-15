@@ -18,6 +18,7 @@
 
         "{{ModId}}_SilkwormRack": "{{ModId}}_Silkworm 1 388 60 335 1/Home/{{ModId}}_SilkwormRack/true/selph.TextileExpansionCode_TextileSkill 3/",
         "{{ModId}}_YarnSpinner": "388 60 771 30 726 1/Home/{{ModId}}_YarnSpinner/true/selph.TextileExpansionCode_TextileSkill 1/",
+        "{{ModId}}_DyePrismatic": "{{ModId}}_DyeRed 1 {{ModId}}_OrangeDye 1 {{ModId}}_DyeYellow 1 {{ModId}}_DyeGreen 1 {{ModId}}_DyeBlue 1 {{ModId}}_DyePurple 1 {{ModId}}_DyeWhite 1 {{ModId}}_DyeBlack 1/Home/{{ModId}}_DyePrismatic/false/none/",
       },
     },
   ]

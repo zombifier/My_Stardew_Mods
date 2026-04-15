@@ -46,10 +46,15 @@ internal sealed class ModEntry : Mod {
 
   public const string ContentPackId = "selph.TextileExpansion";
 
+  public static PriceMultiplierConfigAssetHandler priceMultiplierConfigAssetHandler = null!;
+
   public override void Entry(IModHelper helper) {
     Helper = helper;
-    StaticMonitor = this.Monitor;
-    UniqueId = this.ModManifest.UniqueID;
+    StaticMonitor = Monitor;
+    UniqueId = ModManifest.UniqueID;
+
+    priceMultiplierConfigAssetHandler = new();
+    priceMultiplierConfigAssetHandler.RegisterEvents(helper);
 
     CouturierInventoryId = $"{UniqueId}_CouturierInventory";
     CouturierModDataAgeKey = $"{UniqueId}_CouturierAge";
@@ -129,6 +134,11 @@ internal sealed class ModEntry : Mod {
           nameof(FarmerTeam.SpecialOrderActive)),
         postfix: new HarmonyMethod(typeof(ModEntry),
           nameof(FarmerTeam_SpecialOrderActive_Postfix)));
+    harmony.Patch(
+        original: AccessTools.Method(typeof(Item),
+          "_PopulateContextTags"),
+        postfix: new HarmonyMethod(typeof(ModEntry),
+          nameof(Item_GetContextTags_postfix)));
     // Disabled for now because it breaks Better Crafting bulk craft :((((
     //harmony.Patch(
     //    original: AccessTools.DeclaredConstructor(typeof(CraftingRecipe), new[] { typeof(string), typeof(bool) }),
@@ -318,7 +328,11 @@ internal sealed class ModEntry : Mod {
     if (ItemContextTagManager.HasBaseTag(__result.QualifiedItemId, $"{ContentPackId}_base_clothing_item")
         && left_item is SObject cloth
         && ColoredObject.TrySetColor(__result, TailoringMenu.GetDyeColor(left_item) ?? Color.White, out var coloredClothing)) {
-      coloredClothing.Price = (int)(cloth.Price * (ItemContextTagManager.HasBaseTag(cloth.QualifiedItemId, $"{ContentPackId}_dyed_cloth_item") ? 1.25 : 2));
+      float multiplier = 1f;
+      if (Game1.objectData.TryGetValue(right_item.ItemId, out var templateObjectData)
+        && templateObjectData.CustomFields?.TryGetValue($"{UniqueId}_Multiplier", out var multiplierStr) is true
+        && float.TryParse(multiplierStr, out multiplier)) { }
+      coloredClothing.Price = (int)(cloth.Price * multiplier);
       coloredClothing.preservedParentSheetIndex.Value = cloth.GetPreservedItemId() ?? cloth.ItemId; //"440";
       coloredClothing.Name += $" {coloredClothing.preservedParentSheetIndex.Value}";
       coloredClothing.displayNameFormat = $"[LocalizedText Strings/Objects:{ContentPackId}_ClothingDynamicName %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]";
@@ -326,6 +340,9 @@ internal sealed class ModEntry : Mod {
         coloredClothing.modData[ClothingDyeUsedCloth] = objectData.CustomFields?.GetValueOrDefault($"{ContentPackId}_Dye", "") ?? "";
       }
       coloredClothing.Quality = left_item.Quality;
+      if (ItemContextTagManager.HasBaseTag(cloth.QualifiedItemId, "color_prismatic")) {
+        coloredClothing.modData["selph.ExtraMachineConfig.ExtraContextTags"] = __result.modData.GetValueOrDefault("selph.ExtraMachineConfig.ExtraContextTags", "") + ",draw_prismatic_layer";
+      }
       SetTailoringQuality(coloredClothing);
       __result = coloredClothing;
     }
@@ -334,12 +351,16 @@ internal sealed class ModEntry : Mod {
         && right_item is SObject yarn
         && ColoredObject.TrySetColor(__result, TailoringMenu.GetDyeColor(left_item) ?? Color.White, out var embroideredClothing)) {
       embroideredClothing.Quality = clothing.Quality;
-      embroideredClothing.Price = (int)(clothing.Price * 1) + (int)(yarn.Price * 1.5);
+      embroideredClothing.Price = (int)(clothing.Price * priceMultiplierConfigAssetHandler.data.EmbroideryBaseItemMultiplier) + (int)(yarn.Price * priceMultiplierConfigAssetHandler.data.EmbroideryAddedMultiplier);
       embroideredClothing.preservedParentSheetIndex.Value = clothing.preservedParentSheetIndex.Value;
       embroideredClothing.modData.CopyFrom(clothing.modData);
       embroideredClothing.modData["selph.ExtraMachineConfig.ExtraPreserveId.1"] = yarn.GetPreservedItemId() ?? yarn.ItemId; // "440";
-      var yarnColor = TailoringMenu.GetDyeColor(yarn) ?? Color.White;
-      embroideredClothing.modData["selph.ExtraMachineConfig.ExtraColor.1"] = $"{yarnColor.R},{yarnColor.G},{yarnColor.B}";
+      if (ItemContextTagManager.HasBaseTag(yarn.QualifiedItemId, "color_prismatic")) {
+        embroideredClothing.modData["selph.ExtraMachineConfig.ExtraColor.1"] = "PRISMATIC";
+      } else {
+        var yarnColor = TailoringMenu.GetDyeColor(yarn) ?? Color.White;
+        embroideredClothing.modData["selph.ExtraMachineConfig.ExtraColor.1"] = $"{yarnColor.R},{yarnColor.G},{yarnColor.B}";
+      }
       // Populate the field
       GetRandomImg(embroideredClothing, out var imageType, out var imageId);
       embroideredClothing.Name = clothing.Name + $" {yarn.ItemId} {yarn.GetPreservedItemId() ?? yarn.ItemId} {imageType} {imageId}";
@@ -356,12 +377,16 @@ internal sealed class ModEntry : Mod {
         && right_item is SObject gem
         && ColoredObject.TrySetColor(__result, TailoringMenu.GetDyeColor(left_item) ?? Color.White, out var jeweledClothing)) {
       jeweledClothing.Quality = clothing2.Quality;
-      jeweledClothing.Price = (int)(clothing2.Price * 1) + (int)(gem.Price * 2);
+      jeweledClothing.Price = (int)(clothing2.Price * priceMultiplierConfigAssetHandler.data.GemstoneBaseItemMultiplier) + (int)(gem.Price * priceMultiplierConfigAssetHandler.data.GemstoneAddedMultiplier);
       jeweledClothing.preservedParentSheetIndex.Value = clothing2.preservedParentSheetIndex.Value;
       jeweledClothing.modData.CopyFrom(clothing2.modData);
       jeweledClothing.modData["selph.ExtraMachineConfig.ExtraPreserveId.2"] = gem.ItemId;
-      var gemColor = TailoringMenu.GetDyeColor(gem) ?? Color.White;
-      jeweledClothing.modData["selph.ExtraMachineConfig.ExtraColor.2"] = $"{gemColor.R},{gemColor.G},{gemColor.B}";
+      if (ItemContextTagManager.HasBaseTag(gem.QualifiedItemId, "color_prismatic")) {
+        jeweledClothing.modData["selph.ExtraMachineConfig.ExtraColor.2"] = "PRISMATIC";
+      } else {
+        var gemColor = TailoringMenu.GetDyeColor(gem) ?? Color.White;
+        jeweledClothing.modData["selph.ExtraMachineConfig.ExtraColor.2"] = $"{gemColor.R},{gemColor.G},{gemColor.B}";
+      }
       jeweledClothing.Name = clothing2.Name + $" {gem.ItemId}";
       jeweledClothing.displayNameFormat = $"[LocalizedText Strings/Objects:{ContentPackId}_JeweledClothingDynamicName %PRESERVED_DISPLAY_NAME %DISPLAY_NAME]";
       jeweledClothing.Quality = left_item.Quality;
@@ -468,7 +493,7 @@ internal sealed class ModEntry : Mod {
       if (ItemContextTagManager.HasBaseTag(item.QualifiedItemId, $"{ContentPackId}_half_textile_xp")) {
         multiplier = 0.25f;
       }
-      var exp = (int)(obj.Price * obj.Stack * multiplier) / 30;
+      var exp = (int)(obj.Price * obj.Stack * multiplier) / 40;
       __instance.AddCustomSkillExperience(TextileSkill.SkillId, exp);
       ModEntry.StaticMonitor.Log($"Granting {exp} Sewing experience for {__instance.displayName}");
     }
@@ -494,7 +519,7 @@ internal sealed class ModEntry : Mod {
       var playerXpModifier = new float[] { 1f, 0.7f, 0.6f, 0.5f }[Math.Clamp(activeFarmers.Count() - 1, 0, 3)];
       multiplier *= playerXpModifier;
       foreach (Farmer farmer in activeFarmers) {
-        var exp = (int)(obj.Price * obj.Stack * multiplier) / 20;
+        var exp = (int)(obj.Price * obj.Stack * multiplier) / 40;
         farmer.AddCustomSkillExperience(TextileSkill.SkillId, exp);
         ModEntry.StaticMonitor.Log($"Granting {exp} Sewing experience for {farmer.displayName}");
       }
@@ -668,6 +693,17 @@ internal sealed class ModEntry : Mod {
   static void FarmerTeam_SpecialOrderActive_Postfix(ref bool __result, string special_order_key) {
     if (special_order_key == "QiChallenge2") {
       __result = Game1.player.team.SpecialOrderRuleActive("DROP_QI_BEANS");
+    }
+  }
+
+  static void Item_GetContextTags_postfix(Item __instance, ref HashSet<string> tags) {
+    if (__instance.modData.TryGetValue(ClothingDyeUsedCloth, out var clothingDyeUsedCloth)
+        && !String.IsNullOrEmpty(clothingDyeUsedCloth)) {
+      tags.Add($"cloth_dyed_{clothingDyeUsedCloth}");
+    }
+    if (__instance.modData.TryGetValue(ClothingDyeUsedEmbroidery, out var clothingDyeUsedEmbroidery)
+        && !String.IsNullOrEmpty(clothingDyeUsedEmbroidery)) {
+      tags.Add($"embroidery_dyed_{clothingDyeUsedEmbroidery}");
     }
   }
 }

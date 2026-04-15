@@ -1,0 +1,20 @@
+{
+  // This file is not loaded, but serves as an example as to how one would edit the price modifiers added by embroidery and gemstones
+  // Template price modifiers is part of the object CustomFields itself; see the template file for more info
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "selph.TextileExpansionCode/PriceMultiplierConfig",
+      "Entries": {
+        // This gets applied to the base item before embroidery
+        "EmbroideryBaseItemMultiplier": 1,
+        // This gets applied to the yarn item used for embroidery
+        "EmbroideryAddedMultiplier": 1.5,
+        // This gets applied to the base item before adding gemstones
+        "GemstoneBaseItemMultiplier": 1,
+        // This gets applied to the gem item used for decoration
+        "GemstoneAddedMultiplier": 2,
+      },
+    }
+  ]
+}

@@ -8,8 +8,52 @@
         "{{ModId}}_QiFabric_Name": "{{i18n:specialOrder.QiFabric.Name}}",
         "{{ModId}}_QiFabric_Description": "{{i18n:specialOrder.QiFabric.Description}}",
         "{{ModId}}_QiFabric_Objective": "{{i18n:specialOrder.QiFabric.Objective}}",
+        "{{ModId}}_TrendyFashion_Name": "{{i18n:specialOrder.TrendyFashion.Name}}",
+        "{{ModId}}_TrendyFashion_Description": "{{i18n:specialOrder.TrendyFashion.Description}}",
+        "{{ModId}}_TrendyFashion_Objective1": "{{i18n:specialOrder.TrendyFashion.Objective1}}",
+        "{{ModId}}_TrendyFashion_Objective2": "{{i18n:specialOrder.TrendyFashion.Objective2}}",
+        "{{ModId}}_TrendyFashion_Objective3": "{{i18n:specialOrder.TrendyFashion.Objective3}}",
+        "{{ModId}}_TrendyFashion_Objective4": "{{i18n:specialOrder.TrendyFashion.Objective4}}",
+        "{{ModId}}_TrendyFashion_Objective5": "{{i18n:specialOrder.TrendyFashion.Objective5}}",
+        "{{ModId}}_SewingMaterials_Name": "{{i18n:specialOrder.SewingMaterials.Name}}",
+        "{{ModId}}_SewingMaterials_Description": "{{i18n:specialOrder.SewingMaterials.Description}}",
+        "{{ModId}}_SewingMaterials_Objective1": "{{i18n:specialOrder.SewingMaterials.Objective1}}",
+        "{{ModId}}_SewingMaterials_Objective2": "{{i18n:specialOrder.SewingMaterials.Objective2}}",
+        "{{ModId}}_SewingMaterials_Objective3": "{{i18n:specialOrder.SewingMaterials.Objective3}}",
+        "{{ModId}}_SewingMaterials_Objective4": "{{i18n:specialOrder.SewingMaterials.Objective4}}",
+        "{{ModId}}_SewingMaterials_Objective5": "{{i18n:specialOrder.SewingMaterials.Objective5}}",
+        "{{ModId}}_SewingMaterials_Objective6": "{{i18n:specialOrder.SewingMaterials.Objective6}}",
       }
     },
+		{
+      "LogName": "Add drop point in Haley's House",
+			"Action": "EditMap",
+			"Target": "Maps/HaleyHouse",
+			"Priority": "Late",
+			// These IDs come from WAG and Cornucopia, minimizing the chance of toes stepping (:
+			"MapTiles": [
+        {
+          "Position": {
+            "X": 7,
+            "Y": 15
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "DropBox Perfume_Haley",
+          }
+        },
+				{
+					"Position": {
+						"X": 17,
+						"Y": 23
+					},
+					"Layer": "Buildings",
+					"SetProperties": {
+						"Action": "DropBox EmilyWorkshop"
+					}
+				}
+			]
+		},
     {
       "LogName": "Add Special Orders",
       "Action": "EditData",
@@ -47,7 +91,176 @@
             }
           ],
           "CustomFields": null
-        }
+        },
+        "{{ModId}}_TrendyFashion": {
+          "Name": "[{{ModId}}_TrendyFashion_Name]",
+          "Requester": "Haley",
+          "Duration": "TwoWeeks",
+          "Repeatable": false,
+          "RequiredTags": "!dropbox_Perfume_Haley",
+          "Condition": "PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Host 9",
+          "Text": "[{{ModId}}_TrendyFashion_Description]",
+          "Objectives": [
+            {
+              "Type": "Donate",
+              "Text": "[{{ModId}}_TrendyFashion_Objective1]",
+              "RequiredCount": "1",
+              "Data": {
+                "AcceptedContextTags": "id_o_{{ModId}}_ClothingShirtJeweled,{{PlantFiberFlavorContextTags}},cloth_dyed_{{ModId}}_DyeBlue,embroidery_dyed_{{ModId}}_DyeRed",
+								"DropBox": "Perfume_Haley",
+								"DropBoxGameLocation": "HaleyHouse",
+								"DropBoxIndicatorLocation": "7 14",
+              },
+            },
+            {
+              "Type": "Donate",
+              "Text": "[{{ModId}}_TrendyFashion_Objective2]",
+              "RequiredCount": "1",
+              "Data": {
+                "AcceptedContextTags": "id_o_{{ModId}}_ClothingHatJeweled,preserve_sheet_index_{{ModId}}_Silk,cloth_dyed_{{ModId}}_DyeYellow,embroidery_dyed_{{ModId}}_DyeGreen",
+								"DropBox": "Perfume_Haley",
+								"DropBoxGameLocation": "HaleyHouse",
+								"DropBoxIndicatorLocation": "7 14",
+              }
+            },
+            {
+              "Type": "Donate",
+              "Text": "[{{ModId}}_TrendyFashion_Objective3]",
+              "RequiredCount": "1",
+              "Data": {
+                "AcceptedContextTags": "id_o_{{ModId}}_ClothingScarfJeweled,{{AnimalFiberFlavorContextTags}},cloth_dyed_{{ModId}}_DyeGray,embroidery_dyed_{{ModId}}_DyePurple",
+								"DropBox": "Perfume_Haley",
+								"DropBoxGameLocation": "HaleyHouse",
+								"DropBoxIndicatorLocation": "7 14",
+              }
+            },
+            //{
+            //  "Type": "Deliver",
+            //  "Text": "[{{ModId}}_TrendyFashion_Objective4]",
+            //  "RequiredCount": "1",
+            //  "Data": {
+            //    "AcceptedContextTags": "id_o_{{ModId}}_ClothingShoesJeweled,preserve_sheet_index_{{ModId}}_Leather,cloth_dyed_{{ModId}}_DyeBrown,embroidery_dyed_{{ModId}}_DyeBlack",
+            //    "TargetName": "Haley",
+            //  }
+            //},
+            //{
+            //  "Type": "Deliver",
+            //  "Text": "[{{ModId}}_TrendyFashion_Objective5]",
+            //  "RequiredCount": "1",
+            //  "Data": {
+            //    "AcceptedContextTags": "id_o_{{ModId}}_ClothingPantsJeweled,preserve_sheet_index_{{ModId}}_Silk,cloth_dyed_{{ModId}}_DyeOrange,embroidery_dyed_{{ModId}}_DyeWhite",
+            //    "TargetName": "Haley",
+            //  },
+            //},
+          ],
+          "Rewards": [
+            {
+              "Type": "Money",
+              "Data": {
+                "Amount": "50000"
+              }
+            },
+            {
+              "Type": "Mail",
+              "Data": {
+                "MailReceived": "{{ModId}}_TrendyFashionCompleted"
+              }
+            }
+          ],
+          "CustomFields": null
+        },
+        "{{ModId}}_SewingMaterials": {
+          "Name": "[{{ModId}}_SewingMaterials_Name]",
+          "Requester": "Emily",
+          "Duration": "TwoWeeks",
+          "Repeatable": false,
+          "RequiredTags": "!dropbox_EmilyWorkshop",
+          "Condition": "PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Host 9",
+          "Text": "[{{ModId}}_SewingMaterials_Description]",
+          "Objectives": [
+            {
+              "Type": "Donate",
+              "Text": "[{{ModId}}_SewingMaterials_Objective1]",
+              "RequiredCount": "5",
+              "Data": {
+                "AcceptedContextTags": "id_o_428",
+								"DropBox": "EmilyWorkshop",
+								"DropBoxGameLocation": "HaleyHouse",
+								"DropBoxIndicatorLocation": "17 22",
+              },
+            },
+            {
+              "Type": "Donate",
+              "Text": "[{{ModId}}_SewingMaterials_Objective2]",
+              "RequiredCount": "5",
+              "Data": {
+                "AcceptedContextTags": "id_o_{{ModId}}_Yarn",
+								"DropBox": "EmilyWorkshop",
+								"DropBoxGameLocation": "HaleyHouse",
+								"DropBoxIndicatorLocation": "17 22",
+              },
+            },
+            {
+              "Type": "Donate",
+              "Text": "[{{ModId}}_SewingMaterials_Objective3]",
+              "RequiredCount": "5",
+              "Data": {
+                "AcceptedContextTags": "id_o_{{ModId}}_DyeRed",
+								"DropBox": "EmilyWorkshop",
+								"DropBoxGameLocation": "HaleyHouse",
+								"DropBoxIndicatorLocation": "17 22",
+              },
+            },
+            {
+              "Type": "Donate",
+              "Text": "[{{ModId}}_SewingMaterials_Objective4]",
+              "RequiredCount": "5",
+              "Data": {
+                "AcceptedContextTags": "id_o_{{ModId}}_DyeYellow",
+								"DropBox": "EmilyWorkshop",
+								"DropBoxGameLocation": "HaleyHouse",
+								"DropBoxIndicatorLocation": "17 22",
+              },
+            },
+            {
+              "Type": "Donate",
+              "Text": "[{{ModId}}_SewingMaterials_Objective5]",
+              "RequiredCount": "5",
+              "Data": {
+                "AcceptedContextTags": "id_o_{{ModId}}_DyeBlue",
+								"DropBox": "EmilyWorkshop",
+								"DropBoxGameLocation": "HaleyHouse",
+								"DropBoxIndicatorLocation": "17 22",
+              },
+            },
+            {
+              "Type": "Donate",
+              "Text": "[{{ModId}}_SewingMaterials_Objective6]",
+              "RequiredCount": "5",
+              "Data": {
+                "AcceptedContextTags": "id_o_{{ModId}}_DyeBlack",
+								"DropBox": "EmilyWorkshop",
+								"DropBoxGameLocation": "HaleyHouse",
+								"DropBoxIndicatorLocation": "17 22",
+              },
+            },
+          ],
+          "Rewards": [
+            {
+              "Type": "Money",
+              "Data": {
+                "Amount": "20000"
+              }
+            },
+            {
+              "Type": "Mail",
+              "Data": {
+                "MailReceived": "{{ModId}}_SewingMaterialsCompleted"
+              }
+            }
+          ],
+          "CustomFields": null
+        },
       }
     },
   ]

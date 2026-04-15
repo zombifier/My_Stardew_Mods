@@ -361,4 +361,50 @@
   //"clothing.qualityAdverb.silver": "a superbly",
   //"clothing.qualityAdverb.gold": "an exceptionally",
   //"clothing.qualityAdverb.iridium": "a masterfully",
+
+  // New strings in 1.3.0
+  "item.PrismaticDye.name": "Prismatic Dye",
+  "item.PrismaticDye.description": "Can be used to dye yarn or cloth a shimmering prismatic light. Emily's secret recipe.",
+  "item.PrismaticYarn.name": "Prismatic Yarn",
+  "item.PrismaticYarn.name.flavored": "Prismatic {0} Yarn",
+  "item.PrismaticYarn.description": "A ball of tightly-spun thread dyed a shimmering prismatic color.",
+  "item.PrismaticCloth.name": "Prismatic Cloth",
+  "item.PrismaticCloth.name.flavored": "Prismatic {0} Cloth",
+  "item.PrismaticCloth.description": "A bolt of fine cloth dyed a shimmering prismatic color.",
+
+  // Special orders
+  "specialOrder.TrendyFashion.Name": "Fashionable Ferngill",
+  "specialOrder.TrendyFashion.Description": "Ugh, I am so behind on the latest fashion trends coming straight out of Zuzu these days. Anyone willing to provide me these boutique clothing items will be rewarded very handsomely!",
+  "specialOrder.TrendyFashion.Objective1": "Put in Haley's Dresser a Blue Shirt made from plant fiber (Hemp, Linen, Cotton or Nettle), embroidered with Red Thread of any material and decorated with any gemstone.",
+  "specialOrder.TrendyFashion.Objective2": "Put in Haley's Dresser a Yellow Hat made of Silk fiber, embroidered with Green Thread of any material and decorated with any gemstone.",
+  "specialOrder.TrendyFashion.Objective3": "Put in Haley's Dresser a Gray Scarft made from animal fiber (Wool, Cashmere or Angora), embroidered with Purple Thread of any material and decorated with any gemstone.",
+  "specialOrder.SewingMaterials.Name": "Emily Needs Materials",
+  "specialOrder.SewingMaterials.Description": "Hey all, I suddenly have a huge urge to sew up a storm, but I'm a little short on materials. If you can deliver these supplies to my sewing room I'd appreciate it!",
+  "specialOrder.SewingMaterials.Objective1": "Put 5 Undyed Cloth in Emily's Sewing Table",
+  "specialOrder.SewingMaterials.Objective2": "Put 5 Undyed Yarn in Emily's Sewing Table",
+  "specialOrder.SewingMaterials.Objective3": "Put 5 Red Dye in Emily's Sewing Table",
+  "specialOrder.SewingMaterials.Objective4": "Put 5 Yellow Dye in Emily's Sewing Table",
+  "specialOrder.SewingMaterials.Objective5": "Put 5 Blue Dye in Emily's Sewing Table",
+  "specialOrder.SewingMaterials.Objective6": "Put 5 Black Dye in Emily's Sewing Table",
+  // New mail (after special order completion)
+  "mail.HaleyFashion.body": "Hey @,^Thank you so, so much for the new clothes! I swear, a girl can't take a break from her magazines without discovering that half her wardrobe went out of style last week.^As thanks, I've included a copy of this year's edition of Fashionable Ferngill, the top annual fashion magazine in the entire country. You're gonna find truly deluxe outfits in there - maybe you could even use some as inspiration for your own sewing recipes?^   -Haley^^P.S. You don't have to worry about me throwing away old clothes - what's out of style today might just be chic tomorrow, and a true fashionista never go unprepared.",
+  "mail.HaleyFashion.title": "Haley's New Clothing Recipes",
+  "mail.EmilyPrismaticDye.body": "Hi @,^Thanks for the new supplies on such a short notice! I'd say I was worried, but somehow I just know a fellow weaver will come through just in time.^I'm going to let you in on a little secret: these supplies aren't just for sewing, I'm actually experimenting with a new recipe for a special dye whose color can change right under the sun! If you wanna see what it looks like, I've attached my findings to this letter! Though, don't bring these around my sister - she thinks the end results look kinda garish, hah.^   -Emily^^P.S. You can also mill Prismatic Shards if you have some of those on hand.",
+  "mail.EmilyPrismaticDye.title": "Emily's Prismatic Dye Recipe",
+  // Items
+  // New names for templates
+  "item.ClothingNeedleCopper.name": "Crocheting Needle - {0}",
+  "item.ClothingNeedleIron.name": "Sewing Needle - {0}",
+  "item.ClothingNeedleGold.name": "Knitting Needle - {0}",
+  "item.ClothingNeedleIridium.name": "Deluxe Sewing Needle - {0}",
+  "item.ClothingNeedle.description.Cloth": "Use this needle on the right slot of the sewing machine to tailor dyed cloth into clothing.",
+  "item.ClothingNeedle.description.Yarn": "Use this needle on the right slot of the sewing machine to tailor dyed yarn into clothing.",
+  // New sewing produce
+  "item.Bag.name": "Bag",
+  "item.Plush.name": "Plush",
+  "item.Beanie.name": "Beanie",
+  "item.Sweater.name": "Sweater",
+  "item.Vest.name": "Vest",
+  "item.Cloak.name": "Cloak",
+  "item.Skirt.name": "Skirt",
 }

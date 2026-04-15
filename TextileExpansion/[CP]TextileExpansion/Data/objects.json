@@ -429,7 +429,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "Red",
-        "PriceMultiplier": 2.4,
+        "PriceMultiplier": 1.2,
+        "PriceAdd": 240,
         "SpriteIndex": 0,
         "ColorTag": "color_red",
         "DyeCondition": "TRUE",
@@ -442,7 +443,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "Orange",
-        "PriceMultiplier": 2.2,
+        "PriceMultiplier": 1.2,
+        "PriceAdd": 220,
         "SpriteIndex": 1,
         "ColorTag": "color_orange",
         "DyeCondition": "TRUE",
@@ -455,7 +457,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "Yellow",
-        "PriceMultiplier": 2,
+        "PriceMultiplier": 1.2,
+        "PriceAdd": 200,
         "SpriteIndex": 2,
         "ColorTag": "color_yellow",
         "DyeCondition": "TRUE",
@@ -468,7 +471,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "Green",
-        "PriceMultiplier": 2.6,
+        "PriceMultiplier": 1.4,
+        "PriceAdd": 130,
         "SpriteIndex": 3,
         "ColorTag": "color_green",
         "DyeCondition": "TRUE",
@@ -481,7 +485,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "Blue",
-        "PriceMultiplier": 3.2,
+        "PriceMultiplier": 1.6,
+        "PriceAdd": 60,
         "SpriteIndex": 4,
         "ColorTag": "color_blue",
         "DyeCondition": "TRUE",
@@ -494,7 +499,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "Purple",
-        "PriceMultiplier": 2.8,
+        "PriceMultiplier": 1.4,
+        "PriceAdd": 150,
         "SpriteIndex": 5,
         "ColorTag": "color_purple",
         "DyeCondition": "TRUE",
@@ -507,7 +513,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "Black",
-        "PriceMultiplier": 1.8,
+        "PriceMultiplier": 1.5,
+        "PriceAdd": 0,
         "SpriteIndex": 6,
         "ColorTag": "color_black",
         "DyeCondition": "TRUE",
@@ -520,7 +527,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "White",
-        "PriceMultiplier": 1.6,
+        "PriceMultiplier": 1,
+        "PriceAdd": 300,
         "SpriteIndex": 7,
         "ColorTag": "color_white",
         "DyeCondition": "TRUE",
@@ -533,7 +541,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "Pink",
-        "PriceMultiplier": 2.1,
+        "PriceMultiplier": 1.1,
+        "PriceAdd": 270,
         "SpriteIndex": 8,
         "ColorTag": "color_pink",
         "DyeCondition": "TRUE",
@@ -546,7 +555,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "Brown",
-        "PriceMultiplier": 2,
+        "PriceMultiplier": 1.35,
+        "PriceAdd": 120,
         "SpriteIndex": 9,
         "ColorTag": "color_brown",
         "DyeCondition": "TRUE",
@@ -559,7 +569,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "Cyan",
-        "PriceMultiplier": 2.9,
+        "PriceMultiplier": 1.5,
+        "PriceAdd": 95,
         "SpriteIndex": 10,
         "ColorTag": "color_cyan",
         "DyeCondition": "TRUE",
@@ -572,7 +583,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "Gray",
-        "PriceMultiplier": 1.7,
+        "PriceMultiplier": 1.25,
+        "PriceAdd": 150,
         "SpriteIndex": 11,
         "ColorTag": "color_gray",
         "DyeCondition": "TRUE",
@@ -585,7 +597,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "CrimsonRed",
-        "PriceMultiplier": 6,
+        "PriceMultiplier": 3.6,
+        "PriceAdd": 720,
         "SpriteIndex": 12,
         "ColorTag": "color_red",
         "DyeCondition": "PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Target 9",
@@ -598,7 +611,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "VerdantGreen",
-        "PriceMultiplier": 6,
+        "PriceMultiplier": 4.2,
+        "PriceAdd": 390,
         "SpriteIndex": 15,
         "ColorTag": "color_lime",
         "DyeCondition": "PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Target 9",
@@ -611,7 +625,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "MysteryBlue",
-        "PriceMultiplier": 6,
+        "PriceMultiplier": 4.8,
+        "PriceAdd": 180,
         "SpriteIndex": 16,
         "ColorTag": "color_blue",
         "DyeCondition": "PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Target 9",
@@ -624,7 +639,8 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "RoyalPurple",
-        "PriceMultiplier": 6,
+        "PriceMultiplier": 4.2,
+        "PriceAdd": 450,
         "SpriteIndex": 17,
         "ColorTag": "color_iridium",
         "DyeCondition": "PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Target 9",
@@ -637,13 +653,70 @@
       "FromFile": "Data/dyed-objects-template.json",
       "LocalTokens": {
         "Color": "PitchBlack",
-        "PriceMultiplier": 6,
+        "PriceMultiplier": 4.5,
+        "PriceAdd": 0,
         "SpriteIndex": 18,
         "ColorTag": "color_black",
         "DyeCondition": "PLAYER_SELPH.TEXTILEEXPANSIONCODE_TEXTILESKILL_LEVEL Target 9",
         "OverrideColor": "#000000",
       },
     },
+    {
+      "LogName": "Add color variants - Prismatic",
+      "Action": "Include",
+      "FromFile": "Data/dyed-objects-template.json",
+      "LocalTokens": {
+        "Color": "Prismatic",
+        "PriceMultiplier": 6,
+        "PriceAdd": 1000,
+        "SpriteIndex": 20,
+        "ColorTag": "color_prismatic",
+        "DyeCondition": "TRUE",
+        "OverrideColor": "none",
+      },
+    },
+    // Prismatic items are a lil special so we apply some extra changes on top
+    {
+      "LogName": "Fix sprite index of prismatic items to account for overlay",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Fields": {
+        "{{ModId}}_YarnPrismatic": {
+          "SpriteIndex": 62,
+        },
+        "{{ModId}}_ClothPrismatic": {
+          "SpriteIndex": 64,
+        },
+      }
+    },
+    {
+      "LogName": "Add prismatic overlay tag - Dye",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["{{ModId}}_DyePrismatic", "ContextTags"],
+      "Entries": {
+        "draw_prismatic_layer": "draw_prismatic_layer",
+      }
+    },
+    {
+      "LogName": "Add prismatic overlay tag - Yarn",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["{{ModId}}_YarnPrismatic", "ContextTags"],
+      "Entries": {
+        "draw_prismatic_layer": "draw_prismatic_layer",
+      }
+    },
+    {
+      "LogName": "Add prismatic overlay tag - dye",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["{{ModId}}_ClothPrismatic", "ContextTags"],
+      "Entries": {
+        "draw_prismatic_layer": "draw_prismatic_layer",
+      }
+    },
+
     //{
     //  "LogName": "Add cloth tag",
     //  "Action": "EditData",
@@ -686,6 +759,47 @@
         "DesaturateYarn": "true",
       },
     },
+    // Crochet
+    {
+      "LogName": "Add clothing - Scarves",
+      "Action": "Include",
+      "FromFile": "Data/clothing-template.json",
+      "LocalTokens": {
+        "Clothing": "Scarf",
+        "ClothOrYarnBase": "Yarn",
+        "SpriteIndex": 6,
+        "UnlockCondition": "selph.TextileExpansionCode_TextileSkill 2",
+        "Ingredient": "334",
+        "Multiplier": 2,
+      },
+    },
+    {
+      "LogName": "Add clothing - Bags",
+      "Action": "Include",
+      "FromFile": "Data/clothing-template.json",
+      "LocalTokens": {
+        "Clothing": "Bag",
+        "ClothOrYarnBase": "Yarn",
+        "SpriteIndex": 8,
+        "UnlockCondition": "selph.TextileExpansionCode_TextileSkill 2",
+        "Ingredient": "334",
+        "Multiplier": 2,
+      },
+    },
+    {
+      "LogName": "Add clothing - Plushes",
+      "Action": "Include",
+      "FromFile": "Data/clothing-template.json",
+      "LocalTokens": {
+        "Clothing": "Plush",
+        "ClothOrYarnBase": "Yarn",
+        "SpriteIndex": 9,
+        "UnlockCondition": "selph.TextileExpansionCode_TextileSkill 2",
+        "Ingredient": "334",
+        "Multiplier": 2,
+      },
+    },
+    // Sewing
     {
       "LogName": "Add clothing - Shirt",
       "Action": "Include",
@@ -694,7 +808,9 @@
         "Clothing": "Shirt",
         "ClothOrYarnBase": "Cloth",
         "SpriteIndex": 0,
-        "UnlockLevel": 2,
+        "UnlockCondition": "selph.TextileExpansionCode_TextileSkill 3",
+        "Ingredient": "335",
+        "Multiplier": 1.5,
       },
     },
     {
@@ -705,7 +821,9 @@
         "Clothing": "Pants",
         "ClothOrYarnBase": "Cloth",
         "SpriteIndex": 1,
-        "UnlockLevel": 2,
+        "UnlockCondition": "selph.TextileExpansionCode_TextileSkill 3",
+        "Ingredient": "335",
+        "Multiplier": 1.5,
       },
     },
     {
@@ -716,7 +834,9 @@
         "Clothing": "Hat",
         "ClothOrYarnBase": "Cloth",
         "SpriteIndex": 2,
-        "UnlockLevel": 7,
+        "UnlockCondition": "selph.TextileExpansionCode_TextileSkill 3",
+        "Ingredient": "335",
+        "Multiplier": 1.5,
       },
     },
     {
@@ -727,20 +847,12 @@
         "Clothing": "Shoes",
         "ClothOrYarnBase": "Cloth",
         "SpriteIndex": 3,
-        "UnlockLevel": 7,
+        "UnlockCondition": "selph.TextileExpansionCode_TextileSkill 3",
+        "Ingredient": "335",
+        "Multiplier": 1.5,
       },
     },
-    {
-      "LogName": "Add clothing - Dress",
-      "Action": "Include",
-      "FromFile": "Data/clothing-template.json",
-      "LocalTokens": {
-        "Clothing": "Dress",
-        "ClothOrYarnBase": "Cloth",
-        "SpriteIndex": 4,
-        "UnlockLevel": 7,
-      },
-    },
+    // Knitting
     {
       "LogName": "Add clothing - Socks",
       "Action": "Include",
@@ -749,18 +861,9 @@
         "Clothing": "Socks",
         "ClothOrYarnBase": "Yarn",
         "SpriteIndex": 5,
-        "UnlockLevel": 2,
-      },
-    },
-    {
-      "LogName": "Add clothing - Scarf",
-      "Action": "Include",
-      "FromFile": "Data/clothing-template.json",
-      "LocalTokens": {
-        "Clothing": "Scarf",
-        "ClothOrYarnBase": "Yarn",
-        "SpriteIndex": 6,
-        "UnlockLevel": 2,
+        "UnlockCondition": "selph.TextileExpansionCode_TextileSkill 7",
+        "Ingredient": "336",
+        "Multiplier": 3,
       },
     },
     {
@@ -771,7 +874,88 @@
         "Clothing": "Mittens",
         "ClothOrYarnBase": "Yarn",
         "SpriteIndex": 7,
-        "UnlockLevel": 7,
+        "UnlockCondition": "selph.TextileExpansionCode_TextileSkill 7",
+        "Ingredient": "336",
+        "Multiplier": 3,
+      },
+    },
+    {
+      "LogName": "Add clothing - Beanie",
+      "Action": "Include",
+      "FromFile": "Data/clothing-template.json",
+      "LocalTokens": {
+        "Clothing": "Beanie",
+        "ClothOrYarnBase": "Yarn",
+        "SpriteIndex": 10,
+        "UnlockCondition": "selph.TextileExpansionCode_TextileSkill 7",
+        "Ingredient": "336",
+        "Multiplier": 3,
+      },
+    },
+    {
+      "LogName": "Add clothing - Sweaters",
+      "Action": "Include",
+      "FromFile": "Data/clothing-template.json",
+      "LocalTokens": {
+        "Clothing": "Sweater",
+        "ClothOrYarnBase": "Yarn",
+        "SpriteIndex": 11,
+        "UnlockCondition": "selph.TextileExpansionCode_TextileSkill 7",
+        "Ingredient": "336",
+        "Multiplier": 3,
+      },
+    },
+    // Deluxe sewing
+    {
+      "LogName": "Add clothing - Dress",
+      "Action": "Include",
+      "FromFile": "Data/clothing-template.json",
+      "LocalTokens": {
+        "Clothing": "Dress",
+        "ClothOrYarnBase": "Cloth",
+        "SpriteIndex": 4,
+        "UnlockCondition": "none",
+        "Ingredient": "337",
+        "Multiplier": 2,
+      },
+    },
+    {
+      "LogName": "Add clothing - Vests",
+      "Action": "Include",
+      "FromFile": "Data/clothing-template.json",
+      "LocalTokens": {
+        "Clothing": "Vest",
+        "ClothOrYarnBase": "Cloth",
+        "SpriteIndex": 12,
+        "UnlockCondition": "none",
+        "Ingredient": "337",
+        "Multiplier": 2,
+      },
+    },
+    {
+      "LogName": "Add clothing - Cloaks",
+      "Action": "Include",
+      "FromFile": "Data/clothing-template.json",
+      "LocalTokens": {
+        "Clothing": "Cloak",
+        "ClothOrYarnBase": "Cloth",
+        "SpriteIndex": 13,
+        "UnlockCondition": "none",
+        "Ingredient": "337",
+        "Multiplier": 2,
+      },
+    },
+    {
+      "LogName": "Add clothing - Skirts",
+      "Action": "Include",
+      "FromFile": "Data/clothing-template.json",
+      "LocalTokens": {
+        "Clothing": "Skirt",
+        "ClothOrYarnBase": "Cloth",
+        "SpriteIndex": 14,
+        "UnlockCondition": "none",
+        "Ingredient": "337",
+        "Multiplier": 2,
       },
     },
   ]

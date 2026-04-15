@@ -41,6 +41,18 @@
         "Query: {{selph.TextileExpansionCode/TextileBaseLevel}} >= 8": true,
       }
     },
+    {
+      "Name": "PlantFiberFlavorContextTags",
+      "Value": "preserve_sheet_index_{{ModId}}_Hemp/preserve_sheet_index_{{ModId}}_Linen/preserve_sheet_index_Cornucopia_Cotton/preserve_sheet_index_{{ModId}}_Nettle",
+    },
+    {
+      "Name": "AnimalFiberFlavorContextTags",
+      "Value": "preserve_sheet_index_440/preserve_sheet_index_{{ModId}}_Cashmere/preserve_sheet_index_446",
+    },
+    {
+      "Name": "PlantFiberEmbroiderFlavorContextTags",
+      "Value": "extra_preserve_sheet_index_1_{{ModId}}_Hemp/extra_preserve_sheet_index_1_{{ModId}}_Linen/extra_preserve_sheet_index_1_Cornucopia_Cotton/extra_preserve_sheet_index_1_{{ModId}}_Nettle",
+    },
   ],
   "Changes": [
     {

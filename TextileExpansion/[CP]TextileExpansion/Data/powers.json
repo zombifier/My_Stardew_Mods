@@ -1,7 +1,7 @@
 {
   "Changes": [
     {
-      "LogName": "Add objects",
+      "LogName": "Add couturier power",
       "Action": "EditData",
       "Target": "Data/Powers",
       "Entries": {
@@ -14,7 +14,34 @@
       "When": {
         "selph.TextileExpansionCode/AnyPlayerHasCouturier": true,
       },
-    }
+    },
+    //{
+    //  "LogName": "Add Emily's power",
+    //  "Action": "EditData",
+    //  "Target": "Data/Powers",
+    //  "Entries": {
+    //    "{{ModId}}_EmilyPrismaticDyeRecipe": {
+    //      "DisplayName": "{{i18n:item.EmilyPrismaticDyeRecipe.name}}",
+    //      "Description": "{{i18n:item.EmilyPrismaticDyeRecipe.description}}",
+    //      "TexturePath": "{{ModId}}/Objects",
+    //      "TexturePosition": {
+    //        "X": 0,
+    //        "Y": 80,
+    //      },
+    //      "UnlockCondition": "PLAYER_STAT Current {{ModId}}_EmilyPrismaticDyeRecipe 1",
+    //    },
+    //    "{{ModId}}_FashionableFerngill": {
+    //      "DisplayName": "{{i18n:item.FashionableFerngill.name}}",
+    //      "Description": "{{i18n:item.FashionableFerngill.description}}",
+    //      // TODO
+    //      "TexturePath": "{{ModId}}/Objects",
+    //      "TexturePosition": {
+    //        "X": 0,
+    //        "Y": 80,
+    //      },
+    //      "UnlockCondition": "PLAYER_STAT Current {{ModId}}_EmilyPrismaticDyeRecipe 1",
+    //    },
+    //  },
+    //}
   ]
 }
-

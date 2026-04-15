@@ -923,7 +923,7 @@
               // Output items are in dyed-objects-template.json
               "OutputItem": [],
               "UseFirstValidOutput": true,
-              "MinutesUntilReady": 480,
+              "MinutesUntilReady": 960,
             },
             {
               "Id": "ModdedCloth",
@@ -937,7 +937,7 @@
               // Output items are in dyed-objects-template.json
               "OutputItem": [],
               "UseFirstValidOutput": true,
-              "MinutesUntilReady": 480,
+              "MinutesUntilReady": 960,
             },
             {
               "Id": "Yarn",
@@ -951,7 +951,7 @@
               ],
               // Output items are in dyed-objects-template.json
               "OutputItem": [],
-              "MinutesUntilReady": 480,
+              "MinutesUntilReady": 960,
               "InvalidCountMessage": "{{i18n: machine.DyePot.invalidCountYarn}}",
             },
             {
@@ -966,7 +966,7 @@
               ],
               // Output items are in dyed-objects-template.json
               "OutputItem": [],
-              "MinutesUntilReady": 480,
+              "MinutesUntilReady": 960,
               "InvalidCountMessage": "{{i18n: machine.DyePot.invalidCountYarn}}",
             },
           ],

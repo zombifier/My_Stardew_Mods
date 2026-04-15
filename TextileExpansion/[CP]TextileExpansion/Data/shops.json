@@ -52,6 +52,7 @@
         "(O){{ModId}}_MulberrySapling": {
           "Id": "(O){{ModId}}_MulberrySapling",
           "ItemId": "(O){{ModId}}_MulberrySapling",
+          "Price": 6000,
         },
         "(O){{ModId}}_LeafBasket": {
           "Id": "(BC){{ModId}}_LeafBasket",
@@ -192,6 +193,22 @@
         { "Id": "(O){{ModId}}_BrazilwoodSeed", "AfterId": "(O)494"},
         { "Id": "(O){{ModId}}_IndigoSeeds", "AfterId": "(O)494"},
       ],
+    },
+    {
+      "LogName": "Adds cashmere to Marnie if no EAC",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["AnimalShop", "Items"],
+      "Entries": {
+        "(O){{ModId}}_Cashmere": {
+          "Id": "(O){{ModId}}_Cashmere",
+          "ItemId": "(O){{ModId}}_Cashmere",
+          "Price": 1500,
+        },
+      },
+      "When": {
+        "HasMod |contains=selph.ExtraAnimalConfig": false,
+      }
     },
   ]
 }

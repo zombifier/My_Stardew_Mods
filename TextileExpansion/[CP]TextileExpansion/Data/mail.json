@@ -9,6 +9,8 @@
         "{{ModId}}_EmilyDyePotRecipe": "{{i18n:mail.EmilyDyePotRecipe.body}}%item craftingRecipe {{ModId}}_DyePot%%[#]{{i18n:mail.EmilyDyePotRecipe.title}}",
         "{{ModId}}_EmilyFreeDyes": "{{i18n:mail.EmilyFreeDyes.body}}%item id {{ModId}}_DyeRed 5%%%item quest {{ModId}}_EmilyDyedCloth true%%[#]{{i18n:mail.EmilyFreeDyes.title}}",
         "{{ModId}}_SandyDyeRare": "{{i18n:mail.SandyDyeRare.body}}[#]{{i18n:mail.SandyDyeRare.title}}",
+        "{{ModId}}_HaleyFashion": "{{i18n:mail.HaleyFashion.body}}%item craftingRecipe {{ModId}}_TemplateVest%%%item craftingRecipe {{ModId}}_TemplateCloak%%%item craftingRecipe {{ModId}}_TemplateSkirt%%%item craftingRecipe {{ModId}}_TemplateDress%%[#]{{i18n:mail.HaleyFashion.title}}",
+        "{{ModId}}_EmilyPrismaticDye": "{{i18n:mail.EmilyPrismaticDye.body}}%item craftingRecipe {{ModId}}_DyePrismatic%%[#]{{i18n:mail.EmilyPrismaticDye.title}}",
       }
     },
   ]

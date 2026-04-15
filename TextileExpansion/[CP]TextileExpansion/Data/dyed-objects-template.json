@@ -11,7 +11,7 @@
           "Description": "{{i18n: item.{{Color}}Dye.description}}",
           "Type": "Basic",
           "Category": -16,
-          "Price": "{{Round: {{Query: {{PriceMultiplier}} * 10}}}}",
+          "Price": "{{Round: {{Query: {{PriceMultiplier}} * 10 + {{PriceAdd}} / 100}}}}",
           "Texture": "{{ModId}}/Objects",
           "SpriteIndex": "{{Query: {{SpriteIndex}} * 3}}",
           "ContextTags": [
@@ -27,7 +27,7 @@
           "Description": "{{i18n: item.{{Color}}Yarn.description}}",
           "Type": "Basic",
           "Category": -26,
-          "Price": "{{Round: {{Query: {{PriceMultiplier}} * 235}}}}",
+          "Price": "{{Round: {{Query: {{PriceMultiplier}} * 235 + {{PriceAdd}} / 2}}}}",
           "Texture": "{{ModId}}/Objects",
           "SpriteIndex": "{{Query: {{SpriteIndex}} * 3 + 1}}",
           "ContextTags": [
@@ -48,7 +48,7 @@
           "Description": "{{i18n: item.{{Color}}Cloth.description}}",
           "Type": "Basic",
           "Category": -26,
-          "Price": "{{Round: {{Query: {{PriceMultiplier}} * 470}}}}",
+          "Price": "{{Round: {{Query: {{PriceMultiplier}} * 470 + {{PriceAdd}}}}}}",
           "Texture": "{{ModId}}/Objects",
           "SpriteIndex": "{{Query: {{SpriteIndex}} * 3 + 2}}",
           "ContextTags": [
@@ -121,6 +121,11 @@
               "Modification": "Multiply",
               "Amount": "{{PriceMultiplier}}",
             },
+            {
+              "Id": "ColorAdd",
+              "Modification": "Add",
+              "Amount": "{{PriceAdd}}",
+            },
           ],
           "CustomData": {
             "selph.ExtraMachineConfig.RequirementId.1": "(O){{ModId}}_Dye{{Color}}",
@@ -150,6 +155,11 @@
               "Modification": "Multiply",
               "Amount": "{{PriceMultiplier}}",
             },
+            {
+              "Id": "ColorAdd",
+              "Modification": "Add",
+              "Amount": "{{Query: {{PriceAdd}} / 2}}",
+            },
           ],
           "MinStack": 2,
           "CustomData": {
@@ -157,6 +167,7 @@
             "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
             "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
           },
+          "Condition": "{{DyeCondition}}",
         }
       }
     },
@@ -178,6 +189,11 @@
               "Id": "Color",
               "Modification": "Multiply",
               "Amount": "{{PriceMultiplier}}",
+            },
+            {
+              "Id": "ColorAdd",
+              "Modification": "Add",
+              "Amount": "{{PriceAdd}}",
             },
           ],
           "CustomData": {
@@ -207,6 +223,11 @@
               "Modification": "Multiply",
               "Amount": "{{PriceMultiplier}}",
             },
+            {
+              "Id": "ColorAdd",
+              "Modification": "Add",
+              "Amount": "{{Query: {{PriceAdd}} / 2}}",
+            },
           ],
           "MinStack": 2,
           "CustomData": {
@@ -214,6 +235,7 @@
             "selph.ExtraMachineConfig.RequirementInvalidMsg": "{{i18n:machine.DyePot.missingFuel}}",
             "selph.ExtraMachineConfig.ExtraOutputIds": "{{ModId}}_DyeBack{{Color}}",
           },
+          "Condition": "{{DyeCondition}}",
         }
       }
     },

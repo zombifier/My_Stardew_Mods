@@ -515,5 +515,34 @@
         },
       },
     },
+    {
+      "LogName": "Add prismatic grind recipe if special order completed",
+      "Action": "EditData",
+      "Target": "Data/Buildings",
+      "TargetField": ["Mill", "ItemConversions"],
+      // Have to do this because Condition doesnt quite work (it still allows the item it just doesnt do anything)
+      "When": {
+        "HasFlag": "{{ModId}}_SewingMaterialsCompleted",
+      },
+      "Entries": {
+        "{{ModId}}_PrismaticShard": {
+          "Id": "{{ModId}}_PrismaticShard",
+          "RequiredTags": [
+            "id_o_74"
+          ],
+          "RequiredCount": 1,
+          "MaxDailyConversions": -1,
+          "SourceChest": "Input",
+          "DestinationChest": "Output",
+          "ProducedItems": [
+            {
+              "Id": "(O){{ModId}}_DyePrismatic",
+              "ItemId": "(O){{ModId}}_DyePrismatic",
+              "MinStack": 2,
+            }
+          ],
+        },
+      },
+    },
   ]
 }
