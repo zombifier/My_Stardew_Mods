@@ -1,0 +1,17 @@
+{
+  "Name": "[CP] Geese Unification Project - Gold and Stellar Eggs For Every Geese",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Allows non-SVE geese to produce SVE's golden goose eggs, and non-VMV geese to produce stellar goose eggs.",
+  "UniqueID": "selph.GeeseUnification",
+  "MinimumApiVersion": "4.0.0",
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "Dependencies": [
+    {"UniqueID": "Lumisteria.MtVapius", "IsRequired": false},
+    {"UniqueID": "Mizu.Goose", "IsRequired": false},
+    {"UniqueID": "FlashShifter.StardewValleyExpandedCP", "IsRequired": false},
+  ],
+  "UpdateKeys": [ "Nexus:45791" ],
+}

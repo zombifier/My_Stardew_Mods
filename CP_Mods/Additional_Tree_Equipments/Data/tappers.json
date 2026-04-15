@@ -492,6 +492,7 @@
           "ItemId": "(O)92",
           "MinStack": 3,
           "MaxStack": 8,
+          "Condition": "ANY \"!{{HasMod|contains=KediDili.VanillaPlusProfessions}}\" \"!KediDili.VanillaPlusProfessions_PlayerHasProfession Target Farm-Forage\"",
         },
       },
       "MoveEntries": [
@@ -512,6 +513,7 @@
           "ItemId": "(O)395",
           "MinStack": 1,
           "MaxStack": 1,
+          "Condition": "ANY \"!{{HasMod|contains=KediDili.VanillaPlusProfessions}}\" \"!KediDili.VanillaPlusProfessions_PlayerHasProfession Target Farm-Forage\"",
         },
         "selph.ExtraTappers.GiantCropTea": {
           "DaysUntilReady": 1,
@@ -520,6 +522,7 @@
           "ItemId": "(O)614",
           "MinStack": 2,
           "MaxStack": 2,
+          "Condition": "ANY \"!{{HasMod|contains=KediDili.VanillaPlusProfessions}}\" \"!KediDili.VanillaPlusProfessions_PlayerHasProfession Target Farm-Forage\"",
         },
         "selph.ExtraTappers.GiantCropHoney": {
           "DaysUntilReady": 1,
@@ -528,6 +531,7 @@
           "ItemId": "FLAVORED_ITEM Honey DROP_IN_ID",
           "MinStack": 1,
           "MaxStack": 1,
+          "Condition": "ANY \"!{{HasMod|contains=KediDili.VanillaPlusProfessions}}\" \"!KediDili.VanillaPlusProfessions_PlayerHasProfession Target Farm-Forage\"",
         },
         "selph.ExtraTappers.GiantCropJuice": {
           "DaysUntilReady": 1,
@@ -535,6 +539,7 @@
           "ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
           "MinStack": 1,
           "MaxStack": 1,
+          "Condition": "ANY \"!{{HasMod|contains=KediDili.VanillaPlusProfessions}}\" \"!KediDili.VanillaPlusProfessions_PlayerHasProfession Target Farm-Forage\"",
         },
       },
     },
@@ -552,6 +557,7 @@
           "ItemId": "(O)92",
           "MinStack": 6,
           "MaxStack": 16,
+          "Condition": "ANY \"!{{HasMod|contains=KediDili.VanillaPlusProfessions}}\" \"!KediDili.VanillaPlusProfessions_PlayerHasProfession Target Farm-Forage\"",
         },
       },
       "MoveEntries": [
@@ -572,6 +578,7 @@
           "ItemId": "(O)395",
           "MinStack": 2,
           "MaxStack": 2,
+          "Condition": "ANY \"!{{HasMod|contains=KediDili.VanillaPlusProfessions}}\" \"!KediDili.VanillaPlusProfessions_PlayerHasProfession Target Farm-Forage\"",
         },
         "selph.ExtraTappers.GiantCropTea": {
           "DaysUntilReady": 1,
@@ -580,6 +587,7 @@
           "ItemId": "(O)614",
           "MinStack": 2,
           "MaxStack": 2,
+          "Condition": "ANY \"!{{HasMod|contains=KediDili.VanillaPlusProfessions}}\" \"!KediDili.VanillaPlusProfessions_PlayerHasProfession Target Farm-Forage\"",
         },
         "selph.ExtraTappers.GiantCropHoney": {
           "DaysUntilReady": 1,
@@ -588,6 +596,7 @@
           "ItemId": "FLAVORED_ITEM Honey DROP_IN_ID",
           "MinStack": 2,
           "MaxStack": 2,
+          "Condition": "ANY \"!{{HasMod|contains=KediDili.VanillaPlusProfessions}}\" \"!KediDili.VanillaPlusProfessions_PlayerHasProfession Target Farm-Forage\"",
         },
         "selph.ExtraTappers.GiantCropJuice": {
           "DaysUntilReady": 1,
@@ -595,6 +604,7 @@
           "ItemId": "FLAVORED_ITEM Juice DROP_IN_ID",
           "MinStack": 2,
           "MaxStack": 2,
+          "Condition": "ANY \"!{{HasMod|contains=KediDili.VanillaPlusProfessions}}\" \"!KediDili.VanillaPlusProfessions_PlayerHasProfession Target Farm-Forage\"",
         },
       },
     },

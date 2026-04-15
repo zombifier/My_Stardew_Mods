@@ -1,7 +1,7 @@
-﻿{
+{
   "Name": "ToggleItems - Wildflour/Vanilla Strawberry",
   "Author": "selph",
-  "Version": "1.0.3",
+  "Version": "1.0.5",
   "Description": "Allow toggling between vanilla and Wildflour strawberries.",
   "UniqueID": "selph.ToggleItemsStrawberry",
   "Dependencies": [
@@ -11,6 +11,6 @@
   ],
   "ContentPackFor": {
     "UniqueID": "selph.ToggleItems"
-  }
-//  "UpdateKeys": ["Nexus:21363"]
+  },
+  "UpdateKeys": ["Nexus:21363@Strawberry"],
 }

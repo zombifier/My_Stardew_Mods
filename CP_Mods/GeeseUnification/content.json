@@ -1,0 +1,95 @@
+{
+  "Format": "2.8.0",
+  "Changes": [
+    {
+      "LogName": "Edit Mizu's Goose",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Mizu.Goose_Goose", "ProduceItemIds"],
+      "Entries": {
+        "{{ModId}}_SVEGoldEgg": {
+          "Id": "{{ModId}}_SVEGoldEgg",
+          "Condition": "RANDOM 0.01",
+          "MinimumFriendship": 0,
+          "ItemId": "FlashShifter.StardewValleyExpandedCP_Golden_Goose_Egg",
+        },
+      },
+      "When": {
+        "HasMod |contains=Mizu.Goose": "true",
+        "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+      },
+    },
+    {
+      "LogName": "Edit Mizu's Goose to add VMV's stellar egg",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Mizu.Goose_Goose", "ProduceItemIds"],
+      "Entries": {
+        "{{ModId}}_VMVStellarEgg": {
+          "Id": "{{ModId}}__VMVStellarEgg",
+          "Condition": "PLAYER_HAS_SEEN_EVENT Any Lumisteria.MtVapius_Inn_StellarSecret, RANDOM .03",
+          "MinimumFriendship": 0,
+          "ItemId": "Lumisteria.MtVapius_StellarGooseEgg",
+        },
+      },
+      "When": {
+        "HasMod |contains=Mizu.Goose": "true",
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+      },
+    },
+    {
+      "LogName": "Edit VMV's Goose",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Lumisteria.MtVapius_Goose", "ProduceItemIds"],
+      "Entries": {
+        "{{ModId}}_SVEGoldEgg": {
+          "Id": "{{ModId}}_SVEGoldEgg",
+          "Condition": "RANDOM 0.01",
+          "MinimumFriendship": 0,
+          "ItemId": "FlashShifter.StardewValleyExpandedCP_Golden_Goose_Egg",
+        },
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+        "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+      },
+    },
+    {
+      "LogName": "Edit VMV's Stellar Goose",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["Lumisteria.MtVapius_StellarGoose", "ProduceItemIds"],
+      "Entries": {
+        "{{ModId}}_SVEGoldEgg": {
+          "Id": "{{ModId}}_SVEGoldEgg",
+          "Condition": "RANDOM 0.01",
+          "MinimumFriendship": 0,
+          "ItemId": "FlashShifter.StardewValleyExpandedCP_Golden_Goose_Egg",
+        },
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+        "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+      },
+    },
+    {
+      "LogName": "Edit SVE Geese",
+      "Action": "EditData",
+      "Target": "Data/FarmAnimals",
+      "TargetField": ["FlashShifter.StardewValleyExpandedCP_Goose", "ProduceItemIds"],
+      "Entries": {
+        "{{ModId}}_VMVStellarEgg": {
+          "Id": "{{ModId}}__VMVStellarEgg",
+          "Condition": "PLAYER_HAS_SEEN_EVENT Any Lumisteria.MtVapius_Inn_StellarSecret, RANDOM .03",
+          "MinimumFriendship": 0,
+          "ItemId": "Lumisteria.MtVapius_StellarGooseEgg",
+        },
+      },
+      "When": {
+        "HasMod |contains=Lumisteria.MtVapius": "true",
+        "HasMod |contains=FlashShifter.StardewValleyExpandedCP": "true",
+      },
+    },
+  ]
+}
