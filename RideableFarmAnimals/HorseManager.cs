@@ -259,7 +259,10 @@ class HorseManager {
         return modifier;
       }
       // If there's Horse in name then good enough lmao
-      if (farmAnimal.type.Value?.Contains("Horse") is true) return 1f;
+      if (farmAnimal.type.Value?.Contains("Horse", StringComparison.OrdinalIgnoreCase) is true) return 1f;
+      if (farmAnimal.type.Value?.Contains("Chocobo", StringComparison.OrdinalIgnoreCase) is true) return 1f;
+      // Unicorns are magical :>
+      if (farmAnimal.type.Value?.Contains("Unicorn", StringComparison.OrdinalIgnoreCase) is true) return 1.2f;
       // otherwise slow them down; slow more if smol animu
       if (farmAnimal.Sprite.SpriteWidth <= 16) return 0.5f;
       else return 0.8f;
