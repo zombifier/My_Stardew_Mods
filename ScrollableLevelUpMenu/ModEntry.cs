@@ -23,7 +23,6 @@ internal sealed class ModEntry : Mod {
   static IModHelper StaticHelper = null!;
   static IModNameAPI? modNameApi;
   public override void Entry(IModHelper helper) {
-    WarpPathfindingCache.IgnoreLocationNames.Remove("Backwoods");
     StaticMonitor = Monitor;
     StaticHelper = helper;
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
