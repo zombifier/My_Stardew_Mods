@@ -106,7 +106,7 @@ internal sealed class ModEntry : Mod {
           );
 
     // Now we enter the recipe draw flow to add the item
-    // First, find the recipe object adjust width of the draw if necessary (the mod name's longer than the item name)
+    // First, find the recipe object
     matcher
       .MatchStartForward(
           new CodeMatch(static inst => inst.IsLdloc()),
