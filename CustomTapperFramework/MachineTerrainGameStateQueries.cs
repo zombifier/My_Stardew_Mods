@@ -3,6 +3,7 @@ using StardewValley;
 using StardewValley.Delegates;
 using StardewValley.TerrainFeatures;
 using StardewValley.Buildings;
+using System.Collections.Generic;
 using System;
 
 namespace Selph.StardewMods.MachineTerrainFramework;
@@ -68,6 +69,7 @@ public static class MachineTerrainGameStateQueries {
     return FishPond.GetRawData(item.ItemId) != null;
   }
 
+  public static Dictionary<string, bool> itemLookup = new();
   public static bool IS_CROP_PRODUCE(string[] query, GameStateQueryContext context) {
     if (!Helpers.TryGetItemArg(query, 1, context.TargetItem, context.InputItem, out var item, out var error)) {
       return Helpers.ErrorResult(query, error);
@@ -75,11 +77,16 @@ public static class MachineTerrainGameStateQueries {
     if (item == null) {
       return false;
     }
+    if (itemLookup.TryGetValue(item.QualifiedItemId, out var result)) {
+      return result;
+    }
     foreach (var cropDatum in Game1.cropData) {
       if (ItemRegistry.HasItemId(item, cropDatum.Value.HarvestItemId)) {
+        itemLookup[item.QualifiedItemId] = true;
         return true;
       }
     }
+    itemLookup[item.QualifiedItemId] = false;
     return false;
   }
 }

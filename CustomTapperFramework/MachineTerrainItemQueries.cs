@@ -6,7 +6,7 @@ using StardewValley.Internal;
 using StardewValley.GameData;
 using StardewValley.GameData.FishPonds;
 using StardewValley.GameData.Locations;
-using StardewValley.GameData.LocationContexts;
+using StardewValley.GameData.Machines;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -243,35 +243,63 @@ public static class MachineTerrainItemQueries {
     return new ItemQueryResult[1] { item is not null ? new(item) : new(ItemRegistry.Create(fallbackItemId)) };
   }
 
+  public static Dictionary<string, string?> itemToSaplingLookup = new();
+
+  static bool hasItem(string qualifiedItemId, ISpawnItemData spawnData, out bool hasRealItemId) {
+    hasRealItemId = spawnData.ItemId is not null && ItemRegistry.GetMetadata(spawnData.ItemId) is not null;
+    return ItemRegistry.QualifyItemId(spawnData.ItemId ?? "") == qualifiedItemId
+      || (spawnData.RandomItemId ?? []).Any(i => ItemRegistry.QualifyItemId(i) == qualifiedItemId);
+  }
+  public static Item? saplingOf(string qualifiedItemId, ItemQueryContext context) {
+    if (itemToSaplingLookup.TryGetValue(qualifiedItemId, out var sapling)) {
+      return sapling is null ? null : ItemRegistry.Create(sapling);
+    }
+    foreach (var pair in Game1.fruitTreeData) {
+      foreach (var itemQuery in pair.Value.Fruit ?? []) {
+        if (hasItem(qualifiedItemId, itemQuery, out var hasRealItemId)) {
+          itemToSaplingLookup[qualifiedItemId] = pair.Key;
+          return ItemRegistry.Create(pair.Key);
+        }
+        if (hasRealItemId) continue;
+        var items = ItemQueryResolver.TryResolve(itemQuery, context);
+        if (items.Any(i => i.Item.QualifiedItemId == qualifiedItemId)) {
+          itemToSaplingLookup[qualifiedItemId] = pair.Key;
+          return ItemRegistry.Create(pair.Key);
+        }
+      }
+    }
+    if (qualifiedItemId == "(O)815") {
+      itemToSaplingLookup[qualifiedItemId] = "(O)251";
+      return ItemRegistry.Create("(O)251");
+    }
+    if (ModEntry.cbApi is not null) {
+      foreach (var data in ModEntry.cbApi.GetAllBushes()) {
+        if (ModEntry.cbApi.TryGetDrops(data.Id, out var drops)) {
+          foreach (var drop in drops) {
+            if (hasItem(qualifiedItemId, drop, out var hasRealItemId)) {
+              itemToSaplingLookup[qualifiedItemId] = data.Id;
+              return ItemRegistry.Create(data.Id);
+            }
+            if (hasRealItemId) continue;
+            var items = ItemQueryResolver.TryResolve(drop, context);
+            if (items.Any(i => i.Item.QualifiedItemId == qualifiedItemId)) {
+              itemToSaplingLookup[qualifiedItemId] = data.Id;
+              return ItemRegistry.Create(data.Id);
+            }
+          }
+        }
+      }
+    }
+    itemToSaplingLookup[qualifiedItemId] = null;
+    return null;
+  }
   public static IEnumerable<ItemQueryResult> SAPLING_OF(string key, string arguments, ItemQueryContext context, bool avoidRepeat, HashSet<string> avoidItemIds, Action<string, string> logError) {
     string[] array = ItemQueryResolver.Helpers.SplitArguments(arguments);
     if (array.Length < 1) {
       return ItemQueryResolver.Helpers.ErrorResult(key, arguments, logError, "expected at least one itemID argument");
     }
     string qualifiedItemId = ItemRegistry.QualifyItemId(array[0]);
-    foreach (var pair in Game1.fruitTreeData) {
-      foreach (var itemQuery in pair.Value.Fruit ?? []) {
-        var items = ItemQueryResolver.TryResolve(itemQuery, context);
-        if (items.Any(i => i.Item.QualifiedItemId == qualifiedItemId)) {
-          return [new(ItemRegistry.Create(pair.Key))];
-        }
-      }
-    }
-    if (qualifiedItemId == "(O)815") {
-      return [new(ItemRegistry.Create("(O)251"))];
-    }
-    if (ModEntry.cbApi is not null) {
-      foreach (var data in ModEntry.cbApi.GetAllBushes()) {
-        if (ModEntry.cbApi.TryGetDrops(data.Id, out var drops)) {
-          foreach (var drop in drops) {
-            var items = ItemQueryResolver.TryResolve(drop, context);
-            if (items.Any(i => i.Item.QualifiedItemId == qualifiedItemId)) {
-              return [new(ItemRegistry.Create(data.Id))];
-            }
-          }
-        }
-      }
-    }
-    return [];
+    var output = saplingOf(qualifiedItemId, context);
+    return output is null ? [] : [new(output)];
   }
 }

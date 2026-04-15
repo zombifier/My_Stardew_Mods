@@ -17,14 +17,20 @@ content packs. For users, install the mod as usual from the link above.
    + [Machine API](#machine-api)
       - [Extra GSQs](#extra-gsqs)
       - [Extra item queries](#extra-item-queries)
-      - [Get the tapper output in machine rules](#get-the-tapper-output-in-machine-rules)
+      - [Extra output methods](#extra-output-methods)
+         * [Get the tapper output in machine rules](#get-the-tapper-output-in-machine-rules)
+         * [Get the output of a combined seed maker/sapling maker](#get-the-output-of-a-combined-seed-makersapling-maker)
    + [Tapper API](#tapper-api)
    + [Example](#example)
 * [Aquatic Crops Feature](#aquatic-crops-feature)
    + [Retexture the water planters](#retexture-the-water-planters)
+   + [For C# mods](#for-c-mods)
 * [Custom Planting Pots](#custom-planting-pots)
 * [Custom Lightning Rods](#custom-lightning-rods)
 * [Crop Behavior Expansion](#crop-behavior-expansion)
+   + [Trigger actions](#trigger-actions)
+   + [Game State Queries](#game-state-queries)
+   + [Example](#example-1)
 
 ## Terrain-Based Machine Feature
 
@@ -118,7 +124,8 @@ with similar effects. Use `selph.CustomTapperFramework.MACHINE_FISH_LOCATION
 true false true` for magic bait effect. If you also want Legendary Fishes (but
 why lol), change the `false` to `true`.
 
-#### Get the tapper output in machine rules
+#### Extra output methods
+##### Get the tapper output in machine rules
 For machines placed on trees, you can get the vanilla tapper output by setting the following field in the item query:
 
 ```
@@ -182,6 +189,24 @@ The example below adds a tapper that produces 2x slower than regular tappers:
 ```
 </details>
 
+---
+##### Get the output of a combined seed maker/sapling maker
+
+```
+"OutputMethod": "Selph.StardewMods.MachineTerrainFramework.Utils, CustomTapperFramework: OutputSeedOrSapling",
+```
+
+This combines the vanilla Seed Maker output and `SAPLING_OF` item query above. This is slightly more
+performant than using a combination of documented item queries and GSQs, though not by much. To
+customize the output stack of either the seed or sapling output, set these in the output item's `CustomData`:
+```json
+"CustomData": {
+  "selph.CustomTapperFramework_MinStackSeeds": "1",
+  "selph.CustomTapperFramework_MaxStackSeeds": "2",
+  "selph.CustomTapperFramework_MinStackSapling": "1",
+  "selph.CustomTapperFramework_MaxStackSapling": "3",
+},
+```
 
 ---
 

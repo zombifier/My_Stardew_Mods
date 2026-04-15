@@ -309,7 +309,7 @@ public static class Utils {
     foreach (var outputRule in obj.GetMachineData().OutputRules) {
       List<MachineItemOutput> outputRules = new();
       foreach (var rule in outputRule.OutputItem) {
-        if (rule.CustomData.ContainsKey($"{ModEntry.UniqueId}.LightningRodOutput") &&
+        if (rule.CustomData?.ContainsKey($"{ModEntry.UniqueId}.LightningRodOutput") is true &&
             GameStateQuery.CheckConditions(rule.Condition, gsqContext)) {
           outputRules.Add(rule);
         }
@@ -335,5 +335,46 @@ public static class Utils {
       return true;
     }
     return false;
+  }
+
+  public static Item? OutputSeedOrSapling(SObject machine, Item? inputItem, bool probe, MachineItemOutput outputData, Farmer player, out int? overrideMinutesUntilReady) {
+    overrideMinutesUntilReady = null;
+    if (inputItem is null || outputData is null) return null;
+    var tile = machine.TileLocation;
+    Random random = Utility.CreateDaySaveRandom(tile.X, tile.Y * 77f, Game1.timeOfDay);
+    var seed = SObject.OutputSeedMaker(machine, inputItem, probe, outputData, player, out overrideMinutesUntilReady);
+    if (seed != null) {
+      var minStack = 1;
+      if (outputData.CustomData?.TryGetValue("selph.CustomTapperFramework_MinStackSeeds", out var minStackStr) is true
+          && Int32.TryParse(minStackStr, out var num)) {
+        minStack = num;
+      }
+      var maxStack = 1;
+      if (outputData.CustomData?.TryGetValue("selph.CustomTapperFramework_MaxStackSeeds", out var maxStackStr) is true
+          && Int32.TryParse(maxStackStr, out var num2)) {
+        maxStack = num2;
+      }
+      seed.Stack = random.Next(minStack, maxStack + 1);
+      return seed;
+    }
+    var context = new ItemQueryContext(machine.Location, player, random, "OutputSeedOrSapling");
+    //var output = ItemQueryResolver.TryResolveRandomItem($"selph.CustomTapperFramework_SAPLING_OF {inputItem.QualifiedItemId}", context);
+    var output = MachineTerrainItemQueries.saplingOf(inputItem.QualifiedItemId, context);
+    if (output is not null) {
+      var minStack = 1;
+      if (outputData.CustomData?.TryGetValue("selph.CustomTapperFramework_MinStackSapling", out var minStackStr) is true
+          && Int32.TryParse(minStackStr, out var num)) {
+        minStack = num;
+      }
+      var maxStack = 1;
+      if (outputData.CustomData?.TryGetValue("selph.CustomTapperFramework_MaxStackSapling", out var maxStackStr) is true
+          && Int32.TryParse(maxStackStr, out var num2)) {
+        maxStack = num2;
+      }
+      output.Stack = random.Next(minStack, maxStack + 1);
+      output.modData["selph.ExtraMachineConfig.ExtraContextTags"] = "selph.CustomTapperFramework_IsSapling";
+      output.MarkContextTagsDirty();
+    }
+    return output;
   }
 }

@@ -35,6 +35,7 @@ internal sealed class ModEntry : Mod {
     helper.Events.Content.AssetRequested += assetHandler.OnAssetRequested;
     helper.Events.Content.AssetReady += assetHandler.OnAssetReady;
     helper.Events.Content.AssetsInvalidated += assetHandler.OnAssetsInvalidated;
+    helper.Events.Content.AssetsInvalidated += OnAssetsInvalidated;
     helper.Events.GameLoop.GameLaunched += assetHandler.OnGameLaunched;
     helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
@@ -214,6 +215,19 @@ internal sealed class ModEntry : Mod {
         Game1.currentLocation.terrainFeatures.TryGetValue(e.Cursor.GrabTile, out var feature2) &&
         feature2 is FruitTree fruitTree) {
       fruitTree.shake(e.Cursor.GrabTile, false);
+    }
+  }
+
+  static void OnAssetsInvalidated(object? sender, AssetsInvalidatedEventArgs e) {
+    foreach (var name in e.NamesWithoutLocale) {
+      if (name.IsEquivalentTo("Data/FruitTrees")
+          || name.IsEquivalentTo("furyx639.CustomBush/Data")) {
+        ModEntry.StaticMonitor.Log("Clearing fruit tree cache");
+        MachineTerrainItemQueries.itemToSaplingLookup.Clear();
+      }
+      if (name.IsEquivalentTo("Data/Crops")) {
+        MachineTerrainGameStateQueries.itemLookup.Clear();
+      }
     }
   }
 }
