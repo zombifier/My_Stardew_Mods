@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <SDV>1615</SDV>
+    <ModFolderName>Ride Your Pigs</ModFolderName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ContentPacks Include="[CP] Ride Your Pigs" Version="$(Version)" />
+  </ItemGroup>
+  <Import Project="../Common.csproj" Label="SharedCsproj" />
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets/*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

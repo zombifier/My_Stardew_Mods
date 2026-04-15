@@ -1,0 +1,5 @@
+{
+  "HorseReturned": "{{name}} returned home to sleep.",
+  "AlreadyRidden": "This animal is already being ridden.",
+  "NoAnimal": "The base farm animal cannot be found. Maybe it was sold by another person?",
+}

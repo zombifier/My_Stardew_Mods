@@ -1,0 +1,26 @@
+{
+  "Format": "2.0.0",
+  "Changes": [
+    {
+      "LogName": "Objects changes",
+      "Action": "Include",
+      "FromFile": "Data/objects.json",
+    },
+    {
+      "LogName": "Shop changes",
+      "Action": "Include",
+      "FromFile": "Data/shops.json",
+    },
+    {
+      "LogName": "mail && triggers",
+      "Action": "Include",
+      "FromFile": "Data/mails.json",
+    },
+    // Assets
+    {
+      "Action": "Load",
+      "Target": "{{ModId}}/Tools",
+      "FromFile": "assets/{{TargetWithoutPath}}.png"
+    },
+  ]
+}

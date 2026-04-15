@@ -1,0 +1,25 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add Marnie's mail",
+      "Action": "EditData",
+      "Target": "Data/Mail",
+      "Entries": {
+        "{{ModId}}_MarnieRein" : "{{i18n:MarnieRein.description}}[#]{{i18n:MarnieRein.name}}",
+      },
+    },
+    {
+      "LogName": "Send mails",
+      "Action": "EditData",
+      "Target": "Data/TriggerActions",
+      "Entries": {
+        "{{ModId}}_MarnieRein" : {
+					"Id": "{{ModId}}_MarnieRein",
+					"Trigger": "DayStarted",
+					"Condition": "BUILDINGS_CONSTRUCTED All Stable",
+					"Action": "AddMail Current {{ModId}}_MarnieRein now",
+        },
+      },
+    },
+  ]
+}

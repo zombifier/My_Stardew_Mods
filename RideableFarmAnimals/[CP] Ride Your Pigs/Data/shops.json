@@ -1,0 +1,18 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add tool to Marnie's shop",
+      "Action": "EditData",
+      "Target": "Data/Shops",
+      "TargetField": ["AnimalShop", "Items"],
+      "Entries": {
+        "(T){{ModId}}_Rein": {
+          "Id": "(T){{ModId}}_Rein",
+          "ItemId": "(T){{ModId}}_Rein",
+          "Condition": "ANY \"BUILDINGS_CONSTRUCTED All Stable\" \"PLAYER_HAS_MAIL {{ModId}}_MarnieRein\"",
+          "Price": 5000,
+        },
+      },
+    },
+  ]
+}

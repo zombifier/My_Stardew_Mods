@@ -1,0 +1,30 @@
+{
+  "Changes": [
+    {
+      "LogName": "Add extractor tool",
+      "Action": "EditData",
+      "Target": "Data/Tools",
+      "Entries": {
+        "{{ModId}}_Rein": {
+          "ClassName": "GenericTool",
+          "Name": "{{ModId}}_Rein",
+          "AttachmentSlots": 0,
+          "SalePrice": -1,
+          "DisplayName": "{{i18n:Rein.name}}",
+          "Description": "{{i18n:Rein.description}}",
+          "Texture": "{{ModId}}/Tools",
+          "SpriteIndex": 0,
+          "MenuSpriteIndex": -1,
+          "UpgradeLevel": 0,
+          "ApplyUpgradeLevelToDisplayName": false,
+          "ConventionalUpgradeFrom": null,
+          "UpgradeFrom": null,
+          "CanBeLostOnDeath": false,
+          "SetProperties": null,
+          "ModData": null,
+          "CustomFields": null
+        },
+      },
+    },
+  ]
+}

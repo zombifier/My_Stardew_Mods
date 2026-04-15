@@ -1,0 +1,17 @@
+{
+  "Name": "Ride Your Pigs [CP]",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Adds a tool that allows you to ride any farm animal like a horse - CP Component.",
+  "UniqueID": "selph.RideableFarmAnimalsCP",
+  "MinimumApiVersion": "4.1.0",
+  "Dependencies": [
+    { "UniqueID": "selph.RideableFarmAnimals",
+      "IsRequired": true,
+    },
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "UpdateKeys": [ "Nexus:???" ],
+}

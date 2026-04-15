@@ -1,0 +1,10 @@
+{
+  "Name": "Ride Your Pigs",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Adds a tool that allows you to ride any farm animal like a horse.",
+  "UniqueID": "selph.RideableFarmAnimals",
+  "EntryDll": "RideableFarmAnimals.dll",
+  "MinimumApiVersion": "4.1.0",
+  "UpdateKeys": ["Nexus:47968"]
+}
