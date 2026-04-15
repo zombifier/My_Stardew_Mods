@@ -1,0 +1,16 @@
+{
+  "Name": "[CP] Flexible Cooking for Wildflour's Atelier Goods",
+  "Author": "selph",
+  "Version": "1.0.0",
+  "Description": "Allows WAG recipes to use a wider variety of ingredients from other mods.",
+  "UniqueID": "selph.WAGFlexCook",
+  "MinimumApiVersion": "4.0.0",
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "Dependencies": [
+    {"UniqueID": "spacechase0.SpaceCore", "IsRequired": true},
+    {"UniqueID": "Wildflour.AtelierGoods", "IsRequired": true},
+  ],
+  "UpdateKeys": [ "Nexus:50779" ],
+}

@@ -1,0 +1,1934 @@
+{
+  "Format": "2.8.0",
+  "Changes": [
+    {
+      "LogName": "Add tag for red onion",
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "TargetField": ["Wildflour.AtelierGoods_Red_Onion", "ContextTags"],
+      "Entries": {
+        "red_onion_item": "red_onion_item",
+      },
+    },
+    {
+      "LogName": "Flexible recipes",
+      "Action": "EditData",
+      "Target": "spacechase0.SpaceCore/CookingRecipeOverrides",
+      "Entries": {
+        "Wildflour.AtelierGoods_Blackberry_Mint_Jelly": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Blackberry_Mint_Jelly",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)410",
+              "Amount": 3,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Pectin",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Blueberry_Lavender_Jelly": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Blueberry_Lavender_Jelly",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)258",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lavender_item",
+              "OverrideText": "{{i18n: item.lavender.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 48, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Pectin",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Chamomile_Jelly": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Chamomile_Jelly",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "chamomile_item",
+              "OverrideText": "{{i18n: item.chamomile.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 96, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Pectin",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Cherry_Vanilla_Jam": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Cherry_Vanilla_Jam",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)638",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "vanilla_item",
+              "OverrideText": "{{i18n: item.vanilla.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 80, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Pectin",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Cinnamon_Apple_Preserves": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Cinnamon_Apple_Preserves",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "cinnamon_item",
+              "OverrideText": "{{i18n: item.cinnamon.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 144, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)613",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Pectin",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Lemon_Marmalade": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Lemon_Marmalade",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "lemon_item",
+              "OverrideText": "{{i18n: item.lemon.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 5,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Pectin",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Jasmine_Jelly": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Jasmine_Jelly",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "jasmine_item",
+              "OverrideText": "{{i18n: item.jasmine.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 16, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Pectin",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Lime_Marmalade": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Lime_Marmalade",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "lime_item",
+              "OverrideText": "{{i18n: item.lime.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 224, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 5,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Pectin",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Vanilla_Wild_Raspberry_Preserves": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Vanilla_Wild_Raspberry_Preserves",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "vanilla_item",
+              "OverrideText": "{{i18n: item.vanilla.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 80, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "raspberry_item",
+              "OverrideText": "{{i18n: item.raspberry.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 144, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 3,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Pectin",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Bruschetta": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Bruschetta",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)256",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)248",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "basil_item",
+              "OverrideText": "{{i18n: item.basil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 64, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Onion_Chutney": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Onion_Chutney",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "red_onion_item",
+              "OverrideText": "{{i18n: item.red_onion.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 208, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 3,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "olive_oil_item",
+              "OverrideText": "{{i18n: item.olive_oil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 112, "Y": 96, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Pineapple_Salsa": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Pineapple_Salsa",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)832",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)260",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "cilantro_item",
+              "OverrideText": "{{i18n: item.cilantro.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Kale_Pesto": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Kale_Pesto",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)250",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)248",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "olive_oil_item",
+              "OverrideText": "{{i18n: item.olive_oil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 112, "Y": 96, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Marinated_Mushrooms": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Marinated_Mushrooms",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)404",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)281",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "olive_oil_item",
+              "OverrideText": "{{i18n: item.olive_oil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 112, "Y": 96, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "thyme_item",
+              "OverrideText": "{{i18n: item.thyme.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 48, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Tomato_Salsa": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Tomato_Salsa",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)256",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "red_onion_item",
+              "OverrideText": "{{i18n: item.red_onion.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 208, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "cilantro_item",
+              "OverrideText": "{{i18n: item.cilantro.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)248",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Olive_Tapenade": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Olive_Tapenade",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "olive_item",
+              "OverrideText": "{{i18n: item.olive.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 160, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 3,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "olive_oil_item",
+              "OverrideText": "{{i18n: item.olive_oil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 112, "Y": 96, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lemon_item",
+              "OverrideText": "{{i18n: item.lemon.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Peach_Salsa": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Peach_Salsa",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)636",
+              "Amount": 3,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)260",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "cilantro_item",
+              "OverrideText": "{{i18n: item.cilantro.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)248",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Pepper_Relish": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Pepper_Relish",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)260",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "red_onion_item",
+              "OverrideText": "{{i18n: item.red_onion.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 208, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "olive_oil_item",
+              "OverrideText": "{{i18n: item.olive_oil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 112, "Y": 96, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Artichoke_Hearts": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Artichoke_Hearts",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)274",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "olive_oil_item",
+              "OverrideText": "{{i18n: item.olive_oil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 112, "Y": 96, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "rosemary_item",
+              "OverrideText": "{{i18n: item.rosemary.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 240, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Pickled_Fish": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Pickled_Fish",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)-4",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "red_onion_item",
+              "OverrideText": "{{i18n: item.red_onion.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 208, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)419",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)248",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Pickled_Olives": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Pickled_Olives",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "olive_item",
+              "OverrideText": "{{i18n: item.olive.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 160, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)419",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Pickled_Onions": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Pickled_Onions",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "red_onion_item",
+              "OverrideText": "{{i18n: item.red_onion.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 208, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)419",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Pickled_Carrots": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Pickled_Carrots",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Carrot",
+              "Amount": 3,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)419",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "thyme_item",
+              "OverrideText": "{{i18n: item.thyme.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 48, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Roasted_Peppers": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Roasted_Peppers",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)260",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)382",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "olive_oil_item",
+              "OverrideText": "{{i18n: item.olive_oil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 112, "Y": 96, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Sauerkraut": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Sauerkraut",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)266",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)419",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "rosemary_item",
+              "OverrideText": "{{i18n: item.rosemary.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 240, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Mango_Salsa": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Mango_Salsa",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)834",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)260",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "cilantro_item",
+              "OverrideText": "{{i18n: item.cilantro.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "red_onion_item",
+              "OverrideText": "{{i18n: item.red_onion.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 208, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Spicy_Tomato_Salsa": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Spicy_Tomato_Salsa",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)256",
+              "Amount": 3,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)260",
+              "Amount": 2,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "cilantro_item",
+              "OverrideText": "{{i18n: item.cilantro.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)248",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Sundried_Tomatoes": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Sundried_Tomatoes",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)256",
+              "Amount": 5,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "olive_oil_item",
+              "OverrideText": "{{i18n: item.olive_oil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 112, "Y": 96, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "basil_item",
+              "OverrideText": "{{i18n: item.basil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 64, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)768",
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Basil_Pesto": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Basil_Pesto",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "basil_item",
+              "OverrideText": "{{i18n: item.basil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 64, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 3,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lemon_item",
+              "OverrideText": "{{i18n: item.lemon.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "olive_oil_item",
+              "OverrideText": "{{i18n: item.olive_oil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 112, "Y": 96, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "almond_item",
+              "OverrideText": "{{i18n: item.almond.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 0, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Tomato_Corn_Salsa": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Tomato_Corn_Salsa",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)256",
+              "Amount": 3,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)270",
+              "Amount": 2,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)248",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "cilantro_item",
+              "OverrideText": "{{i18n: item.cilantro.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Cake_Mix": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Cake_Mix",
+          "ProductAmount": 5,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Cake_Flour",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "butter_item",
+              "OverrideText": "{{i18n: item.butter.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 0, "Y": 64, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "category_egg",
+              "OverrideText": "[LocalizedText Strings/StringsFromCSFiles:CraftingRecipe.cs.572]",
+              "OverrideTexturePath": "Maps/springobjects",
+              "OverrideTextureRect": {"X": 128, "Y": 112, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "category_milk",
+              "OverrideText": "[LocalizedText Strings/StringsFromCSFiles:CraftingRecipe.cs.573]",
+              "OverrideTexturePath": "Maps/springobjects",
+              "OverrideTextureRect": {"X": 256, "Y": 112, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Cookie_Mix": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Cookie_Mix",
+          "ProductAmount": 5,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)246",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Brown_Sugar",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "butter_item",
+              "OverrideText": "{{i18n: item.butter.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 0, "Y": 64, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "category_egg",
+              "OverrideText": "[LocalizedText Strings/StringsFromCSFiles:CraftingRecipe.cs.572]",
+              "OverrideTexturePath": "Maps/springobjects",
+              "OverrideTextureRect": {"X": 128, "Y": 112, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "Wildflour.AtelierGoods_Pie_Mix": {
+          "ProductQualifiedId": "(O)Wildflour.AtelierGoods_Pie_Mix",
+          "ProductAmount": 5,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Pastry_Flour",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)245",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "butter_item",
+              "OverrideText": "{{i18n: item.butter.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 0, "Y": 64, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "category_egg",
+              "OverrideText": "[LocalizedText Strings/StringsFromCSFiles:CraftingRecipe.cs.572]",
+              "OverrideTexturePath": "Maps/springobjects",
+              "OverrideTextureRect": {"X": 128, "Y": 112, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_lemon_juice": {
+          "ProductQualifiedId": "(O)HXW.Mixology_lemon_juice",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "lemon_item",
+              "OverrideText": "{{i18n: item.lemon.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+          ],
+        },
+        "HXW.Mixology_lime_juice": {
+          "ProductQualifiedId": "(O)HXW.Mixology_lime_juice",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "lime_item",
+              "OverrideText": "{{i18n: item.lime.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 224, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 2,
+            },
+          ],
+        },
+        "HXW.Mixology_berry_mimosa": {
+          "ProductQualifiedId": "(O)HXW.Mixology_berry_mimosa",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Strawberry_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_orange_juice",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_vodka",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_black_forest_cocktail": {
+          "ProductQualifiedId": "(O)HXW.Mixology_black_forest_cocktail",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Cherry_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_brandy",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "cocoa_item",
+              "OverrideText": "{{i18n: item.cocoa.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 64, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_flower_queen": {
+          "ProductQualifiedId": "(O)HXW.Mixology_flower_queen",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_gin",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_floral_bitters",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_lemon_juice",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_frozen_margarita": {
+          "ProductQualifiedId": "(O)HXW.Mixology_frozen_margarita",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Mango_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_rum",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_star_bitters",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lime_item",
+              "OverrideText": "{{i18n: item.lime.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 224, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_lavender_gin_spritz": {
+          "ProductQualifiedId": "(O)HXW.Mixology_lavender_gin_spritz",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_gin",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_tonic_water",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_floral_bitters",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lavender_item",
+              "OverrideText": "{{i18n: item.lavender.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 48, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_mango_tango": {
+          "ProductQualifiedId": "(O)HXW.Mixology_mango_tango",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Mango_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_pineapple_juice",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_tequila",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_pink_flamingo": {
+          "ProductQualifiedId": "(O)HXW.Mixology_pink_flamingo",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Strawberry_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_tequila",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_aromatic_bitters",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "basil_item",
+              "OverrideText": "{{i18n: item.basil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 64, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_raspberry_lemon_drop": {
+          "ProductQualifiedId": "(O)HXW.Mixology_raspberry_lemon_drop",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "raspberry_item",
+              "OverrideText": "{{i18n: item.raspberry.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 144, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_vodka",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_aromatic_bitters",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_lemon_juice",
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_raspberry_stinger": {
+          "ProductQualifiedId": "(O)HXW.Mixology_raspberry_stinger",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "raspberry_item",
+              "OverrideText": "{{i18n: item.raspberry.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 144, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)88",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_rum",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lemon_item",
+              "OverrideText": "{{i18n: item.lemon.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_think_pink": {
+          "ProductQualifiedId": "(O)HXW.Mixology_think_pink",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Grenadine_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_tequila",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_pixie_bitters",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "basil_item",
+              "OverrideText": "{{i18n: item.basil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 64, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_aromatic_bitters": {
+          "ProductQualifiedId": "(O)HXW.Mixology_aromatic_bitters",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "wormwood_item",
+              "OverrideText": "{{i18n: item.wormwood.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 208, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "cinnamon_item",
+              "OverrideText": "{{i18n: item.cinnamon.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 144, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "thyme_item",
+              "OverrideText": "{{i18n: item.thyme.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 48, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "rosemary_item",
+              "OverrideText": "{{i18n: item.rosemary.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 240, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_citrus_bitters": {
+          "ProductQualifiedId": "(O)HXW.Mixology_citrus_bitters",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "lemon_item",
+              "OverrideText": "{{i18n: item.lemon.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lime_item",
+              "OverrideText": "{{i18n: item.lime.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 224, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Gentian_Root",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "basil_item",
+              "OverrideText": "{{i18n: item.basil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 64, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_floral_bitters": {
+          "ProductQualifiedId": "(O)HXW.Mixology_floral_bitters",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Gentian_Root",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lavender_item",
+              "OverrideText": "{{i18n: item.lavender.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 48, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "chamomile_item",
+              "OverrideText": "{{i18n: item.chamomile.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 96, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_pixie_bitters": {
+          "ProductQualifiedId": "(O)HXW.Mixology_pixie_bitters",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Gentian_Root",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)22",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)595",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "basil_item",
+              "OverrideText": "{{i18n: item.basil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 64, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_star_bitters": {
+          "ProductQualifiedId": "(O)HXW.Mixology_star_bitters",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "wormwood_item",
+              "OverrideText": "{{i18n: item.wormwood.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 208, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "sage_item",
+              "OverrideText": "{{i18n: item.sage.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 16, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)268",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)396",
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_apricot_blitz": {
+          "ProductQualifiedId": "(O)HXW.Mixology_apricot_blitz",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Apricot_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_club_soda",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "thyme_item",
+              "OverrideText": "{{i18n: item.thyme.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 48, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_lemon_juice",
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_autumn_nights": {
+          "ProductQualifiedId": "(O)HXW.Mixology_autumn_nights",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Apple_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "sage_item",
+              "OverrideText": "{{i18n: item.sage.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 16, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)903",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_cranberry_juice",
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_berry_breeze": {
+          "ProductQualifiedId": "(O)HXW.Mixology_berry_breeze",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)258",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_lemon_juice",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_tonic_water",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lemon_item",
+              "OverrideText": "{{i18n: item.lemon.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_blackberry_mint_refresher": {
+          "ProductQualifiedId": "(O)HXW.Mixology_blackberry_mint_refresher",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)410",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)167",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_lime_juice",
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_blue_isle_cooler": {
+          "ProductQualifiedId": "(O)HXW.Mixology_blue_isle_cooler",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Ancient_Fruit_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_club_soda",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_coco_loco": {
+          "ProductQualifiedId": "(O)HXW.Mixology_coco_loco",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)88",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Strawberry_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_club_soda",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_farmers_punch": {
+          "ProductQualifiedId": "(O)HXW.Mixology_farmers_punch",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "raspberry_item",
+              "OverrideText": "{{i18n: item.raspberry.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 144, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_pineapple_juice",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_lime_juice",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_tonic_water",
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_fruity_fresca": {
+          "ProductQualifiedId": "(O)HXW.Mixology_fruity_fresca",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Grenadine_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_pineapple_juice",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)638",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_grasshopper": {
+          "ProductQualifiedId": "(O)HXW.Mixology_grasshopper",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "cocoa_item",
+              "OverrideText": "{{i18n: item.cocoa.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 64, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)233",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_club_soda",
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_lavender_lady": {
+          "ProductQualifiedId": "(O)HXW.Mixology_lavender_lady",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Peach_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lavender_item",
+              "OverrideText": "{{i18n: item.lavender.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 48, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Wild_Strawberry",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_club_soda",
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_mixed_berry_tonic": {
+          "ProductQualifiedId": "(O)HXW.Mixology_mixed_berry_tonic",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Strawberry_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "raspberry_item",
+              "OverrideText": "{{i18n: item.raspberry.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 144, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_cranberry_juice",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_tonic_water",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "basil_item",
+              "OverrideText": "{{i18n: item.basil.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 64, "Y": 16, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_picnic_punch": {
+          "ProductQualifiedId": "(O)HXW.Mixology_picnic_punch",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_lime_juice",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)254",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_club_soda",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_secret_woods_slushie": {
+          "ProductQualifiedId": "(O)HXW.Mixology_secret_woods_slushie",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)417",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lemon_item",
+              "OverrideText": "{{i18n: item.lemon.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 192, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_club_soda",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)414",
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_spring_breeze": {
+          "ProductQualifiedId": "(O)HXW.Mixology_spring_breeze",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Strawberry_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "lime_item",
+              "OverrideText": "{{i18n: item.lime.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 224, "Y": 0, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_lemon_juice",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_tonic_water",
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_sunrise_beach": {
+          "ProductQualifiedId": "(O)HXW.Mixology_sunrise_beach",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "ContextTag",
+              "Value": "raspberry_item",
+              "OverrideText": "{{i18n: item.raspberry.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 144, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Mango_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)903",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)258",
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_sweet_gem_spritzer": {
+          "ProductQualifiedId": "(O)HXW.Mixology_sweet_gem_spritzer",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)417",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_orange_juice",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "mint_item",
+              "OverrideText": "{{i18n: item.mint.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 176, "Y": 32, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+          ],
+        },
+        "HXW.Mixology_wild_mango_cooler": {
+          "ProductQualifiedId": "(O)HXW.Mixology_wild_mango_cooler",
+          "ProductAmount": 1,
+          "Ingredients": [
+            {
+              "Type": "Item",
+              "Value": "(O)Wildflour.AtelierGoods_Mango_Syrup",
+              "Amount": 1,
+            },
+            {
+              "Type": "ContextTag",
+              "Value": "raspberry_item",
+              "OverrideText": "{{i18n: item.raspberry.name}}",
+              "OverrideTexturePath": "Mods/Wildflour.AtelierGoods/Objects",
+              "OverrideTextureRect": {"X": 144, "Y": 48, "Width": 16, "Height": 16},
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)635",
+              "Amount": 1,
+            },
+            {
+              "Type": "Item",
+              "Value": "(O)HXW.Mixology_club_soda",
+              "Amount": 1,
+            },
+          ],
+        },
+      },
+    },
+  ]
+}
+
