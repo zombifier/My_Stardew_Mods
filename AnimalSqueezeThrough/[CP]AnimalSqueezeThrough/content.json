@@ -189,6 +189,96 @@
       "Action": "Include",
       "FromFile": "extra_house_template.json",
       "LocalTokens": {
+        "Animal": "Brown Armadillo",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Cream Armadillo",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Purple Armadillo",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Pink Fairy Armadillo",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Brown Mole",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Orange Mole",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Albino Mole",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Blind Mole",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Broad Footed Mole",
+      },
+      "When": {
+        "HasMod |contains=Trent.NewAnimals": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
         "Animal": "i24KittyKat.BVGCP_BlueOstrich",
       },
       "When": {
@@ -536,6 +626,56 @@
       },
       "When": {
         "HasMod |contains=SauriConservationintheValley": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "LemurKat.EastScarp_GoldenPheasantCock",
+      },
+      "When": {
+        "HasMod |contains=Lemurkat.EastScarpNPCs": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "LemurKat.EastScarp_GoldenPheasantHen",
+      },
+      "When": {
+        "HasMod |contains=Lemurkat.EastScarpNPCs": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Ems.Otter",
+      },
+      "When": {
+        "HasMod |contains=Ems.River.Wildlife": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Ems.Beaver",
+      },
+      "When": {
+        "HasMod |contains=Ems.River.Wildlife": "true",
+      },
+    },
+    {
+      "Action": "Include",
+      "FromFile": "extra_house_template.json",
+      "LocalTokens": {
+        "Animal": "Ems.Hedgehog",
+      },
+      "When": {
+        "HasMod |contains=Ems.hedgehog": "true",
       },
     },
   ]

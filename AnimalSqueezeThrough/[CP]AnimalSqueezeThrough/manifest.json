@@ -22,6 +22,9 @@
     {"UniqueID": "SummerFlamingo", "IsRequired": false},
     {"UniqueID": "SauriConservationintheValley", "IsRequired": false},
     {"UniqueID": "Otter.OttersAddBarnAnimals", "IsRequired": false},
+    {"UniqueID": "Lemurkat.EastScarpNPCs", "IsRequired": false},
+    {"UniqueID": "Ems.River.Wildlife", "IsRequired": false},
+    {"UniqueID": "Ems.hedgehog", "IsRequired": false},
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher"
