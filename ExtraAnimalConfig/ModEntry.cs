@@ -271,8 +271,10 @@ internal sealed class ModEntry : Mod {
   }
 
   static void HandleStuckAnimals(FarmAnimal animal, GameLocation location) {
+    var widthPixels = animal.GetAnimalData()?.SpriteWidth ?? 16;
+    var doorWidth = animal.home?.GetData()?.AnimalDoor.Width ?? 1;
     if (animal.home is not null &&
-        (animal.GetAnimalData()?.SpriteWidth ?? 16) / 16 > (animal.home.GetData()?.AnimalDoor.Width ?? 1) &&
+        (widthPixels / 16 > doorWidth || (widthPixels > 16 && widthPixels < 32 && doorWidth == 1)) &&
         location.buildings.Contains(animal.home) &&
         animal.home.intersects(animal.GetBoundingBox())) {
       ModEntry.StaticMonitor.Log($"Squeezing the big {animal.type.Value} through the {animal.home.buildingType.Value}'s teeny door", LogLevel.Info);
