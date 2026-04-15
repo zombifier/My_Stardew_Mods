@@ -106,7 +106,7 @@
               "Text": "[{{ModId}}_TrendyFashion_Objective1]",
               "RequiredCount": "1",
               "Data": {
-                "AcceptedContextTags": "id_o_{{ModId}}_ClothingShirtJeweled,{{PlantFiberFlavorContextTags}},cloth_dyed_{{ModId}}_DyeBlue,embroidery_dyed_{{ModId}}_DyeRed",
+                "AcceptedContextTags": "id_o_{{ModId}}_ClothingShirtJeweled,{{PlantFiberFlavorContextTags}},cloth_dyed_{{ModId}}_DyeBlue/cloth_dyed_{{ModId}}_DyeMysteryBlue,embroidery_dyed_{{ModId}}_DyeRed/embroidery_dyed_{{ModId}}_DyeCrimsonRed",
 								"DropBox": "Perfume_Haley",
 								"DropBoxGameLocation": "HaleyHouse",
 								"DropBoxIndicatorLocation": "7 14",
@@ -117,7 +117,7 @@
               "Text": "[{{ModId}}_TrendyFashion_Objective2]",
               "RequiredCount": "1",
               "Data": {
-                "AcceptedContextTags": "id_o_{{ModId}}_ClothingHatJeweled,preserve_sheet_index_{{ModId}}_Silk,cloth_dyed_{{ModId}}_DyeYellow,embroidery_dyed_{{ModId}}_DyeGreen",
+                "AcceptedContextTags": "id_o_{{ModId}}_ClothingHatJeweled,preserve_sheet_index_{{ModId}}_Silk,cloth_dyed_{{ModId}}_DyeYellow,embroidery_dyed_{{ModId}}_DyeGreen/embroidery_dyed_{{ModId}}_DyeVerdantGreen",
 								"DropBox": "Perfume_Haley",
 								"DropBoxGameLocation": "HaleyHouse",
 								"DropBoxIndicatorLocation": "7 14",
@@ -128,7 +128,7 @@
               "Text": "[{{ModId}}_TrendyFashion_Objective3]",
               "RequiredCount": "1",
               "Data": {
-                "AcceptedContextTags": "id_o_{{ModId}}_ClothingScarfJeweled,{{AnimalFiberFlavorContextTags}},cloth_dyed_{{ModId}}_DyeGray,embroidery_dyed_{{ModId}}_DyePurple",
+                "AcceptedContextTags": "id_o_{{ModId}}_ClothingScarfJeweled,{{AnimalFiberFlavorContextTags}},cloth_dyed_{{ModId}}_DyeGray,embroidery_dyed_{{ModId}}_DyePurple/embroidery_dyed_{{ModId}}_DyeRoyalPurple",
 								"DropBox": "Perfume_Haley",
 								"DropBoxGameLocation": "HaleyHouse",
 								"DropBoxIndicatorLocation": "7 14",
